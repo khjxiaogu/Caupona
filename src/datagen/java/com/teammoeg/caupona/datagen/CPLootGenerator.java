@@ -121,6 +121,7 @@ public class CPLootGenerator extends LootTableProvider {
 			add(CPBlocks.SILPHIUM.get(),doublePlantDrop(CPBlocks.SILPHIUM.get(),LootItem.lootTableItem(cpi("silphium")).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5), false))));
 			dropSelf(CPBlocks.PUMICE.get());
 			dropSelf(CPBlocks.T_BENCH.get());
+			dropSelf(CPBlocks.WOLF.get());
 			/*
 			 * dropSelf(CPBlocks.stove1);
 			 * dropSelf(CPBlocks.stove2);
