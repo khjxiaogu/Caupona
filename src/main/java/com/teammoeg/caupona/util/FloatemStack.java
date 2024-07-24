@@ -21,8 +21,15 @@
 
 package com.teammoeg.caupona.util;
 
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -31,12 +38,17 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 public class FloatemStack {
 	ItemStack stack;
 	float count;
-
+	public static final Codec<FloatemStack> CODEC=RecordCodecBuilder.create(o->o.group(ItemStack.CODEC.fieldOf("item").forGetter(i->i.stack)
+		,Codec.FLOAT.fieldOf("count").forGetter(i->i.count))
+		.apply(o, FloatemStack::new)
+		
+		);
 	public FloatemStack(ItemStack stack, float count) {
 		super();
 		this.stack = stack.copy();
@@ -44,9 +56,9 @@ public class FloatemStack {
 		this.count = count;
 	}
 
-	public FloatemStack(CompoundTag nbt) {
+	public FloatemStack(CompoundTag nbt,HolderLookup.Provider registry) {
 		super();
-		this.deserializeNBT(nbt);
+		this.deserializeNBT(nbt,registry);
 	}
 
 	public FloatemStack(ItemStack is) {
@@ -65,8 +77,8 @@ public class FloatemStack {
 		return stack.hasCraftingRemainingItem();
 	}
 
-	public CompoundTag serializeNBT() {
-		CompoundTag cnbt = stack.save(new CompoundTag());
+	public CompoundTag serializeNBT(HolderLookup.Provider registry) {
+		CompoundTag cnbt = (CompoundTag) stack.save(registry);
 		cnbt.putFloat("th_countf", count);
 		return cnbt;
 	}
@@ -83,9 +95,13 @@ public class FloatemStack {
 		return stack.getEntityLifespan(world);
 	}
 
-	public CompoundTag write(CompoundTag nbt) {
-		CompoundTag cnbt = stack.save(nbt);
-		cnbt.putFloat("th_countf", count);
+	public CompoundTag write(CompoundTag nbt,HolderLookup.Provider registry) {
+		CompoundTag cnbt = (CompoundTag) stack.save(registry);
+		for(String key:cnbt.getAllKeys()) {
+			nbt.put(key, cnbt.get(key));
+		}
+		nbt.putFloat("th_countf", count);
+		
 		return cnbt;
 	}
 
@@ -132,51 +148,36 @@ public class FloatemStack {
 	}
 
 	public boolean hasTag() {
-		return stack.hasTag();
+		return stack.has(DataComponents.CUSTOM_DATA);
 	}
 
-	public CompoundTag getTag() {
-		return stack.getTag();
+	public CompoundTag getTagForRead() {
+		return stack.get(DataComponents.CUSTOM_DATA).copyTag();
 	}
 
 	public Stream<ResourceLocation> getTags() {
 		return stack.getTags().map(TagKey::location);
 	}
 
-	public CompoundTag getOrCreateTag() {
-		return stack.getOrCreateTag();
+	public void updateTag(Consumer<CompoundTag> update) {
+		CustomData data=stack.get(DataComponents.CUSTOM_DATA);
+		CompoundTag tag;
+		if(data!=null) {
+			tag=data.copyTag();
+		}else {
+			tag=new CompoundTag();
+		}
+		update.accept(tag);
+		CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
 	}
 
-	public CompoundTag getOrCreateChildTag(String key) {
-		return stack.getOrCreateTagElement(key);
-	}
-
-	public CompoundTag getChildTag(String key) {
-		return stack.getTagElement(key);
-	}
-
-	public void removeChildTag(String p_196083_1_) {
-		stack.removeTagKey(p_196083_1_);
-	}
 
 	public void setTag(CompoundTag nbt) {
-		stack.setTag(nbt);
+		CustomData.set(DataComponents.CUSTOM_DATA, stack, nbt);
 	}
 
 	public Component getDisplayName() {
 		return stack.getHoverName();
-	}
-
-	public ItemStack setDisplayName(Component name) {
-		return stack.setHoverName(name);
-	}
-
-	public void clearCustomName() {
-		stack.resetHoverName();
-	}
-
-	public boolean hasDisplayName() {
-		return stack.hasCustomHoverName();
 	}
 
 	public boolean hasEffect() {
@@ -187,9 +188,6 @@ public class FloatemStack {
 		return stack.getRarity();
 	}
 
-	public void setTagInfo(String key, Tag value) {
-		stack.addTagElement(key, value);
-	}
 
 	public Component getTextComponent() {
 		return stack.getDisplayName();
@@ -213,16 +211,13 @@ public class FloatemStack {
 			this.count = 0;
 	}
 
-	public boolean isFood() {
-		return stack.isEdible();
-	}
 
 	public boolean equals(ItemStack other) {
-		return ItemStack.isSameItemSameTags(this.getStack(), other);
+		return ItemStack.isSameItemSameComponents(this.getStack(), other);
 	}
 
-	public void deserializeNBT(CompoundTag nbt) {
-		stack = ItemStack.of(nbt);
+	public void deserializeNBT(CompoundTag nbt,HolderLookup.Provider registry) {
+		stack = ItemStack.parse(registry, nbt).orElse(ItemStack.EMPTY);
 		this.count = nbt.getFloat("th_countf");
 	}
 

@@ -103,7 +103,7 @@ public abstract class IConditionalCategory<T extends IConditionalRecipe&Recipe<?
 		if(conditions==null||conditions.isEmpty()) {
 			COND_NONE.draw(stack,offX,offY);
 		}else {
-			if(NeoForge.EVENT_BUS.post(new DrawCustomConditionEvent(helper, conditions, stack, offX, offY)).getResult()==Result.DENY)return false;
+			if(NeoForge.EVENT_BUS.post(new DrawCustomConditionEvent(helper, conditions, stack, offX, offY)).getResult()==EventResult.DENY)return false;
 			COND_LIST.draw(stack,offX,offY);
 			DETAIL.draw(stack,offX+13,offY+14);
 		}

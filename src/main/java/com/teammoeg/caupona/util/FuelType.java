@@ -38,7 +38,7 @@ public enum FuelType {
 
 	private FuelType(int modelId, String tagname) {
 		this.modelId = modelId;
-		it = ItemTags.create(new ResourceLocation(CPMain.MODID, tagname));
+		it = ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, tagname));
 	}
 
 	public static FuelType getType(ItemStack is) {

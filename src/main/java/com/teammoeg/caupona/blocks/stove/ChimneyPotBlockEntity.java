@@ -26,6 +26,7 @@ import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -46,13 +47,13 @@ public class ChimneyPotBlockEntity extends CPBaseBlockEntity {
 	}
 
 	@Override
-	public void readCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void readCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
 		process = nbt.getInt("process");
 		countSoot = nbt.getInt("soot");
 	}
 
 	@Override
-	public void writeCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void writeCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
 		nbt.putInt("process", process);
 		nbt.putInt("soot", countSoot);
 	}

@@ -35,7 +35,7 @@ public class CPEntityTypes {
 			CPMain.MODID);
 	public static final DeferredHolder<EntityType<?>,EntityType<CPBoat>> BOAT = ENTITY_TYPES.register("boat",
 			() -> EntityType.Builder.<CPBoat>of(CPBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10)
-					.build(new ResourceLocation(CPMain.MODID, "boat").toString()));
+					.build(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "boat").toString()));
 
 	private CPEntityTypes() {
 	}

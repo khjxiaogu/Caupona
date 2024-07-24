@@ -27,7 +27,14 @@ public abstract class FoodExchangeItemEvent extends Event {
 		}
 		
 	}
+	EventResult result;
 	public ItemStack getOrigin() {
 		return origin;
+	}
+	public EventResult getResult() {
+		return result;
+	}
+	public void setResult(EventResult result) {
+		this.result = result;
 	}
 }

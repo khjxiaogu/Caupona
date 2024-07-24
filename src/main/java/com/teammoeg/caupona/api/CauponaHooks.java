@@ -34,6 +34,7 @@ import com.teammoeg.caupona.item.StewItem;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.IFoodInfo;
 import com.teammoeg.caupona.util.SauteedFoodInfo;
+import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.resources.ResourceLocation;
@@ -48,7 +49,7 @@ public class CauponaHooks {
 	private CauponaHooks() {
 	}
 
-	public static final ResourceLocation stew = new ResourceLocation(CPMain.MODID, "stews");
+	public static final ResourceLocation stew = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "stews");
 
 	public static Optional<List<FloatemStack>> getItems(ItemStack stack) {
 		IFoodInfo fi=CPCapability.FOOD_INFO.getCapability(stack, null);
@@ -70,10 +71,12 @@ public class CauponaHooks {
 		if (cap!=null) {
 			IFluidHandlerItem data = cap;
 			return SoupFluid.getBase(data.getFluidInTank(0));
-		}else if(Utils.getFluidType(stack)!=Fluids.EMPTY) {
-			return StewItem.getBase(stack);
+		}else {
+			@Nullable StewInfo data=stack.get(CPCapability.STEW_INFO);
+			if(data!=null)
+				return data.base;
 		}
-		return new ResourceLocation("water");
+		return ResourceLocation.withDefaultNamespace("water");
 	}
 
 	public static Optional<IFoodInfo> getInfo(ItemStack stack) {

@@ -49,10 +49,6 @@ public class CauponaApi {
 	private CauponaApi() {
 	}
 
-	public static SauteedFoodInfo getSauteedInfo(CompoundTag nbt) {
-		return new SauteedFoodInfo(nbt);
-	}
-
 	public static void apply(Level worldIn, LivingEntity entityLiving, IFoodInfo info) {
 		if (!worldIn.isClientSide) {
 			RandomSource r = entityLiving.getRandom();

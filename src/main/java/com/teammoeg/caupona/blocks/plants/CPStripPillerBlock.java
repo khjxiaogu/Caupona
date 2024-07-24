@@ -25,8 +25,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.ToolAction;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class CPStripPillerBlock extends RotatedPillarBlock {
@@ -38,9 +38,9 @@ public class CPStripPillerBlock extends RotatedPillarBlock {
 	}
 
 	@Override
-	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction toolAction,
+	public BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility toolAction,
 			boolean simulate) {
-		if (toolAction == ToolActions.AXE_STRIP && stripped != null) {
+		if (toolAction == ItemAbilities.AXE_STRIP && stripped != null) {
 			return stripped.get().defaultBlockState().setValue(RotatedPillarBlock.AXIS,
 					state.getValue(RotatedPillarBlock.AXIS));
 		}

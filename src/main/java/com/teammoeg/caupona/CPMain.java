@@ -53,7 +53,7 @@ public class CPMain {
 	public static final DeferredHolder<CreativeModeTab,CreativeModeTab> foods=TABS.register("aaa_caupona_cpn_food", ()->CreativeModeTab.builder().withTabsBefore(main.getKey(),decoration.getKey()).icon(()->new ItemStack(CPItems.gravy_boat.get())).title(Utils.translate("itemGroup.caupona_foods")).build());
 	
 	public static ResourceLocation rl(String path) {
-		return new ResourceLocation(MODID, path);
+		return ResourceLocation.fromNamespaceAndPath(MODID, path);
 	}
 
 	public CPMain(IEventBus mod) {

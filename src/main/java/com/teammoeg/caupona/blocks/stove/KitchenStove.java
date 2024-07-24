@@ -31,6 +31,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -81,28 +82,6 @@ public class KitchenStove extends CPRegisteredEntityBlock<KitchenStoveBlockEntit
 		return true;
 	}
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-			BlockHitResult hit) {
-		InteractionResult p = super.use(state, worldIn, pos, player, handIn, hit);
-		if (p.consumesAction())
-			return p;
-		KitchenStoveBlockEntity blockEntity = (KitchenStoveBlockEntity) worldIn.getBlockEntity(pos);
-		/*
-		 * for(Item i:ForgeRegistries.ITEMS) {
-		 * if(CountingTags.tags.stream().anyMatch(i.getTags()::contains)&&!i.isFood()&&
-		 * FoodValueRecipe.recipes.get(i)==null)
-		 * System.out.println(i.getRegistryName());
-		 * }
-		 */
-		if (handIn == InteractionHand.MAIN_HAND) {
-			if (blockEntity != null && !worldIn.isClientSide&&(player.getAbilities().instabuild||!blockEntity.isInfinite))
-				((ServerPlayer) player).openMenu(blockEntity, blockEntity.getBlockPos());
-			return InteractionResult.SUCCESS;
-		}
-		return p;
-	}
 
 	@Override
 	public void animateTick(BlockState stateIn, Level worldIn, BlockPos bp, RandomSource rand) {
@@ -160,5 +139,23 @@ public class KitchenStove extends CPRegisteredEntityBlock<KitchenStoveBlockEntit
 		}
 		super.stepOn(pLevel, pPos, pState, pEntity);
 	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player,BlockHitResult hit) {
+		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
+		if (p.consumesAction())
+			return p;
+		KitchenStoveBlockEntity blockEntity = (KitchenStoveBlockEntity) worldIn.getBlockEntity(pos);
+
+			if (blockEntity != null &&(player.getAbilities().instabuild||!blockEntity.isInfinite)) {
+				if(!worldIn.isClientSide) {
+				((ServerPlayer) player).openMenu(blockEntity, blockEntity.getBlockPos());
+				}
+				return InteractionResult.sidedSuccess(worldIn.isClientSide());
+			}
+		return p;
+	}
+
 
 }

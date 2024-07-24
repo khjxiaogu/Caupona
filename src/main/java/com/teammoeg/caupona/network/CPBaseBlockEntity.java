@@ -23,7 +23,9 @@ package com.teammoeg.caupona.network;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -48,13 +50,14 @@ public abstract class CPBaseBlockEntity extends BlockEntity {
 		this.setChanged();
 	}
 
-	public abstract void readCustomNBT(CompoundTag nbt, boolean isClient);
+	public abstract void readCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries);
 
-	public abstract void writeCustomNBT(CompoundTag nbt, boolean isClient);
-
+	public abstract void writeCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries);
+	boolean fromNetwork=false;
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-		this.readCustomNBT(pkt.getTag(), true);
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
+		fromNetwork=true;
+		super.onDataPacket(net, pkt, registries);
 	}
 
 	public abstract void tick();
@@ -62,16 +65,17 @@ public abstract class CPBaseBlockEntity extends BlockEntity {
 		return null;
 	};
 	@Override
-	public void load(CompoundTag nbt) {
-		this.readCustomNBT(nbt, false);
-		super.load(nbt);
+	public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
+		this.readCustomNBT(nbt, fromNetwork, registries);
+		super.loadAdditional(nbt,registries);
+		fromNetwork=false;
 
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag compound) {
-		this.writeCustomNBT(compound, false);
-		super.saveAdditional(compound);
+	protected void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+		this.writeCustomNBT(compound, false, registries);
+		super.saveAdditional(compound,registries);
 	}
 
 	@Override
@@ -80,9 +84,9 @@ public abstract class CPBaseBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
-		CompoundTag nbt = super.getUpdateTag();
-		writeCustomNBT(nbt, true);
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		CompoundTag nbt = super.getUpdateTag(registries);
+		writeCustomNBT(nbt, true,registries);
 		return nbt;
 	}
 }

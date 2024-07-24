@@ -34,8 +34,8 @@ public class CPConfig {
 	public static void register() {
 		// ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT,
 		// Config.CLIENT_CONFIG);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CPConfig.COMMON_CONFIG);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CPConfig.SERVER_CONFIG);
+		ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, CPConfig.COMMON_CONFIG);
+		ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.SERVER, CPConfig.SERVER_CONFIG);
 	}
 
 	public static class Client {

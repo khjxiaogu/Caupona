@@ -25,15 +25,15 @@ public class WalnutFruitBlock extends FruitBlock {
 		if (pLevel.getRawBrightness(pPos, 0) >= 9) {
 			int i = this.getAge(pState);
 			if (i < this.getMaxAge()) {
-				if (CommonHooks.onCropsGrowPre(pLevel, pPos, pState,
+				if (CommonHooks.canCropGrow(pLevel, pPos, pState,
 						pRandom.nextInt(17) == 0)) {
-					if (i == this.getMaxAge() - 1 && pLevel.dimensionTypeId().equals(BuiltinDimensionTypes.NETHER)
+					if (i == this.getMaxAge() - 1 && pLevel.dimensionTypeRegistration().getKey().equals(BuiltinDimensionTypes.NETHER)
 							&& pRandom.nextDouble()<CPConfig.SERVER.leadenGenRate.get()) {
 						pLevel.setBlock(pPos, this.getStateForAge(5), 2);
 					} else {
 						pLevel.setBlock(pPos, this.getStateForAge(i + 1), 2);
 					}
-					CommonHooks.onCropsGrowPost(pLevel, pPos, pState);
+					CommonHooks.fireCropGrowPost(pLevel, pPos, pState);
 				}
 			}
 		}

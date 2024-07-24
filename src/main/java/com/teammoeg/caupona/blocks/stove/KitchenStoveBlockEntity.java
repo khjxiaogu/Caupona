@@ -34,6 +34,7 @@ import com.teammoeg.caupona.util.IInfinitable;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -79,7 +80,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 	}
 
 	@Override
-	public void readCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void readCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
 		process = nbt.getInt("process");
 		processMax = nbt.getInt("processMax");
 		if (nbt.contains("chimneyPos"))
@@ -89,14 +90,14 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 		last = FuelType.values()[nbt.getInt("fuel_type")];
 		if (!isClient) {
 			cd = nbt.getInt("cd");
-			fuel.set(0, ItemStack.of(nbt.getCompound("fuel")));
+			fuel.set(0, ItemStack.parseOptional(registries,nbt.getCompound("fuel")));
 			chimneyTicks = nbt.getInt("chimneyTick");
 			isInfinite = nbt.getBoolean("inf");
 		}
 	}
 
 	@Override
-	public void writeCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void writeCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
 		nbt.putInt("process", process);
 		nbt.putInt("processMax", processMax);
 		if (attachedChimney != null)
@@ -104,7 +105,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 		nbt.putInt("fuel_type", last.ordinal());
 		if (!isClient) {
 			nbt.putInt("cd", cd);
-			nbt.put("fuel", fuel.get(0).save(new CompoundTag()));
+			nbt.put("fuel", fuel.get(0).save(registries));
 			nbt.putInt("chimneyTick", chimneyTicks);
 			nbt.putBoolean("inf", isInfinite);
 		}
@@ -156,7 +157,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
 		ItemStack itemstack = fuel.get(0);
-		return CommonHooks.getBurnTime(stack, null) > 0 && itemstack.getCraftingRemainingItem().isEmpty();
+		return stack.getBurnTime(RecipeType.SMELTING) > 0 && itemstack.getCraftingRemainingItem().isEmpty();
 	}
 
 	@Override
@@ -170,7 +171,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 	}
 
 	private boolean consumeFuel() {
-		int time = CommonHooks.getBurnTime(fuel.get(0), RecipeType.SMELTING);
+		int time = fuel.get(0).getBurnTime(RecipeType.SMELTING);
 		if (time <= 0) {
 			process = processMax = 0;
 			return false;
@@ -291,7 +292,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 
 	@Override
 	public boolean canEmitHeat() {
-		return this.process > 0 || CommonHooks.getBurnTime(fuel.get(0), RecipeType.SMELTING) > 0;
+		return this.process > 0 || fuel.get(0).getBurnTime(RecipeType.SMELTING) > 0;
 	}
 
 	public int getSpeed() {

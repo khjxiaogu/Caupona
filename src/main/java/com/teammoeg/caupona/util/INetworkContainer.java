@@ -34,6 +34,6 @@ public interface INetworkContainer {
 	ServerPlayer getOpenedPlayer();
 
 	default void sendMessage(CompoundTag nbt) {
-		PacketHandler.send(PacketDistributor.PLAYER.with(getOpenedPlayer()), new ContainerDataMessage(nbt));
+		PacketDistributor.sendToPlayer(getOpenedPlayer(),new ContainerDataMessage(nbt));
 	}
 }

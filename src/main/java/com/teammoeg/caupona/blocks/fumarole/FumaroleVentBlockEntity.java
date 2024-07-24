@@ -33,6 +33,7 @@ import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.LazyTickWorker;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -75,14 +76,14 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 	}
 
 	@Override
-	public void readCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void readCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
 		if (isClient)
 			return;
 		update.read(nbt,"update");
 	}
 
 	@Override
-	public void writeCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void writeCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
 		if (isClient)
 			return;
 		update.write(nbt,"update");

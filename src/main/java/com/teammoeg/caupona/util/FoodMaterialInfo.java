@@ -13,7 +13,7 @@ public class FoodMaterialInfo {
 		this.name = name;
 		food=new FoodProperties.Builder();
 		food.nutrition(heal);
-		food.saturationMod(sat);
+		food.saturationModifier(sat);
 	}
 	public FoodMaterialInfo(String name, float composite) {
 		super();

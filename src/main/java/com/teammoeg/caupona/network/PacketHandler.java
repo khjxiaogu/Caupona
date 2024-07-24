@@ -25,23 +25,19 @@ import com.teammoeg.caupona.CPMain;
 
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 public class PacketHandler {
 
-	public static void send(PacketDistributor.PacketTarget target, CustomPacketPayload message) {
-		target.send(message);
-	}
-
 	public static void sendToServer(CustomPacketPayload message) {
-		PacketDistributor.SERVER.noArg().send(message);
+		PacketDistributor.sendToServer(message);
 	}
-	public static void registerPackets(RegisterPayloadHandlerEvent ev) {
+	public static void registerPackets(RegisterPayloadHandlersEvent ev) {
 		
-		IPayloadRegistrar Ch=ev.registrar(CPMain.MODID);
-		Ch.play(ClientDataMessage.path, ClientDataMessage::new,ClientDataMessage::handle);
-		Ch.play(ContainerDataMessage.path, ContainerDataMessage::new,ContainerDataMessage::handle);
+		PayloadRegistrar Ch=ev.registrar(CPMain.MODID);
+		Ch.playToServer(ClientDataMessage.path, ClientDataMessage.CODEC,ClientDataMessage::handle);
+		Ch.playToClient(ContainerDataMessage.type,ContainerDataMessage.CODEC,ContainerDataMessage::handle);
 		Ch.versioned("1");
 	}
 }

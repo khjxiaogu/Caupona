@@ -2,8 +2,11 @@ package com.teammoeg.caupona.blocks.decoration.mosaic;
 
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.collect.Lists;
 import com.teammoeg.caupona.CPBlocks;
+import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.CPGui;
 import com.teammoeg.caupona.CPTags;
 import com.teammoeg.caupona.container.CPBaseContainer;
@@ -221,11 +224,11 @@ public class TBenchMenu extends CPBaseContainer<BlockEntity> {
 				}
 			}
 		} else if (input0.is(CPBlocks.MOSAIC.get().asItem())) {
-			CompoundTag tag = inputSlot0.getItem().getTagElement("caupona:mosaic");
+			@Nullable MosaicData tag = inputSlot0.getItem().get(CPCapability.MOSAIC_DATA);
 			if (tag==null)
 				return;
-			MosaicMaterial m1 = MosaicMaterial.valueOf(tag.getString("mat1"));
-			MosaicMaterial m2 = MosaicMaterial.valueOf(tag.getString("mat2"));
+			MosaicMaterial m1 = tag.material1;
+			MosaicMaterial m2 = tag.material2;
 			if (m1 != null && m2 != null) {
 				for (MosaicPattern pat : MosaicPattern.values()) {
 					ItemStack is = new ItemStack(CPBlocks.MOSAIC.get());

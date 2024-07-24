@@ -28,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import com.teammoeg.caupona.api.CauponaApi;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
 import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
+import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.data.RecipeReloadListener;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
 import com.teammoeg.caupona.fluid.SoupFluid;
@@ -51,18 +52,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
-import net.neoforged.bus.api.Event.Result;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.TickEvent;
-import net.neoforged.neoforge.event.TickEvent.Phase;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
@@ -78,19 +77,17 @@ public class CPCommonEvents {
 	@SubscribeEvent
 	public static void isExtractAllowed(FoodExchangeItemEvent.Pre event) {
 		if(!event.getOrigin().is(Items.BOWL))
-			event.setResult(Result.ALLOW);
+			event.setResult(EventResult.ALLOW);
 	}
 	@SubscribeEvent
 	public static void isExchangeAllowed(FoodExchangeItemEvent.Post event) {
 		if((!event.getOrigin().is(Items.BOWL))&&event.getTarget().is(Items.BOWL))
-			event.setResult(Result.ALLOW);
+			event.setResult(EventResult.ALLOW);
 	}
 	@SubscribeEvent
-	public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		if (event.phase == Phase.START) {
-			if (event.player.containerMenu instanceof ITickableContainer container) 
-				container.tick(event.side == LogicalSide.SERVER);
-		}
+	public static void onPlayerTick(PlayerTickEvent.Pre event) {
+		if (event.getEntity().containerMenu instanceof ITickableContainer container) 
+			container.tick(event.getEntity() instanceof ServerPlayer);
 	}
 	@SubscribeEvent
 	public static void bowlContainerFood(ContanerContainFoodEvent ev) {
@@ -98,7 +95,7 @@ public class CPCommonEvents {
 			RecipeHolder<BowlContainingRecipe> recipe=BowlContainingRecipe.recipes.get(ev.fs.getFluid());
 			if(recipe!=null) {
 				ev.out=recipe.value().handle(ev.fs);
-				ev.setResult(Result.ALLOW);
+				ev.setResult(EventResult.ALLOW);
 			}
 		}
 	}
@@ -117,7 +114,7 @@ public class CPCommonEvents {
 		}
 		if (!persistent.contains(CPMain.BOOK_NBT_TAG)) {
 			persistent.putBoolean(CPMain.BOOK_NBT_TAG,true);
-			ItemHandlerHelper.giveItemToPlayer(event.getEntity(),PatchouliAPI.get().getBookStack(new ResourceLocation(CPMain.MODID,"book")));
+			ItemHandlerHelper.giveItemToPlayer(event.getEntity(),PatchouliAPI.get().getBookStack(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"book")));
 		}
 	}
 	@SuppressWarnings("resource")

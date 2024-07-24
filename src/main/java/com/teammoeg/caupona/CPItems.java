@@ -83,8 +83,8 @@ public class CPItems {
 	public static DeferredHolder<Item,Item> stock = icon("stock_based");
 	public static DeferredHolder<Item,Item> milk = icon("milk_based");
 	public static DeferredHolder<Item,Item> any = icon("any_based");
-	public static DeferredHolder<Item,Item> water_bowl = stew("water", new ResourceLocation("water"), createSoupProps());
-	public static DeferredHolder<Item,Item> milk_bowl = stew("milk", new ResourceLocation("milk"), createSoupProps());
+	public static DeferredHolder<Item,Item> water_bowl = stew("water", ResourceLocation.withDefaultNamespace("water"), createSoupProps());
+	public static DeferredHolder<Item,Item> milk_bowl = stew("milk", ResourceLocation.withDefaultNamespace("milk"), createSoupProps());
 	public static DeferredHolder<Item,Item> clay_pot = item("clay_cistern", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,Item> soot = item("soot", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,PortableBrazierItem> pbrazier = ITEMS.register("portable_brazier",()->new PortableBrazierItem( createProps()));
@@ -96,7 +96,7 @@ public class CPItems {
 	public static DeferredHolder<Item,SkimmerItem> i_skimmer = ITEMS.register("iron_skimmer",()->new SkimmerItem( createProps().durability(200)));
 	static{
 		for (String s : soups) {
-			stew(s, new ResourceLocation(CPMain.MODID, s), createSoupProps());
+			stew(s, ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s), createSoupProps());
 		}
 
 		for (String s : aspics) {
@@ -142,6 +142,6 @@ public class CPItems {
 		return new Item.Properties();
 	}
 	public static ItemStack getSapa() {
-		return new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(CPMain.MODID,"sapa_spice_jar")),1);
+		return new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"sapa_spice_jar")),1);
 	}
 }

@@ -23,6 +23,7 @@ package com.teammoeg.caupona.util;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonElement;
@@ -32,6 +33,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
+import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
 
 import net.minecraft.core.BlockPos;
@@ -48,14 +50,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.bus.api.Event.Result;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
@@ -67,7 +68,7 @@ public class Utils {
 	public static final Direction[] horizontals = new Direction[] { Direction.EAST, Direction.WEST, Direction.SOUTH,
 			Direction.NORTH };
 	public static final String FLUID_TAG_KEY="caupona:fluid";
-	public static final Codec<MobEffectInstance> MOB_EFFECT_CODEC=RecordCodecBuilder.create(u->u.group(
+	/*public static final Codec<MobEffectInstance> MOB_EFFECT_CODEC=RecordCodecBuilder.create(u->u.group(
 		BuiltInRegistries.MOB_EFFECT.byNameCodec().fieldOf("effect").forGetter(o->o.getEffect()),
 		Codec.INT.fieldOf("time").forGetter(o->o.getDuration()),
 		Codec.INT.fieldOf("level").forGetter(o->o.getAmplifier())
@@ -78,7 +79,7 @@ public class Utils {
 		Codec.INT.fieldOf("time").forGetter(o->o.getFirst().getDuration()),
 		Codec.INT.fieldOf("level").forGetter(o->o.getFirst().getAmplifier()),
 		Codec.FLOAT.fieldOf("chance").forGetter(o->o.getSecond())
-		).apply(u,(a,b,c,d)->Pair.of(new MobEffectInstance(a,b,c), d)));
+		).apply(u,(a,b,c,d)->Pair.of(new MobEffectInstance(a,b,c), d)));*/
 	private Utils() {
 	}
 	public static <K,V> Codec<Pair<K,V>> pairCodec(String nkey,Codec<K> key,String nval,Codec<V> val){
@@ -99,7 +100,7 @@ public class Utils {
 		return ev;
 	}
 	public static JsonElement toJson(Ingredient i) {
-		return Ingredient.CODEC.encodeStart(JsonOps.INSTANCE,i).get().left().orElse(JsonNull.INSTANCE);
+		return Ingredient.CODEC.encodeStart(JsonOps.INSTANCE,i).result().orElse(JsonNull.INSTANCE);
 	}
 	public static ItemStack extractOutput(IItemHandler inv,int count) {
 		ItemStack is=ItemStack.EMPTY;
@@ -112,113 +113,18 @@ public class Utils {
 	public static boolean isExtractAllowed(ItemStack is) {
 		FoodExchangeItemEvent ev=new FoodExchangeItemEvent.Pre(is);
 		NeoForge.EVENT_BUS.post(ev);
-		return ev.getResult()==Result.ALLOW;
+		return ev.getResult()==EventResult.ALLOW;
 	}
 	public static boolean isExchangeAllowed(ItemStack or,ItemStack rs) {
 		FoodExchangeItemEvent ev=new FoodExchangeItemEvent.Post(or,rs);
 		NeoForge.EVENT_BUS.post(ev);
-		return ev.getResult()==Result.ALLOW;
-	}
-	public static void writeItemFluid(ItemStack is,FluidStack stack) {
-		CompoundTag tag=is.getOrCreateTagElement(FLUID_TAG_KEY);
-		if (stack.hasTag())
-			tag.put("data",stack.getTag());
-		tag.putString("type",Utils.getRegistryName(stack).toString());
-	}
-	public static void writeItemFluid(ItemStack is,Fluid stack) {
-		is.getOrCreateTagElement(FLUID_TAG_KEY).putString("type",Utils.getRegistryName(stack).toString());
-	}
-	public static void writeItemFluid(ItemStack is,ResourceLocation rl) {
-		is.getOrCreateTagElement(FLUID_TAG_KEY).putString("type",rl.toString());
-	}
-	public static FluidStack extractFluid(ItemStack item) {
-		if (item.hasTag()) {
-			CompoundTag tag = item.getTag();
-			if(tag.contains(FLUID_TAG_KEY)) {
-				tag=tag.getCompound(FLUID_TAG_KEY);
-				Fluid f = BuiltInRegistries.FLUID.get(new ResourceLocation(tag.getString("type")));
-				if (f != null&&f!=Fluids.EMPTY) {
-					FluidStack res = new FluidStack(f, 250);
-					if(tag.contains("data")) {
-						CompoundTag ntag = tag.getCompound("data");
-						res.setTag(ntag);
-					}
-					return res;
-				}
-			}else if (tag.contains("type")) {
-				Fluid f = BuiltInRegistries.FLUID.get(new ResourceLocation(tag.getString("type")));
-				if (f != null&&f!=Fluids.EMPTY) {
-					FluidStack res = new FluidStack(f, 250);
-					CompoundTag ntag = tag.copy();
-					ntag.remove("type");
-					if (!ntag.isEmpty())
-						res.setTag(ntag);
-					return res;
-				}
-			}
-		}
-		return FluidStack.EMPTY;
-	}
-	public static CompoundTag extractData(ItemStack item) {
-		if (item.hasTag()) {
-			CompoundTag tag = item.getTag();
-			if(tag.contains(FLUID_TAG_KEY)) {
-				tag=tag.getCompound(FLUID_TAG_KEY);
-				if(tag.contains("data"))
-					return tag.getCompound("data");
-			}else return tag;
-		}
-		return null;
-	}
-	public static CompoundTag extractDataElement(ItemStack item,String key) {
-		if (item.hasTag()) {
-			CompoundTag tag = item.getTag();
-			if(tag.contains(FLUID_TAG_KEY)) {
-				tag=tag.getCompound(FLUID_TAG_KEY);
-				if(tag.contains("data")) {
-					CompoundTag data=tag.getCompound("data");
-					if(data.contains(key))
-						return data.getCompound(key);
-				}
-			}else return tag.getCompound(key);
-		}
-		return null;
-	}
-	public static void setDataElement(ItemStack item,String key,CompoundTag data) {
-		CompoundTag tag=item.getOrCreateTagElement(FLUID_TAG_KEY);
-		CompoundTag dat=tag.getCompound("data");
-		dat.put(key, data);
-		tag.put("data", dat);
-	}
-	public static ResourceLocation getFluidTypeRL(ItemStack item) {
-		if (item.hasTag()) {
-			CompoundTag tag = item.getTag();
-			if(tag.contains(FLUID_TAG_KEY)) {
-				tag=tag.getCompound(FLUID_TAG_KEY);
-				return new ResourceLocation(tag.getString("type"));
-			}else if (tag.contains("type")) {
-				return new ResourceLocation(tag.getString("type"));
-			}
-		}
-		return new ResourceLocation("minecraft:water");
-	}
-	public static Fluid getFluidType(ItemStack item) {
-		if (item.hasTag()) {
-			CompoundTag tag = item.getTag();
-			if(tag.contains(FLUID_TAG_KEY)) {
-				tag=tag.getCompound(FLUID_TAG_KEY);
-				return BuiltInRegistries.FLUID.get(new ResourceLocation(tag.getString("type")));
-			}else if (tag.contains("type")) {
-				return BuiltInRegistries.FLUID.get(new ResourceLocation(tag.getString("type")));
-			}
-		}
-		return Fluids.EMPTY;
+		return ev.getResult()==EventResult.ALLOW;
 	}
 	public static ItemStack insertToOutput(ItemStackHandler inv, int slot, ItemStack in) {
 		ItemStack is = inv.getStackInSlot(slot);
 		if (is.isEmpty()) {
 			inv.setStackInSlot(slot, in.split(Math.min(inv.getSlotLimit(slot), in.getMaxStackSize())));
-		} else if (ItemHandlerHelper.canItemStacksStack(in, is)) {
+		} else if (ItemStack.isSameItemSameComponents(in, is)) {
 			int limit = Math.min(inv.getSlotLimit(slot), is.getMaxStackSize());
 			limit -= is.getCount();
 			limit = Math.min(limit, in.getCount());
@@ -276,8 +182,8 @@ public class Utils {
 		return BuiltInRegistries.MOB_EFFECT.getKey(effect);
 	}
 	
-	public static void addPotionTooltip(List<MobEffectInstance> list, List<Component> lores, float durationFactor,Level pLevel) {
-		PotionUtils.addPotionTooltip(list, lores, durationFactor, pLevel == null ? 20.0F : pLevel.tickRateManager().tickrate());
+	public static void addPotionTooltip(List<MobEffectInstance> list, Consumer<Component> lores, float durationFactor,Level pLevel) {
+		PotionContents.addPotionTooltip(list, lores, durationFactor, pLevel == null ? 20.0F : pLevel.tickRateManager().tickrate());
 	}
 
 }

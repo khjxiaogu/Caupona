@@ -29,11 +29,13 @@ import com.teammoeg.caupona.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import vazkii.patchouli.api.IComponentRenderContext;
@@ -52,16 +54,13 @@ public class PerBowlTooltip implements ICustomComponent {
 	@Override
 	public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
 		recipe = lookup.apply(recipe);
-		ResourceLocation out = new ResourceLocation(recipe.asString());
+		ResourceLocation out = ResourceLocation.parse(recipe.asString());
 		Recipe<?> r = Minecraft.getInstance().level.getRecipeManager().byKey(out).map(t->t.value()).orElse(null);
 		if (r instanceof SauteedRecipe cr) {
 			output=new ItemStack(cr.output);
-			CompoundTag tags=output.getOrCreateTag();
-			CompoundTag display=tags.getCompound(ItemStack.TAG_DISPLAY);
-			ListTag lt=display.getList(ItemStack.TAG_LORE,8);
-			lt.add(StringTag.valueOf(Component.Serializer.toJson(Utils.translate("gui.jei.category.caupona.ingredientPer",cr.count).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD))));
-			display.put(ItemStack.TAG_LORE,lt);
-			tags.put(ItemStack.TAG_DISPLAY, display);
+			output.set(DataComponents.LORE,output.get(DataComponents.LORE)
+			.withLineAdded(Utils.translate("gui.jei.category.caupona.ingredientPer",cr.count).withStyle(ChatFormatting.GOLD).withStyle(ChatFormatting.BOLD)));
+
 		}else
 			output=ItemStack.EMPTY;
 	}

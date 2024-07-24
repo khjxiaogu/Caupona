@@ -41,7 +41,7 @@ public class KitchenStoveContainer extends CPBaseContainer<KitchenStoveBlockEnti
 		this.addSlot(new Slot(blockEntity, 0, 80, 55) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return CommonHooks.getBurnTime(stack, null) > 0 && stack.getCraftingRemainingItem().isEmpty();
+				return stack.getBurnTime(null) > 0 && stack.getCraftingRemainingItem().isEmpty();
 			}
 		});
 		super.addPlayerInventory(inv,8,84,142);

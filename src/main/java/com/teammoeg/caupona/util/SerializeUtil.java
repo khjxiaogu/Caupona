@@ -41,12 +41,15 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -147,27 +150,15 @@ public class SerializeUtil {
 		if(jsonIn==null)return null;
 		return FluidStack.CODEC.decode(JsonOps.INSTANCE,jsonIn).result().map(Pair::getFirst).orElse(FluidStack.EMPTY);
 	}
-	public static FluidStack readFluidStack(FriendlyByteBuf in) {
-		Fluid f=in.readById(BuiltInRegistries.FLUID);
-		int amount=in.readVarInt();
-		FluidStack fs=new FluidStack(f,amount);
-		readOptional(in,d->d.readNbt()).ifPresent(e->fs.setTag(e));
-		return fs;
-	}
-	public static JsonElement writeFluidStack(FluidStack stack) {
-		return FluidStack.CODEC.encodeStart(JsonOps.INSTANCE,stack).result().orElse(null);
-	}
-	public static void writeFluidStack(FriendlyByteBuf out,FluidStack stack) {
-		out.writeId(BuiltInRegistries.FLUID,stack.getFluid());
-		out.writeVarInt(stack.getAmount());
-		writeOptional(out,stack.getTag(),(s,d)->d.writeNbt(s));
-	}
     public static <K, V> void writeMap(FriendlyByteBuf buffer, Map<K, V> elms, BiConsumer<K, FriendlyByteBuf> keywriter, BiConsumer<V, FriendlyByteBuf> valuewriter) {
         writeList(buffer, elms.entrySet(), (p, b) -> {
             keywriter.accept(p.getKey(), b);
             valuewriter.accept(p.getValue(), b);
         });
     }
+	public static <T extends Enum> StreamCodec<ByteBuf,T> createEnumStreamCodec(T[] values) {
+		return ByteBufCodecs.BYTE.map(n->values[n], v->(byte)v.ordinal());
+	}
     public static <K, V> Map<K, V> readMap(FriendlyByteBuf buffer, Map<K, V> map, Function<FriendlyByteBuf, K> keyreader, Function<FriendlyByteBuf, V> valuereader) {
         map.clear();
         if (!buffer.readBoolean())

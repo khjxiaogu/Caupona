@@ -22,26 +22,31 @@
 package com.teammoeg.caupona.util;
 
 import java.util.Objects;
+import java.util.Optional;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import com.mojang.datafixers.Products.P3;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder.Instance;
+import com.mojang.serialization.codecs.RecordCodecBuilder.Mu;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.util.INBTSerializable;
 
-public class SpicedFoodInfo implements INBTSerializable<Tag>{
+public class SpicedFoodInfo{
 	public MobEffectInstance spice;
 	public boolean hasSpice = false;
 	public ResourceLocation spiceName;
-
-	public SpicedFoodInfo() {
+	public SpicedFoodInfo() {}
+	public SpicedFoodInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName) {
+		this.spice=spice.orElse(null);
+		this.hasSpice=hasSpice;
+		this.spiceName=spiceName.orElse(null);
 	}
-
-	public static ResourceLocation getSpice(CompoundTag nbt) {
-		if (nbt.contains("spiceName"))
-			return new ResourceLocation(nbt.getString("spiceName"));
-		return null;
+	
+	public static <P extends SpicedFoodInfo> P3<Mu<P>, Optional<MobEffectInstance>, Boolean, Optional<ResourceLocation>>  codecStart(Instance<P> i) {
+		return i.group(MobEffectInstance.CODEC.optionalFieldOf("spice").forGetter(o->Optional.ofNullable(o.spice)), Codec.BOOL.fieldOf("hasSpice").forGetter(o->o.hasSpice), ResourceLocation.CODEC.optionalFieldOf("spiceName").forGetter(o->Optional.ofNullable(o.spiceName)));
+		
 	}
 
 	public boolean addSpice(MobEffectInstance spice, ItemStack im) {
@@ -61,41 +66,6 @@ public class SpicedFoodInfo implements INBTSerializable<Tag>{
 
 	public boolean canAddSpice() {
 		return !hasSpice;
-	}
-
-	public void write(CompoundTag nbt) {
-		nbt.putBoolean("hasSpice", hasSpice);
-		if (spice != null)
-			nbt.put("spice", spice.save(new CompoundTag()));
-		if (spiceName != null)
-			nbt.putString("spiceName", spiceName.toString());
-	}
-	public void read(CompoundTag nbt) {
-		hasSpice = nbt.getBoolean("hasSpice");
-		if (nbt.contains("spice"))
-			spice = MobEffectInstance.load(nbt.getCompound("spice"));
-		if (nbt.contains("spiceName"))
-			spiceName = new ResourceLocation(nbt.getString("spiceName"));
-	}
-	
-	public CompoundTag save() {
-		CompoundTag nbt = new CompoundTag();
-		write(nbt);
-		return nbt;
-	}
-
-	@Override
-	public CompoundTag serializeNBT() {
-		return save();
-	}
-
-	@Override
-	public void deserializeNBT(Tag nbt) {
-		if(nbt instanceof CompoundTag)
-			read((CompoundTag)nbt);
-		else
-			read(new CompoundTag());
-		
 	}
 
 	@Override

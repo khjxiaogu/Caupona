@@ -23,6 +23,7 @@ package com.teammoeg.caupona.blocks.pot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,6 +53,7 @@ import com.teammoeg.caupona.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -64,7 +66,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -86,7 +88,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		@Override
 		public boolean isItemValid(int slot, ItemStack stack) {
 			if (slot < 9)
-				return (stack.getItem() == Items.POTION&&!PotionUtils.getMobEffects(stack).stream().anyMatch(t->t.getDuration()==1)) || StewCookingRecipe.isCookable(stack);
+				return (stack.getItem() == Items.POTION&&!StreamSupport.stream(stack.get(DataComponents.POTION_CONTENTS).getAllEffects().spliterator(),false).anyMatch(t->t.getDuration()==1)) || StewCookingRecipe.isCookable(stack);
 			if (slot == 9) {
 				Item i = stack.getItem();
 				return i == Items.BOWL || Utils.getFluidType(stack)!=Fluids.EMPTY || AspicMeltingRecipe.find(stack) != null;
@@ -134,7 +136,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		});
 		contain=new LazyTickWorker(CPConfig.SERVER.containerTick.get(),()->{
 			if (isInfinite) {
-				FluidStack fs = new FluidStack(tank.getFluid(), tank.getFluidAmount());
+				FluidStack fs = tank.getFluid().copyWithAmount(tank.getFluidAmount());
 				if (canAddFluid())
 					tryContianFluid();
 				tank.setFluid(fs);

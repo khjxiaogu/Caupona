@@ -207,7 +207,7 @@ public class CPBlocks {
 				stoneBlocks.put(name, base);
 				type.setBase(()->base.get().defaultBlockState());
 				decoblock(name + "_slab", () -> new SlabBlock(getStoneProps()));
-				decoblock(name + "_stairs", () -> new StairBlock(type.getBase(), getStoneProps()));
+				decoblock(name + "_stairs", () -> new StairBlock(type.getBase().get(), getStoneProps()));
 				decoblock(name + "_wall", () -> new WallBlock(getStoneProps()));
 			}
 			if (type.isCounterMaterial()) {
@@ -316,7 +316,7 @@ public class CPBlocks {
 				() -> new CPSignItem((new Item.Properties()).stacksTo(16), s.get(), ws.get(), TabType.DECORATION));
 		CPCommonBootStrap.asFlamable(decoblock(wood + "_slab", () -> new SlabBlock(
 				BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD).ignitedByLava())),5,20);
-		CPCommonBootStrap.asFlamable(decoblock(wood + "_stairs", () -> new StairBlock(planks.get()::defaultBlockState,
+		CPCommonBootStrap.asFlamable(decoblock(wood + "_stairs", () -> new StairBlock(planks.get().defaultBlockState(),
 				BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD))),5,20);
 		decoblock(wood + "_trapdoor", () -> new CPTrapDoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
 				.strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn(CPBlocks::never).ignitedByLava(), WALNUT_TYPE));

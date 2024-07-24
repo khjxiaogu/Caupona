@@ -21,16 +21,16 @@
 
 package com.teammoeg.caupona.data;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.Container;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 
-public abstract class IDataRecipe implements Recipe<Container> {
+public abstract class IDataRecipe implements Recipe<CraftingInput> {
 
 	@Override
-	public boolean matches(Container inv, Level worldIn) {
+	public boolean matches(CraftingInput inv, Level worldIn) {
 		return false;
 	}
 
@@ -39,12 +39,14 @@ public abstract class IDataRecipe implements Recipe<Container> {
 		return false;
 	}
 	@Override
-	public ItemStack assemble(Container p_44001_, RegistryAccess p_267165_) {
-		return ItemStack.EMPTY;
+	public ItemStack assemble(CraftingInput input, Provider registries) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public ItemStack getResultItem(RegistryAccess p_267052_) {
-		return ItemStack.EMPTY;
+	public ItemStack getResultItem(Provider registries) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

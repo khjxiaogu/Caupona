@@ -70,10 +70,10 @@ public class FruitBlock extends CropBlock {
 		if (pLevel.getRawBrightness(pPos, 0) >= 9) {
 			int i = this.getAge(pState);
 			if (i < this.getMaxAge()) {
-				if (CommonHooks.onCropsGrowPre(pLevel, pPos, pState,
+				if (CommonHooks.canCropGrow(pLevel, pPos, pState,
 						pRandom.nextInt(17) == 0)) {
 					pLevel.setBlock(pPos, this.getStateForAge(i + 1), 2);
-					CommonHooks.onCropsGrowPost(pLevel, pPos, pState);
+					CommonHooks.fireCropGrowPost(pLevel, pPos, pState);
 				}
 			}
 		}

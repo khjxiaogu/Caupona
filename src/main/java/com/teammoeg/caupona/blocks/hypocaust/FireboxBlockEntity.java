@@ -33,6 +33,7 @@ import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -61,14 +62,14 @@ public class FireboxBlockEntity extends BathHeatingBlockEntity {
 	}
 
 	@Override
-	public void readCustomNBT(CompoundTag nbt, boolean isClient) {
-		super.readCustomNBT(nbt, isClient);
+	public void readCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
+		super.readCustomNBT(nbt, isClient, registries);
 		heat = nbt.getInt("heatSpeed");
 	}
 
 	@Override
-	public void writeCustomNBT(CompoundTag nbt, boolean isClient) {
-		super.writeCustomNBT(nbt, isClient);
+	public void writeCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
+		super.writeCustomNBT(nbt, isClient,registries);
 		nbt.putInt("heatSpeed", heat);
 	}
 

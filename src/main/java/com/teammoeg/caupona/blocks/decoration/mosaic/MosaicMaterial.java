@@ -22,7 +22,7 @@ public enum MosaicMaterial implements StringRepresentable{
 	private Item tell;
 	private Item getTesserae() {
 		if(tell==null) {
-			tell=BuiltInRegistries.ITEM.get(new ResourceLocation(CPMain.MODID,name()+"_tesserae"));
+			tell=BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,name()+"_tesserae"));
 		}
 		return tell;
 	}

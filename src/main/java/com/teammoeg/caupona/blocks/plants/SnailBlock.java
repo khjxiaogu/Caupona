@@ -62,13 +62,13 @@ public class SnailBlock extends FruitBlock {
 		int i = this.getAge(pState);
 		if (i < this.getMaxAge(pState)) {
 			
-			if (CommonHooks.onCropsGrowPre(pLevel, pPos, pState,pRandom.nextInt(3) == 0)) {
+			if (CommonHooks.canCropGrow(pLevel, pPos, pState,pRandom.nextInt(3) == 0)) {
 				int eat=eatFirstEdible(pPos,pLevel);
 				if(eat>0) {
 					if(eat==2)
 						pState=pState.setValue(EATEN_FRUIT, true);
 					pLevel.setBlock(pPos, this.getStateForAge(pState, i + 1), 2);
-					CommonHooks.onCropsGrowPost(pLevel, pPos, pState);
+					CommonHooks.fireCropGrowPost(pLevel, pPos, pState);
 				}
 			}
 		}else {

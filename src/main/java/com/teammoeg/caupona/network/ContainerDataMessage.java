@@ -24,17 +24,21 @@ package com.teammoeg.caupona.network;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.client.ClientProxy;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class ContainerDataMessage implements CustomPacketPayload{
 	private CompoundTag nbt;
-	public static final ResourceLocation path=new ResourceLocation(CPMain.MODID,"container_data");
+	public static final Type<ContainerDataMessage> type=new Type<>(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"container_data"));
+	public static final StreamCodec<ByteBuf, ContainerDataMessage> CODEC=ByteBufCodecs.COMPOUND_TAG.map(ContainerDataMessage::new, ContainerDataMessage::getTag);
 	public ContainerDataMessage(CompoundTag message) {
 		this.nbt = message;
 	}
@@ -43,12 +47,12 @@ public class ContainerDataMessage implements CustomPacketPayload{
 		nbt = buffer.readNbt();
 	}
 
-	public void write(FriendlyByteBuf buffer) {
-		buffer.writeNbt(nbt);
+	public CompoundTag getTag() {
+		return nbt;
 	}
 
-	void handle(PlayPayloadContext context) {
-		context.workHandler().execute(()->
+	void handle(IPayloadContext context) {
+		context.enqueueWork(()->
 		{
 			ClientProxy.data = nbt;
 			if(FMLEnvironment.dist==Dist.CLIENT)
@@ -57,8 +61,8 @@ public class ContainerDataMessage implements CustomPacketPayload{
 	}
 
 	@Override
-	public ResourceLocation id() {
-		return path;
+	public Type<ContainerDataMessage> type() {
+		return type;
 	}
 
 }

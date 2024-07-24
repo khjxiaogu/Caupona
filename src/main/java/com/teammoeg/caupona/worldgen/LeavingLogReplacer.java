@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPWorldGen;
 import net.minecraft.core.BlockPos;
@@ -33,7 +34,7 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecoratorType;
 
 public class LeavingLogReplacer extends TreeDecorator {
-	public static final Codec<LeavingLogReplacer> CODEC = RecordCodecBuilder.create(t ->
+	public static final MapCodec<LeavingLogReplacer> CODEC = RecordCodecBuilder.mapCodec(t ->
 	t.group(BlockStateProvider.CODEC.fieldOf("replace").forGetter(o->o.state)).apply(t, LeavingLogReplacer::new)
 		);
 	BlockStateProvider state;

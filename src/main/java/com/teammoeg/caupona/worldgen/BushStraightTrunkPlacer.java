@@ -26,6 +26,7 @@ import java.util.function.BiConsumer;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPWorldGen;
 
@@ -39,7 +40,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
 
 public class BushStraightTrunkPlacer extends TrunkPlacer {
-   public static final Codec<BushStraightTrunkPlacer> CODEC = RecordCodecBuilder.create((p_70261_) -> {
+   public static final MapCodec<BushStraightTrunkPlacer> CODEC = RecordCodecBuilder.mapCodec((p_70261_) -> {
       return trunkPlacerParts(p_70261_).apply(p_70261_, BushStraightTrunkPlacer::new);
    });
 

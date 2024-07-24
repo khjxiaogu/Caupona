@@ -29,6 +29,8 @@ import com.teammoeg.caupona.blocks.CPHorizontalEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
@@ -55,24 +57,20 @@ public class ChimneyPotBlock extends CPHorizontalEntityBlock<ChimneyPotBlockEnti
 		return shape;
 	}
 
-	@SuppressWarnings("deprecation")
+
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-			BlockHitResult hit) {
-		InteractionResult p = super.use(state, worldIn, pos, player, handIn, hit);
-		if (p.consumesAction())
-			return p;
-		if (player.getItemInHand(handIn).getItem() instanceof ShovelItem
-				&&worldIn.getBlockEntity(pos) instanceof ChimneyPotBlockEntity chimneyPot) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (stack.getItem() instanceof ShovelItem
+			&&level.getBlockEntity(pos) instanceof ChimneyPotBlockEntity chimneyPot) {
 			if (chimneyPot.countSoot > 0) {
-				if (!worldIn.isClientSide) {
-					player.getItemInHand(handIn).hurtAndBreak(1, player, t -> t.broadcastBreakEvent(handIn));
+				if (!level.isClientSide) {
+					stack.hurtAndBreak(1, player,hand==InteractionHand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND);
 					ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(CPItems.soot.get(), chimneyPot.countSoot));
 					chimneyPot.countSoot = 0;
 				}
-				return InteractionResult.sidedSuccess(worldIn.isClientSide);
+				return ItemInteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
-		return p;
+		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 }

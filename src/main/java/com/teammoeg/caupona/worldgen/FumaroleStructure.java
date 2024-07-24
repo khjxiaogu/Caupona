@@ -24,6 +24,7 @@ package com.teammoeg.caupona.worldgen;
 import java.util.Optional;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPWorldGen;
 
@@ -36,13 +37,14 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 
 public class FumaroleStructure extends Structure {
-	  public static final Codec<FumaroleStructure> CODEC = RecordCodecBuilder.<FumaroleStructure>mapCodec((p_227640_) -> {
+	  public static final MapCodec<FumaroleStructure> CODEC = RecordCodecBuilder.<FumaroleStructure>mapCodec((p_227640_) -> {
 	      return p_227640_.group(settingsCodec(p_227640_), StructureTemplatePool.CODEC.fieldOf("start_pool").forGetter((p_227656_) -> {
 	         return p_227656_.startPool;
 	      })).apply(p_227640_, FumaroleStructure::new);
-	   }).codec();
+	   });
 	public final Holder<StructureTemplatePool> startPool;
 
 	@Override
@@ -57,7 +59,8 @@ public class FumaroleStructure extends Structure {
 		int topLandY = ctx.chunkGenerator().getFirstFreeHeight(blockpos.getX(), blockpos.getZ(),
 				Heightmap.Types.WORLD_SURFACE_WG, ctx.heightAccessor(), ctx.randomState());
 		blockpos = blockpos.atY(topLandY - 4 + ctx.random().nextInt(1));
-		return JigsawPlacement.addPieces(ctx, this.startPool,Optional.empty(), 32, blockpos,false, Optional.empty(), 0, PoolAliasLookup.EMPTY);
+		return JigsawPlacement.addPieces(ctx, this.startPool,Optional.empty(), 32, blockpos,false, Optional.empty(), 0, PoolAliasLookup.EMPTY,JigsawStructure.DEFAULT_DIMENSION_PADDING,
+            JigsawStructure.DEFAULT_LIQUID_SETTINGS);
 	}
 
 	@Override

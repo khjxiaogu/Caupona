@@ -88,9 +88,9 @@ public class CPFluids {
 		}
 	}
 
-	private static final ResourceLocation STILL_WATER_TEXTURE = new ResourceLocation("block/water_still");
-	private static final ResourceLocation STILL_SOUP_TEXTURE = new ResourceLocation(CPMain.MODID, "block/soup_fluid");
-	private static final ResourceLocation STILL_MILK_TEXTURE = new ResourceLocation("forge", "block/milk_still");
+	private static final ResourceLocation STILL_WATER_TEXTURE = ResourceLocation.withDefaultNamespace("block/water_still");
+	private static final ResourceLocation STILL_SOUP_TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/soup_fluid");
+	private static final ResourceLocation STILL_MILK_TEXTURE = ResourceLocation.fromNamespaceAndPath("forge", "block/milk_still");
 	static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, CPMain.MODID);
 	static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(Keys.FLUID_TYPES, CPMain.MODID);
 	//private static final Map<String, TextureColorPair> soupfluids = new HashMap<>();
@@ -108,11 +108,11 @@ public class CPFluids {
 	}
 
 	public static Stream<Fluid> getAll() {
-		return Arrays.stream(CPItems.soups).map(e -> new ResourceLocation(CPMain.MODID, e))
+		return Arrays.stream(CPItems.soups).map(e -> ResourceLocation.fromNamespaceAndPath(CPMain.MODID, e))
 				.map(BuiltInRegistries.FLUID::get);
 	}
 	public static Stream<ResourceKey<Fluid>> getAllKeys() {
-		return Arrays.stream(CPItems.soups).map(e -> new ResourceLocation(CPMain.MODID, e))
+		return Arrays.stream(CPItems.soups).map(e -> ResourceLocation.fromNamespaceAndPath(CPMain.MODID, e))
 				.map(e->ResourceKey.create(Registries.FLUID,e));
 	}
 	static {

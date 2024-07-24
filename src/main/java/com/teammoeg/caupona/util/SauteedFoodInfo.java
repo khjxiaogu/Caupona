@@ -24,25 +24,46 @@ package com.teammoeg.caupona.util;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.recipes.FoodValueRecipe;
 import com.teammoeg.caupona.item.DishItem;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.FoodProperties.PossibleEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
+	public static final Codec<SauteedFoodInfo> CODEC=RecordCodecBuilder.create(o->codecStart(o)
+		.and(o.group(Codec.list(FloatemStack.CODEC).fieldOf("items").forGetter(i->i.stacks),
+			Codec.list(PossibleEffect.CODEC).fieldOf("effects").forGetter(i->i.foodeffect),
+			Codec.INT.fieldOf("heal").forGetter(i->i.healing),
+			Codec.FLOAT.fieldOf("sat").forGetter(i->i.saturation))
+		).apply(o, SauteedFoodInfo::new));
 	public List<FloatemStack> stacks;
-	public List<Pair<MobEffectInstance, Float>> foodeffect = new ArrayList<>();
+	public List<FoodProperties.PossibleEffect> foodeffect = new ArrayList<>();
 	public int healing;
 	public float saturation;
+	
+	public SauteedFoodInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName, List<FloatemStack> stacks, List<PossibleEffect> foodeffect, int healing,
+		float saturation) {
+		super(spice, hasSpice, spiceName);
+		this.stacks = new ArrayList<>(stacks);
+		this.foodeffect = new ArrayList<>(foodeffect);
+		this.healing = healing;
+		this.saturation = saturation;
+	}
 
 	public SauteedFoodInfo(List<FloatemStack> stacks, int healing, float saturation) {
 		super();
@@ -53,16 +74,6 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 
 	public SauteedFoodInfo() {
 		this(new ArrayList<>(), 0, 0);
-	}
-
-	public static List<FloatemStack> getStacks(CompoundTag nbt) {
-		return nbt.getList("items", 10).stream().map(e -> (CompoundTag) e).map(FloatemStack::new)
-				.collect(Collectors.toList());
-	}
-
-	public SauteedFoodInfo(CompoundTag nbt) {
-		super();
-		read(nbt);
 	}
 
 
@@ -78,8 +89,8 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 		stacks.sort(Comparator.comparingInt(e -> Item.getId(e.stack.getItem())));
 		
 		foodeffect.sort(
-				Comparator.<Pair<MobEffectInstance, Float>>comparingInt(e ->  BuiltInRegistries.MOB_EFFECT.getId(e.getFirst().getEffect()))
-						.thenComparing(Pair::getSecond));
+				Comparator.<FoodProperties.PossibleEffect,String>comparing(e -> e.effect().getEffect().getRegisteredName())
+						.thenComparing(e->e.probability()));
 	}
 
 	public static boolean isEffectEquals(MobEffectInstance t1, MobEffectInstance t2) {
@@ -101,9 +112,9 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 			}
 			FoodProperties f = fs.getStack().getFoodProperties(null);
 			if (f != null) {
-				nh += fs.count * f.getNutrition();
-				ns += fs.count * f.getSaturationModifier()* f.getNutrition();
-				foodeffect.addAll(f.getEffects());
+				nh += fs.count * f.nutrition();
+				ns += fs.count * f.saturation()* f.nutrition();
+				foodeffect.addAll(f.effects());
 			}
 		}
 		int conv = (int) (0.075 * nh);
@@ -115,11 +126,6 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 			this.saturation =0;
 	}
 
-	public CompoundTag save() {
-		CompoundTag nbt = new CompoundTag();
-		write(nbt);
-		return nbt;
-	}
 	public void setParts(int parts) {
 		for (FloatemStack i : stacks) {
 			i.count/=parts;
@@ -145,18 +151,6 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 		stacks.add(is);
 	}
 
-	public void write(CompoundTag nbt) {
-		super.write(nbt);
-		nbt.put("items", SerializeUtil.toNBTList(stacks, FloatemStack::serializeNBT));
-		nbt.put("feffects", SerializeUtil.toNBTList(foodeffect, e -> {
-			CompoundTag cnbt = new CompoundTag();
-			cnbt.put("effect", e.getFirst().save(new CompoundTag()));
-			cnbt.putFloat("chance", e.getSecond());
-			return cnbt;
-		}));
-		nbt.putInt("heal", healing);
-		nbt.putFloat("sat", saturation);
-	}
 	@Override
 	public List<FloatemStack> getStacks() {
 		return stacks;
@@ -175,14 +169,14 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 
 		if (spice != null)
 			b.effect(()->new MobEffectInstance(spice), 1);
-		for (Pair<MobEffectInstance, Float> ef : foodeffect) {
-			b.effect(()->new MobEffectInstance(ef.getFirst()), ef.getSecond());
+		for (PossibleEffect ef : foodeffect) {
+			b.effect(()->ef.effect(), ef.probability());
 		}
 		b.nutrition(healing);
 		if(Float.isNaN(saturation))
-			b.saturationMod(0);
+			b.saturationModifier(0f);
 		else
-			b.saturationMod(saturation);
+			b.saturationModifier(saturation);
 		return b.build();
 	}
 
@@ -191,22 +185,10 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 		List<Pair<Supplier<MobEffectInstance>, Float>> li=new ArrayList<>();
 		if (spice != null)
 			li.add(Pair.of(()->new MobEffectInstance(spice), 1f));
-		for (Pair<MobEffectInstance, Float> ef : foodeffect) {
-			li.add(Pair.of(()->new MobEffectInstance(ef.getFirst()), ef.getSecond()));
+		for (PossibleEffect ef : foodeffect) {
+			li.add(Pair.of(()->ef.effect(), ef.probability()));
 		}
 		return null;
 	}
 
-	@Override
-	public void read(CompoundTag nbt) {
-		// TODO Auto-generated method stub
-		super.read(nbt);
-		stacks = nbt.getList("items", 10).stream().map(e -> (CompoundTag) e).map(FloatemStack::new)
-			.collect(Collectors.toList());
-		healing = nbt.getInt("heal");
-		saturation = nbt.getFloat("sat");
-		foodeffect = nbt.getList("feffects", 10).stream().map(e -> (CompoundTag) e)
-				.map(e -> new Pair<>(MobEffectInstance.load(e.getCompound("effect")), e.getFloat("chance")))
-				.collect(Collectors.toList());
-	}
 }

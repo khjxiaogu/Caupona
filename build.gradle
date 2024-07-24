@@ -1,15 +1,13 @@
 
 plugins {
-	id 'net.neoforged.gradle.userdev' version "${version_neogradle}"
-   // id 'org.spongepowered.mixin' version "${mixingradle_version}"
-   // id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id "com.modrinth.minotaur" version "2.+"
     //id 'com.matthewprenger.cursegradle' version '1.4.0'
-
     id 'org.cadixdev.licenser' version '0.6.1'
+    id 'java-library'
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
+    id 'net.neoforged.gradle.userdev' version "${version_neogradle}"
+    id "com.modrinth.minotaur" version "2.+"
     id 'net.darkhax.curseforgegradle' version '1.1.15'
 }
 /*
@@ -17,14 +15,21 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'maven-publish'*/
-
+tasks.named('wrapper', Wrapper).configure {
+    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
+    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
+    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
+    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
+    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
+    distributionType = Wrapper.DistributionType.BIN
+}
 version = mod_version
 group = mod_group_id
 archivesBaseName = 'caupona-${minecraft_version}'
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 sourceSets {
     main {
     	java {
@@ -92,7 +97,7 @@ runs {
         // workingDirectory project.file('run-data')
 		//modSource project.sourceSets.datagen
         // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-        modSource project.sourceSets.main
+       // modSource project.sourceSets.main
         modSource project.sourceSets.datagen
         programArguments.addAll '--mod', project.mod_id,
          '--all',
@@ -118,16 +123,21 @@ repositories {
             includeGroup "mezz.jei"
         }
     }
+    //    maven { url "https://maven.shedaniel.me" }
    maven {
         url "https://www.khjxiaogu.com/maven"
     }
-    maven {
-        url "https://www.cursemaven.com"
-        content {
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com/"
+            }
+        }
+        filter {
             includeGroup "curse.maven"
         }
     }
-    maven { url "https://maven.shedaniel.me" }
+
     //for patchouli books
     maven { url 'https://maven.blamejared.com' }
     maven {
@@ -142,7 +152,9 @@ repositories {
         }
     }
 }
-
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
 dependencies {
     //minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	implementation "net.neoforged:neoforge:${neo_version}"
@@ -168,7 +180,7 @@ dependencies {
 
     //compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-81-FORGE:api")
     compileOnly "vazkii.patchouli:Patchouli:1.20.1-81-FORGE:api"
-	compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:14.0.688"
+	//compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:14.0.688"
 	//clientRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:14.0.688"
     // FG5 requires 0.8.3
     //annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
@@ -195,10 +207,6 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier.set('sources')
 }
 
-task deobfJar(type: Jar) {
-    from sourceSets.main.output
-    archiveClassifier.set('deobf')
-}
 
 String getChangelogText() {
     def changelogFile = file('changelog.txt')
@@ -221,7 +229,6 @@ String getChangelogText() {
 
 artifacts {
     archives sourcesJar
-    archives deobfJar
 }
 // Automatically apply a license header when running checkLicense / updateLicense
 license {
@@ -234,7 +241,6 @@ publishing {
     publications {
         maven(MavenPublication) {
             artifact jar
-            artifact deobfJar
             artifact sourcesJar
         }
     }

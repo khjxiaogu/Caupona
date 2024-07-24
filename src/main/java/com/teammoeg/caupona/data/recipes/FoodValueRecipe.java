@@ -38,12 +38,15 @@ import com.teammoeg.caupona.util.SerializeUtil;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.Container;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -70,7 +73,7 @@ public class FoodValueRecipe extends IDataRecipe {
 
 	public int heal;
 	public float sat;
-	public List<Pair<MobEffectInstance, Float>> effects;
+	public List<FoodProperties.PossibleEffect> effects;
 	public final Map<Item, Integer> processtimes;
 	private ItemStack repersent;
 	public transient Set<ResourceLocation> tags;
@@ -79,11 +82,11 @@ public class FoodValueRecipe extends IDataRecipe {
 			Codec.INT.fieldOf("heal").forGetter(o->o.heal),
 			Codec.FLOAT.fieldOf("sat").forGetter(o->o.sat),
 			
-			Codec.optionalField("effects",Codec.list(Utils.MOB_EFFECT_FLOAT_CODEC)).forGetter(o->Optional.ofNullable(o.effects)),
+			Codec.optionalField("effects",Codec.list(FoodProperties.PossibleEffect.CODEC),false).forGetter(o->Optional.ofNullable(o.effects)),
 			Codec.list(Utils.pairCodec("item",BuiltInRegistries.ITEM.byNameCodec(), "time", Codec.INT)).fieldOf("items").forGetter(o->o.getProcessTime()),
 			Ingredient.CODEC.fieldOf("item").forGetter(o->Ingredient.of(o.repersent))
 				).apply(t, FoodValueRecipe::new));
-	public FoodValueRecipe(int heal, float sat,Optional<List<Pair<MobEffectInstance, Float>>> effects, List<Pair<Item, Integer>> processtimes, Ingredient repersent) {
+	public FoodValueRecipe(int heal, float sat,Optional<List<FoodProperties.PossibleEffect>> effects, List<Pair<Item, Integer>> processtimes, Ingredient repersent) {
 		super();
 		this.heal = heal;
 		this.sat = sat;
@@ -155,4 +158,6 @@ public class FoodValueRecipe extends IDataRecipe {
 		else
 			this.repersent = null;
 	}
+
+
 }

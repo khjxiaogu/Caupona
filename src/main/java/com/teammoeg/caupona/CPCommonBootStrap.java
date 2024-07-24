@@ -65,7 +65,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -74,12 +74,10 @@ import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.IFluidBlock;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.BucketPickupHandlerWrapper;
-import net.neoforged.neoforge.fluids.capability.wrappers.FluidBlockWrapper;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -100,9 +98,9 @@ public class CPCommonBootStrap {
 	}
 	@SubscribeEvent
 	public static void onCapabilityInject(RegisterCapabilitiesEvent event) {
-		event.registerItem(Capabilities.FluidHandler.ITEM,(stack,o)->new FluidHandlerItemStack(stack,1250), CPItems.situla.get());
-		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getData(CPCapability.STEW_INFO), CPItems.stews.toArray(Item[]::new));
-		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getData(CPCapability.SAUTEED_INFO), CPItems.dish.toArray(Item[]::new));
+		event.registerItem(Capabilities.FluidHandler.ITEM,(stack,o)->new FluidHandlerItemStack(CPCapability.SIMPLE_FLUID,stack,1250), CPItems.situla.get());
+		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.STEW_INFO.get()), CPItems.stews.toArray(Item[]::new));
+		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.SAUTEED_INFO.get()), CPItems.dish.toArray(Item[]::new));
 		CPBlockEntityTypes.REGISTER.getEntries().stream().map(t->t.get()).forEach(be->{
 			event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<?>)be,
 				(block,ctx)->(IItemHandler)((CPBaseBlockEntity)block).getCapability(Capabilities.ItemHandler.BLOCK, ctx));
@@ -149,14 +147,14 @@ public class CPCommonBootStrap {
 							if (is.getCount() == 1)
 								return ret;
 							is.shrink(1);
-							if (bp.blockEntity().addItem(ret) == -1)
+							if (!bp.blockEntity().insertItem(ret).isEmpty())
 								this.defaultBehaviour.dispense(bp, ret);
 						}
 					} else if (blockEntity instanceof PanBlockEntity pan) {
 						ItemStack out = pan.inv.getStackInSlot(10);
 						if (!out.isEmpty()) {
 							pan.inv.setStackInSlot(10, ItemStack.EMPTY);
-							if (bp.blockEntity().addItem(out) == -1)
+							if (!bp.blockEntity().insertItem(out).isEmpty())
 								this.defaultBehaviour.dispense(bp, out);
 						}
 					}
@@ -168,7 +166,7 @@ public class CPCommonBootStrap {
 						if (is.getCount() == 1)
 							return ret;
 						is.shrink(1);
-						if (bp.blockEntity().addItem(ret) == -1)
+						if (!bp.blockEntity().insertItem(ret).isEmpty())
 							this.defaultBehaviour.dispense(bp, ret);
 					}
 					return is;
@@ -200,9 +198,6 @@ public class CPCommonBootStrap {
 							FluidUtil.tryFluidTransfer(iptar,
 									new BucketPickupHandlerWrapper(null,bpu, bp.level(), front), FluidType.BUCKET_VOLUME,
 									true);
-						} else if (src instanceof IFluidBlock bpu) {
-							FluidUtil.tryFluidTransfer(iptar,
-									new FluidBlockWrapper(bpu, bp.level(), front), Integer.MAX_VALUE, true);
 						}else if(besrc instanceof IFoodContainer cont) {
 							for(int i=0;i<cont.getSlots();i++) {
 								ItemStack its=cont.getInternal(i);
@@ -367,7 +362,7 @@ public class CPCommonBootStrap {
 							if (stack.getCount() == 1)
 								return ret;
 							stack.shrink(1);
-							if (source.blockEntity().addItem(ret) == -1)
+							if (!source.blockEntity().insertItem(ret).isEmpty())
 								this.defaultBehaviour.dispense(source, ret);
 						}
 					} else if (blockEntity != null) {
@@ -380,7 +375,7 @@ public class CPCommonBootStrap {
 								if (stack.getCount() == 1)
 									return ret;
 								stack.shrink(1);
-								if (source.blockEntity().addItem(ret) == -1)
+								if (!source.blockEntity().insertItem(ret).isEmpty())
 									this.defaultBehaviour.dispense(source, ret);
 							}
 						}
@@ -435,19 +430,19 @@ public class CPCommonBootStrap {
 				if (blockEntity instanceof StewPotBlockEntity pot) {
 					ItemStack ospice = pot.getInv().getStackInSlot(11);
 					pot.getInv().setStackInSlot(11, ItemStack.EMPTY);
-					if (source.blockEntity().addItem(ospice) == -1)
+					if (!source.blockEntity().insertItem(ospice).isEmpty())
 						this.defaultBehaviour.dispense(source, ospice);
 					return stack;
 				} else if (blockEntity instanceof PanBlockEntity pan) {
 					ItemStack ospice = pan.getInv().getStackInSlot(11);
 					pan.getInv().setStackInSlot(11, ItemStack.EMPTY);
-					if (source.blockEntity().addItem(ospice) == -1)
+					if (!source.blockEntity().insertItem(ospice).isEmpty())
 						this.defaultBehaviour.dispense(source, ospice);
 					return stack;
 				} else if (blockEntity instanceof CounterDoliumBlockEntity dolium) {
 					ItemStack ospice = dolium.getInv().getStackInSlot(3);
 					dolium.getInv().setStackInSlot(3, ItemStack.EMPTY);
-					if (source.blockEntity().addItem(ospice) == -1)
+					if (!source.blockEntity().insertItem(ospice).isEmpty())
 						this.defaultBehaviour.dispense(source, ospice);
 					return stack;
 				}

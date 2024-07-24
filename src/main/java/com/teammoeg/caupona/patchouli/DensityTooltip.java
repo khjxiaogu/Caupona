@@ -49,7 +49,7 @@ public class DensityTooltip implements ICustomComponent {
 	@Override
 	public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
 		recipe = lookup.apply(recipe);
-		ResourceLocation out = new ResourceLocation(recipe.asString());
+		ResourceLocation out = ResourceLocation.parse(recipe.asString());
 		Recipe<?> r = Minecraft.getInstance().level.getRecipeManager().byKey(out).map(t->t.value()).orElse(null);
 		if (r instanceof StewCookingRecipe cr) {
 			density = new ArrayList<>();

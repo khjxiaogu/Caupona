@@ -3,7 +3,10 @@ package com.teammoeg.caupona.blocks.decoration.mosaic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.teammoeg.caupona.CPBlocks;
+import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.blocks.CPHorizontalBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -34,13 +37,10 @@ public class MosaicBlock extends CPHorizontalBlock{
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		BlockState bs=super.getStateForPlacement(pContext);
-		CompoundTag tag=pContext.getItemInHand().getTagElement("caupona:mosaic");
+		@Nullable MosaicData tag=pContext.getItemInHand().get(CPCapability.MOSAIC_DATA);
 		if(tag==null)
 			return bs;
-		MosaicPattern pattern=MosaicPattern.valueOf(tag.getString("pattern"));
-		MosaicMaterial m1=MosaicMaterial.valueOf(tag.getString("mat1"));
-		MosaicMaterial m2=MosaicMaterial.valueOf(tag.getString("mat2"));
-		return bs.setValue(MosaicBlock.MATERIAL_1, m1).setValue(MosaicBlock.MATERIAL_2, m2).setValue(MosaicBlock.PATTERN, pattern);
+		return bs.setValue(MosaicBlock.MATERIAL_1, tag.getMaterial1()).setValue(MosaicBlock.MATERIAL_2, tag.getMaterial2()).setValue(MosaicBlock.PATTERN,tag.getPattern());
 	}
 	
 	@Override

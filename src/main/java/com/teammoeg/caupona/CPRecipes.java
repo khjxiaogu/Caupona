@@ -60,16 +60,16 @@ public class CPRecipes {
 	}
 
 	static {
-		StewCookingRecipe.TYPE = RECIPE_TYPES.register("stew",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"stew")));
-		BoilingRecipe.TYPE = RECIPE_TYPES.register("boil",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"boil")));
-		BowlContainingRecipe.TYPE = RECIPE_TYPES.register("bowl",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"bowl")));
-		DissolveRecipe.TYPE = RECIPE_TYPES.register("dissolve",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"dissolve")));
-		CountingTags.TYPE = RECIPE_TYPES.register("tags",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"tags")));
-		FoodValueRecipe.TYPE = RECIPE_TYPES.register("food",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"food")));
-		FluidFoodValueRecipe.TYPE = RECIPE_TYPES.register("fluid_food",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"fluid_food")));
-		SauteedRecipe.TYPE = RECIPE_TYPES.register("frying",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"frying")));
-		DoliumRecipe.TYPE = RECIPE_TYPES.register("dolium",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"dolium")));
-		AspicMeltingRecipe.TYPE = RECIPE_TYPES.register("aspic_melt",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"aspic_melt")));
-		SpiceRecipe.TYPE = RECIPE_TYPES.register("spice",()->RecipeType.simple(new ResourceLocation(CPMain.MODID ,"spice")));
+		StewCookingRecipe.TYPE = RECIPE_TYPES.register("stew",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"stew")));
+		BoilingRecipe.TYPE = RECIPE_TYPES.register("boil",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"boil")));
+		BowlContainingRecipe.TYPE = RECIPE_TYPES.register("bowl",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"bowl")));
+		DissolveRecipe.TYPE = RECIPE_TYPES.register("dissolve",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"dissolve")));
+		CountingTags.TYPE = RECIPE_TYPES.register("tags",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"tags")));
+		FoodValueRecipe.TYPE = RECIPE_TYPES.register("food",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"food")));
+		FluidFoodValueRecipe.TYPE = RECIPE_TYPES.register("fluid_food",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"fluid_food")));
+		SauteedRecipe.TYPE = RECIPE_TYPES.register("frying",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"frying")));
+		DoliumRecipe.TYPE = RECIPE_TYPES.register("dolium",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"dolium")));
+		AspicMeltingRecipe.TYPE = RECIPE_TYPES.register("aspic_melt",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"aspic_melt")));
+		SpiceRecipe.TYPE = RECIPE_TYPES.register("spice",()->RecipeType.simple(ResourceLocation.fromNamespaceAndPath(CPMain.MODID ,"spice")));
 	}
 }
