@@ -23,6 +23,8 @@ package com.teammoeg.caupona.item;
 
 import java.util.List;
 
+import org.apache.commons.compress.harmony.pack200.Codec;
+
 import com.teammoeg.caupona.util.IInfinitable;
 import com.teammoeg.caupona.util.TabType;
 import com.teammoeg.caupona.util.Utils;
@@ -38,6 +40,7 @@ public class Chronoconis extends CPItem {
 
 	public Chronoconis( Properties properties) {
 		super(properties,TabType.HIDDEN);
+		
 	}
 
 	@SuppressWarnings("resource")

@@ -178,4 +178,21 @@ public class SerializeUtil {
     	Optional<Pair<T, Object>> ret=ob.resultOrPartial(DecoderException::new);
     	return ret.get().getFirst();
     }
+
+	public static <K, V> Map<K, V> readEntry(FriendlyByteBuf buffer, Map<K, V> map, BiConsumer<FriendlyByteBuf, BiConsumer<K, V>> reader) {
+		map.clear();
+		int cnt = buffer.readVarInt();
+		for (int i = 0; i < cnt; i++)
+			reader.accept(buffer, map::put);
+		return map;
+	}
+	public static <K, V> void writeEntry(FriendlyByteBuf buffer, Map<K, V> elms, BiConsumer<Map.Entry<K, V>, FriendlyByteBuf> func) {
+		buffer.writeVarInt(elms.size());
+		elms.entrySet().forEach(e -> func.accept(e, buffer));
+	}
+	public static <V> StreamCodec<FriendlyByteBuf,V> toStreamCodec(Codec<V> codec){
+		return StreamCodec.of((b,v)->{
+			writeCodec(b,codec,v);
+		},(b)->readCodec(b,codec));
+	}
 }

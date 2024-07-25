@@ -1,12 +1,10 @@
 package com.teammoeg.caupona.util;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import io.netty.buffer.ByteBuf;
@@ -24,6 +22,7 @@ public class ObjectWriter {
 		public TypedValue(int type) {
 			super();
 			this.type = type;
+			this.value=DataOps.NULLTAG;
 		}
 	}
 	public ObjectWriter() {
@@ -57,6 +56,8 @@ public class ObjectWriter {
 				return new TypedValue(12,input);
 			}else if(cls==Map.class) {
 				return new TypedValue(13,input);
+			}else if(((List<Object>)input).isEmpty()){
+				return new TypedValue(15,input);
 			}else {
 				return new TypedValue(14,input);
 			}
@@ -69,28 +70,27 @@ public class ObjectWriter {
 		case 1:pb.writeByte((Byte)input.value);break;
 		case 2:pb.writeShort((Short) input.value);break;
 		case 3:pb.writeVarInt((Integer) input.value);break;
-		case 4:pb.writeLong((Long) input.value);break;
+		case 4:pb.writeVarLong((Long) input.value);break;
 		case 5:pb.writeFloat((Float) input.value);break;
 		case 6:pb.writeDouble((Double) input.value);break;
 		case 7:pb.writeUtf((String) input.value);break;
-		case 8:writeEntry(pb, ((Map<Object,Object>)input.value),(t,p)->{
+		case 8:SerializeUtil.writeEntry(pb, ((Map<Object,Object>)input.value),(t,p)->{
 			TypedValue key   = getTyped(t.getKey());
 			TypedValue value = getTyped(t.getValue());
 			pb.writeByte((key.type<<4)+value.type);
 			writeTyped(pb,key);
 			writeTyped(pb,value);
 		});break;
-		case 9:byte[] bs=DataOps.INSTANCE.getByteArray(input).result().get();
+		case 9:byte[] bs=DataOps.INSTANCE.getByteArray(input.value).result().get();
 		pb.writeByteArray(bs);break;
-		case 10:writeList(pb, ((List<Integer>)input.value), (t,p)->p.writeVarInt(t));break;
-		case 11:writeList(pb, ((List<Long>)input.value), (t,p)->p.writeLong(t));break;
-		case 12:writeList(pb, ((List<String>)input.value), (t,p)->p.writeUtf(t));break;
-		case 13:writeList(pb, ((List<Map>)input.value), (t,p)->writeTyped(p,new TypedValue(8,t)));break;
+		case 10:SerializeUtil.writeList(pb, ((List<Integer>)input.value), (t,p)->p.writeVarInt(t));break;
+		case 11:SerializeUtil.writeList(pb, ((List<Long>)input.value), (t,p)->p.writeLong(t));break;
+		case 12:SerializeUtil.writeList(pb, ((List<String>)input.value), (t,p)->p.writeUtf(t));break;
+		case 13:SerializeUtil.writeList(pb, ((List<Map>)input.value), (t,p)->writeTyped(p,new TypedValue(8,t)));break;
 		case 14:{
 			List<Object> obj=(List<Object>) input.value;
 			List<TypedValue> typed=obj.stream().map(o->getTyped(o)).collect(Collectors.toList());
 			pb.writeVarInt(typed.size());
-			
 			if(typed.size()%2==1)
 				typed.add(new TypedValue(0));
 			for(int i=0;i<(typed.size())/2;i++) {
@@ -105,22 +105,22 @@ public class ObjectWriter {
     	case 1:return pb.readByte();
     	case 2:return pb.readShort();
     	case 3:return pb.readVarInt();
-    	case 4:return pb.readLong();
+    	case 4:return pb.readVarLong();
     	case 5:return pb.readFloat();
     	case 6:return pb.readDouble();
     	case 7:return pb.readUtf();
-    	case 8:return readEntry(pb, new HashMap<>(),(p,c)->{
+    	case 8:return SerializeUtil.readEntry(pb, new HashMap<>(),(p,c)->{
     		int byt=pb.readByte();
     		Object key=readWithType((byt>>4)&15,pb);
     		Object value=readWithType(byt&15,pb);
     		c.accept(key, value);
     	})
     	;
-    	case 9:return pb.readByteArray();
-    	case 10:return readList(pb, FriendlyByteBuf::readVarInt);
-    	case 11:return readList(pb, FriendlyByteBuf::readLong);
-    	case 12:return readList(pb, FriendlyByteBuf::readUtf);
-    	case 13:return readList(pb, p->readWithType(8,p));
+    	case 9:return DataOps.INSTANCE.createByteList(ByteBuffer.wrap(pb.readByteArray()));
+    	case 10:return SerializeUtil.readList(pb, FriendlyByteBuf::readVarInt);
+    	case 11:return SerializeUtil.readList(pb, FriendlyByteBuf::readLong);
+    	case 12:return SerializeUtil.readList(pb, FriendlyByteBuf::readUtf);
+    	case 13:return SerializeUtil.readList(pb, p->readWithType(8,p));
     	case 14:{
 			List<Object> obj=new ArrayList<>();
 			int size=pb.readVarInt();
@@ -129,13 +129,14 @@ public class ObjectWriter {
 				if(i%2==1) {
 					obj.add(readWithType(crnbytes.getByte(i/2)&15,pb));
 				}else {
-					obj.add(readWithType(crnbytes.getByte(i/2)>>4,pb));
+					obj.add(readWithType((crnbytes.getByte(i/2)>>4)&15,pb));
 				}
 			}
 			return obj;
 		}
+    	case 15:return new ArrayList<>();
     	}
-    	return null;
+    	return DataOps.NULLTAG;
     }
     public static void writeObject(FriendlyByteBuf pb,Object input) {
     	TypedValue value=getTyped(input);
@@ -144,33 +145,5 @@ public class ObjectWriter {
     }
     public static Object readObject(FriendlyByteBuf pb) {
     	return readWithType(pb.readByte(),pb);
-    }
-	public static <T> List<T> readList(FriendlyByteBuf buffer, Function<FriendlyByteBuf, T> func) {
-		int cnt = buffer.readVarInt();
-		List<T> nums = new ArrayList<>(cnt);
-		for (int i = 0; i < cnt; i++)
-			nums.add(func.apply(buffer));
-		return nums;
-	}
-
-	public static <T> void writeList(FriendlyByteBuf buffer, Collection<T> elms, BiConsumer<T, FriendlyByteBuf> func) {
-		buffer.writeVarInt(elms.size());
-		elms.forEach(e -> func.accept(e, buffer));
-	}
-
-	public static <T> void writeList2(FriendlyByteBuf buffer, Collection<T> elms, BiConsumer<FriendlyByteBuf, T> func) {
-		buffer.writeVarInt(elms.size());
-		elms.forEach(e -> func.accept(buffer, e));
-	}
-    public static <K, V> Map<K, V> readEntry(FriendlyByteBuf buffer, Map<K, V> map, BiConsumer<FriendlyByteBuf, BiConsumer<K,V>> reader) {
-        map.clear();
-        int cnt = buffer.readVarInt();
-        for (int i = 0; i < cnt; i++)
-        	reader.accept(buffer, map::put);
-        return map;
-    }
-    public static <K,V> void writeEntry(FriendlyByteBuf buffer, Map<K,V> elms, BiConsumer<Map.Entry<K,V>, FriendlyByteBuf> func) {
-        buffer.writeVarInt(elms.size());
-        elms.entrySet().forEach(e -> func.accept(e, buffer));
     }
 }
