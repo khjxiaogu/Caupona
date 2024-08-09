@@ -7,7 +7,7 @@
 	],
 	"key": {
 		"I": {
-			"item": "caupona:lead_ingot"
+			"tag": "forge:ingots/lead"
 		},
 		"#": {
 			"item": "minecraft:chain"

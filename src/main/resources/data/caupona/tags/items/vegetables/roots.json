@@ -29,6 +29,10 @@
 		{
 			"id": "#forge:crops/sweet_potato",
 			"required": false
+		},
+		{
+			"id": "#forge:crops/onion",
+			"required": false
 		}
 	]
 }
