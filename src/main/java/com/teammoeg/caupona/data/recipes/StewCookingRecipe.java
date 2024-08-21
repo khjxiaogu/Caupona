@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPTags;
 import com.teammoeg.caupona.CPTags.Items;
@@ -98,14 +99,14 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 	List<StewBaseCondition> base;
 	public Fluid output;
 	public boolean removeNBT=false;
-	public static final Codec<StewCookingRecipe> CODEC=
-		RecordCodecBuilder.create(t->t.group(
-			Codec.optionalField("allow",Codec.list(Conditions.CODEC)).forGetter(o->Optional.ofNullable(o.allow)),
-			Codec.optionalField("deny",Codec.list(Conditions.CODEC)).forGetter(o->Optional.ofNullable(o.deny)),
+	public static final MapCodec<StewCookingRecipe> CODEC=
+		RecordCodecBuilder.mapCodec(t->t.group(
+			Codec.list(Conditions.CODEC).optionalFieldOf("allow").forGetter(o->Optional.ofNullable(o.allow)),
+			Codec.list(Conditions.CODEC).optionalFieldOf("deny").forGetter(o->Optional.ofNullable(o.deny)),
 			Codec.INT.fieldOf("priority").forGetter(o->o.priority),
 			Codec.INT.fieldOf("time").forGetter(o->o.time),
 			Codec.FLOAT.fieldOf("density").forGetter(o->o.density),
-			Codec.optionalField("base",Codec.list(BaseConditions.CODEC)).forGetter(o->Optional.ofNullable(o.base)),
+			Codec.list(BaseConditions.CODEC).optionalFieldOf("base").forGetter(o->Optional.ofNullable(o.base)),
 			BuiltInRegistries.FLUID.byNameCodec().fieldOf("output").forGetter(o->o.output),
 			Codec.BOOL.fieldOf("removeNBT").forGetter(o->o.removeNBT)
 				).apply(t, StewCookingRecipe::new));
@@ -116,7 +117,7 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 		density = data.readFloat();
 		time = data.readVarInt();
 		base = SerializeUtil.readList(data, BaseConditions::of);
-		output = data.readById(BuiltInRegistries.FLUID);
+		output = data.readById(BuiltInRegistries.FLUID::byId);
 		removeNBT=data.readBoolean();
 	}
 
@@ -131,7 +132,7 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 		this.output = output;
 		this.removeNBT=removeNBT;
 	}
-
+/*
 	public void write(FriendlyByteBuf data) {
 		SerializeUtil.writeList(data, allow, Conditions::write);
 		SerializeUtil.writeList(data, deny, Conditions::write);
@@ -139,9 +140,9 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 		data.writeFloat(density);
 		data.writeVarInt(time);
 		SerializeUtil.writeList(data, base, BaseConditions::write);
-		data.writeId(BuiltInRegistries.FLUID,output);
+		data.writeById(BuiltInRegistries.FLUID::getId,output);
 		data.writeBoolean(removeNBT);
-	}
+	}*/
 
 	public int matches(StewPendingContext ctx) {
 		if (ctx.getTotalItems() < density)

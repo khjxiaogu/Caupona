@@ -39,6 +39,7 @@ import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -61,22 +62,22 @@ public class CauponaHooks {
 			IFluidHandlerItem data = cap;
 			FluidStack fs = data.getFluidInTank(0);
 			// TODO: CHECK STEW TAG
-			return Optional.of(SoupFluid.getItems(fs));
+			return Optional.of(Utils.getOrCreateInfo(fs).getStacks());
 		}
 		return Optional.empty();
 	}
 
-	public static ResourceLocation getBase(ItemStack stack) {
+	public static Fluid getBase(ItemStack stack) {
 		@Nullable IFluidHandlerItem cap = stack.getCapability(Capabilities.FluidHandler.ITEM);
 		if (cap!=null) {
 			IFluidHandlerItem data = cap;
-			return SoupFluid.getBase(data.getFluidInTank(0));
+			return Utils.getOrCreateInfo(data.getFluidInTank(0)).base;
 		}else {
 			@Nullable StewInfo data=stack.get(CPCapability.STEW_INFO);
 			if(data!=null)
 				return data.base;
 		}
-		return ResourceLocation.withDefaultNamespace("water");
+		return Fluids.EMPTY;
 	}
 
 	public static Optional<IFoodInfo> getInfo(ItemStack stack) {
@@ -87,7 +88,7 @@ public class CauponaHooks {
 		@Nullable IFluidHandlerItem cap = stack.getCapability(Capabilities.FluidHandler.ITEM);
 		if (cap!=null) {
 			IFluidHandlerItem data = cap;
-			return Optional.of(SoupFluid.getInfo(data.getFluidInTank(0)));
+			return Optional.of(Utils.getOrCreateInfo(data.getFluidInTank(0)));
 		}
 		return Optional.empty();
 	}

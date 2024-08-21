@@ -28,7 +28,7 @@ public class ModelUtils {
 			blue = (color & 255) / 255F;
 		}
 		for (BakedQuad quad : quads)
-			renderer.putBulkData(transform.last(), quad, red, green, blue, light, overlay);
+			renderer.putBulkData(transform.last(), quad, red, green, blue,1f, light, overlay);
 	}
 	public static void tesellate(BlockEntity be,BlockState bs,BakedModel model, VertexConsumer renderer, PoseStack transform, int overlay,ModelData data) {
 		Minecraft.getInstance().getBlockRenderer().getModelRenderer()
@@ -60,7 +60,7 @@ public class ModelUtils {
 		return new DynamicBlockModelReference(name);
 	}
 	public static DynamicBlockModelReference getModel(String modid,String name) {
-		return new DynamicBlockModelReference(new ResourceLocation(modid, "block/dynamic/"+name));
+		return new DynamicBlockModelReference(ResourceLocation.fromNamespaceAndPath(modid, "block/dynamic/"+name));
 	}
 	public static void renderModelGroups(DynamicBlockModelReference model, VertexConsumer renderer,ImmutableSet<String> groups,PoseStack transform,
 			int color, int light, int overlay) {

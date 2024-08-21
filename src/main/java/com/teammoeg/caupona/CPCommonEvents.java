@@ -185,13 +185,12 @@ public class CPCommonEvents {
 					.getCapability(Capabilities.FluidHandler.ITEM);
 			if (cap!=null && stack.is(CPTags.Items.CONTAINER)) {
 				IFluidHandlerItem data = cap;
-				if (data.getFluidInTank(0).getFluid() instanceof SoupFluid) {
-					StewInfo si = SoupFluid.getInfo(data.getFluidInTank(0));
-					if (!event.getEntity().canEat(si.canAlwaysEat())) {
-						event.setCancellationResult(InteractionResult.FAIL);
-						event.setCanceled(true);
-					}
+				StewInfo si = data.getFluidInTank(0).get(CPCapability.STEW_INFO);
+				if (si!=null&&!event.getEntity().canEat(si.canAlwaysEat())) {
+					event.setCancellationResult(InteractionResult.FAIL);
+					event.setCanceled(true);
 				}
+				
 			}
 		}
 	}
@@ -205,9 +204,9 @@ public class CPCommonEvents {
 					.getCapability(Capabilities.FluidHandler.ITEM);
 			if (cap!=null && stack.is(CPTags.Items.CONTAINER)) {
 				IFluidHandlerItem data = cap;
-				if (data.getFluidInTank(0).getFluid() instanceof SoupFluid)
-					CauponaApi.apply(event.getEntity().level(), event.getEntity(),
-							SoupFluid.getInfo(data.getFluidInTank(0)));
+				StewInfo si = data.getFluidInTank(0).get(CPCapability.STEW_INFO);
+				if(si!=null)
+					CauponaApi.apply(event.getEntity().level(), event.getEntity(),si);
 			}
 		}
 	}

@@ -81,13 +81,13 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player,
 			BlockHitResult hit) {
-		InteractionResult p = super.use(state, worldIn, pos, player, handIn, hit);
+		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
 		if (p.consumesAction())
 			return p;
 		if (worldIn.getBlockEntity(pos) instanceof BowlBlockEntity bowl&&bowl.internal != null && bowl.internal.getItem() instanceof StewItem
-				&& bowl.internal.isEdible()) {
+				&& bowl.internal.getFoodProperties(player)!=null) {
 			FoodProperties fp = bowl.internal.getFoodProperties(player);
 			if (bowl.isInfinite) {
 				if (player.canEat(fp.canAlwaysEat())) {
@@ -111,7 +111,7 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		if (pLevel.getBlockEntity(pPos) instanceof BowlBlockEntity bowl) {
-			bowl.internal = ItemHandlerHelper.copyStackWithSize(pStack, 1);
+			bowl.internal = pStack.copyWithCount(1);
 		}
 	}
 
@@ -132,7 +132,7 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 
 	@Override
 	public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
-		if (pLevel.getBlockEntity(pPos) instanceof BowlBlockEntity bowl&&bowl.internal != null && !bowl.internal.isEmpty() && bowl.internal.isEdible()) {
+		if (pLevel.getBlockEntity(pPos) instanceof BowlBlockEntity bowl&&bowl.internal != null && !bowl.internal.isEmpty() && bowl.internal.getFoodProperties(null)!=null) {
 			return 15;
 		}
 		return 0;

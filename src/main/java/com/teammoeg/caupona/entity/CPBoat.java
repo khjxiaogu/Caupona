@@ -29,6 +29,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.SynchedEntityData.Builder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -50,11 +51,11 @@ public class CPBoat extends Boat {
 		this.yo = p_38295_;
 		this.zo = p_38296_;
 	}
-
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(WOOD_TYPE, "walnut");
+	protected void defineSynchedData(Builder builder) {
+		// TODO Auto-generated method stub
+		super.defineSynchedData(builder);
+		builder.define(WOOD_TYPE, "walnut");
 	}
 
 	@Override
@@ -79,8 +80,10 @@ public class CPBoat extends Boat {
 
 	@Override
 	public Item getDropItem() {
-		return BuiltInRegistries.ITEM.get(new ResourceLocation(CPMain.MODID, getWoodType() + "_boat"));
+		return BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, getWoodType() + "_boat"));
 	}
+
+
 
 	/*@Override
 	public Packet<ClientGamePacketListener> getAddEntityPacket() {

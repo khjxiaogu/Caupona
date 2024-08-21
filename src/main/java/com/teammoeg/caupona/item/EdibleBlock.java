@@ -25,6 +25,7 @@ import com.teammoeg.caupona.util.CreativeTabItemHelper;
 import com.teammoeg.caupona.util.TabType;
 import com.teammoeg.caupona.util.Utils;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -33,6 +34,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -56,13 +58,9 @@ public class EdibleBlock extends CPBlockItem {
 		}
 	}
 	public void addCreativeHints(ItemStack stack) {
-		CompoundTag tags=stack.getOrCreateTag();
-		CompoundTag display=tags.getCompound(ItemStack.TAG_DISPLAY);
-		ListTag lt=display.getList(ItemStack.TAG_LORE,8);
-		lt.add(StringTag.valueOf(Component.Serializer.toJson(Utils.translate("tooltip.caupona.display_only"))));
-		lt.add(StringTag.valueOf(Component.Serializer.toJson(Utils.translate("tooltip.caupona.cook_required"))));
-		display.put(ItemStack.TAG_LORE,lt);
-		tags.put(ItemStack.TAG_DISPLAY, display);
+		ItemLore lc=stack.get(DataComponents.LORE);
+		lc=lc.withLineAdded(Utils.translate("tooltip.caupona.display_only")).withLineAdded(Utils.translate("tooltip.caupona.cook_required"));
+		stack.set(DataComponents.LORE, lc);
 	}
 	/**
 	 * Returns the unlocalized name of this item.
@@ -72,16 +70,11 @@ public class EdibleBlock extends CPBlockItem {
 	}
 
 	public ItemStack finishUsingItem(ItemStack itemstack, Level worldIn, LivingEntity entityLiving) {
-		System.out.println("finished using "+this.getFoodProperties(itemstack, entityLiving).getNutrition());
+		//System.out.println("finished using "+this.getFoodProperties(itemstack, entityLiving).nutrition());
 		super.finishUsingItem(itemstack, worldIn, entityLiving);
 		return new ItemStack(Items.BOWL);
 	}
 
-	@Override
-	public boolean isEdible() {
-		// TODO Auto-generated method stub
-		return true;
-	}
 	/**
 	 * Called when this item is used when targetting a Block
 	 */
@@ -91,7 +84,7 @@ public class EdibleBlock extends CPBlockItem {
 		if (pContext.getPlayer().isShiftKeyDown())
 			interactionresult = this.place(new BlockPlaceContext(pContext));
 		// if(!pContext.getPlayer().getCooldowns().isOnCooldown(CPItems.water))
-		if (!interactionresult.consumesAction() && this.isEdible()) {
+		if (!interactionresult.consumesAction()) {
 
 			InteractionResult interactionresult1 = this
 					.use(pContext.getLevel(), pContext.getPlayer(), pContext.getHand()).getResult();

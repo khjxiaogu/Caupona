@@ -2,11 +2,13 @@ package com.teammoeg.caupona.blocks.decoration.mosaic;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.util.SerializeUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class MosaicData {
 	MosaicPattern pattern;
@@ -50,5 +52,7 @@ public class MosaicData {
 	public void setMaterial2(MosaicMaterial material2) {
 		this.material2 = material2;
 	}
-
+	public BlockState createBlock() {
+		return CPBlocks.MOSAIC.get().defaultBlockState().setValue(MosaicBlock.MATERIAL_1, material1).setValue(MosaicBlock.MATERIAL_2, material2).setValue(MosaicBlock.PATTERN,pattern );
+	}
 }

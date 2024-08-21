@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.ComplexCalculated;
@@ -40,8 +41,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class Add implements CookIngredients, ComplexCalculated {
 	List<CookIngredients> nums;
-	public static final Codec<Add> CODEC=
-		RecordCodecBuilder.create(t->t.group(Codec.list(Numbers.CODEC).fieldOf("types").forGetter(o->o.nums)).apply(t, Add::new));
+	public static final MapCodec<Add> CODEC=
+		RecordCodecBuilder.mapCodec(t->t.group(Codec.list(Numbers.CODEC).fieldOf("types").forGetter(o->o.nums)).apply(t, Add::new));
 
 	public Add() {
 		this(new ArrayList<>());
@@ -78,7 +79,7 @@ public class Add implements CookIngredients, ComplexCalculated {
 	public void add(CookIngredients sn) {
 		nums.add(sn);
 	}
-
+/*
 	@Override
 	public void write(FriendlyByteBuf buffer) {
 		SerializeUtil.writeList(buffer, nums, Numbers::write);
@@ -86,7 +87,7 @@ public class Add implements CookIngredients, ComplexCalculated {
 
 	public Add(FriendlyByteBuf buffer) {
 		nums = SerializeUtil.readList(buffer, Numbers::of);
-	}
+	}*/
 
 
 	@Override

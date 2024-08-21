@@ -51,14 +51,14 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = CPMain.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CPClientRegistry {
@@ -68,7 +68,7 @@ public class CPClientRegistry {
 		LayerDefinition layer = BoatModel.createBodyModel();
 		for (String wood : CPBlocks.woods)
 			ClientHooks.registerLayerDefinition(
-					new ModelLayerLocation(new ResourceLocation(CPMain.MODID, "boat/" + wood), "main"), () -> layer);
+					new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "boat/" + wood), "main"), () -> layer);
 
 		/*ItemBlockRenderTypes.setRenderLayer(CPBlocks.stew_pot, RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove1, RenderType.cutout());

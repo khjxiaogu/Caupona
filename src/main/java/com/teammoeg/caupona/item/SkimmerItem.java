@@ -6,10 +6,13 @@ import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.TabType;
+import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,7 +34,7 @@ public class SkimmerItem extends CPItem {
 			 if(stewpot.canAddFluid()) {
 				 FluidTank tank=stewpot.getTank();
 				 FluidStack fluid=tank.getFluidInTank(0);
-				 StewInfo si=SoupFluid.getInfo(fluid);
+				 StewInfo si=Utils.getOrCreateInfo(fluid);
 				 float dense=si.getDensity();
 				 if(dense>0.5) {
 					 float toreduce=Math.min(dense-0.5f,0.5f);
@@ -40,11 +43,9 @@ public class SkimmerItem extends CPItem {
 						 lstack.shrink(lstack.getCount()/dense*toreduce);
 					 }
 					 si.recalculateHAS();
-					 SoupFluid.setInfo(fluid, si);
+					 Utils.setInfo(fluid, si);
 					 tank.setFluid(fluid);
-					 stack.hurtAndBreak( 1,context.getPlayer(),(p_289501_) -> {
-	                     p_289501_.broadcastBreakEvent(context.getPlayer().getUsedItemHand());
-	                  });
+					 stack.hurtAndBreak( 1,context.getPlayer(),context.getHand()==InteractionHand.MAIN_HAND?EquipmentSlot.MAINHAND:EquipmentSlot.OFFHAND);
 					 float frac=Mth.frac(reduced);
 					 int amt=Mth.floor(reduced);
 					 if(context.getPlayer().getRandom().nextFloat()<frac)

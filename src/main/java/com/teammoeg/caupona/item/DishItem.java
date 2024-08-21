@@ -38,12 +38,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 public class DishItem extends EdibleBlock {
-	public static final FoodProperties fakefood = new FoodProperties.Builder().nutrition(4).saturationMod(0.2f).meat()
+	public static final FoodProperties fakefood = new FoodProperties.Builder().nutrition(4).saturationModifier(0.2f).usingConvertsTo(Items.BOWL)
 			.build();
 	public final DishBlock bl;
 
@@ -56,7 +57,7 @@ public class DishItem extends EdibleBlock {
 
 
 	@Override
-	public int getUseDuration(ItemStack stack) {
+	public int getUseDuration(ItemStack stack,LivingEntity ent) {
 		return 32;
 	}
 
@@ -65,7 +66,7 @@ public class DishItem extends EdibleBlock {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, TooltipContext worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		IFoodInfo iinfo = CPCapability.FOOD_INFO.getCapability(stack, null);
 		if(iinfo instanceof SauteedFoodInfo info) {
 			FloatemStack fs = info.stacks.stream()

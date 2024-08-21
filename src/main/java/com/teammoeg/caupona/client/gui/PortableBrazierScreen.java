@@ -32,7 +32,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class PortableBrazierScreen extends AbstractContainerScreen<PortableBrazierContainer> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(CPMain.MODID,
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID,
 			"textures/gui/portable_brazier.png");
 	PortableBrazierContainer container;
 

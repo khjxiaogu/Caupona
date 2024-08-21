@@ -62,7 +62,7 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 
 	public DoliumRestingCategory(IGuiHelper guiHelper) {
 		this.ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(CPBlocks.dolium.get(0)));
-		ResourceLocation guiMain = new ResourceLocation(CPMain.MODID, "textures/gui/jei/maximum_resting.png");
+		ResourceLocation guiMain = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/jei/maximum_resting.png");
 		this.BACKGROUND = guiHelper.createDrawable(guiMain, 0, 0, 127, 63);
 	}
 
@@ -92,7 +92,7 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 	private static List<ItemStack> unpack(Pair<Ingredient, Integer> ps) {
 		List<ItemStack> sl = new ArrayList<>();
 		for (ItemStack is : ps.getFirst().getItems())
-			sl.add(ItemHandlerHelper.copyStackWithSize(is, ps.getSecond() > 0 ? ps.getSecond() : 1));
+			sl.add(is.copyWithCount(ps.getSecond() > 0 ? ps.getSecond() : 1));
 		return sl;
 	}
 

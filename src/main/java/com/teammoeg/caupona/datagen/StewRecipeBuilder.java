@@ -87,7 +87,7 @@ public class StewRecipeBuilder {
 	}
 
 	public static StewRecipeBuilder start(Fluid out) {
-		return new StewRecipeBuilder(new ResourceLocation(CPMain.MODID, "cooking/" + Utils.getRegistryName(out).getPath()),
+		return new StewRecipeBuilder(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "cooking/" + Utils.getRegistryName(out).getPath()),
 				out);
 	}
 

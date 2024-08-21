@@ -21,6 +21,8 @@
 
 package com.teammoeg.caupona.blocks.dolium;
 
+import java.util.Optional;
+
 import com.teammoeg.caupona.CPBlockEntityTypes;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.blocks.CPHorizontalEntityBlock;
@@ -30,6 +32,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -46,6 +49,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.capabilities.Capabilities.FluidHandler;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
@@ -80,19 +84,17 @@ public class CounterDoliumBlock extends CPHorizontalEntityBlock<CounterDoliumBlo
 	public VoxelShape getVisualShape(BlockState pState, BlockGetter pReader, BlockPos pPos, CollisionContext pContext) {
 		return Shapes.empty();
 	}
-
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+	public ItemInteractionResult useItemOn(ItemStack held,BlockState state, Level worldIn, BlockPos pos, Player player,InteractionHand hand,
 			BlockHitResult hit) {
 		@SuppressWarnings("deprecation")
-		InteractionResult p = super.use(state, worldIn, pos, player, handIn, hit);
+		ItemInteractionResult p = super.useItemOn(held,state, worldIn, pos, player, hand, hit);
 		if (p.consumesAction())
 			return p;
 		if(worldIn.getBlockEntity(pos) instanceof CounterDoliumBlockEntity dolium) {
-			ItemStack held = player.getItemInHand(handIn);
 			if (held.isEmpty() && player.isShiftKeyDown()) {
 				dolium.tank.setFluid(FluidStack.EMPTY);
-				return InteractionResult.SUCCESS;
+				return ItemInteractionResult.SUCCESS;
 			}
 			FluidStack out=Utils.extractFluid(held);
 			if (!out.isEmpty()) {
@@ -102,19 +104,25 @@ public class CounterDoliumBlock extends CPHorizontalEntityBlock<CounterDoliumBlo
 					if (!player.addItem(ret))
 						player.drop(ret, false);
 				}
-	
-				return InteractionResult.sidedSuccess(worldIn.isClientSide);
+				return ItemInteractionResult.sidedSuccess(worldIn.isClientSide);
 			}
-			if (FluidUtil.interactWithFluidHandler(player, handIn, dolium.tank))
-				return InteractionResult.SUCCESS;
-	
-			if (handIn == InteractionHand.MAIN_HAND) {
-				if (!worldIn.isClientSide&&(player.getAbilities().instabuild||!dolium.isInfinite))
-					((ServerPlayer) player).openMenu(dolium, dolium.getBlockPos());
-				return InteractionResult.SUCCESS;
-			}
+			if (FluidUtil.interactWithFluidHandler(player, hand, dolium.tank))
+				return ItemInteractionResult.SUCCESS;
 		}
 		return p;
+	}
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player,
+			BlockHitResult hit) {
+		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
+		if (p.consumesAction())
+			return p;
+		if(worldIn.getBlockEntity(pos) instanceof CounterDoliumBlockEntity dolium) {
+				if (!worldIn.isClientSide&&(player.getAbilities().instabuild||!dolium.isInfinite))
+					((ServerPlayer) player).openMenu(dolium, dolium.getBlockPos());
+				
+		}
+		return InteractionResult.sidedSuccess(worldIn.isClientSide);
 	}
 
 	@Override

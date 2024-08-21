@@ -17,6 +17,7 @@ public class DrawCustomConditionEvent extends Event{
 	GuiGraphics stack;
 	int xOffset;
 	int yOffset;
+	EventResult result;
 	public DrawCustomConditionEvent(IGuiHelper guihelper, List<IngredientCondition> conditions, GuiGraphics stack,
 			int xOffset, int yOffset) {
 		super();
@@ -25,5 +26,11 @@ public class DrawCustomConditionEvent extends Event{
 		this.stack = stack;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+	}
+	public EventResult getResult() {
+		return result;
+	}
+	public void setResult(EventResult result) {
+		this.result = result;
 	}
 }

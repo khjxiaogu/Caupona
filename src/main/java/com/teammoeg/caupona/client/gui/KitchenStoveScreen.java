@@ -34,7 +34,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class KitchenStoveScreen extends AbstractContainerScreen<KitchenStoveContainer> {
 	KitchenStoveBlockEntity blockEntity;
-	private static final ResourceLocation TEXTURE = new ResourceLocation(CPMain.MODID, "textures/gui/kitchen_stove.png");
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/kitchen_stove.png");
 
 	public KitchenStoveScreen(KitchenStoveContainer screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);

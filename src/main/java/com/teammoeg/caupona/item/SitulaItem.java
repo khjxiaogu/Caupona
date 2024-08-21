@@ -40,6 +40,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BucketPickup;
@@ -67,13 +68,13 @@ public class SitulaItem extends Item  implements ICreativeModeTabItem{
 
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, TooltipContext worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		@Nullable IFluidHandlerItem e=stack.getCapability(Capabilities.FluidHandler.ITEM);
 		if(e!=null){
 			FluidStack f=e.getFluidInTank(0);
 			if(!f.isEmpty()) {
 				tooltip.add(f.getDisplayName());
-				StewInfo info = SoupFluid.getInfo(f);
+				StewInfo info = Utils.getOrCreateInfo(f);
 				FloatemStack fs = info.stacks.stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);
@@ -83,12 +84,10 @@ public class SitulaItem extends Item  implements ICreativeModeTabItem{
 				if (rl != null)
 					tooltip.add(Utils.translate("tooltip.caupona.spice",
 							Utils.translate("spice." + rl.getNamespace() + "." + rl.getPath())));
-				;
-				ResourceLocation base = info.base;
-				if (base != null&&!info.stacks.isEmpty())
+				if (info.base != null&&!info.stacks.isEmpty())
 					tooltip.add(Utils.translate("tooltip.caupona.base", 
-							BuiltInRegistries.FLUID.get(base).getFluidType().getDescription()));
-				Utils.addPotionTooltip(info.effects, tooltip, 1,worldIn);
+							info.base.getFluidType().getDescription()));
+				PotionContents.addPotionTooltip(info.effects, tooltip::add, 1,20);
 
 				tooltip.add(Utils.string(f.getAmount()+"/1250 mB"));
 			}

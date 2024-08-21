@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
@@ -38,8 +39,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemType implements CookIngredients {
 	Item type;
-	public static final Codec<ItemType> CODEC=
-		RecordCodecBuilder.create(t->t.group(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(o->o.type)).apply(t, ItemType::new));
+	public static final MapCodec<ItemType> CODEC=
+		RecordCodecBuilder.mapCodec(t->t.group(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(o->o.type)).apply(t, ItemType::new));
 
 	public ItemType(Item type) {
 		super();
@@ -58,15 +59,15 @@ public class ItemType implements CookIngredients {
 		return stack.getItem().equals(type);
 	}
 
-	@Override
+/*	@Override
 	public void write(FriendlyByteBuf buffer) {
-		buffer.writeId(BuiltInRegistries.ITEM,type);
+		buffer.writeById(BuiltInRegistries.ITEM::getId,type);
 	}
 
 	public ItemType(FriendlyByteBuf buffer) {
-		type = buffer.readById(BuiltInRegistries.ITEM);
+		type = buffer.readById(BuiltInRegistries.ITEM::byId);
 
-	}
+	}*/
 
 	@Override
 	public Stream<CookIngredients> getItemRelated() {

@@ -59,10 +59,10 @@ public class Chronoconis extends CPItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack pStack, Level pLevel, List<Component> pTooltipComponents,
+	public void appendHoverText(ItemStack pStack,TooltipContext ctx, List<Component> pTooltipComponents,
 			TooltipFlag pIsAdvanced) {
 		pTooltipComponents.add(Utils.translate("tooltip.caupona.chronoconis"));
-		super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+		super.appendHoverText(pStack, ctx, pTooltipComponents, pIsAdvanced);
 
 	}
 

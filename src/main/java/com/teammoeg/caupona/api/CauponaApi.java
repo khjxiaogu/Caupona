@@ -36,6 +36,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties.PossibleEffect;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
@@ -52,9 +53,9 @@ public class CauponaApi {
 	public static void apply(Level worldIn, LivingEntity entityLiving, IFoodInfo info) {
 		if (!worldIn.isClientSide) {
 			RandomSource r = entityLiving.getRandom();
-			for (Pair<Supplier<MobEffectInstance>, Float> ef : info.getEffects()) {
-				if (r.nextFloat() < ef.getSecond())
-					entityLiving.addEffect(ef.getFirst().get());
+			for (PossibleEffect ef : info.getEffects()) {
+				if (r.nextFloat() < ef.probability())
+					entityLiving.addEffect(ef.effect());
 			}
 			if (entityLiving instanceof Player player) {
 				player.getFoodData().eat(info.getHealing(), info.getSaturation());

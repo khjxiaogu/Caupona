@@ -25,6 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
 import com.teammoeg.caupona.data.recipes.IPendingContext;
@@ -37,8 +38,8 @@ import net.minecraft.resources.ResourceLocation;
 public abstract class NumberedStewCondition implements IngredientCondition {
 	protected CookIngredients number;
 
-	public static <T extends NumberedStewCondition> Codec<T> createCodec(Function<CookIngredients,T> factory) {
-		return RecordCodecBuilder.create(t->t.group(Numbers.CODEC.fieldOf("number").forGetter(o->o.number)).apply(t, factory));
+	public static <T extends NumberedStewCondition> MapCodec<T> createCodec(Function<CookIngredients,T> factory) {
+		return RecordCodecBuilder.mapCodec(t->t.group(Numbers.CODEC.fieldOf("number").forGetter(o->o.number)).apply(t, factory));
 	}
 	public NumberedStewCondition(CookIngredients number) {
 		this.number = number;
@@ -50,7 +51,7 @@ public abstract class NumberedStewCondition implements IngredientCondition {
 	}
 
 	public abstract boolean test(IPendingContext t, float n);
-
+/*
 	@Override
 	public void write(FriendlyByteBuf buffer) {
 		Numbers.write(number, buffer);
@@ -58,7 +59,7 @@ public abstract class NumberedStewCondition implements IngredientCondition {
 
 	public NumberedStewCondition(FriendlyByteBuf buffer) {
 		number = Numbers.of(buffer);
-	}
+	}*/
 	@Override
 	public Stream<CookIngredients> getAllNumbers() {
 		return Stream.of(number);

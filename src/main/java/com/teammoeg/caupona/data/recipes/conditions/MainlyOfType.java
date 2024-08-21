@@ -24,6 +24,7 @@ package com.teammoeg.caupona.data.recipes.conditions;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
@@ -36,7 +37,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class MainlyOfType extends NumberedStewCondition {
 	private final ResourceLocation type;
-	public static final Codec<MainlyOfType> CODEC=RecordCodecBuilder.create(t->t.group(Numbers.CODEC.fieldOf("number").forGetter(o->o.number),ResourceLocation.CODEC.fieldOf("tag").forGetter(o->o.type)).apply(t, MainlyOfType::new));
+	public static final MapCodec<MainlyOfType> CODEC=RecordCodecBuilder.mapCodec(t->t.group(Numbers.CODEC.fieldOf("number").forGetter(o->o.number),ResourceLocation.CODEC.fieldOf("tag").forGetter(o->o.type)).apply(t, MainlyOfType::new));
 
 	public MainlyOfType(CookIngredients obj, ResourceLocation type) {
 		super(obj);
@@ -54,7 +55,7 @@ public class MainlyOfType extends NumberedStewCondition {
 				.values().stream().allMatch(e -> e < n);
 	}
 
-
+/*
 	@Override
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
@@ -64,7 +65,7 @@ public class MainlyOfType extends NumberedStewCondition {
 	public MainlyOfType(FriendlyByteBuf buffer) {
 		super(buffer);
 		type = buffer.readResourceLocation();
-	}
+	}*/
 
 	@Override
 	public String getType() {

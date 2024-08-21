@@ -37,6 +37,7 @@ import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -89,7 +90,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		if (fs.getAmount() % 250 == 0 && fs.getFluid() instanceof SoupFluid)
 			spice = SpiceRecipe.find(spi);
 		if (spice != null) {
-			StewInfo si = SoupFluid.getInfo(fs);
+			StewInfo si = Utils.getOrCreateInfo(fs);
 			if (!si.canAddSpice())
 				return fs;
 			if (!isInfinite) {
@@ -99,7 +100,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 				inv.setStackInSlot(3, SpiceRecipe.handle(spi, consume));
 			}
 			si.addSpice(spice.effect, spi);
-			SoupFluid.setInfo(fs, si);
+			Utils.setInfo(fs, si);
 		}
 		return fs;
 
@@ -115,7 +116,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		processMax = CPConfig.COMMON.staticTime.get();
 		contain = new LazyTickWorker(CPConfig.SERVER.containerTick.get(),()->{
 			if (isInfinite) {
-				FluidStack fs = new FluidStack(tank.getFluid(), tank.getFluidAmount());
+				FluidStack fs = tank.getFluid().copy();
 				tryContianFluid();
 				tank.setFluid(fs);
 			} else {
@@ -131,26 +132,26 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 	}
 
 	@Override
-	public void readCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void readCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
 		process=nbt.getInt("process");
-		tank.readFromNBT(nbt.getCompound("tank"));
+		tank.readFromNBT(ra,nbt.getCompound("tank"));
 		isInfinite = nbt.getBoolean("inf");
 		if (!isClient) {
-			inner = ItemStack.of(nbt.getCompound("inner"));
-			inv.deserializeNBT(nbt.getCompound("inventory"));
+			inner = ItemStack.parseOptional(ra,nbt.getCompound("inner"));
+			inv.deserializeNBT(ra,nbt.getCompound("inventory"));
 			
 		}
 
 	}
 
 	@Override
-	public void writeCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void writeCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
 		nbt.putInt("process",process);
-		nbt.put("tank", tank.writeToNBT(new CompoundTag()));
+		nbt.put("tank", tank.writeToNBT(ra,new CompoundTag()));
 		nbt.putBoolean("inf", isInfinite);
 		if (!isClient) {
-			nbt.put("inventory", inv.serializeNBT());
-			nbt.put("inner", inner.save(new CompoundTag()));
+			nbt.put("inventory", inv.serializeNBT(ra));
+			nbt.put("inner", inner.save(ra));
 			
 		}
 
@@ -337,8 +338,8 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		public FluidStack drain(int maxDrain, FluidAction action) {
 			process = -1;
 			if (isInfinite)
-				return action.simulate() ? new FluidStack(tank.getFluid(), maxDrain)
-						: tryAddSpice(new FluidStack(tank.getFluid(), maxDrain));
+				return action.simulate() ? tank.getFluid().copyWithAmount(maxDrain)
+						: tryAddSpice(tank.getFluid().copyWithAmount(maxDrain));
 			return action.simulate() ? tank.drain(maxDrain, action) : tryAddSpice(tank.drain(maxDrain, action));
 
 		}

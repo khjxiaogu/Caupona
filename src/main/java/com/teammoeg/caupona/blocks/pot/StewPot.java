@@ -31,6 +31,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -66,19 +67,17 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 		return shape;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+	public ItemInteractionResult useItemOn(ItemStack held,BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
 			BlockHitResult hit) {
-		InteractionResult p = super.use(state, worldIn, pos, player, handIn, hit);
+		ItemInteractionResult p = super.useItemOn(held,state, worldIn, pos, player, handIn, hit);
 		if (p.consumesAction())
 			return p;
 		StewPotBlockEntity blockEntity = (StewPotBlockEntity) worldIn.getBlockEntity(pos);
 		if (blockEntity.canAddFluid()) {
-			ItemStack held = player.getItemInHand(handIn);
 			if (held.isEmpty() && player.isShiftKeyDown()) {
 				blockEntity.getTank().setFluid(FluidStack.EMPTY);
-				return InteractionResult.SUCCESS;
+				return ItemInteractionResult.SUCCESS;
 			}
 			FluidStack out=Utils.extractFluid(held);
 			if (!out.isEmpty()) {
@@ -89,16 +88,11 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 						player.drop(ret, false);
 				}
 
-				return InteractionResult.sidedSuccess(worldIn.isClientSide);
+				return ItemInteractionResult.sidedSuccess(worldIn.isClientSide);
 			}
 			if (FluidUtil.interactWithFluidHandler(player, handIn, blockEntity.getTank()))
-				return InteractionResult.SUCCESS;
+				return ItemInteractionResult.SUCCESS;
 
-		}
-		if (handIn == InteractionHand.MAIN_HAND) {
-			if (blockEntity != null && !worldIn.isClientSide&&(player.getAbilities().instabuild||!blockEntity.isInfinite))
-				((ServerPlayer) player).openMenu( blockEntity, blockEntity.getBlockPos());
-			return InteractionResult.SUCCESS;
 		}
 		return p;
 	}
@@ -183,6 +177,19 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 			return ret;
 		}
 		return 0;
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+		// TODO Auto-generated method stub
+		InteractionResult p= super.useWithoutItem(state, level, pos, player, hitResult);
+		if (p.consumesAction())
+			return p;
+		StewPotBlockEntity blockEntity = (StewPotBlockEntity) level.getBlockEntity(pos);
+		if (blockEntity != null && !level.isClientSide&&(player.getAbilities().instabuild||!blockEntity.isInfinite)) {
+			((ServerPlayer) player).openMenu( blockEntity, blockEntity.getBlockPos());
+		}
+		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 

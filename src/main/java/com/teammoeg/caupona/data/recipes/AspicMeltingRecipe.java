@@ -24,7 +24,9 @@ package com.teammoeg.caupona.data.recipes;
 import java.util.List;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.item.StewItem;
@@ -45,8 +47,8 @@ public class AspicMeltingRecipe extends IDataRecipe {
 	public static List<RecipeHolder<AspicMeltingRecipe>> recipes;
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
-	public static final Codec<AspicMeltingRecipe> CODEC=
-			RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<AspicMeltingRecipe> CODEC=
+			RecordCodecBuilder.mapCodec(t->t.group(
 					Ingredient.CODEC.fieldOf("aspic").forGetter(o->o.aspic),
 					BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(o->o.fluid),
 					Codec.INT.fieldOf("amount").forGetter(o->o.amount),
@@ -65,14 +67,14 @@ public class AspicMeltingRecipe extends IDataRecipe {
 	public Fluid fluid;
 	public int amount = 250;
 	public int time = 100;
-
+/*
 	public AspicMeltingRecipe(FriendlyByteBuf pb) {
 
 		aspic = Ingredient.fromNetwork(pb);
 		fluid = pb.readById(BuiltInRegistries.FLUID);
 		amount = pb.readVarInt();
 		time = pb.readVarInt();
-	}
+	}*/
 
 	public AspicMeltingRecipe(Ingredient aspic, Fluid fluid) {
 		this.aspic = aspic;
@@ -87,22 +89,22 @@ public class AspicMeltingRecipe extends IDataRecipe {
 		this.time = time;
 	}
 
-	public void write(FriendlyByteBuf pack) {
+	/*public void write(FriendlyByteBuf pack) {
 		aspic.toNetwork(pack);
 		pack.writeId(BuiltInRegistries.FLUID, fluid);
 		pack.writeVarInt(amount);
 		pack.writeVarInt(time);
 	}
-
+*/
 	public FluidStack handle(ItemStack s) {
-		StewInfo si = StewItem.getInfo(s);
+		StewInfo si=s.get(CPCapability.STEW_INFO);
 		FluidStack fs = new FluidStack(fluid, amount);
-		SoupFluid.setInfo(fs, si);
+		fs.set(CPCapability.STEW_INFO, si);
 		return fs;
 	}
 
 	public StewInfo info(ItemStack s) {
-		StewInfo si = StewItem.getInfo(s);
+		StewInfo si = s.get(CPCapability.STEW_INFO);
 		return si;
 	}
 

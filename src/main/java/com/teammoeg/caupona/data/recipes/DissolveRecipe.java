@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import net.minecraft.network.FriendlyByteBuf;
@@ -53,8 +54,8 @@ public class DissolveRecipe extends IDataRecipe {
 
 	public Ingredient item;
 	public int time;
-	public static final Codec<DissolveRecipe> CODEC=
-			RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<DissolveRecipe> CODEC=
+			RecordCodecBuilder.mapCodec(t->t.group(
 					Ingredient.CODEC_NONEMPTY.fieldOf("item").forGetter(o->o.item),
 					Codec.INT.fieldOf("time").forGetter(o->o.time)
 					).apply(t, DissolveRecipe::new));
@@ -62,16 +63,16 @@ public class DissolveRecipe extends IDataRecipe {
 		this.item = item;
 		this.time = time;
 	}
-
+/*
 	public DissolveRecipe(JsonObject jo) {
 		item = Ingredient.fromJson(jo.get("item"),true);
 		time = jo.get("time").getAsInt();
 	}
-
+*/
 	public boolean test(ItemStack is) {
 		return item.test(is);
 	}
-
+/*
 	public DissolveRecipe(FriendlyByteBuf data) {
 		item = Ingredient.fromNetwork(data);
 		time = data.readVarInt();
@@ -81,6 +82,6 @@ public class DissolveRecipe extends IDataRecipe {
 		item.toNetwork(data);
 		data.writeVarInt(time);
 	}
-
+*/
 
 }

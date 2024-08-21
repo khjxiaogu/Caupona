@@ -40,7 +40,7 @@ public class MosaicBlock extends CPHorizontalBlock{
 		@Nullable MosaicData tag=pContext.getItemInHand().get(CPCapability.MOSAIC_DATA);
 		if(tag==null)
 			return bs;
-		return bs.setValue(MosaicBlock.MATERIAL_1, tag.getMaterial1()).setValue(MosaicBlock.MATERIAL_2, tag.getMaterial2()).setValue(MosaicBlock.PATTERN,tag.getPattern());
+		return tag.createBlock();
 	}
 	
 	@Override

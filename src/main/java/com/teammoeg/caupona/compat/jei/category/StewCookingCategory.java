@@ -85,7 +85,7 @@ public class StewCookingCategory extends IConditionalCategory<StewCookingRecipe>
 	public void draw(RecipeHolder<StewCookingRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics stack, double mouseX,
 			double mouseY) {
 		
-		ResourceLocation imagePath=new ResourceLocation(recipe.id().getNamespace(),"textures/gui/recipes/" + recipe.id().getPath() + ".png");
+		ResourceLocation imagePath=ResourceLocation.fromNamespaceAndPath(recipe.id().getNamespace(),"textures/gui/recipes/" + recipe.id().getPath() + ".png");
 		if(Minecraft.getInstance().getResourceManager().getResource(imagePath).isPresent()) {
 			PoseStack mstack=stack.pose();
 			mstack.pushPose();

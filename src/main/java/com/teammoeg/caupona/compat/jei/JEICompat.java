@@ -74,7 +74,7 @@ import net.minecraft.world.level.block.Block;
 public class JEICompat implements IModPlugin {
 	@Override
 	public ResourceLocation getPluginUid() {
-		return new ResourceLocation(CPMain.MODID, "jei_plugin");
+		return ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "jei_plugin");
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipes(PotRestingCategory.TYPE,
 				DoliumRecipe.recipes.stream().filter(e -> e.value().items.size() == 0).collect(Collectors.toList())
 				);
-		registration.addItemStackInfo(new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(CPMain.MODID,"leaden_walnut"))),Utils.translate("gui.jei.caupona.info.leaden_walnut"));
+		registration.addItemStackInfo(new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"leaden_walnut"))),Utils.translate("gui.jei.caupona.info.leaden_walnut"));
 	}
 
 	@Override

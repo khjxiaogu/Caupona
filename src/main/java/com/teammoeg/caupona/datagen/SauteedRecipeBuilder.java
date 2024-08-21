@@ -50,7 +50,7 @@ public class SauteedRecipeBuilder {
 	}
 
 	public static SauteedRecipeBuilder start(Item out) {
-		return new SauteedRecipeBuilder(new ResourceLocation(CPMain.MODID, "frying/" + Utils.getRegistryName(out).getPath()),
+		return new SauteedRecipeBuilder(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "frying/" + Utils.getRegistryName(out).getPath()),
 				out);
 	}
 

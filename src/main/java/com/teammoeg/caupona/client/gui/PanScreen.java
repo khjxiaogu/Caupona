@@ -40,7 +40,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class PanScreen extends AbstractContainerScreen<PanContainer> {
-	static final ResourceLocation TEXTURE = new ResourceLocation(CPMain.MODID, "textures/gui/frying_pan.png");
+	static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/frying_pan.png");
 
 	PanBlockEntity blockEntity;
 

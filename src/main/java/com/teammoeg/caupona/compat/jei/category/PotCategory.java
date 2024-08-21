@@ -51,8 +51,8 @@ public class PotCategory implements IRecipeCategory<RecipeHolder<AspicMeltingRec
 
 	public PotCategory(IGuiHelper guiHelper) {
 		this.ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-				new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(CPMain.MODID, "goulash"))));
-		ResourceLocation guiMain = new ResourceLocation(CPMain.MODID, "textures/gui/jei/aspic_thawing_pot.png");
+				new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "goulash"))));
+		ResourceLocation guiMain = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/jei/aspic_thawing_pot.png");
 		this.BACKGROUND = guiHelper.createDrawable(guiMain, 0, 0, 127, 63);
 	}
 

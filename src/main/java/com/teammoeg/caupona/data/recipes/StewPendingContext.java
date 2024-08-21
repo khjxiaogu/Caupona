@@ -29,21 +29,22 @@ import com.teammoeg.caupona.util.ResultCachingMap;
 import com.teammoeg.caupona.util.StewInfo;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
 
 /**
  * For caching data and reduce calculation
  */
 public class StewPendingContext extends IPendingContext {
 	private StewInfo info;
-	ResourceLocation cur;
+	Fluid cur;
 	private ResultCachingMap<StewBaseCondition, Integer> basetypes = new ResultCachingMap<>(
 			e -> e.apply(info.base, cur));
 
-	public ResourceLocation getCur() {
+	public Fluid getCur() {
 		return cur;
 	}
 
-	public StewPendingContext(StewInfo info, ResourceLocation current) {
+	public StewPendingContext(StewInfo info, Fluid current) {
 		super();
 		this.info = info;
 		items = new ArrayList<>(info.stacks.size());

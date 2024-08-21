@@ -62,7 +62,7 @@ public class FryingCategory extends IConditionalCategory<SauteedRecipe> {
 	public void draw(RecipeHolder<SauteedRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guistack, double mouseX,
 			double mouseY) {
 		PoseStack stack=guistack.pose();
-		ResourceLocation imagePath=new ResourceLocation(recipe.id().getNamespace(),"textures/gui/recipes/" + recipe.id().getPath() + ".png");
+		ResourceLocation imagePath=ResourceLocation.fromNamespaceAndPath(recipe.id().getNamespace(),"textures/gui/recipes/" + recipe.id().getPath() + ".png");
 		if(Minecraft.getInstance().getResourceManager().getResource(imagePath).isPresent()) {
 			stack.pushPose();
 			stack.scale(0.5f, 0.5f, 0);

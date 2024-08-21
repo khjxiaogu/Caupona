@@ -23,8 +23,11 @@ package com.teammoeg.caupona.util;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
@@ -32,12 +35,14 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
 import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -56,6 +61,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.capabilities.Capabilities.FluidHandler;
+import net.neoforged.neoforge.common.MutableDataComponentHolder;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -98,6 +105,23 @@ public class Utils {
 		ContanerContainFoodEvent ev=new ContanerContainFoodEvent(its2,fs,false,true);
 		NeoForge.EVENT_BUS.post(ev);
 		return ev;
+	}
+	public static FluidStack extractFluid(ItemStack stack) {
+		ItemHoldedFluidData si=stack.get(CPCapability.ITEM_FLUID);
+		if(si!=null) {
+			FluidStack fs= new FluidStack(si.getFluidType(),250);
+			fs.applyComponents(stack.getComponents());
+			fs.remove(CPCapability.ITEM_FLUID);
+			return fs;
+		}
+		return Optional.ofNullable(stack.getCapability(FluidHandler.ITEM)).map(t->t.getFluidInTank(0)).orElse(FluidStack.EMPTY);
+	}
+	public static Fluid getFluidType(ItemStack stack) {
+		ItemHoldedFluidData si=stack.get(CPCapability.ITEM_FLUID);
+		if(si!=null) {
+			return si.getFluidType();
+		}
+		return Optional.ofNullable(stack.getCapability(FluidHandler.ITEM)).map(t->t.getFluidInTank(0).getFluid()).orElse(Fluids.EMPTY);
 	}
 	public static JsonElement toJson(Ingredient i) {
 		return Ingredient.CODEC.encodeStart(JsonOps.INSTANCE,i).result().orElse(JsonNull.INSTANCE);
@@ -185,5 +209,33 @@ public class Utils {
 	public static void addPotionTooltip(List<MobEffectInstance> list, Consumer<Component> lores, float durationFactor,Level pLevel) {
 		PotionContents.addPotionTooltip(list, lores, durationFactor, pLevel == null ? 20.0F : pLevel.tickRateManager().tickrate());
 	}
-
+	public static void writeItemFluid(ItemStack is, Fluid f) {
+		is.set(CPCapability.ITEM_FLUID, new ItemHoldedFluidData(f));
+	}
+	public static StewInfo getOrCreateInfo(ItemStack stack) {
+		StewInfo si= stack.get(CPCapability.STEW_INFO);
+		if(si==null) {
+			Fluid type=Utils.getFluidType(stack);
+			if(type==Fluids.EMPTY)
+				return new StewInfo();
+			else
+				return new StewInfo(type);
+		}
+		return si;
+	}
+	public static StewInfo getOrCreateInfo(FluidStack stack) {
+		StewInfo si= stack.get(CPCapability.STEW_INFO);
+		if(si==null) {
+			Fluid type=stack.getFluid();
+			if(type==Fluids.EMPTY)
+				return new StewInfo();
+			else
+				return new StewInfo(type);
+		}
+		return si;
+	}
+	public static void setInfo(MutableDataComponentHolder out, StewInfo info) {
+		out.set(CPCapability.STEW_INFO, info);
+		
+	}
 }

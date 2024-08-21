@@ -45,17 +45,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
-	private ResourceLocation TEXTURE = new ResourceLocation(CPMain.MODID, "textures/gui/stew_pot.png");
+	private ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/stew_pot.png");
 	private int TEXT_COLOR=0xffda856b;
 	StewPotBlockEntity blockEntity;
 
 	public StewPotScreen(StewPotContainer container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
 		if(container.getBlock().getBlockState().is(CPBlocks.STEW_POT_LEAD.get())) {
-			TEXTURE = new ResourceLocation(CPMain.MODID, "textures/gui/lead_stew_pot.png");
+			TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/lead_stew_pot.png");
 			TEXT_COLOR = 0xffe4f2f2;
 		}else {
-			TEXTURE = new ResourceLocation(CPMain.MODID, "textures/gui/stew_pot.png");
+			TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/stew_pot.png");
 			TEXT_COLOR = 0xffda856b;
 		}
 		this.titleLabelY = 4;
@@ -101,14 +101,14 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 		if (blockEntity.proctype < 2 && !blockEntity.getTank().isEmpty()) {
 			if (isMouseIn(mouseX, mouseY, 105, 20, 16, 46)) {
 				tooltip.add(blockEntity.getTank().getFluid().getDisplayName());
-				StewInfo si = SoupFluid.getInfo(blockEntity.getTank().getFluid());
+				StewInfo si = Utils.getOrCreateInfo(blockEntity.getTank().getFluid());
 				FloatemStack fs = si.stacks.stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);
 				if (fs != null)
 					tooltip.add(Utils.translate("tooltip.caupona.main_ingredient",
 							fs.getStack().getDisplayName()));
-				Utils.addPotionTooltip(si.effects, tooltip, 1,blockEntity.getLevel());
+				Utils.addPotionTooltip(si.effects, tooltip::add, 1,blockEntity.getLevel());
 			}
 			GuiUtils.handleGuiTank(transform.pose(), blockEntity.getTank(), leftPos + 105, topPos + 20, 16, 46);
 		}

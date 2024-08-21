@@ -19,7 +19,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class TBenchScreen extends AbstractContainerScreen<TBenchMenu> {
-   private static final ResourceLocation BG_LOCATION = new ResourceLocation(CPMain.MODID,"textures/gui/tessellation_workbench.png");
+   private static final ResourceLocation BG_LOCATION = ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"textures/gui/tessellation_workbench.png");
    private static final int RECIPES_COLUMNS = 4;
    private static final int RECIPES_ROWS = 3;
    private static final int RECIPES_IMAGE_SIZE_WIDTH = 16;

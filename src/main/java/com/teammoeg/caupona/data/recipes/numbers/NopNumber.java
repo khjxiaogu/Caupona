@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
 import com.teammoeg.caupona.data.recipes.IPendingContext;
@@ -36,7 +37,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class NopNumber implements CookIngredients {
 	public static final NopNumber INSTANCE = new NopNumber();
-	public static final Codec<NopNumber> CODEC=Codec.unit(INSTANCE);
+	public static final MapCodec<NopNumber> CODEC=MapCodec.unit(INSTANCE);
 	/**
 	 * @param elm
 	 */
@@ -63,9 +64,9 @@ public class NopNumber implements CookIngredients {
 		return false;
 	}
 
-	@Override
+/*	@Override
 	public void write(FriendlyByteBuf buffer) {
-	}
+	}*/
 
 	/**
 	 * @param buffer

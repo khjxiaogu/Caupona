@@ -52,8 +52,8 @@ public class PotRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRe
 
 	public PotRestingCategory(IGuiHelper guiHelper) {
 		this.ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
-				new ItemStack(BuiltInRegistries.ITEM.get(new ResourceLocation(CPMain.MODID, "goulash_aspic"))));
-		ResourceLocation guiMain = new ResourceLocation(CPMain.MODID, "textures/gui/jei/fluid_resting.png");
+				new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "goulash_aspic"))));
+		ResourceLocation guiMain = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/jei/fluid_resting.png");
 		this.BACKGROUND = guiHelper.createDrawable(guiMain, 0, 0, 127, 63);
 	}
 

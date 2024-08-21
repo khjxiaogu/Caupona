@@ -38,7 +38,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class DoliumScreen extends AbstractContainerScreen<DoliumContainer> {
 	public final CounterDoliumBlockEntity blockEntity;
-	private static final ResourceLocation TEXTURE = new ResourceLocation(CPMain.MODID,
+	private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID,
 			"textures/gui/counter_with_dolium.png");
 
 	public DoliumScreen(DoliumContainer screenContainer, Inventory inv, Component titleIn) {

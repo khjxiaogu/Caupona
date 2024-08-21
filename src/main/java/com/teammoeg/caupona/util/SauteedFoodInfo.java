@@ -181,12 +181,12 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 	}
 
 	@Override
-	public List<Pair<Supplier<MobEffectInstance>, Float>> getEffects() {
-		List<Pair<Supplier<MobEffectInstance>, Float>> li=new ArrayList<>();
+	public List<PossibleEffect> getEffects() {
+		List<PossibleEffect> li=new ArrayList<>();
 		if (spice != null)
-			li.add(Pair.of(()->new MobEffectInstance(spice), 1f));
+			li.add(new PossibleEffect(()->new MobEffectInstance(spice), 1f));
 		for (PossibleEffect ef : foodeffect) {
-			li.add(Pair.of(()->ef.effect(), ef.probability()));
+			li.add(new PossibleEffect(()->ef.effect(), ef.probability()));
 		}
 		return null;
 	}

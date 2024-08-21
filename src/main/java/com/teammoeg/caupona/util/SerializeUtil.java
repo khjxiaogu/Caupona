@@ -40,6 +40,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.MapCodec;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
@@ -190,9 +191,14 @@ public class SerializeUtil {
 		buffer.writeVarInt(elms.size());
 		elms.entrySet().forEach(e -> func.accept(e, buffer));
 	}
-	public static <V> StreamCodec<FriendlyByteBuf,V> toStreamCodec(Codec<V> codec){
+	public static <F extends FriendlyByteBuf,V> StreamCodec<F,V> toStreamCodec(Codec<V> codec){
 		return StreamCodec.of((b,v)->{
 			writeCodec(b,codec,v);
 		},(b)->readCodec(b,codec));
+	}
+	public static <F extends FriendlyByteBuf,V> StreamCodec<F,V> toStreamCodec(MapCodec<V> codec){
+		return StreamCodec.of((b,v)->{
+			writeCodec(b,codec.codec(),v);
+		},(b)->readCodec(b,codec.codec()));
 	}
 }

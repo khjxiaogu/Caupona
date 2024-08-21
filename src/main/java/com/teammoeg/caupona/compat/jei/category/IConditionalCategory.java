@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.api.GameTranslation;
 import com.teammoeg.caupona.api.events.DrawCustomConditionEvent;
+import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.data.recipes.IConditionalRecipe;
 import com.teammoeg.caupona.data.recipes.IngredientCondition;
 import com.teammoeg.caupona.util.Utils;
@@ -41,7 +42,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.neoforged.bus.api.Event.Result;
 import net.neoforged.neoforge.common.NeoForge;
 
 public abstract class IConditionalCategory<T extends IConditionalRecipe&Recipe<?>> implements IRecipeCategory<RecipeHolder<T>> {
@@ -88,7 +88,7 @@ public abstract class IConditionalCategory<T extends IConditionalRecipe&Recipe<?
 		return grid(helper,x,y,0,0,w,h);
 	}
 	public static IDrawable grid(IGuiHelper helper,int x,int y,int dx,int dy,int w,int h) {
-		return helper.createDrawable(new ResourceLocation(CPMain.MODID,"textures/gui/recipes/elements/recipe_page_elements.png"), x*47+dx, y*53+dy, w, h);
+		return helper.createDrawable(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"textures/gui/recipes/elements/recipe_page_elements.png"), x*47+dx, y*53+dy, w, h);
 	}
 	public abstract IDrawable getHeadings();
 	public abstract void drawCustom(RecipeHolder<T> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics stack, double mouseX,double mouseY);

@@ -23,6 +23,7 @@ package com.teammoeg.caupona;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.teammoeg.caupona.item.CPBlockItem;
 import com.teammoeg.caupona.item.CPBoatItem;
@@ -43,8 +44,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -83,8 +88,8 @@ public class CPItems {
 	public static DeferredHolder<Item,Item> stock = icon("stock_based");
 	public static DeferredHolder<Item,Item> milk = icon("milk_based");
 	public static DeferredHolder<Item,Item> any = icon("any_based");
-	public static DeferredHolder<Item,Item> water_bowl = stew("water", ResourceLocation.withDefaultNamespace("water"), createSoupProps());
-	public static DeferredHolder<Item,Item> milk_bowl = stew("milk", ResourceLocation.withDefaultNamespace("milk"), createSoupProps());
+	public static DeferredHolder<Item,Item> water_bowl = stew("water",()->Fluids.WATER, createSoupProps());
+	public static DeferredHolder<Item,Item> milk_bowl = stew("milk",NeoForgeMod.MILK, createSoupProps());
 	public static DeferredHolder<Item,Item> clay_pot = item("clay_cistern", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,Item> soot = item("soot", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,PortableBrazierItem> pbrazier = ITEMS.register("portable_brazier",()->new PortableBrazierItem( createProps()));
@@ -96,7 +101,7 @@ public class CPItems {
 	public static DeferredHolder<Item,SkimmerItem> i_skimmer = ITEMS.register("iron_skimmer",()->new SkimmerItem( createProps().durability(200)));
 	static{
 		for (String s : soups) {
-			stew(s, ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s), createSoupProps());
+			stew(s,Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))), createSoupProps());
 		}
 
 		for (String s : aspics) {
@@ -129,7 +134,7 @@ public class CPItems {
 	public static DeferredHolder<Item,Item> item(String name,Properties props,TabType tab){
 		return ITEMS.register(name,()->new CPItem(props,tab));
 	}
-	public static DeferredHolder<Item,Item> stew(String name,ResourceLocation base,Properties props){
+	public static DeferredHolder<Item,Item> stew(String name,Supplier<Fluid> base,Properties props){
 		return ITEMS.register(name,()->new StewItem(base,props));
 	}
 

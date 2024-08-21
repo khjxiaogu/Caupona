@@ -28,11 +28,11 @@ public class RegistryJavaGenerator extends FileGenerator {
 		fo.createMap("public static","texture",HashMap.class,String.class,ResourceLocation.class);
 		fo.defineBlock("static");
 		for(String sf:CPFluids.getSoupfluids()) {
-			ResourceLocation image = new ResourceLocation(CPMain.MODID, "textures/block/soups/" + sf + ".png");
+			ResourceLocation image = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/block/soups/" + sf + ".png");
 			if (helper.exists(image, PackType.CLIENT_RESOURCES)) {
 				fo.line().call("texture.put")
 					.paramString(sf)
-					.paramNewInst(ResourceLocation.class)
+					.paramCall("ResourceLocation.fromNamespaceAndPath")
 						.paramString(CPMain.MODID)
 						.paramString("block/soups/"+sf)
 					.complete()

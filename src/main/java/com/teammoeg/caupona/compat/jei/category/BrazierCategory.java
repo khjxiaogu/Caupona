@@ -51,7 +51,7 @@ public class BrazierCategory implements IRecipeCategory<RecipeHolder<AspicMeltin
 
 	public BrazierCategory(IGuiHelper guiHelper) {
 		this.ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(CPItems.pbrazier.get()));
-		ResourceLocation guiMain = new ResourceLocation(CPMain.MODID, "textures/gui/jei/aspic_thawing_brazier.png");
+		ResourceLocation guiMain = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/jei/aspic_thawing_brazier.png");
 		this.BACKGROUND = guiHelper.createDrawable(guiMain, 0, 0, 127, 63);
 	}
 

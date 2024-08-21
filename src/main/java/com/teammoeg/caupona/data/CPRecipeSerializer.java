@@ -24,35 +24,31 @@ package com.teammoeg.caupona.data;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.util.SerializeUtil;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 public class CPRecipeSerializer<T extends IDataRecipe> implements RecipeSerializer<T> {
-	Codec<T> codec;
+	MapCodec<T> codec;
 	static final Logger logger = LogManager.getLogger(CPMain.MODID + " recipe serialize");
 
 
-	@Override
-	public T fromNetwork(FriendlyByteBuf buffer) {
-		return SerializeUtil.readCodec(buffer, codec);
-	}
-
-	@Override
-	public void toNetwork(FriendlyByteBuf buffer, T recipe) {
-		SerializeUtil.writeCodec(buffer, codec, recipe);
-	}
-
-	public CPRecipeSerializer(Codec<T> codec) {
+	public CPRecipeSerializer(MapCodec<T> codec) {
 		this.codec = codec;
 	}
 
 	@Override
-	public Codec<T> codec() {
+	public MapCodec<T> codec() {
 		return codec;
+	}
+
+	@Override
+	public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() {
+		return SerializeUtil.toStreamCodec(codec().codec());
 	}
 
 }

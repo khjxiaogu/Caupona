@@ -28,11 +28,12 @@ import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.FoodProperties.PossibleEffect;
 
 public interface IFoodInfo {
 	List<FloatemStack> getStacks();
 	int getHealing();
 	float getSaturation();
 	FoodProperties getFood();
-	public List<Pair<Supplier<MobEffectInstance>, Float>> getEffects();
+	public List<PossibleEffect> getEffects();
 }

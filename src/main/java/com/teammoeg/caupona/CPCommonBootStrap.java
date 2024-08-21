@@ -68,6 +68,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.Capabilities.FluidHandler;
+import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.fluids.FluidActionResult;
@@ -76,6 +78,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.BucketPickupHandlerWrapper;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -99,6 +102,7 @@ public class CPCommonBootStrap {
 	@SubscribeEvent
 	public static void onCapabilityInject(RegisterCapabilitiesEvent event) {
 		event.registerItem(Capabilities.FluidHandler.ITEM,(stack,o)->new FluidHandlerItemStack(CPCapability.SIMPLE_FLUID,stack,1250), CPItems.situla.get());
+		//event.registerItem(Capabilities.FluidHandler.ITEM,(stack,o)->new FluidHandlerItemStack(CPCapability.SIMPLE_FLUID,stack,1250), CPItems.situla.get());
 		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.STEW_INFO.get()), CPItems.stews.toArray(Item[]::new));
 		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.SAUTEED_INFO.get()), CPItems.dish.toArray(Item[]::new));
 		CPBlockEntityTypes.REGISTER.getEntries().stream().map(t->t.get()).forEach(be->{
@@ -201,12 +205,15 @@ public class CPCommonBootStrap {
 						}else if(besrc instanceof IFoodContainer cont) {
 							for(int i=0;i<cont.getSlots();i++) {
 								ItemStack its=cont.getInternal(i);
-								FluidStack fs=Utils.extractFluid(its);
-								if(!fs.isEmpty()) {
-									if(iptar.fill(fs, FluidAction.SIMULATE)==fs.getAmount()) {
-										iptar.fill(fs, FluidAction.EXECUTE);
-										cont.setInternal(i,its.getCraftingRemainingItem());
-										break;
+								IFluidHandlerItem ifhi=FluidHandler.ITEM.getCapability(its, null);
+								if(ifhi!=null) {
+									FluidStack fs=ifhi.getFluidInTank(0);
+									if(!fs.isEmpty()) {
+										if(iptar.fill(fs, FluidAction.SIMULATE)==fs.getAmount()) {
+											iptar.fill(fs, FluidAction.EXECUTE);
+											cont.setInternal(i,its.getCraftingRemainingItem());
+											break;
+										}
 									}
 								}
 								
@@ -350,7 +357,7 @@ public class CPCommonBootStrap {
 			@SuppressWarnings("resource")
 			@Override
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
-				FluidStack fs = Utils.extractFluid(stack);
+				FluidStack fs = FluidHandler.ITEM.getCapability(stack, null).getFluidInTank(0);
 				Direction d = source.state().getValue(DispenserBlock.FACING);
 				BlockPos front = source.pos().relative(d);
 				BlockEntity blockEntity = source.level().getBlockEntity(front);

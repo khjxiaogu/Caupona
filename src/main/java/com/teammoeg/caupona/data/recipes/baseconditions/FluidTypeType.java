@@ -23,6 +23,7 @@ package com.teammoeg.caupona.data.recipes.baseconditions;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.StewBaseCondition;
@@ -34,40 +35,36 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 
 public class FluidTypeType implements StewBaseCondition {
-	ResourceLocation of;
-	public static final Codec<FluidTypeType> CODEC=RecordCodecBuilder
-		.create(c->c.group(ResourceLocation.CODEC.fieldOf("base").forGetter(t->t.of)
+	Fluid of;
+	public static final MapCodec<FluidTypeType> CODEC=RecordCodecBuilder
+		.mapCodec(c->c.group(BuiltInRegistries.FLUID.byNameCodec().fieldOf("base").forGetter(t->t.of)
 		).apply(c, FluidTypeType::new));
-	public FluidTypeType(JsonObject jo) {
-		of = new ResourceLocation(jo.get("base").getAsString());
-	}
-	public FluidTypeType(String of) {
-		this(new ResourceLocation(of));
-	}
-	public FluidTypeType(ResourceLocation of) {
+	/*public FluidTypeType(JsonObject jo) {
+		of = ResourceLocation.parse(jo.get("base").getAsString());
+	}*/
+	/*public FluidTypeType(String of) {
+		this(ResourceLocation.parse(of));
+	}*/
+	public FluidTypeType(Fluid of) {
 		super();
 		this.of = of;
 	}
-
+/*
 	public FluidTypeType(Fluid of) {
 		super();
 		this.of = Utils.getRegistryName(of);
 	}
-
+*/
 	@Override
-	public Integer apply(ResourceLocation t, ResourceLocation u) {
+	public Integer apply(Fluid t, Fluid u) {
 		return test(u) ? 2 : 0;
 	}
-
-	public boolean test(ResourceLocation t) {
+	@Override
+	public boolean test(Fluid t) {
 		return of.equals(t);
 	}
 
-	@Override
-	public boolean test(Fluid f) {
-		return Utils.getRegistryName(f).equals(of);
-	}
-
+/*
 	public JsonObject serialize() {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("fluid_type", of.toString());
@@ -82,7 +79,7 @@ public class FluidTypeType implements StewBaseCondition {
 	public FluidTypeType(FriendlyByteBuf buffer) {
 		of = buffer.readResourceLocation();
 	}
-
+*/
 	@Override
 	public String getType() {
 		return "fluid_type";
@@ -113,7 +110,7 @@ public class FluidTypeType implements StewBaseCondition {
 
 	@Override
 	public String getTranslation(TranslationProvider p) {
-		return p.getTranslation(BuiltInRegistries.FLUID.get(of).getFluidType().getDescriptionId());
+		return p.getTranslation(of.getFluidType().getDescriptionId());
 	}
 
 }

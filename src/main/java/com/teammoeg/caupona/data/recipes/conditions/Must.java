@@ -22,6 +22,7 @@
 package com.teammoeg.caupona.data.recipes.conditions;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
 import com.teammoeg.caupona.data.recipes.IPendingContext;
@@ -29,7 +30,7 @@ import com.teammoeg.caupona.data.recipes.IPendingContext;
 import net.minecraft.network.FriendlyByteBuf;
 
 public class Must extends NumberedStewCondition {
-	public static final Codec<Must> CODEC=NumberedStewCondition.createCodec(Must::new);
+	public static final MapCodec<Must> CODEC=NumberedStewCondition.createCodec(Must::new);
 
 
 	public Must(CookIngredients number) {
@@ -42,11 +43,11 @@ public class Must extends NumberedStewCondition {
 	}
 
 
-
+/*
 	public Must(FriendlyByteBuf buffer) {
 		super(buffer);
 	}
-
+*/
 	@Override
 	public String getType() {
 		return "contains";

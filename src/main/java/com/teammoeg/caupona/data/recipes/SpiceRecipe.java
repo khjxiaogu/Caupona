@@ -64,10 +64,10 @@ public class SpiceRecipe extends IDataRecipe {
 	public static final Codec<SpiceRecipe> CODEC=
 			RecordCodecBuilder.create(t->t.group(
 					Ingredient.CODEC_NONEMPTY.fieldOf("spice").forGetter(o->o.spice),
-					Utils.MOB_EFFECT_CODEC.fieldOf("effect").forGetter(o->o.effect),
+					MobEffectInstance.CODEC.fieldOf("effect").forGetter(o->o.effect),
 					Codec.BOOL.fieldOf("reacts_lead").forGetter(o->o.canReactLead)
 					).apply(t, SpiceRecipe::new));
-	public SpiceRecipe(JsonObject jo) {
+	/*public SpiceRecipe(JsonObject jo) {
 
 		spice = Ingredient.fromJson(jo.get("spice"),true);
 		if (jo.has("effect")) {
@@ -91,7 +91,7 @@ public class SpiceRecipe extends IDataRecipe {
 
 		effect = SerializeUtil.readOptional(pb, b -> MobEffectInstance.load(b.readNbt())).orElse(null);
 		canReactLead=pb.readBoolean();
-	}
+	}*/
 
 	public SpiceRecipe(Ingredient spice, MobEffectInstance effect) {
 		this.spice = spice;
@@ -103,14 +103,14 @@ public class SpiceRecipe extends IDataRecipe {
 		this.effect = effect;
 		this.canReactLead = canReactLead;
 	}
-
+/*
 	public void write(FriendlyByteBuf pack) {
 		spice.toNetwork(pack);
 		SerializeUtil.writeOptional(pack, effect, (e, b) -> b.writeNbt(e.save(new CompoundTag())));
 		pack.writeBoolean(canReactLead);
 	}
-
-	public void serializeRecipeData(JsonObject jx) {
+*/
+/*	public void serializeRecipeData(JsonObject jx) {
 		jx.add("spice", Utils.toJson(spice));
 		if (effect != null) {
 			JsonObject jo = new JsonObject();
@@ -121,7 +121,7 @@ public class SpiceRecipe extends IDataRecipe {
 		}
 		jx.addProperty("reacts_lead",canReactLead);
 	}
-
+*/
 	public static int getMaxUse(ItemStack spice) {
 		return spice.getMaxDamage() - spice.getDamageValue();
 	}

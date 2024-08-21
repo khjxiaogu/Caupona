@@ -32,6 +32,7 @@ import java.util.stream.Stream;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.SerializeUtil;
@@ -77,8 +78,8 @@ public class FoodValueRecipe extends IDataRecipe {
 	public final Map<Item, Integer> processtimes;
 	private ItemStack repersent;
 	public transient Set<ResourceLocation> tags;
-	public static final Codec<FoodValueRecipe> CODEC=
-		RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<FoodValueRecipe> CODEC=
+		RecordCodecBuilder.mapCodec(t->t.group(
 			Codec.INT.fieldOf("heal").forGetter(o->o.heal),
 			Codec.FLOAT.fieldOf("sat").forGetter(o->o.sat),
 			
@@ -108,7 +109,7 @@ public class FoodValueRecipe extends IDataRecipe {
 		repersent = rps;
 		for (Item i : types)
 			processtimes.put(i, 0);
-	}
+	}/*
 	public FoodValueRecipe( FriendlyByteBuf data) {
 		heal = data.readVarInt();
 		sat = data.readFloat();
@@ -134,7 +135,7 @@ public class FoodValueRecipe extends IDataRecipe {
 		});
 		SerializeUtil.writeOptional(data, repersent, (d, e) -> e.writeNbt(d.save(new CompoundTag())));
 	}
-
+*/
 	public void clearCache() {
 		tags = null;
 	}

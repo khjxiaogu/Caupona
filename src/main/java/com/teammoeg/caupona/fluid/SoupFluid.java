@@ -71,29 +71,6 @@ public class SoupFluid extends BaseFlowingFluid {
 	public boolean isSource(FluidState p_207193_1_) {
 		return true;
 	}
-
-	public static StewInfo getInfo(FluidStack stack) {
-		if (stack.hasTag()) {
-			CompoundTag nbt = stack.getChildTag("soup");
-			if (nbt != null)
-				return new StewInfo(nbt);
-		}
-		return new StewInfo(Utils.getRegistryName(stack.getFluid()));
-	}
-
-	public static void setInfo(FluidStack stack, StewInfo si) {
-		if (!si.isEmpty())
-			stack.getOrCreateTag().put("soup", si.save());
-	}
-
-	public static List<FloatemStack> getItems(FluidStack stack) {
-		if (stack.hasTag()) {
-			CompoundTag nbt = stack.getChildTag("soup");
-			if (nbt != null)
-				return StewInfo.getStacks(nbt);
-		}
-		return Lists.newArrayList();
-	}
 	@Override
 	public int getAmount(FluidState p_207192_1_) {
 		return 0;
@@ -101,15 +78,6 @@ public class SoupFluid extends BaseFlowingFluid {
 
 	public SoupFluid(Properties properties) {
 		super(properties);
-	}
-
-	public static ResourceLocation getBase(FluidStack stack) {
-		if (stack.hasTag()) {
-			CompoundTag nbt = stack.getChildTag("soup");
-			if (nbt != null)
-				return new ResourceLocation(StewInfo.getRegName(nbt));
-		}
-		return Utils.getRegistryName(stack.getFluid());
 	}
 
 }

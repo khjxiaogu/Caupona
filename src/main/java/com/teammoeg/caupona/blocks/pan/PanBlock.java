@@ -57,18 +57,15 @@ public class PanBlock extends CPHorizontalEntityBlock<PanBlockEntity> {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
-			BlockHitResult hit) {
-		InteractionResult p = super.use(state, worldIn, pos, player, handIn, hit);
+	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
+		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
 		if (p.consumesAction())
 			return p;
 		PanBlockEntity blockEntity = (PanBlockEntity) worldIn.getBlockEntity(pos);
-		if (handIn == InteractionHand.MAIN_HAND) {
-			if (blockEntity != null && !worldIn.isClientSide)
-				((ServerPlayer) player).openMenu( blockEntity, blockEntity.getBlockPos());
-			return InteractionResult.SUCCESS;
-		}
-		return p;
+		
+		if (blockEntity != null && !worldIn.isClientSide)
+			((ServerPlayer) player).openMenu( blockEntity, blockEntity.getBlockPos());
+		return InteractionResult.sidedSuccess(worldIn.isClientSide);
 	}
 
 	@SuppressWarnings("deprecation")

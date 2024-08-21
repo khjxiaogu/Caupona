@@ -49,7 +49,7 @@ public class BowlFillCategory implements IRecipeCategory<RecipeHolder<BowlContai
 
 	public BowlFillCategory(IGuiHelper guiHelper) {
 		this.ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(CPItems.water_bowl.get()));
-		ResourceLocation guiMain = new ResourceLocation(CPMain.MODID, "textures/gui/jei/container_filling.png");
+		ResourceLocation guiMain = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/gui/jei/container_filling.png");
 		this.BACKGROUND = guiHelper.createDrawable(guiMain, 0, 0, 127, 63);
 	}
 

@@ -107,13 +107,13 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn,
+	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player,
 			BlockHitResult hit) {
-		InteractionResult p = super.use(state, worldIn, pos, player, handIn, hit);
+		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
 		if (p.consumesAction())
 			return p;
 		if (worldIn.getBlockEntity(pos) instanceof DishBlockEntity dish &&dish.internal != null && dish.internal.getItem() instanceof DishItem
-				&& dish.internal.isEdible()) {
+				&& dish.internal.getFoodProperties(null)!=null) {
 			FoodProperties fp = dish.internal.getFoodProperties(player);
 			if (dish.isInfinite) {
 				if (player.canEat(fp.canAlwaysEat())) {
@@ -142,7 +142,7 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		if (pLevel.getBlockEntity(pPos) instanceof DishBlockEntity dish) {
-			dish.internal = ItemHandlerHelper.copyStackWithSize(pStack, 1);
+			dish.internal = pStack.copyWithCount(1);
 		}
 	}
 
@@ -164,7 +164,7 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 	@Override
 	public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
 		if (pLevel.getBlockEntity(pPos) instanceof DishBlockEntity dish)
-			if (dish.internal != null && !dish.internal.isEmpty() && dish.internal.isEdible()) 
+			if (dish.internal != null && !dish.internal.isEmpty() && dish.internal.getFoodProperties(null)!=null) 
 				return 15;
 		
 		return 0;

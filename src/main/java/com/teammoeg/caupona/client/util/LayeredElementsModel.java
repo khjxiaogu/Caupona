@@ -46,7 +46,7 @@ public class LayeredElementsModel implements IUnbakedGeometry<LayeredElementsMod
 	}
 
 	@Override
-    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation)
+    public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides)
     {
 		try {
         TextureAtlasSprite particle = spriteGetter.apply(context.getMaterial("particle"));
@@ -56,7 +56,7 @@ public class LayeredElementsModel implements IUnbakedGeometry<LayeredElementsMod
         Builder builder = new LayeredBakedModel.Builder(context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(),
                 context.getTransforms(), overrides).particle(particle);
 
-        addQuads(context, builder, baker, spriteGetter, modelState, modelLocation);
+        addQuads(context, builder, baker, spriteGetter, modelState);
 
         return builder.build(renderTypes);
 		}catch(Exception ex) {
@@ -65,7 +65,7 @@ public class LayeredElementsModel implements IUnbakedGeometry<LayeredElementsMod
 		}
     }
 
-    protected void addQuads(IGeometryBakingContext context, Builder builder, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ResourceLocation modelLocation)
+    protected void addQuads(IGeometryBakingContext context, Builder builder, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState)
     {
         // If there is a root transform, undo the ModelState transform, apply it, then re-apply the ModelState transform.
         // This is necessary because of things like UV locking, which should only respond to the ModelState, and as such
@@ -85,8 +85,8 @@ public class LayeredElementsModel implements IUnbakedGeometry<LayeredElementsMod
             for (Direction direction : element.faces.keySet())
             {
                 BlockElementFace face = element.faces.get(direction);
-                TextureAtlasSprite sprite = spriteGetter.apply(context.getMaterial(face.texture));
-                BakedQuad quad = BlockModel.bakeFace(element, face, sprite, direction, modelState, modelLocation);
+                TextureAtlasSprite sprite = spriteGetter.apply(context.getMaterial(face.texture()));
+                BakedQuad quad = BlockModel.bakeFace(element, face, sprite, direction, modelState);
                 postTransform.processInPlace(quad);
                 builder.addUnculledFace(quad,groupNames);
             }
@@ -142,4 +142,6 @@ public class LayeredElementsModel implements IUnbakedGeometry<LayeredElementsMod
             return new LayeredElementsModel(elements,groups);
         }
     }
+
+
 }

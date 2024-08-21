@@ -23,6 +23,7 @@ package com.teammoeg.caupona.data.recipes.baseconditions;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.StewBaseCondition;
@@ -36,12 +37,12 @@ import net.minecraft.world.level.material.Fluid;
 
 public class FluidTag implements StewBaseCondition {
 	TagKey<Fluid> f;
-	public static final Codec<FluidTag> CODEC=RecordCodecBuilder
-		.create(c->c.group(ResourceLocation.CODEC.fieldOf("tag").forGetter(t->t.f.location())
+	public static final MapCodec<FluidTag> CODEC=RecordCodecBuilder
+		.mapCodec(c->c.group(ResourceLocation.CODEC.fieldOf("tag").forGetter(t->t.f.location())
 		).apply(c, FluidTag::new));
-	public FluidTag(JsonObject jo) {
-		f = FluidTags.create(new ResourceLocation(jo.get("tag").getAsString()));
-	}
+	/*public FluidTag(JsonObject jo) {
+		f = FluidTags.create(ResourceLocation.parse(jo.get("tag").getAsString()));
+	}*/
 
 	public FluidTag(ResourceLocation tag) {
 		super();
@@ -52,29 +53,16 @@ public class FluidTag implements StewBaseCondition {
 		f = tag;
 	}
 	@Override
-	public Integer apply(ResourceLocation t, ResourceLocation u) {
+	public Integer apply(Fluid t, Fluid u) {
 		return test(u) ? 2 : test(t) ? 1 : 0;
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean test(ResourceLocation t) {
-		Fluid f = BuiltInRegistries.FLUID.get(t);
-		if (f == null)
-			return false;
-
-		return f.is(this.f);
+	public boolean test(Fluid t) {
+		return t.is(this.f);
 	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public boolean test(Fluid f) {
-		if (f == null)
-			return false;
-
-		return f.is(this.f);
-	}
-
+/*
 	public JsonObject serialize() {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("tag", f.location().toString());
@@ -85,7 +73,7 @@ public class FluidTag implements StewBaseCondition {
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeResourceLocation(f.location());
 	}
-
+*/
 	public FluidTag(FriendlyByteBuf buffer) {
 		f = FluidTags.create(buffer.readResourceLocation());
 	}

@@ -26,10 +26,12 @@ import java.util.function.Function;
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.minecraft.Util;
@@ -63,7 +65,7 @@ public class GuiUtils {
 		FluidStack fluid = tank.getFluid();
 		transform.pushPose();
 
-		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(Tesselator.getInstance().getBuilder());
+		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(new ByteBufferBuilder(1536));
 		if (fluid != null && fluid.getFluid() != null) {
 			int fluidHeight = (int) (h * (fluid.getAmount() / (float) tank.getCapacity()));
 			drawRepeatedFluidSpriteGui(buffer, transform, fluid, x, y + h - fluidHeight, w, fluidHeight);
@@ -73,15 +75,15 @@ public class GuiUtils {
 	}
 
 	private static final Function<ResourceLocation, RenderType> GUI_CUTOUT = Util
-			.memoize(texture -> RenderType.create("gui_" + texture, DefaultVertexFormat.POSITION_COLOR_TEX, Mode.QUADS,
+			.memoize(texture -> RenderType.create("gui_" + texture, DefaultVertexFormat.POSITION_TEX_COLOR, Mode.QUADS,
 					256, false, false,
 					RenderType.CompositeState.builder().setTextureState(new TextureStateShard(texture, false, false))
-							.setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER).createCompositeState(false)));
+							.setShaderState(RenderStateShard.POSITION_COLOR_SHADER).createCompositeState(false)));
 
 	private static void buildVertex(VertexConsumer bu, PoseStack transform, float r, float g, float b, float a,
 			float p1, float p2, float u0, float u1, int light, int overlay) {
-		bu.vertex(transform.last().pose(), p1, p2, 0).color(r, g, b, a).uv(u0, u1).overlayCoords(overlay).uv2(light)
-				.normal(transform.last().normal(), 1, 1, 1).endVertex();
+		bu.addVertex(transform.last().pose(), p1, p2, 0).setColor(r, g, b, a).setUv(u0, u1).setOverlay(overlay).setLight(light)
+				.setNormal(1f, 1f, 1f);
 	}
 
 	public static void drawRepeatedFluidSpriteGui(MultiBufferSource.BufferSource buffer, PoseStack transform,

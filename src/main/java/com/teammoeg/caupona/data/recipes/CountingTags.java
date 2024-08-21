@@ -28,6 +28,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.SerializeUtil;
@@ -44,8 +45,8 @@ public class CountingTags extends IDataRecipe {
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
 	public List<ResourceLocation> tag;
-	public static final Codec<CountingTags> CODEC=
-			RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<CountingTags> CODEC=
+			RecordCodecBuilder.mapCodec(t->t.group(
 					Codec.list(ResourceLocation.CODEC).fieldOf("tags").forGetter(o->o.tag)
 					).apply(t, CountingTags::new));
 	@Override
@@ -66,13 +67,13 @@ public class CountingTags extends IDataRecipe {
 		super();
 		this.tag = tag;
 	}
-
+/*
 	public CountingTags(JsonObject jo) {
 		if (jo.has("tag"))
-			tag = ImmutableList.of(new ResourceLocation(jo.get("tag").getAsString()));
+			tag = ImmutableList.of(ResourceLocation.parse(jo.get("tag").getAsString()));
 		else if (jo.has("tags"))
 			tag = SerializeUtil.parseJsonElmList(jo.get("tags"), e -> new ResourceLocation(e.getAsString()));
-	}
+	}*/
 
 	public CountingTags(FriendlyByteBuf data) {
 		tag = SerializeUtil.readList(data, FriendlyByteBuf::readResourceLocation);

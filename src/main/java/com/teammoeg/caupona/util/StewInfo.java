@@ -25,11 +25,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.recipes.FluidFoodValueRecipe;
 import com.teammoeg.caupona.data.recipes.FoodValueRecipe;
 import com.teammoeg.caupona.item.StewItem;
@@ -44,18 +46,40 @@ import net.minecraft.world.food.FoodProperties.PossibleEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 
 public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
-	public static Codec<StewInfo> CODEC;
+	public static Codec<StewInfo> CODEC=RecordCodecBuilder.create(t->t.group(
+		spiceCodec(),
+		hasSpiceCodec(),
+		spiceNameCodec(),
+		Codec.list(FloatemStack.CODEC).fieldOf("items").forGetter(o->o.stacks),
+		Codec.list(MobEffectInstance.CODEC).fieldOf("effects").forGetter(o->o.effects),
+		Codec.list(ChancedEffect.CODEC).fieldOf("feffects").forGetter(o->o.foodeffect),
+		Codec.INT.fieldOf("heal").forGetter(o->o.healing),
+		Codec.FLOAT.fieldOf("sat").forGetter(o->o.saturation),
+		BuiltInRegistries.FLUID.byNameCodec().fieldOf("base").forGetter(o->o.base)
+		).apply(t, StewInfo::new));
 	public List<FloatemStack> stacks;
 	public List<MobEffectInstance> effects;
-	public List<PossibleEffect> foodeffect = new ArrayList<>();
+	public List<ChancedEffect> foodeffect = new ArrayList<>();
 	public int healing;
 	public float saturation;
-	public float shrinkedFluid = 0;
-	public ResourceLocation base;
+	public Fluid base;
+	
+	public StewInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName, List<FloatemStack> stacks, List<MobEffectInstance> effects,
+		List<ChancedEffect> foodeffect, int healing, float saturation, Fluid base) {
+		super(spice, hasSpice, spiceName);
+		this.stacks = new ArrayList<>(stacks);
+		this.effects = new ArrayList<>(effects);
+		this.foodeffect = new ArrayList<>(foodeffect);
+		this.healing = healing;
+		this.saturation = saturation;
+		this.base = base;
+	}
 	public StewInfo(List<FloatemStack> stacks, List<MobEffectInstance> effects, int healing, float saturation,
-			ResourceLocation base) {
+		Fluid base) {
 		super();
 		this.stacks = stacks;
 		this.effects = effects;
@@ -64,8 +88,14 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		this.base = base;
 	}
 
+	public StewInfo(Fluid fluid) {
+		this(new ArrayList<>(), new ArrayList<>(), 0, 0, fluid);
+	}
 	public StewInfo() {
-		this(new ArrayList<>(), new ArrayList<>(), 0, 0, ResourceLocation.withDefaultNamespace("water"));
+		this(new ArrayList<>(), new ArrayList<>(), 0, 0, Fluids.WATER);
+	}
+	public StewInfo copy() {
+		return new StewInfo(Optional.ofNullable(spice),hasSpice,Optional.ofNullable(spiceName),stacks.stream().map(t->t.copy()).collect(Collectors.toList()),effects.stream().map(t->new MobEffectInstance(t)).collect(Collectors.toList()),foodeffect.stream().map(t->t.copy()).collect(Collectors.toList()),healing,saturation,base);
 	}
 	public float getDensity() {
 		return stacks.stream().map(FloatemStack::getCount).reduce(0f, Float::sum);
@@ -109,11 +139,11 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 				}
 			}
 		}
-		for (PossibleEffect es : f.foodeffect) {
+		for (ChancedEffect es : f.foodeffect) {
 			boolean added = false;
-			for (PossibleEffect oes : foodeffect) {
-				if (es.probability() == oes.probability() && isEffectEquals(oes.effect(), es.effect())) {
-					oes.effect().duration += es.effect().duration * oparts / cparts;
+			for (ChancedEffect oes : foodeffect) {
+				if (oes.merge(es, oparts, cparts)) {
+		
 					added = true;
 					break;
 				}
@@ -122,7 +152,6 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 				foodeffect.add(es);
 			}
 		}
-		shrinkedFluid += f.shrinkedFluid * oparts / cparts;
 		for (FloatemStack fs : f.stacks) {
 			this.addItem(new FloatemStack(fs.getStack(), fs.count * oparts / cparts));
 		}
@@ -138,8 +167,8 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 	public void completeData() {
 		stacks.sort(Comparator.comparingInt(e -> Item.getId(e.stack.getItem())));
 		foodeffect.sort(
-				Comparator.<PossibleEffect,String>comparing(e -> e.effect().getEffect().getRegisteredName())
-						.thenComparing(e->e.probability()));
+				Comparator.<ChancedEffect,String>comparing(e -> e.effect.getEffect().getRegisteredName())
+						.thenComparing(e->e.chance));
 	}
 
 	public void completeEffects() {
@@ -177,20 +206,20 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 				nh += fvr.heal * fs.count;
 				ns += fvr.sat * fs.count * fvr.heal;
 				if(fvr.effects!=null)
-					foodeffect.addAll(fvr.effects);
+					fvr.effects.stream().map(ChancedEffect::new).forEach(foodeffect::add);
 				continue;
 			}
 			FoodProperties f = fs.getStack().getFoodProperties(null);
 			if (f != null) {
 				nh += fs.count * f.nutrition();
 				ns += fs.count * f.saturation() * f.nutrition();
-				foodeffect.addAll(f.effects());
+				f.effects().stream().map(ChancedEffect::new).forEach(foodeffect::add);
 			}
 		}
 		RecipeHolder<FluidFoodValueRecipe> ffvr = FluidFoodValueRecipe.recipes.get(this.base);
 		if (ffvr != null) {
-			nh += ffvr.value().heal * (1 + this.shrinkedFluid);
-			ns += ffvr.value().sat * (1 + this.shrinkedFluid);
+			nh += ffvr.value().heal * (1);
+			ns += ffvr.value().sat * (1);
 		}
 		float dense = this.getDensity();
 		/*
@@ -213,32 +242,22 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		for (FloatemStack fs : stacks) {
 			fs.setCount(fs.getCount() * oparts / parts);
 		}
-
 		for (MobEffectInstance es : effects) {
+			
 			es.duration = (int) (es.duration * oparts / parts);
 		}
-		for (PossibleEffect es : foodeffect) {
-			es.effect().duration = (int) (es.effect().duration * oparts / parts);
+		for (ChancedEffect es : foodeffect) {
+			es.adjustParts(oparts, parts);
 		}
 		float delta = 0;
 		if (oparts > parts)
 			delta = oparts - parts;
 		clearSpice();
-		shrinkedFluid = (shrinkedFluid * oparts + delta) / parts;
 		healing = (int) (healing * oparts / parts);
 		
 		saturation = saturation * oparts / parts;
 	}
 
-	public StewInfo(ResourceLocation base) {
-		this(new ArrayList<>(), new ArrayList<>(), 0, 0, base);
-	}
-
-
-
-	public static String getRegName(CompoundTag nbt) {
-		return nbt.getString("base");
-	}
 
 	public void addItem(ItemStack is, float parts) {
 		for (FloatemStack i : stacks) {
@@ -260,21 +279,6 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		stacks.add(is);
 	}
 
-	public void write(CompoundTag nbt) {
-		super.write(nbt);
-		nbt.put("items", SerializeUtil.toNBTList(stacks, FloatemStack::serializeNBT));
-		nbt.put("effects", SerializeUtil.toNBTList(effects, e -> e.save(new CompoundTag())));
-		nbt.put("feffects", SerializeUtil.toNBTList(foodeffect, e -> {
-			CompoundTag cnbt = new CompoundTag();
-			cnbt.put("effect", e.getFirst().save(new CompoundTag()));
-			cnbt.putFloat("chance", e.getSecond());
-			return cnbt;
-		}));
-		nbt.putInt("heal", healing);
-		nbt.putFloat("sat", saturation);
-		nbt.putString("base", base.toString());
-		nbt.putFloat("afluid", shrinkedFluid);
-	}
 
 	@Override
 	public List<FloatemStack> getStacks() {
@@ -300,8 +304,8 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		}
 		if (spice != null)
 			b.effect(()->new MobEffectInstance(spice), 1);
-		for (Pair<MobEffectInstance, Float> ef : foodeffect) {
-			b.effect(()->new MobEffectInstance(ef.getFirst()), ef.getSecond());
+		for (ChancedEffect ef : foodeffect) {
+			b.effect(ef.effectSupplier(), ef.chance);
 		}
 		b.nutrition(healing);
 		if(Float.isNaN(saturation))
@@ -313,45 +317,27 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		return b.build();
 	}
 	@Override
-	public List<Pair<Supplier<MobEffectInstance>, Float>> getEffects() {
-		List<Pair<Supplier<MobEffectInstance>, Float>> li=new ArrayList<>();
+	public List<PossibleEffect> getEffects() {
+		List<PossibleEffect> li=new ArrayList<>();
 		for (MobEffectInstance eff : effects) {
 			if (eff != null) {
-				li.add(Pair.of(()->new MobEffectInstance(eff), 1f));
+				
+				li.add(new PossibleEffect(()->new MobEffectInstance(eff), 1f));
 			}
 		}
 		if (spice != null)
-			li.add(Pair.of(()->new MobEffectInstance(spice), 1f));
-		for (Pair<MobEffectInstance, Float> ef : foodeffect) {
-			li.add(Pair.of(()->new MobEffectInstance(ef.getFirst()), ef.getSecond()));
+			li.add(new PossibleEffect(()->new MobEffectInstance(spice), 1f));
+		for (ChancedEffect ef : foodeffect) {
+			li.add(new PossibleEffect(ef.effectSupplier(), ef.chance));
 		}
 		return null;
-	}
-
-
-	@Override
-	public void read(CompoundTag nbt) {
-		super.read(nbt);
-		stacks = nbt.getList("items", 10).stream().map(e -> (CompoundTag) e).map(FloatemStack::new)
-			.collect(Collectors.toList());
-		effects = nbt.getList("effects", 10).stream().map(e -> (CompoundTag) e).map(MobEffectInstance::load)
-				.collect(Collectors.toList());
-		healing = nbt.getInt("heal");
-		saturation = nbt.getFloat("sat");
-		foodeffect = nbt.getList("feffects", 10).stream().map(e -> (CompoundTag) e)
-				.map(e -> new Pair<>(MobEffectInstance.load(e.getCompound("effect")), e.getFloat("chance")))
-				.collect(Collectors.toList());
-		base = new ResourceLocation(nbt.getString("base"));
-	
-		shrinkedFluid = nbt.getFloat("afluid");
-		
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(base, effects, foodeffect, healing, saturation, shrinkedFluid, stacks);
+		result = prime * result + Objects.hash(base, effects, foodeffect, healing, saturation, stacks);
 		return result;
 	}
 
@@ -362,7 +348,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		if (getClass() != obj.getClass()) return false;
 		StewInfo other = (StewInfo) obj;
 		return Objects.equals(base, other.base) && Objects.equals(effects, other.effects) && Objects.equals(foodeffect, other.foodeffect) && healing == other.healing
-			&& Float.floatToIntBits(saturation) == Float.floatToIntBits(other.saturation) && Float.floatToIntBits(shrinkedFluid) == Float.floatToIntBits(other.shrinkedFluid)
+			&& Float.floatToIntBits(saturation) == Float.floatToIntBits(other.saturation) 
 			&& Objects.equals(stacks, other.stacks);
 	}
 

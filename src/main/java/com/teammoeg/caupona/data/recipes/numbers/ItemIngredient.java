@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
@@ -38,16 +39,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class ItemIngredient implements CookIngredients {
-	public static final Codec<ItemIngredient> CODEC=
-		RecordCodecBuilder.create(t->t.group(Ingredient.CODEC.fieldOf("ingredient").forGetter(o->o.i),
+	public static final MapCodec<ItemIngredient> CODEC=
+		RecordCodecBuilder.mapCodec(t->t.group(Ingredient.CODEC.fieldOf("ingredient").forGetter(o->o.i),
 			Codec.STRING.optionalFieldOf("translation").forGetter(o->Optional.ofNullable(o.translation))).apply(t, ItemIngredient::new));
 	Ingredient i;
 	String translation="";
-	public ItemIngredient(JsonElement jo) {
-		i = Ingredient.fromJson(jo.getAsJsonObject().get("ingredient"),false);
-		if(jo.getAsJsonObject().has("description"))
-		translation=jo.getAsJsonObject().get("description").getAsString();
-	}
 
 	public ItemIngredient(Ingredient i) {
 		super();
@@ -74,16 +70,16 @@ public class ItemIngredient implements CookIngredients {
 		return i.test(stack.getStack());
 	}
 
-	@Override
+	/*@Override
 	public void write(FriendlyByteBuf buffer) {
-		i.toNetwork(buffer);
+		Ingredient.CONTENTS_STREAM_CODEC.encode(null, i);
 		buffer.writeUtf(translation);
 	}
 
 	public ItemIngredient(FriendlyByteBuf buffer) {
-		i = Ingredient.fromNetwork(buffer);
+		i = Ingredient.(buffer);
 		translation=buffer.readUtf();
-	}
+	}*/
 
 	@Override
 	public Stream<CookIngredients> getItemRelated() {

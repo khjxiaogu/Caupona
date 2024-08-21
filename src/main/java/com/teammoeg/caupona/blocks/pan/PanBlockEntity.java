@@ -42,7 +42,9 @@ import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -76,10 +78,8 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 	boolean isInfinite = false;
 	//output cache
 	boolean removesNBT;
-	public Item preout = Items.AIR;
+	public ItemStack preout = ItemStack.EMPTY;
 	public ItemStack sout = ItemStack.EMPTY;
-	public SauteedFoodInfo current;
-	public int oamount;
 	//Capabilities
 	public ItemStackHandler inv = new ItemStackHandler(12) {
 		@Override
@@ -168,7 +168,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 	}
 
 	@Override
-	public void readCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void readCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
 		working = nbt.getBoolean("working");
 		operate = nbt.getBoolean("operate");
 		rsstate = nbt.getBoolean("rsstate");
@@ -176,41 +176,33 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		processMax = nbt.getInt("processMax");
 		
 		if (nbt.contains("sout"))
-			sout = ItemStack.of(nbt.getCompound("sout"));
+			sout = ItemStack.parseOptional(ra,nbt.getCompound("sout"));
 		else
 			sout = ItemStack.EMPTY;
-		inv.deserializeNBT(nbt.getCompound("items"));
+		inv.deserializeNBT(ra,nbt.getCompound("items"));
 		if (!isClient) {
 			isInfinite =nbt.getBoolean("inf");
-			oamount = nbt.getInt("amount");
-			if (nbt.contains("cur"))
-				current = new SauteedFoodInfo(nbt.getCompound("cur"));
-			else
-				current = null;
 			removesNBT=nbt.getBoolean("removeNbt");
 		}
-		preout = BuiltInRegistries.ITEM.get(new ResourceLocation(nbt.getString("out")));
+		preout = ItemStack.parseOptional(ra,nbt.getCompound("result"));
 
 	}
 
 	@Override
-	public void writeCustomNBT(CompoundTag nbt, boolean isClient) {
+	public void writeCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
 		nbt.putBoolean("working", working);
 		nbt.putBoolean("operate", operate);
 		nbt.putBoolean("rsstate", rsstate);
 		nbt.putInt("process", process);
 		nbt.putInt("processMax", processMax);
-		nbt.put("sout", sout.save(new CompoundTag()));
-		nbt.put("items", inv.serializeNBT());
+		nbt.put("sout", sout.save(ra));
+		nbt.put("items", inv.serializeNBT(ra));
 		if (!isClient) {
-			nbt.putInt("amount", oamount);
 			nbt.putBoolean("inf",isInfinite);
-			if (current != null)
-				nbt.put("cur", current.save());
 			nbt.putBoolean("removeNbt",removesNBT);
 		}
-		nbt.putString("out", Utils.getRegistryName(preout).toString());
-
+		nbt.put("result",preout.save(ra));
+		
 	}
 
 	private ItemStack tryAddSpice(ItemStack fs) {
@@ -260,7 +252,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 					if(!isInfinite)
 						inv.setStackInSlot(10, tryAddSpice(sout.split(1)));
 					else
-						inv.setStackInSlot(10, tryAddSpice(ItemHandlerHelper.copyStackWithSize(sout, 1)));
+						inv.setStackInSlot(10, tryAddSpice(sout.copyWithCount(1)));
 					this.setChanged();
 				}
 			} else {
@@ -283,12 +275,9 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 	}
 
 	private void doWork() {
-		ItemStack is = new ItemStack(preout, oamount);
 		removesNBT=false;
-		current = null;
-		oamount = 0;
-		preout = Items.AIR;
-		sout = is;
+		sout = preout;
+		preout=ItemStack.EMPTY;
 	}
 
 	@SuppressWarnings("resource")
@@ -334,7 +323,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 					if (ois.isEmpty()) {
 						interninv.set(j, is.copy());
 						break;
-					} else if (ItemStack.isSameItemSameTags(ois, is)) {
+					} else if (ItemStack.isSameItemSameComponents(ois, is)) {
 						ois.setCount(ois.getCount() + is.getCount());
 						break;
 					}
@@ -390,12 +379,11 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		this.processMax = process = 0;
 		tpt = Math.max(CPConfig.SERVER.fryTimeBase.get(), tpt);
 		current.setParts(cook);
-		this.current=current;
-		this.preout=preout;
+		this.preout=new ItemStack(preout,cook);
+		this.preout.set(CPCapability.SAUTEED_INFO, current);
 		this.processMax=processMax;
 		this.removesNBT=removesNBT;
 		inv.getStackInSlot(9).shrink(cook);
-		oamount = cook;
 		if (this.getBlockState().is(CPBlocks.STONE_PAN.get()))
 			tpt *= 2;
 		processMax = tpt;

@@ -1,29 +1,29 @@
 package com.teammoeg.caupona.data;
 
-import java.util.function.Function;
+import com.mojang.serialization.MapCodec;
 
-import com.mojang.serialization.Codec;
-
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 
-public class Deserializer<U extends Writeable> {
+public class Deserializer<U> {
 	private int id;
-	public Codec<U> fromJson;
-	public Function<FriendlyByteBuf, U> fromPacket;
+	public MapCodec<U> fromJson;
+	public StreamCodec<ByteBuf, U> fromPacket;
 
-	public Deserializer(Codec<U> fromJson, Function<FriendlyByteBuf, U> fromPacket,int id) {
+	public Deserializer(MapCodec<U> fromJson, StreamCodec<FriendlyByteBuf, U> fromPacket,int id) {
 		super();
 		this.fromJson = fromJson;
-		this.fromPacket = fromPacket;
+		this.fromPacket = fromPacket.mapStream(FriendlyByteBuf::new);
 		this.id=id;
 	}
 
 	public U read(FriendlyByteBuf packet) {
-		return fromPacket.apply(packet);
+		return fromPacket.decode(packet);
 	}
 
-	public void write(FriendlyByteBuf packet, U obj) {
-		packet.writeByte(id);
-		obj.write(packet);
+	public int getId() {
+		return id;
 	}
+
 }

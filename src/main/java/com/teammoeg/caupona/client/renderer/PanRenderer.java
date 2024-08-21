@@ -64,8 +64,8 @@ public class PanRenderer implements BlockEntityRenderer<PanBlockEntity> {
 		Item torender = null;
 		if (!blockEntity.sout.isEmpty()) {
 			torender = blockEntity.sout.getItem();
-		} else if (!(blockEntity.preout == Items.AIR)) {
-			torender = blockEntity.preout;
+		} else if (!blockEntity.preout.isEmpty()) {
+			torender = blockEntity.preout.getItem();
 		} else {
 			ItemStack is = blockEntity.inv.getStackInSlot(10);
 			if (!is.isEmpty())

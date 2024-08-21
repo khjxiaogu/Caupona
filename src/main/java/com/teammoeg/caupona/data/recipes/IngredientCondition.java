@@ -29,7 +29,7 @@ import com.teammoeg.caupona.data.Writeable;
 
 import net.minecraft.resources.ResourceLocation;
 
-public interface IngredientCondition extends Predicate<IPendingContext>, Writeable, ITranlatable {
+public interface IngredientCondition extends Predicate<IPendingContext>, /*Writeable,*/ ITranlatable {
 
 	public String getType();
 

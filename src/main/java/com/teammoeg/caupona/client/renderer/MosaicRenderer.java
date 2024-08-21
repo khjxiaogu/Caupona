@@ -1,9 +1,13 @@
 package com.teammoeg.caupona.client.renderer;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.teammoeg.caupona.CPBlocks;
+import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicBlock;
+import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicData;
 import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicMaterial;
 import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicPattern;
 import net.minecraft.client.Minecraft;
@@ -30,15 +34,11 @@ public class MosaicRenderer extends BlockEntityWithoutLevelRenderer {
 	@Override
 	public void renderByItem(ItemStack is, ItemDisplayContext ctx, PoseStack matrixStack,
 			MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
-		CompoundTag tag=is.getTagElement("caupona:mosaic");
+		@Nullable MosaicData tag=is.get(CPCapability.MOSAIC_DATA);
 		if(tag==null)
 			return;
-		MosaicPattern pattern=MosaicPattern.valueOf(tag.getString("pattern"));
-		MosaicMaterial m1=MosaicMaterial.valueOf(tag.getString("mat1"));
-		MosaicMaterial m2=MosaicMaterial.valueOf(tag.getString("mat2"));
 		
-		BlockState bs=CPBlocks.MOSAIC.get().defaultBlockState();
-		bs=bs.setValue(MosaicBlock.MATERIAL_1, m1).setValue(MosaicBlock.MATERIAL_2, m2).setValue(MosaicBlock.PATTERN, pattern);
+		BlockState bs=tag.createBlock();
 		BlockRenderDispatcher rd = Minecraft.getInstance().getBlockRenderer();
 		//matrixStack.translate(1F, 0, 0);
 		//model.get()

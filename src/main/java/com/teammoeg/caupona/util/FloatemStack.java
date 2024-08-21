@@ -21,14 +21,21 @@
 
 package com.teammoeg.caupona.util;
 
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentHolder;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -69,14 +76,6 @@ public class FloatemStack {
 		return stack.copy();
 	}
 
-	public ItemStack getCraftingRemainingItem() {
-		return stack.getCraftingRemainingItem();
-	}
-
-	public boolean hasContainerItem() {
-		return stack.hasCraftingRemainingItem();
-	}
-
 	public CompoundTag serializeNBT(HolderLookup.Provider registry) {
 		CompoundTag cnbt = (CompoundTag) stack.save(registry);
 		cnbt.putFloat("th_countf", count);
@@ -89,10 +88,6 @@ public class FloatemStack {
 
 	public Item getItem() {
 		return stack.getItem();
-	}
-
-	public int getEntityLifespan(Level world) {
-		return stack.getEntityLifespan(world);
 	}
 
 	public CompoundTag write(CompoundTag nbt,HolderLookup.Provider registry) {
@@ -117,25 +112,11 @@ public class FloatemStack {
 		return stack.isDamageableItem();
 	}
 
-	public boolean isDamaged() {
-		return stack.isDamaged();
-	}
-
-	public int getDamage() {
-		return stack.getDamageValue();
-	}
-
-	public void setDamage(int damage) {
-		stack.setDamageValue(damage);
-	}
-
-	public int getMaxDamage() {
-		return stack.getMaxDamage();
-	}
-
-
 	public FloatemStack copy() {
 		return new FloatemStack(stack.copy(), this.count);
+	}
+	public FloatemStack copyWithCount(float count) {
+		return new FloatemStack(stack.copy(), count);
 	}
 
 	public boolean isItemEqual(ItemStack other) {
@@ -147,41 +128,12 @@ public class FloatemStack {
 		return stack.getDescriptionId();
 	}
 
-	public boolean hasTag() {
-		return stack.has(DataComponents.CUSTOM_DATA);
-	}
-
-	public CompoundTag getTagForRead() {
-		return stack.get(DataComponents.CUSTOM_DATA).copyTag();
-	}
 
 	public Stream<ResourceLocation> getTags() {
 		return stack.getTags().map(TagKey::location);
 	}
-
-	public void updateTag(Consumer<CompoundTag> update) {
-		CustomData data=stack.get(DataComponents.CUSTOM_DATA);
-		CompoundTag tag;
-		if(data!=null) {
-			tag=data.copyTag();
-		}else {
-			tag=new CompoundTag();
-		}
-		update.accept(tag);
-		CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
-	}
-
-
-	public void setTag(CompoundTag nbt) {
-		CustomData.set(DataComponents.CUSTOM_DATA, stack, nbt);
-	}
-
 	public Component getDisplayName() {
 		return stack.getHoverName();
-	}
-
-	public boolean hasEffect() {
-		return stack.hasFoil();
 	}
 
 	public Rarity getRarity() {
@@ -247,5 +199,45 @@ public class FloatemStack {
 		} else if (!equals(other.stack))
 			return false;
 		return true;
+	}
+
+	public <T> T get(DataComponentType<? extends T> component) {
+		return stack.get(component);
+	}
+
+	public <T> @Nullable T get(Supplier<? extends DataComponentType<? extends T>> type) {
+		return stack.get(type);
+	}
+
+	public <T> @Nullable T set(Supplier<? extends DataComponentType<? super T>> componentType, @Nullable T value) {
+		return stack.set(componentType, value);
+	}
+
+	public <T, U> @Nullable T update(Supplier<? extends DataComponentType<T>> componentType, T value, U updateContext, BiFunction<T, U, T> updater) {
+		return stack.update(componentType, value, updateContext, updater);
+	}
+
+	public <T> @Nullable T update(Supplier<? extends DataComponentType<T>> componentType, T value, UnaryOperator<T> updater) {
+		return stack.update(componentType, value, updater);
+	}
+
+	public void copyFrom(DataComponentHolder src, DataComponentType<?>... componentTypes) {
+		stack.copyFrom(src, componentTypes);
+	}
+
+	public void copyFrom(DataComponentHolder src, Supplier<? extends DataComponentType<?>>... componentTypes) {
+		stack.copyFrom(src, componentTypes);
+	}
+
+	public <T> T set(DataComponentType<? super T> component, T value) {
+		return stack.set(component, value);
+	}
+
+	public <T, U> T update(DataComponentType<T> component, T defaultValue, U updateValue, BiFunction<T, U, T> updater) {
+		return stack.update(component, defaultValue, updateValue, updater);
+	}
+
+	public <T> T update(DataComponentType<T> component, T defaultValue, UnaryOperator<T> updater) {
+		return stack.update(component, defaultValue, updater);
 	}
 }

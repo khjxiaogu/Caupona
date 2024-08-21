@@ -7,6 +7,8 @@ import java.util.Map;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.datagen.FileGenerator.FileOutput;
 
+import net.minecraft.resources.ResourceLocation;
+
 public class JavaFileOutput {
 	public class LineBuilder{
 		public class ParamBuilder<T>{
@@ -36,6 +38,12 @@ public class JavaFileOutput {
 				newInst(s);
 				return new ParamBuilder<>(this);
 			}
+			public ParamBuilder<ParamBuilder<T>> paramCall(String s) {
+				param();
+				literal(s);
+				return new ParamBuilder<>(this);
+			}
+			
 			public ParamBuilder<ParamBuilder<T>> paramNewInst(Class<?> s) {
 				param();
 				newInst(s);

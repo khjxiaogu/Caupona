@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import com.mojang.datafixers.Products.P3;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.RecordCodecBuilder.Instance;
 import com.mojang.serialization.codecs.RecordCodecBuilder.Mu;
 
@@ -48,7 +49,17 @@ public class SpicedFoodInfo{
 		return i.group(MobEffectInstance.CODEC.optionalFieldOf("spice").forGetter(o->Optional.ofNullable(o.spice)), Codec.BOOL.fieldOf("hasSpice").forGetter(o->o.hasSpice), ResourceLocation.CODEC.optionalFieldOf("spiceName").forGetter(o->Optional.ofNullable(o.spiceName)));
 		
 	}
-
+	public static <T extends SpicedFoodInfo> RecordCodecBuilder<T,Optional<MobEffectInstance>> spiceCodec() {
+		return MobEffectInstance.CODEC.optionalFieldOf("spice").<T>forGetter(o->Optional.ofNullable(o.spice));
+	}
+	public static <T extends SpicedFoodInfo> RecordCodecBuilder<T,Boolean> hasSpiceCodec() {
+		return Codec.BOOL.fieldOf("hasSpice").forGetter(o->o.hasSpice);
+	}
+	public static <T extends SpicedFoodInfo> RecordCodecBuilder<T,Optional<ResourceLocation>> spiceNameCodec() {
+		return ResourceLocation.CODEC.optionalFieldOf("spiceName").forGetter(o->Optional.ofNullable(o.spiceName));
+	}
+	
+	
 	public boolean addSpice(MobEffectInstance spice, ItemStack im) {
 		if (this.spice != null)
 			return false;

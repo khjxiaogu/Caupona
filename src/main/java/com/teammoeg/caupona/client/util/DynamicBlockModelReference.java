@@ -9,6 +9,7 @@ import com.teammoeg.caupona.CPMain;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -16,18 +17,18 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 public class DynamicBlockModelReference implements Supplier<BakedModel>,Function<ModelData,List<BakedQuad>>
 {
 
-	private final ResourceLocation name;
+	private final ModelResourceLocation name;
 	private static final RandomSource RANDOM_SOURCE=RandomSource.create();
 	static {
 		RANDOM_SOURCE.setSeed(42L);
 	}
 	public DynamicBlockModelReference(String name)
 	{
-		this.name = new ResourceLocation(CPMain.MODID, "block/dynamic/"+name);
+		this.name = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/dynamic/"+name));
 	}
 	public DynamicBlockModelReference(ResourceLocation rl)
 	{
-		this.name = rl;
+		this.name = ModelResourceLocation.standalone(rl);
 	}
 	@Override
 	public BakedModel get()

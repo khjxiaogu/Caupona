@@ -24,6 +24,7 @@ package com.teammoeg.caupona.data.recipes.numbers;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
@@ -37,8 +38,8 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemTag implements CookIngredients {
-	public static final Codec<ItemTag> CODEC=
-		RecordCodecBuilder.create(t->t.group(ResourceLocation.CODEC.fieldOf("tag").forGetter(o->o.tag)).apply(t, ItemTag::new));
+	public static final MapCodec<ItemTag> CODEC=
+		RecordCodecBuilder.mapCodec(t->t.group(ResourceLocation.CODEC.fieldOf("tag").forGetter(o->o.tag)).apply(t, ItemTag::new));
 	ResourceLocation tag;
 	public ItemTag(ResourceLocation tag) {
 		super();
@@ -56,7 +57,7 @@ public class ItemTag implements CookIngredients {
 	}
 
 
-	@Override
+/*	@Override
 	public void write(FriendlyByteBuf buffer) {
 		buffer.writeResourceLocation(tag);
 	}
@@ -64,7 +65,7 @@ public class ItemTag implements CookIngredients {
 	public ItemTag(FriendlyByteBuf buffer) {
 		tag = buffer.readResourceLocation();
 	}
-
+*/
 	@Override
 	public Stream<CookIngredients> getItemRelated() {
 		return Stream.of(this);

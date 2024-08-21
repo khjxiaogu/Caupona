@@ -67,6 +67,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmokingRecipe;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.EventPriority;
@@ -113,8 +114,7 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		for (SmokingRecipe sr : irs) {
 			if(sr.getIngredients().size()>0)
 			if (sr.getIngredients().get(0).test(iis)) {
-				SimpleContainer fake=new SimpleContainer(3);
-				fake.setItem(0,iis);
+				SingleRecipeInput fake=new SingleRecipeInput(iis);
 				ItemStack reslt = sr.assemble(fake,RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY));
 				if (DissolveRecipe.recipes.stream().anyMatch(e -> e.value().test(reslt)))
 					continue;
@@ -122,10 +122,10 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 					break;
 				FoodValueRecipe ret = addCookingTime(reslt.getItem(), reslt,added, irs, true);
 				FoodProperties of = reslt.getFoodProperties(null);
-				if (of != null && of.getNutrition() > ret.heal) {
-					ret.effects = of.getEffects();
-					ret.heal = of.getNutrition();
-					ret.sat = of.getSaturationModifier();
+				if (of != null && of.nutrition() > ret.heal) {
+					ret.effects = of.effects();
+					ret.heal = of.nutrition();
+					ret.sat = of.saturation();
 					ret.setRepersent(iis);
 				}
 				FoodValueRecipe.recipes.put(i, ret);
@@ -138,10 +138,10 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 			FoodValueRecipe ret = FoodValueRecipe.recipes.computeIfAbsent(i,
 					e -> new FoodValueRecipe(0,
 							0, iis, e));
-			if (of != null && of.getNutrition() > ret.heal) {
-				ret.effects = of.getEffects();
-				ret.heal = of.getNutrition();
-				ret.sat = of.getSaturationModifier();
+			if (of != null && of.nutrition() > ret.heal) {
+				ret.effects = of.effects();
+				ret.heal = of.nutrition();
+				ret.sat = of.saturation();
 				ret.setRepersent(iis);
 			}
 			return ret;

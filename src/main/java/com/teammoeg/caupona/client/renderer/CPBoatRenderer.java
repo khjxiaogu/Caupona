@@ -50,8 +50,8 @@ public class CPBoatRenderer extends BoatRenderer {
 		super(p_173936_, b);
 		
 		boatResources = Stream.of(CPBlocks.woods).collect(ImmutableMap.toImmutableMap(s -> s, s ->{
-			ModelPart mp=p_173936_.bakeLayer(new ModelLayerLocation(new ResourceLocation(CPMain.MODID, "boat/" + s), "main"));
-			return Pair.of(new ResourceLocation(CPMain.MODID, "textures/entity/boat/" + s + ".png"),(b?new ChestBoatModel(mp):new BoatModel(mp)));
+			ModelPart mp=p_173936_.bakeLayer(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "boat/" + s), "main"));
+			return Pair.of(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/entity/boat/" + s + ".png"),(b?new ChestBoatModel(mp):new BoatModel(mp)));
 				
 		}));
 

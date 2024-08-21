@@ -21,16 +21,14 @@
 
 package com.teammoeg.caupona.data.recipes.conditions;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
 import com.teammoeg.caupona.data.recipes.IPendingContext;
 import com.teammoeg.caupona.util.FloatemTagStack;
 
-import net.minecraft.network.FriendlyByteBuf;
-
 public class Mainly extends NumberedStewCondition {
-	public static final Codec<Mainly> CODEC=NumberedStewCondition.createCodec(Mainly::new);
+	public static final MapCodec<Mainly> CODEC=NumberedStewCondition.createCodec(Mainly::new);
 
 
 	public Mainly(CookIngredients number) {
@@ -45,7 +43,7 @@ public class Mainly extends NumberedStewCondition {
 				.allMatch(e -> e < n);
 	}
 
-
+/*
 	@Override
 	public void write(FriendlyByteBuf buffer) {
 		super.write(buffer);
@@ -53,7 +51,7 @@ public class Mainly extends NumberedStewCondition {
 
 	public Mainly(FriendlyByteBuf buffer) {
 		super(buffer);
-	}
+	}*/
 
 	@Override
 	public String getType() {

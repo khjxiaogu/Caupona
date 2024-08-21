@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPTags.Items;
 import com.teammoeg.caupona.data.IDataRecipe;
@@ -84,10 +85,10 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 	public Item output;
 	public boolean removeNBT=false;
 	public float count=2f;
-	public static final Codec<SauteedRecipe> CODEC=
-		RecordCodecBuilder.create(t->t.group(
-			Codec.optionalField("allow",Codec.list(Conditions.CODEC)).forGetter(o->Optional.ofNullable(o.allow)),
-			Codec.optionalField("deny",Codec.list(Conditions.CODEC)).forGetter(o->Optional.ofNullable(o.deny)),
+	public static final MapCodec<SauteedRecipe> CODEC=
+		RecordCodecBuilder.mapCodec(t->t.group(
+			Codec.list(Conditions.CODEC).optionalFieldOf("allow").forGetter(o->Optional.ofNullable(o.allow)),
+			Codec.list(Conditions.CODEC).optionalFieldOf("deny").forGetter(o->Optional.ofNullable(o.deny)),
 			Codec.INT.fieldOf("priority").forGetter(o->o.priority),
 			Codec.INT.fieldOf("time").forGetter(o->o.time),
 			BuiltInRegistries.ITEM.byNameCodec().fieldOf("output").forGetter(o->o.output),
@@ -95,7 +96,7 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 			Codec.FLOAT.fieldOf("ingredientPerDish").forGetter(o->o.count)
 				).apply(t, SauteedRecipe::new));
 
-
+/*
 	public SauteedRecipe(FriendlyByteBuf data) {
 		allow = SerializeUtil.readList(data, Conditions::of);
 		deny = SerializeUtil.readList(data, Conditions::of);
@@ -104,7 +105,7 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 		output = data.readById(BuiltInRegistries.ITEM);
 		removeNBT=data.readBoolean();
 		count=data.readFloat();
-	}
+	}*/
 	public SauteedRecipe(Optional<List<IngredientCondition>> allow, Optional<List<IngredientCondition>> deny,
 			int priority, int time, Item output,boolean removeNBT,float count) {
 		this.allow = allow.orElse(null);
@@ -115,7 +116,7 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 		this.removeNBT=removeNBT;
 		this.count=count;
 	}
-
+/*
 	public void write(FriendlyByteBuf data) {
 		SerializeUtil.writeList(data, allow, Conditions::write);
 		SerializeUtil.writeList(data, deny, Conditions::write);
@@ -125,7 +126,7 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 		data.writeBoolean(removeNBT);
 		data.writeFloat(count);
 	}
-
+*/
 	public boolean matches(PanPendingContext ctx) {
 		if (allow != null)
 			if (!allow.stream().allMatch(ctx::compute))

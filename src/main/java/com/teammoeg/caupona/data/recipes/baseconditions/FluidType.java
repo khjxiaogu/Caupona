@@ -22,7 +22,7 @@
 package com.teammoeg.caupona.data.recipes.baseconditions;
 
 import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.StewBaseCondition;
@@ -34,25 +34,25 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 
 public class FluidType implements StewBaseCondition {
-	ResourceLocation of;
-	public static final Codec<FluidType> CODEC=RecordCodecBuilder
-		.create(c->c.group(ResourceLocation.CODEC.fieldOf("fluid").forGetter(t->t.of)
+	Fluid of;
+	public static final MapCodec<FluidType> CODEC=RecordCodecBuilder
+		.mapCodec(c->c.group(BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(t->t.of)
 		).apply(c, FluidType::new));
-	public FluidType(JsonObject jo) {
-		of = new ResourceLocation(jo.get("fluid").getAsString());
-	}
-	public FluidType(ResourceLocation of) {
+	/*public FluidType(JsonObject jo) {
+		of = ResourceLocation.parse(jo.get("fluid").getAsString());
+	}*/
+	public FluidType(Fluid of) {
 		super();
 		this.of = of;
-	}
+	}/*
 
 	public FluidType(Fluid of) {
 		super();
 		this.of = Utils.getRegistryName(of);
 	}
-
+*/
 	@Override
-	public Integer apply(ResourceLocation t, ResourceLocation u) {
+	public Integer apply(Fluid t, Fluid u) {
 		return test(u) ? 2 : test(t) ? 1 : 0;
 	}
 
@@ -64,7 +64,7 @@ public class FluidType implements StewBaseCondition {
 	public boolean test(Fluid f) {
 		return Utils.getRegistryName(f).equals(of);
 	}
-
+/*
 	public JsonObject serialize() {
 		JsonObject jo = new JsonObject();
 		jo.addProperty("fluid", of.toString());
@@ -79,7 +79,7 @@ public class FluidType implements StewBaseCondition {
 	public FluidType(FriendlyByteBuf buffer) {
 		of = buffer.readResourceLocation();
 	}
-
+*/
 	@Override
 	public String getType() {
 		return "fluid";
@@ -110,7 +110,7 @@ public class FluidType implements StewBaseCondition {
 
 	@Override
 	public String getTranslation(TranslationProvider p) {
-		return p.getTranslation(BuiltInRegistries.FLUID.get(of).getFluidType().getDescriptionId());
+		return p.getTranslation(of.getFluidType().getDescriptionId());
 	}
 
 }

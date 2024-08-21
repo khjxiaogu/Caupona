@@ -24,6 +24,7 @@ package com.teammoeg.caupona.data.recipes;
 import java.util.Map;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.Utils;
@@ -57,26 +58,26 @@ public class BowlContainingRecipe extends IDataRecipe {
 
 	public Item bowl;
 	public Fluid fluid;
-	public static final Codec<BowlContainingRecipe> CODEC=
-			RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<BowlContainingRecipe> CODEC=
+			RecordCodecBuilder.mapCodec(t->t.group(
 					BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(o->o.bowl),
 					BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(o->o.fluid)
 					).apply(t, BowlContainingRecipe::new));
-
+/*
 	public BowlContainingRecipe(FriendlyByteBuf pb) {
 		bowl = pb.readById(BuiltInRegistries.ITEM);
 		fluid = pb.readById(BuiltInRegistries.FLUID);
-	}
+	}*/
 
 	public BowlContainingRecipe(Item bowl, Fluid fluid) {
 		this.bowl = bowl;
 		this.fluid = fluid;
-	}
+	}/*
 
 	public void write(FriendlyByteBuf pack) {
 		pack.writeId(BuiltInRegistries.ITEM, bowl);
 		pack.writeId(BuiltInRegistries.FLUID, fluid);
-	}
+	}*/
 
 
 	public ItemStack handle(Fluid f) {
@@ -91,7 +92,8 @@ public class BowlContainingRecipe extends IDataRecipe {
 
 	public ItemStack handle(FluidStack stack) {
 		ItemStack is = new ItemStack(bowl);
-		Utils.writeItemFluid(is, stack);
+		
+		is.applyComponents(stack.getComponents());
 		return is;
 	}
 }

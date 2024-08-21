@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.fluid.SoupFluid;
@@ -109,11 +110,11 @@ public class DoliumRecipe extends IDataRecipe {
 		this.extra = ext;
 		keepInfo = keep;
 	}
-	public static final Codec<DoliumRecipe> CODEC=
-			RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<DoliumRecipe> CODEC=
+			RecordCodecBuilder.mapCodec(t->t.group(
 					Codec.list(Utils.pairCodec("item",Ingredient.CODEC_NONEMPTY,"count", Codec.INT)).fieldOf("items").forGetter(o->o.items),
-					Codec.optionalField("container",Ingredient.CODEC).forGetter(o->Optional.ofNullable(o.extra)),
-					Codec.optionalField("base",ResourceLocation.CODEC).forGetter(o->Optional.ofNullable(o.base)),
+					Ingredient.CODEC.optionalFieldOf("container").forGetter(o->Optional.ofNullable(o.extra)),
+					ResourceLocation.CODEC.optionalFieldOf("base").forGetter(o->Optional.ofNullable(o.base)),
 					BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(o->o.fluid),
 					Codec.INT.fieldOf("amount").forGetter(o->o.amount),
 					Codec.FLOAT.fieldOf("density").forGetter(o->o.density),
@@ -161,7 +162,7 @@ public class DoliumRecipe extends IDataRecipe {
 			return false;
 
 		if (density != 0 || base != null) {
-			StewInfo info = SoupFluid.getInfo(f);
+			StewInfo info = Utils.getOrCreateInfo(f);
 			if (base != null && !info.base.equals(base))
 				return false;
 			if (info.getDensity() < density)
@@ -188,8 +189,8 @@ public class DoliumRecipe extends IDataRecipe {
 		ItemStack out = output.copy();
 		out.setCount(out.getCount() * times);
 		if (keepInfo) {
-			StewInfo info = SoupFluid.getInfo(f);
-			StewItem.setInfo(out, info);
+			StewInfo info = Utils.getOrCreateInfo(f);
+			Utils.setInfo(out, info);
 		}
 		f.shrink(times * amount);
 		return out;
@@ -229,14 +230,14 @@ public class DoliumRecipe extends IDataRecipe {
 		ItemStack out = output.copy();
 		out.setCount(out.getCount() * times);
 		if (keepInfo) {
-			StewInfo info = SoupFluid.getInfo(f);
-			StewItem.setInfo(out, info);
+			StewInfo info = Utils.getOrCreateInfo(f);
+			Utils.setInfo(out, info);
 		}
 		if (amount > 0)
 			f.shrink(times * amount);
 		return out;
 	}
-
+/*
 	public DoliumRecipe(FriendlyByteBuf data) {
 		items = SerializeUtil.readList(data, d -> Pair.of(Ingredient.fromNetwork(d), d.readVarInt()));
 		base = SerializeUtil.readOptional(data, FriendlyByteBuf::readResourceLocation).orElse(null);
@@ -261,6 +262,6 @@ public class DoliumRecipe extends IDataRecipe {
 		data.writeItem(output);
 		SerializeUtil.writeOptional(data, extra, Ingredient::toNetwork);
 	}
-
+*/
 
 }

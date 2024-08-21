@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -45,8 +46,8 @@ public class BoilingRecipe extends IDataRecipe {
 	public Fluid before;
 	public Fluid after;
 	public int time;
-	public static final Codec<BoilingRecipe> CODEC=
-			RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<BoilingRecipe> CODEC=
+			RecordCodecBuilder.mapCodec(t->t.group(
 					BuiltInRegistries.FLUID.byNameCodec().fieldOf("from").forGetter(o->o.before),
 					BuiltInRegistries.FLUID.byNameCodec().fieldOf("to").forGetter(o->o.after),
 					Codec.INT.fieldOf("time").forGetter(o->o.time)).apply(t, BoilingRecipe::new));
@@ -59,30 +60,29 @@ public class BoilingRecipe extends IDataRecipe {
 	public RecipeType<?> getType() {
 		return TYPE.get();
 	}
-
+/*
 
 	public BoilingRecipe(FriendlyByteBuf data) {
 		before = data.readById(BuiltInRegistries.FLUID);
 		after = data.readById(BuiltInRegistries.FLUID);
 		time = data.readVarInt();
 	}
-
+*/
 	public BoilingRecipe(Fluid before, Fluid after, int time) {
 		this.before = before;
 		this.after = after;
 		this.time = time;
 	}
-
+/*
 	public void write(FriendlyByteBuf data) {
 		data.writeId(BuiltInRegistries.FLUID,before);
 		data.writeId(BuiltInRegistries.FLUID,after);
 		data.writeVarInt(time);
 	}
-
+*/
 	public FluidStack handle(FluidStack org) {
 		FluidStack fs = new FluidStack(after, org.getAmount());
-		if (org.hasTag())
-			fs.setTag(org.getTag());
+		fs.applyComponents(org.getComponentsPatch());
 		return fs;
 	}
 }
