@@ -86,8 +86,8 @@ public class StewPotRenderer implements BlockEntityRenderer<StewPotBlockEntity> 
 			int col = attr0.getTintColor(fs);
 			Vector3f clr;
 			float alp = 1f;
-			if (blockEntity.become != null && blockEntity.processMax > 0) {
-				IClientFluidTypeExtensions attr1 = IClientFluidTypeExtensions.of(blockEntity.become);
+			if (blockEntity.output != null && blockEntity.processMax > 0) {
+				IClientFluidTypeExtensions attr1 = IClientFluidTypeExtensions.of(blockEntity.output.getFluid());
 				TextureAtlasSprite sprite2 = atlas.getSprite(attr1.getStillTexture(fs));
 				float proc = blockEntity.process * 1f / blockEntity.processMax;
 				clr = clr(col, attr1.getTintColor(fs), proc);

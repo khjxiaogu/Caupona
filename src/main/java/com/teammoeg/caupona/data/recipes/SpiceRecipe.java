@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.SerializeUtil;
@@ -61,8 +62,8 @@ public class SpiceRecipe extends IDataRecipe {
 	public Ingredient spice;
 	public MobEffectInstance effect;
 	public boolean canReactLead=false;
-	public static final Codec<SpiceRecipe> CODEC=
-			RecordCodecBuilder.create(t->t.group(
+	public static final MapCodec<SpiceRecipe> CODEC=
+			RecordCodecBuilder.mapCodec(t->t.group(
 					Ingredient.CODEC_NONEMPTY.fieldOf("spice").forGetter(o->o.spice),
 					MobEffectInstance.CODEC.fieldOf("effect").forGetter(o->o.effect),
 					Codec.BOOL.fieldOf("reacts_lead").forGetter(o->o.canReactLead)
