@@ -49,9 +49,6 @@ public class CounterDoliumRenderer implements BlockEntityRenderer<CounterDoliumB
 	}
 
 
-	private static Vector3f clr(int col) {
-		return new Vector3f((col >> 16 & 255) / 255.0f, (col >> 8 & 255) / 255.0f, (col & 255) / 255.0f);
-	}
 
 	@SuppressWarnings({ "deprecation", "resource" })
 	@Override
@@ -77,11 +74,10 @@ public class CounterDoliumRenderer implements BlockEntityRenderer<CounterDoliumB
 			TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
 					.getSprite(attr.getStillTexture(fs));
 			int col = attr.getTintColor(fs);
-			Vector3f clr;
 			float alp = 1f;
-			clr = clr(col);
-			GuiUtils.drawTexturedColoredRect(builder, matrixStack, .125f, .125f, .75f, .75f, clr.x(), clr.y(),
-					clr.z(), alp, sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(), combinedLightIn,
+			GuiUtils.drawTexturedColoredRect(builder, matrixStack, .125f, .125f, .75f, .75f,
+				(col >> 16 & 255) / 255.0f, (col >> 8 & 255) / 255.0f, (col & 255) / 255.0f, alp,
+				sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(), combinedLightIn,
 					combinedOverlayIn);
 
 			

@@ -31,6 +31,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.annotation.Nullable;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -44,14 +48,19 @@ import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.CPMain;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 /**
@@ -169,13 +178,13 @@ public class SerializeUtil {
             map.put(keyreader.apply(buffer), valuereader.apply(buffer));
         return map;
     }
-    public static <T> void writeCodec(FriendlyByteBuf pb, Codec<T> codec, T obj) {
-    	DataResult<Object> ob=codec.encodeStart(DataOps.COMPRESSED, obj);
+    public static <T> void writeCodec(RegistryFriendlyByteBuf pb, Codec<T> codec, T obj) {
+    	DataResult<Object> ob=codec.encodeStart(DataOps.COMPRESSED.toRegistryAccessable(pb), obj);
     	Optional<Object> ret=ob.resultOrPartial(CPMain.logger::error);
     	ObjectWriter.writeObject(pb,ret.get());
     }
-    public static <T> T readCodec(FriendlyByteBuf pb, Codec<T> codec) {
-    	DataResult<Pair<T, Object>> ob=codec.decode(DataOps.COMPRESSED, ObjectWriter.readObject(pb));
+    public static <T> T readCodec(RegistryFriendlyByteBuf pb, Codec<T> codec) {
+    	DataResult<Pair<T, Object>> ob=codec.decode(DataOps.COMPRESSED.toRegistryAccessable(pb), ObjectWriter.readObject(pb));
     	Optional<Pair<T, Object>> ret=ob.resultOrPartial(CPMain.logger::error);
     	return ret.get().getFirst();
     }
@@ -191,12 +200,12 @@ public class SerializeUtil {
 		buffer.writeVarInt(elms.size());
 		elms.entrySet().forEach(e -> func.accept(e, buffer));
 	}
-	public static <F extends FriendlyByteBuf,V> StreamCodec<F,V> toStreamCodec(Codec<V> codec){
+	public static <F extends RegistryFriendlyByteBuf,V> StreamCodec<F,V> toStreamCodec(Codec<V> codec){
 		return StreamCodec.of((b,v)->{
 			writeCodec(b,codec,v);
 		},(b)->readCodec(b,codec));
 	}
-	public static <F extends FriendlyByteBuf,V> StreamCodec<F,V> toStreamCodec(MapCodec<V> codec){
+	public static <F extends RegistryFriendlyByteBuf,V> StreamCodec<F,V> toStreamCodec(MapCodec<V> codec){
 		return StreamCodec.of((b,v)->{
 			writeCodec(b,codec.codec(),v);
 		},(b)->readCodec(b,codec.codec()));
@@ -222,5 +231,69 @@ public class SerializeUtil {
 				return "IdOrKeyCodec[registry="+registry+"]";
 			}
 		};
+	}
+	public static <T> Codec<T> fromRFBBStreamCodec(StreamCodec<RegistryFriendlyByteBuf, T> codec,@NonNull Codec<T> defaultCodec){
+		
+		return new Codec<T>() {
+
+			@Override
+			public <O> DataResult<O> encode(T input, DynamicOps<O> ops, O prefix) {
+				if(ops.compressMaps()&&ops instanceof IRegistryAccessable ra) {
+					ByteBuf data=Unpooled.buffer(512);
+					codec.mapStream(ra.decorator()).encode(data, input);
+					
+					return DataResult.success(ops.createByteList(data.nioBuffer()));
+				}
+				return defaultCodec.encode(input, ops, prefix);
+			}
+
+			@Override
+			public <O> DataResult<Pair<T, O>> decode(DynamicOps<O> ops, O input) {
+				if(ops.compressMaps()&&ops instanceof IRegistryAccessable ra) {
+				
+					return ops.getByteBuffer(input).map(Unpooled::wrappedBuffer).map(o->Pair.of(codec.mapStream(ra.decorator()).decode(o), input));
+					
+				}
+					
+				return defaultCodec.decode(ops,input);
+			}
+			public String toString() {
+				return "StreamCodecCodec[registry="+codec+"]";
+			}
+		};
+		//return fromStreamCodec(streamCodec.mapStream(RegistryFriendlyByteBuf.decorator(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY))),codec);
+	}
+	public static <T> Codec<T> fromFBBStreamCodec(StreamCodec<FriendlyByteBuf,T> codec,@Nullable Codec<T> defaultCodec){
+		return fromStreamCodec(codec.mapStream(FriendlyByteBuf::new),defaultCodec);
+	}
+	public static <T> Codec<T> fromStreamCodec(StreamCodec<ByteBuf,T> codec,@Nullable Codec<T> defaultCodec){
+		return new Codec<T>() {
+
+			@Override
+			public <O> DataResult<O> encode(T input, DynamicOps<O> ops, O prefix) {
+				if(ops.compressMaps()||defaultCodec==null) {
+					ByteBuf data=Unpooled.buffer(512);
+					codec.encode(data, input);
+					
+					return DataResult.success(ops.createByteList(data.nioBuffer()));
+				}
+				return defaultCodec.encode(input, ops, prefix);
+			}
+
+			@Override
+			public <O> DataResult<Pair<T, O>> decode(DynamicOps<O> ops, O input) {
+				if(ops.compressMaps()||defaultCodec==null) {
+				
+					return ops.getByteBuffer(input).map(Unpooled::wrappedBuffer).map(o->Pair.of(codec.decode(o), input));
+					
+				}
+					
+				return defaultCodec.decode(ops,input);
+			}
+			public String toString() {
+				return "StreamCodecCodec[registry="+codec+"]";
+			}
+		};
+		
 	}
 }

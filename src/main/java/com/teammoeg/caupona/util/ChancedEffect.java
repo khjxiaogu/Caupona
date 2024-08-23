@@ -11,7 +11,7 @@ import net.minecraft.world.food.FoodProperties.PossibleEffect;
 
 public class ChancedEffect {
 	public final static Codec<ChancedEffect> CODEC=RecordCodecBuilder.create(t->t.group(
-		MobEffectInstance.CODEC.fieldOf("effect").forGetter(o->o.effect),
+		SerializeUtil.fromRFBBStreamCodec(MobEffectInstance.STREAM_CODEC,MobEffectInstance.CODEC).fieldOf("effect").forGetter(o->o.effect),
 		Codec.FLOAT.fieldOf("chance").forGetter(o->o.chance)
 		).apply(t, ChancedEffect::new));
 	public MobEffectInstance effect;

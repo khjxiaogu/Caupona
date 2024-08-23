@@ -14,12 +14,13 @@ import com.teammoeg.caupona.util.SerializeUtil;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 
 public class Conditions {
 	private static DataDeserializerRegistry<IngredientCondition> numbers=new DataDeserializerRegistry<>();
 	public static final Codec<IngredientCondition> CODEC=numbers.createCodec();
-	public static final StreamCodec<ByteBuf,IngredientCondition> STREAM_CODEC=numbers.createStreamCodec();
+	public static final StreamCodec<RegistryFriendlyByteBuf,IngredientCondition> STREAM_CODEC=numbers.createStreamCodec();
 	static {
 		register("half",Halfs.class, Halfs.CODEC);
 		register("mainly",Mainly.class, Mainly.CODEC);
@@ -36,10 +37,10 @@ public class Conditions {
 		numbers.register(name,cls, rjson, SerializeUtil.toStreamCodec(rjson));
 	}
 	
-
+/*
 	public static IngredientCondition of(FriendlyByteBuf buffer) {
 		return numbers.of(buffer);
-	}
+	}*/
 
 	public static void checkConditions(Collection<IngredientCondition> allow) {
 		if(allow==null)return;

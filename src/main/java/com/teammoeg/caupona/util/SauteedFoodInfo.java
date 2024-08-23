@@ -40,16 +40,16 @@ import net.minecraft.world.item.ItemStack;
 public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 	public static final Codec<SauteedFoodInfo> CODEC=RecordCodecBuilder.create(o->codecStart(o)
 		.and(o.group(Codec.list(FloatemStack.CODEC).fieldOf("items").forGetter(i->i.stacks),
-			Codec.list(PossibleEffect.CODEC).fieldOf("effects").forGetter(i->i.foodeffect),
+			Codec.list(ChancedEffect.CODEC).fieldOf("effects").forGetter(i->i.foodeffect),
 			Codec.INT.fieldOf("heal").forGetter(i->i.healing),
 			Codec.FLOAT.fieldOf("sat").forGetter(i->i.saturation))
 		).apply(o, SauteedFoodInfo::new));
 	public List<FloatemStack> stacks;
-	public List<FoodProperties.PossibleEffect> foodeffect = new ArrayList<>();
+	public List<ChancedEffect> foodeffect = new ArrayList<>();
 	public int healing;
 	public float saturation;
 	
-	public SauteedFoodInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName, List<FloatemStack> stacks, List<PossibleEffect> foodeffect, int healing,
+	public SauteedFoodInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName, List<FloatemStack> stacks, List<ChancedEffect> foodeffect, int healing,
 		float saturation) {
 		super(spice, hasSpice, spiceName);
 		this.stacks = new ArrayList<>(stacks);
@@ -82,8 +82,8 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 		stacks.sort(Comparator.comparingInt(e -> Item.getId(e.stack.getItem())));
 		
 		foodeffect.sort(
-				Comparator.<FoodProperties.PossibleEffect,String>comparing(e -> e.effect().getEffect().getRegisteredName())
-						.thenComparing(e->e.probability()));
+				Comparator.<ChancedEffect,String>comparing(e -> e.effect.getEffect().getRegisteredName())
+						.thenComparing(e->e.chance));
 	}
 
 	public static boolean isEffectEquals(MobEffectInstance t1, MobEffectInstance t2) {
@@ -100,14 +100,14 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 				nh += fvr.heal * fs.count;
 				ns += fvr.sat * fs.count;
 				if(fvr.effects!=null)
-					foodeffect.addAll(fvr.effects);
+					fvr.effects.stream().map(ChancedEffect::new).forEach(foodeffect::add);
 				continue;
 			}
 			FoodProperties f = fs.getStack().getFoodProperties(null);
 			if (f != null) {
 				nh += fs.count * f.nutrition();
 				ns += fs.count * f.saturation();
-				foodeffect.addAll(f.effects());
+				f.effects().stream().map(ChancedEffect::new).forEach(foodeffect::add);;
 			}
 		}
 		int conv = (int) (0.075 * nh);
@@ -162,8 +162,8 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 
 		if (spice != null)
 			b.effect(()->new MobEffectInstance(spice), 1);
-		for (PossibleEffect ef : foodeffect) {
-			b.effect(()->ef.effect(), ef.probability());
+		for (ChancedEffect ef : foodeffect) {
+			b.effect(ef.effectSupplier(), ef.chance);
 		}
 		b.nutrition(healing);
 		if(Float.isNaN(saturation))
@@ -178,8 +178,8 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 		List<PossibleEffect> li=new ArrayList<>();
 		if (spice != null)
 			li.add(new PossibleEffect(()->new MobEffectInstance(spice), 1f));
-		for (PossibleEffect ef : foodeffect) {
-			li.add(new PossibleEffect(()->ef.effect(), ef.probability()));
+		for (ChancedEffect ef : foodeffect) {
+			li.add(new PossibleEffect(ef.effectSupplier(),ef.chance));
 		}
 		return null;
 	}

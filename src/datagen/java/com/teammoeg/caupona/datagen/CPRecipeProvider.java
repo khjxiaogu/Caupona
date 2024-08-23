@@ -320,7 +320,7 @@ public class CPRecipeProvider extends RecipeProvider {
 	}
 
 	private void simpleFood(BiConsumer<ResourceLocation, IDataRecipe> out, int h, float s, Item i) {
-		out.accept(rl("food/" + Utils.getRegistryName(i).getPath()), new FoodValueRecipe(h, s, new ItemStack(i), i));
+		out.accept(rl("food/" + Utils.getRegistryName(i).getPath()), new FoodValueRecipe(h, s*h*2, new ItemStack(i), i));
 	}
 
 	private StewRecipeBuilder cook(String s) {

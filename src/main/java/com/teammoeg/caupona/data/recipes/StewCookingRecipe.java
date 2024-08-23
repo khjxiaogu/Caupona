@@ -110,16 +110,16 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 			BuiltInRegistries.FLUID.byNameCodec().fieldOf("output").forGetter(o->o.output),
 			Codec.BOOL.fieldOf("removeNBT").forGetter(o->o.removeNBT)
 				).apply(t, StewCookingRecipe::new));
-	public StewCookingRecipe(FriendlyByteBuf data) {
-		allow = SerializeUtil.readList(data, Conditions::of);
-		deny = SerializeUtil.readList(data, Conditions::of);
-		priority = data.readVarInt();
-		density = data.readFloat();
-		time = data.readVarInt();
-		base = SerializeUtil.readList(data, BaseConditions::of);
-		output = data.readById(BuiltInRegistries.FLUID::byId);
-		removeNBT=data.readBoolean();
-	}
+//	public StewCookingRecipe(FriendlyByteBuf data) {
+//		allow = SerializeUtil.readList(data, Conditions::of);
+//		deny = SerializeUtil.readList(data, Conditions::of);
+//		priority = data.readVarInt();
+//		density = data.readFloat();
+//		time = data.readVarInt();
+//		base = SerializeUtil.readList(data, BaseConditions::of);
+//		output = data.readById(BuiltInRegistries.FLUID::byId);
+//		removeNBT=data.readBoolean();
+//	}
 
 	public StewCookingRecipe(Optional<List<IngredientCondition>> allow, Optional<List<IngredientCondition>> deny,
 			int priority, int time, float density, Optional<List<StewBaseCondition>> base, Fluid output,boolean removeNBT) {

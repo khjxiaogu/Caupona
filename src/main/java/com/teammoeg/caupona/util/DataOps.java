@@ -17,11 +17,16 @@ import java.util.stream.Stream;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.Decoder;
 import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Encoder;
 import com.mojang.serialization.Lifecycle;
 import com.mojang.serialization.ListBuilder;
 import com.mojang.serialization.MapLike;
 import com.mojang.serialization.RecordBuilder;
+
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 
 public class DataOps implements DynamicOps<Object> {
 	private static class LBuilder implements ListBuilder<Object> {
@@ -160,7 +165,255 @@ public class DataOps implements DynamicOps<Object> {
 	public static final DataOps INSTANCE = new DataOps(false);
 
 	public static final DataOps COMPRESSED = new DataOps(true);
+	
+	public static record RegisterFriendlyDataOps(DataOps op,RegistryAccess registryAccess,net.neoforged.neoforge.network.connection.ConnectionType connectionType)  implements DynamicOps<Object>, IRegistryAccessable{
+		public RegisterFriendlyDataOps(DataOps op,RegistryFriendlyByteBuf buf) {
+			this(op,buf.registryAccess(),buf.getConnectionType());
+		}
 
+		public Object createByte(byte value) {
+			return op.createByte(value);
+		}
+
+		public Object createShort(short value) {
+			return op.createShort(value);
+		}
+
+		public Object createInt(int value) {
+			return op.createInt(value);
+		}
+
+		public Object createLong(long value) {
+			return op.createLong(value);
+		}
+
+		public Object createFloat(float value) {
+			return op.createFloat(value);
+		}
+
+		public int hashCode() {
+			return op.hashCode();
+		}
+
+		public Object createDouble(double value) {
+			return op.createDouble(value);
+		}
+
+		public DataResult<Boolean> getBooleanValue(Object input) {
+			return op.getBooleanValue(input);
+		}
+
+		public Object createBoolean(boolean value) {
+			return op.createBoolean(value);
+		}
+
+		public boolean equals(Object obj) {
+			return op.equals(obj);
+		}
+
+		public boolean compressMaps() {
+			return op.compressMaps();
+		}
+
+		public <U> U convertTo(DynamicOps<U> outOps, Object input) {
+			return op.convertTo(outOps, input);
+		}
+
+		public Object createList(Stream<Object> input) {
+			return op.createList(input);
+		}
+
+		public Object createMap(Map<Object, Object> map) {
+			return op.createMap(map);
+		}
+
+		public Object createMap(Stream<Pair<Object, Object>> map) {
+			return op.createMap(map);
+		}
+
+		public Object createNumeric(Number i) {
+			return op.createNumeric(i);
+		}
+
+		public Object createString(String value) {
+			return op.createString(value);
+		}
+
+		public Object empty() {
+			return op.empty();
+		}
+
+		public Object emptyList() {
+			return op.emptyList();
+		}
+
+		public <E> Function<E, DataResult<Object>> withEncoder(Encoder<E> encoder) {
+			return op.withEncoder(encoder);
+		}
+
+		public Object emptyMap() {
+			return op.emptyMap();
+		}
+
+		public DataResult<byte[]> getByteArray(Object input) {
+			return op.getByteArray(input);
+		}
+
+		public <E> Function<Object, DataResult<Pair<E, Object>>> withDecoder(Decoder<E> decoder) {
+			return op.withDecoder(decoder);
+		}
+
+		public <E> Function<Object, DataResult<E>> withParser(Decoder<E> decoder) {
+			return op.withParser(decoder);
+		}
+
+		public DataResult<ByteBuffer> getByteBuffer(Object input) {
+			return op.getByteBuffer(input);
+		}
+
+		public DataResult<int[]> getIntArray(Object input) {
+			return op.getIntArray(input);
+		}
+
+		public DataResult<IntStream> getIntStream(Object input) {
+			return op.getIntStream(input);
+		}
+
+		public DataResult<Consumer<Consumer<Object>>> getList(Object input) {
+			return op.getList(input);
+		}
+
+		public DataResult<long[]> getLongArray(Object input) {
+			return op.getLongArray(input);
+		}
+
+		public DataResult<LongStream> getLongStream(Object input) {
+			return op.getLongStream(input);
+		}
+
+		public DataResult<MapLike<Object>> getMap(Object input) {
+			return op.getMap(input);
+		}
+
+		public DataResult<Consumer<BiConsumer<Object, Object>>> getMapEntries(Object input) {
+			return op.getMapEntries(input);
+		}
+
+		public DataResult<Stream<Pair<Object, Object>>> getMapValues(Object input) {
+			return op.getMapValues(input);
+		}
+
+		public DataResult<Number> getNumberValue(Object input) {
+			return op.getNumberValue(input);
+		}
+
+		public Number getNumberValue(Object input, Number defaultValue) {
+			return op.getNumberValue(input, defaultValue);
+		}
+
+		public DataResult<Stream<Object>> getStream(Object input) {
+			return op.getStream(input);
+		}
+
+		public DataResult<String> getStringValue(Object input) {
+			return op.getStringValue(input);
+		}
+
+		public ListBuilder<Object> listBuilder() {
+			return op.listBuilder();
+		}
+
+		public RecordBuilder<Object> mapBuilder() {
+			return op.mapBuilder();
+		}
+
+		public DataResult<Object> mergeToList(Object list, List<Object> values) {
+			return op.mergeToList(list, values);
+		}
+
+		public DataResult<Object> mergeToList(Object list, Object value) {
+			return op.mergeToList(list, value);
+		}
+
+		public DataResult<Object> mergeToMap(Object map, Map<Object, Object> values) {
+			return op.mergeToMap(map, values);
+		}
+
+		public DataResult<Object> mergeToMap(Object map, MapLike<Object> values) {
+			return op.mergeToMap(map, values);
+		}
+
+		public DataResult<Object> mergeToMap(Object map, Object key, Object value) {
+			return op.mergeToMap(map, key, value);
+		}
+
+		public DataResult<Object> mergeToPrimitive(Object prefix, Object value) {
+			return op.mergeToPrimitive(prefix, value);
+		}
+
+		public Object remove(Object input, String key) {
+			return op.remove(input, key);
+		}
+
+		public <U> U convertMap(DynamicOps<U> outOps, Object input) {
+			return op.convertMap(outOps, input);
+		}
+
+		public DataResult<Object> get(Object input, String key) {
+			return op.get(input, key);
+		}
+
+		public DataResult<Object> getGeneric(Object input, Object key) {
+			return op.getGeneric(input, key);
+		}
+
+		public Object set(Object input, String key, Object value) {
+			return op.set(input, key, value);
+		}
+
+		public Object update(Object input, String key, Function<Object, Object> function) {
+			return op.update(input, key, function);
+		}
+
+		public Object updateGeneric(Object input, Object key, Function<Object, Object> function) {
+			return op.updateGeneric(input, key, function);
+		}
+
+		public String toString() {
+			return op.toString();
+		}
+
+		public Object createByteList(ByteBuffer input) {
+			return op.createByteList(input);
+		}
+
+		public Object createIntList(IntStream input) {
+			return op.createIntList(input);
+		}
+
+		public Object createLongList(LongStream input) {
+			return op.createLongList(input);
+		}
+
+		public <U> U convertList(DynamicOps<U> outOps, Object input) {
+			return op.convertList(outOps, input);
+		}
+
+
+		@Override
+		public RegistryAccess registryAccess() {
+			return registryAccess;
+		}
+
+		@Override
+		public net.neoforged.neoforge.network.connection.ConnectionType connectionType() {
+			return connectionType;
+		}
+	    
+	}
+	public DynamicOps<Object> toRegistryAccessable(RegistryFriendlyByteBuf buf) {
+		return new RegisterFriendlyDataOps(this,buf);
+	}
 	public static final Object NULLTAG = new Object() {
 		public String toString() {
 			return "nulltag";

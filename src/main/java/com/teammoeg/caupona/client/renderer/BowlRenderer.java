@@ -50,9 +50,6 @@ public class BowlRenderer implements BlockEntityRenderer<BowlBlockEntity> {
 	public BowlRenderer(BlockEntityRendererProvider.Context rendererDispatcherIn) {
 	}
 
-	private static Vector3f clr(int col) {
-		return new Vector3f((col >> 16 & 255) / 255.0f, (col >> 8 & 255) / 255.0f, (col & 255) / 255.0f);
-	}
 
 	@SuppressWarnings({ "deprecation", "resource" })
 	@Override
@@ -78,11 +75,13 @@ public class BowlRenderer implements BlockEntityRenderer<BowlBlockEntity> {
 					.getSprite(attr.getStillTexture(fs));
 			int col = attr.getTintColor(fs);
 
-			Vector3f clr;
+
 			float alp = 1f;
-			clr = clr(col);
-			GuiUtils.drawTexturedColoredRect(builder, matrixStack, .28125f, .28125f, .4375f, .4375f,clr.x(),
-					clr.y(), clr.z(), alp, sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(),
+
+			GuiUtils.drawTexturedColoredRect(builder, matrixStack,
+				.28125f, .28125f, .4375f, .4375f,
+				(col >> 16 & 255) / 255.0f, (col >> 8 & 255) / 255.0f, (col & 255) / 255.0f, alp,
+				sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(),
 					combinedLightIn, combinedOverlayIn);
 
 		}

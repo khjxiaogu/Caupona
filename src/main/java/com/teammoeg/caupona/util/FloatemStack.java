@@ -45,7 +45,7 @@ import net.minecraft.world.item.Rarity;
 public class FloatemStack {
 	ItemStack stack;
 	float count;
-	public static final Codec<FloatemStack> CODEC=RecordCodecBuilder.create(o->o.group(ItemStack.CODEC.fieldOf("item").forGetter(i->i.stack)
+	public static final Codec<FloatemStack> CODEC=RecordCodecBuilder.create(o->o.group(SerializeUtil.fromRFBBStreamCodec(ItemStack.STREAM_CODEC,ItemStack.CODEC).fieldOf("item").forGetter(i->i.stack)
 		,Codec.FLOAT.fieldOf("count").forGetter(i->i.count))
 		.apply(o, FloatemStack::new)
 		

@@ -104,6 +104,7 @@ public class FluidFoodValueRecipe extends IDataRecipe {
 			ResourceLocation f) {
 		this.heal = heal;
 		this.sat = sat;
+		if(repersent!=null)
 		this.repersent =  Ingredient.of(repersent);
 		this.parts = parts;
 		this.f = f;

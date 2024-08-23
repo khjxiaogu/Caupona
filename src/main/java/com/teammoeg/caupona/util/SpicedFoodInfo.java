@@ -46,7 +46,7 @@ public class SpicedFoodInfo{
 	}
 	
 	public static <P extends SpicedFoodInfo> P3<Mu<P>, Optional<MobEffectInstance>, Boolean, Optional<ResourceLocation>>  codecStart(Instance<P> i) {
-		return i.group(MobEffectInstance.CODEC.optionalFieldOf("spice").forGetter(o->Optional.ofNullable(o.spice)), Codec.BOOL.fieldOf("hasSpice").forGetter(o->o.hasSpice), ResourceLocation.CODEC.optionalFieldOf("spiceName").forGetter(o->Optional.ofNullable(o.spiceName)));
+		return i.group(SerializeUtil.fromRFBBStreamCodec(MobEffectInstance.STREAM_CODEC,MobEffectInstance.CODEC).optionalFieldOf("spice").forGetter(o->Optional.ofNullable(o.spice)), Codec.BOOL.fieldOf("hasSpice").forGetter(o->o.hasSpice), ResourceLocation.CODEC.optionalFieldOf("spiceName").forGetter(o->Optional.ofNullable(o.spiceName)));
 		
 	}
 	public static <T extends SpicedFoodInfo> RecordCodecBuilder<T,Optional<MobEffectInstance>> spiceCodec() {

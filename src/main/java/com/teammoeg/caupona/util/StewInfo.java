@@ -51,12 +51,14 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		hasSpiceCodec(),
 		spiceNameCodec(),
 		Codec.list(FloatemStack.CODEC).fieldOf("items").forGetter(o->o.stacks),
-		Codec.list(MobEffectInstance.CODEC).fieldOf("effects").forGetter(o->o.effects),
+		Codec.list(SerializeUtil.fromRFBBStreamCodec(MobEffectInstance.STREAM_CODEC,MobEffectInstance.CODEC)).fieldOf("effects").forGetter(o->o.effects),
 		Codec.list(ChancedEffect.CODEC).fieldOf("feffects").forGetter(o->o.foodeffect),
 		Codec.INT.fieldOf("heal").forGetter(o->o.healing),
 		Codec.FLOAT.fieldOf("sat").forGetter(o->o.saturation),
-		BuiltInRegistries.FLUID.byNameCodec().fieldOf("base").forGetter(o->o.base)
+		SerializeUtil.idOrKey(BuiltInRegistries.FLUID).fieldOf("base").forGetter(o->o.base)
 		).apply(t, StewInfo::new));
+	
+	
 	public List<FloatemStack> stacks;
 	public List<MobEffectInstance> effects;
 	public List<ChancedEffect> foodeffect = new ArrayList<>();
