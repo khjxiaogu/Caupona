@@ -7,8 +7,6 @@ import java.util.Map;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.datagen.FileGenerator.FileOutput;
 
-import net.minecraft.resources.ResourceLocation;
-
 public class JavaFileOutput {
 	public class LineBuilder{
 		public class ParamBuilder<T>{

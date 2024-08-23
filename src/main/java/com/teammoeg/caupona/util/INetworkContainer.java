@@ -22,7 +22,6 @@
 package com.teammoeg.caupona.util;
 
 import com.teammoeg.caupona.network.ContainerDataMessage;
-import com.teammoeg.caupona.network.PacketHandler;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,0 +1,16 @@
+{
+  "type": "caupona:spice",
+  "effect": {
+    "duration": 200,
+    "id": "minecraft:slow_falling",
+    "neoforge:cures": [
+      "protected_by_totem",
+      "milk"
+    ],
+    "show_icon": true
+  },
+  "reacts_lead": false,
+  "spice": {
+    "item": "caupona:chives_spice_jar"
+  }
+}

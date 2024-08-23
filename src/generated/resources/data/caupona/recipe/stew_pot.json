@@ -6,5 +6,8 @@
   "ingredient": {
     "item": "caupona:clay_cistern"
   },
-  "result": "caupona:stew_pot"
+  "result": {
+    "count": 1,
+    "id": "caupona:stew_pot"
+  }
 }

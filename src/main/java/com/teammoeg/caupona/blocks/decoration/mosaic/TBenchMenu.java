@@ -11,7 +11,6 @@ import com.teammoeg.caupona.CPGui;
 import com.teammoeg.caupona.CPTags;
 import com.teammoeg.caupona.container.CPBaseContainer;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

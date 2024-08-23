@@ -28,7 +28,6 @@ import com.teammoeg.caupona.util.FloatemTagStack;
 import com.teammoeg.caupona.util.ResultCachingMap;
 import com.teammoeg.caupona.util.StewInfo;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 
 /**

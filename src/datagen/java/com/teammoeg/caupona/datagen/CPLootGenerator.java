@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 import com.google.common.collect.ImmutableSet;
@@ -36,12 +37,15 @@ import net.minecraft.advancements.critereon.BlockPredicate;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.data.loot.packs.VanillaLootTableProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -50,7 +54,6 @@ import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -63,19 +66,19 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class CPLootGenerator extends LootTableProvider {
 
-	public CPLootGenerator(DataGenerator dataGeneratorIn) {
-		super(dataGeneratorIn.getPackOutput(), Set.of(), VanillaLootTableProvider.create(dataGeneratorIn.getPackOutput()).getTables());
+	public CPLootGenerator(DataGenerator dataGeneratorIn,CompletableFuture<HolderLookup.Provider> provider) {
+		super(dataGeneratorIn.getPackOutput(), Set.of(), VanillaLootTableProvider.create(dataGeneratorIn.getPackOutput(), provider).getTables(),provider);
 	}
 
 	@Override
 	public List<SubProviderEntry> getTables() {
-		return Arrays.asList(new SubProviderEntry(() -> new LTBuilder(), LootContextParamSets.BLOCK),new SubProviderEntry(() -> new OTHBuilder(), LootContextParamSets.CHEST));
+		return Arrays.asList(new SubProviderEntry(LTBuilder::new, LootContextParamSets.BLOCK),new SubProviderEntry(OTHBuilder::new, LootContextParamSets.CHEST));
 	}
 	static Block cp(String name) {
-		return BuiltInRegistries.BLOCK.get(new ResourceLocation(CPMain.MODID, name));
+		return BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, name));
 	}
 	static Item cpi(String name) {
-		return BuiltInRegistries.ITEM.get(new ResourceLocation(CPMain.MODID, name));
+		return BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, name));
 	}
 	/*@Override
 	protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationcontext) {
@@ -85,18 +88,21 @@ public class CPLootGenerator extends LootTableProvider {
 		});
 		//map.forEach((name, table) -> LootTables.validate(validationtracker, name, table));
 	}*/
-	public static final ResourceLocation ASSES=CPMain.rl("asses");
+	public static final ResourceKey<LootTable> ASSES=ResourceKey.create(Registries.LOOT_TABLE, CPMain.rl("asses"));
 	private static class OTHBuilder implements LootTableSubProvider {
 
+		public OTHBuilder(HolderLookup.Provider registry) {
+		}
+
 		@Override
-		public void generate(BiConsumer<ResourceLocation, Builder> receiver) {
+		public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> receiver) {
 			receiver.accept(ASSES, LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(cpi("asses"))).when(LootItemRandomChanceCondition.randomChance(0.2f)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 5.0f)))));
 		}
 		
 	}
 	private static class LTBuilder extends VanillaBlockLoot {
-		protected LTBuilder() {
-			super();
+		protected LTBuilder(HolderLookup.Provider registry) {
+			super(registry);
 		}
 
 		@Override

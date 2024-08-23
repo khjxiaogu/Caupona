@@ -1,12 +1,16 @@
 package com.teammoeg.caupona.datagen;
 
+import java.util.concurrent.CompletableFuture;
+
 import com.google.common.collect.ImmutableSet;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.loot.AddPoolLootModifier;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.GlobalLootModifierProvider;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
@@ -14,13 +18,13 @@ import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
 public class CPGlobalLootModifiersGenerator extends GlobalLootModifierProvider {
 
-	public CPGlobalLootModifiersGenerator(PackOutput output, ExistingFileHelper helper, String name) {
-		super(output, CPMain.MODID);
+	public CPGlobalLootModifiersGenerator(PackOutput output,CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper helper, String name) {
+		super(output,provider, CPMain.MODID);
 	}
 
 	@Override
 	protected void start() {
-		for(ResourceLocation table:ImmutableSet.of(
+		for(ResourceKey<LootTable> table:ImmutableSet.of(
 				BuiltInLootTables.ABANDONED_MINESHAFT,
 				BuiltInLootTables.BURIED_TREASURE,
 				BuiltInLootTables.ANCIENT_CITY,
@@ -36,7 +40,7 @@ public class CPGlobalLootModifiersGenerator extends GlobalLootModifierProvider {
 				BuiltInLootTables.UNDERWATER_RUIN_SMALL,
 				BuiltInLootTables.WOODLAND_MANSION
 				)) {
-			this.add(table.getPath(), AddPoolLootModifier.builder(CPLootGenerator.ASSES).when(LootTableIdCondition.builder(table)).build());
+			this.add(table.location().getPath(), AddPoolLootModifier.builder(CPLootGenerator.ASSES.location()).when(LootTableIdCondition.builder(table.location())).build());
 		}
 	}
 }

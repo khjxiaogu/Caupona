@@ -23,8 +23,6 @@ package com.teammoeg.caupona.item;
 
 import java.util.List;
 
-import org.apache.commons.compress.harmony.pack200.Codec;
-
 import com.teammoeg.caupona.util.IInfinitable;
 import com.teammoeg.caupona.util.TabType;
 import com.teammoeg.caupona.util.Utils;
@@ -34,7 +32,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
 
 public class Chronoconis extends CPItem {
 

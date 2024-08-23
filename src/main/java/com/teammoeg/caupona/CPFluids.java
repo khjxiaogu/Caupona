@@ -23,13 +23,11 @@ package com.teammoeg.caupona;
 
 import java.util.Arrays;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableSet;
 import com.teammoeg.caupona.fluid.SoupFluid;
-import com.teammoeg.caupona.generated.CPStewTexture;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -37,7 +35,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -50,39 +47,13 @@ public class CPFluids {
 		int c;
 
 		public TextureColorPair(ResourceLocation t, int c) {
-			super();
 			this.texture = t;
 			this.c = c;
 		}
 		public FluidType create(String n){
-			ResourceLocation rt=CPStewTexture.texture.getOrDefault(n, texture);
-			int cx=CPStewTexture.texture.containsKey(n)?0xffffffff:c;
+
 			FluidType ft=new FluidType(FluidType.Properties.create().viscosity(1200)
-					.temperature(333).rarity(Rarity.UNCOMMON).descriptionId("item."+CPMain.MODID+"."+n)) {
-
-						@Override
-						public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
-							consumer.accept(new IClientFluidTypeExtensions() {
-
-								@Override
-								public int getTintColor() {
-									return cx;
-								}
-
-								@Override
-								public ResourceLocation getStillTexture() {
-									return rt;
-								}
-
-								@Override
-								public ResourceLocation getFlowingTexture() {
-									return rt;
-								}
-								
-							});
-						}
-				
-			};
+					.temperature(333).rarity(Rarity.UNCOMMON).descriptionId("item."+CPMain.MODID+"."+n));
 
 			return ft;
 		}
@@ -117,7 +88,8 @@ public class CPFluids {
 	}
 	static {
 		for (String i : CPItems.soups) {
-			DeferredHolder<FluidType,FluidType> type=FLUID_TYPES.register(i,()->new TextureColorPair(CPStewTexture.texture.getOrDefault(i, STILL_SOUP_TEXTURE),0xffffffff).create(i));
+			DeferredHolder<FluidType,FluidType> type=FLUID_TYPES.register(i,()->new FluidType(FluidType.Properties.create().viscosity(1200)
+				.temperature(333).rarity(Rarity.UNCOMMON).descriptionId("item."+CPMain.MODID+"."+i)));
 			LazySupplier<Fluid> crf=new LazySupplier<>();
 			crf.setVal(FLUIDS.register(i,
 					() -> new SoupFluid(new BaseFlowingFluid.Properties(type, crf,
@@ -135,9 +107,9 @@ public class CPFluids {
 		public void setVal(Supplier<T> val) {
 			this.val = val;
 		}
-		
-		
-	} 
+
+
+	}
 	public static Set<String> getSoupfluids() {
 		return ImmutableSet.copyOf(CPItems.soups);
 	}

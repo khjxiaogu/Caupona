@@ -31,7 +31,7 @@ public class ChancedEffect {
 		return new ChancedEffect(new MobEffectInstance(effect),chance);
 	}
 	public boolean merge(ChancedEffect other,float otherCount,float thisCount) {
-		if(this.isEffectEquals(this.effect,other.effect)) {
+		if(isEffectEquals(this.effect,other.effect)) {
 			if(this.effect.equals(other.effect)||BuiltInRegistries.MOB_EFFECT.get(this.effect.getEffect().getKey()).isInstantenous()) {
 				this.chance+=other.chance* otherCount / thisCount;
 			}else{

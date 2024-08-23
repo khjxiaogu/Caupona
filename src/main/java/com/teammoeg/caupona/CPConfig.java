@@ -88,12 +88,12 @@ public class CPConfig {
 		public ConfigValue<Integer> bathRange;
 		public ConfigValue<Boolean> genCH;
 		public ConfigValue<Boolean> strictWater;
-		
+
 		public ConfigValue<Double> benefitialMod;
 		public ConfigValue<Double> harmfulMod;
-		
+
 		public ConfigValue<Double> leadenGenRate;
-		
+
 		public ConfigValue<Boolean> addManual;
 		Server(ModConfigSpec.Builder builder) {
 			builder.push("recipes");
@@ -107,7 +107,7 @@ public class CPConfig {
 			containerTick = builder.comment("Tick interval between container input check").defineInRange("containTick",
 					10, 1, Integer.MAX_VALUE);
 			builder.pop();
-			
+
 			builder.push("chimney");
 			chimneyTicks = builder.comment("How many ticks does a chimney pot needed to make a soot")
 					.define("ChimneySootTicks", 80);

@@ -136,14 +136,17 @@ public class ObjectWriter {
 		}
     	case 15:return new ArrayList<>();
     	}
-    	return DataOps.NULLTAG;
+    	return null;
     }
     public static void writeObject(FriendlyByteBuf pb,Object input) {
+    	System.out.println("written="+input);
     	TypedValue value=getTyped(input);
     	pb.writeByte(value.type);
     	writeTyped(pb,value);
     }
     public static Object readObject(FriendlyByteBuf pb) {
-    	return readWithType(pb.readByte(),pb);
+    	Object out= readWithType(pb.readByte(),pb);
+    	System.out.println("read="+out);
+    	return out;
     }
 }

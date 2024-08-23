@@ -53,32 +53,32 @@ public class CPBlockEntityTypes {
 	public static final DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister
 			.create(Registries.BLOCK_ENTITY_TYPE, CPMain.MODID);
 
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<StewPotBlockEntity>> STEW_POT = REGISTER.register("stew_pot",makeTypes2(StewPotBlockEntity::new, 
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<StewPotBlockEntity>> STEW_POT = REGISTER.register("stew_pot",makeTypes2(StewPotBlockEntity::new,
 					()->List.of(CPBlocks.STEW_POT,CPBlocks.STEW_POT_LEAD)));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<KitchenStoveBlockEntity>> STOVE_T1 = REGISTER.register("kitchen_stove_basic", makeTypes(KitchenStoveT1::new,
 					()->CPBlocks.stoves.stream().map(e->e.get()).filter(e->e.getBlock()==CPBlockEntityTypes.STOVE_T1).collect(Collectors.toList())));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<KitchenStoveBlockEntity>> STOVE_T2 = REGISTER
 			.register("kitchen_stove_fast", makeTypes(KitchenStoveT2::new,
 					()->CPBlocks.stoves.stream().map(e->e.get()).filter(e->e.getBlock()==CPBlockEntityTypes.STOVE_T2).collect(Collectors.toList())));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<BowlBlockEntity>> BOWL = REGISTER.register("bowl",makeType(BowlBlockEntity::new, 
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<BowlBlockEntity>> BOWL = REGISTER.register("bowl",makeType(BowlBlockEntity::new,
 					()->CPBlocks.BOWL));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<CPSignBlockEntity>> SIGN = REGISTER.register("sign",makeTypes(CPSignBlockEntity::new,
 					()->CPBlocks.signs));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<ChimneyPotBlockEntity>> CHIMNEY_POT = REGISTER.register("chimney_pot",makeTypes(ChimneyPotBlockEntity::new,  
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<ChimneyPotBlockEntity>> CHIMNEY_POT = REGISTER.register("chimney_pot",makeTypes(ChimneyPotBlockEntity::new,
 					()->CPBlocks.chimney));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<FumaroleVentBlockEntity>> FUMAROLE = REGISTER.register("fumarole_vent", makeType(FumaroleVentBlockEntity::new, 
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<FumaroleVentBlockEntity>> FUMAROLE = REGISTER.register("fumarole_vent", makeType(FumaroleVentBlockEntity::new,
 					()->CPBlocks.FUMAROLE_VENT));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<PanBlockEntity>> PAN = REGISTER.register("pan", makeTypes2(PanBlockEntity::new, 
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<PanBlockEntity>> PAN = REGISTER.register("pan", makeTypes2(PanBlockEntity::new,
 					()->List.of(CPBlocks.STONE_PAN, CPBlocks.COPPER_PAN, CPBlocks.IRON_PAN, CPBlocks.LEAD_PAN )));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<CounterDoliumBlockEntity>> DOLIUM = REGISTER.register("dolium",makeTypes(CounterDoliumBlockEntity::new,  
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<CounterDoliumBlockEntity>> DOLIUM = REGISTER.register("dolium",makeTypes(CounterDoliumBlockEntity::new,
 					()->CPBlocks.dolium));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<DishBlockEntity>> DISH = REGISTER.register("dish",makeTypes(DishBlockEntity::new, 
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<DishBlockEntity>> DISH = REGISTER.register("dish",makeTypes(DishBlockEntity::new,
 					()->CPBlocks.dishes));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<CaliductBlockEntity>> CALIDUCT = REGISTER.register("caliduct",makeTypes(CaliductBlockEntity::new, 
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<CaliductBlockEntity>> CALIDUCT = REGISTER.register("caliduct",makeTypes(CaliductBlockEntity::new,
 					()->CPBlocks.caliduct));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<FireboxBlockEntity>> HYPOCAUST_FIREBOX = REGISTER.register("hypocast_firebox",makeTypes(FireboxBlockEntity::new,  
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<FireboxBlockEntity>> HYPOCAUST_FIREBOX = REGISTER.register("hypocast_firebox",makeTypes(FireboxBlockEntity::new,
 					()->CPBlocks.firebox));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<WolfStatueBlockEntity>> WOLF_STATUE = REGISTER.register("wolf_statue",makeType(WolfStatueBlockEntity::new, 
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<WolfStatueBlockEntity>> WOLF_STATUE = REGISTER.register("wolf_statue",makeType(WolfStatueBlockEntity::new,
 					()->CPBlocks.WOLF));
 	/*private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>,BlockEntityType<T>> register(String key,BlockEntitySupplier<T> factory,DeferredHolder<Block,? extends Block>...validBlocks){
 		return REGISTER.register(key, () -> new BlockEntityType<T>(factory,(Arrays.stream(validBlocks).map(t->t.get()).collect(Collectors.toSet())), null));

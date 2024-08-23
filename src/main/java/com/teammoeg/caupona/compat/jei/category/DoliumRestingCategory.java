@@ -53,7 +53,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRecipe>> {
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "dolium_resting",RecipeHolder.class);

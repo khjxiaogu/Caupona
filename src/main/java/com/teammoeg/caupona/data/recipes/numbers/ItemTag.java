@@ -23,7 +23,6 @@ package com.teammoeg.caupona.data.recipes.numbers;
 
 import java.util.stream.Stream;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
@@ -32,7 +31,6 @@ import com.teammoeg.caupona.data.recipes.IPendingContext;
 import com.teammoeg.caupona.util.FloatemTagStack;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;

@@ -22,11 +22,7 @@
 package com.teammoeg.caupona.util;
 
 import java.util.List;
-import java.util.function.Supplier;
 
-import com.mojang.datafixers.util.Pair;
-
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.FoodProperties.PossibleEffect;
 

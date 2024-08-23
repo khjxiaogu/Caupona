@@ -3,7 +3,6 @@ package com.teammoeg.caupona.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;

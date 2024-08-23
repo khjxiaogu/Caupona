@@ -21,24 +21,14 @@
 
 package com.teammoeg.caupona.item;
 
-import java.util.function.Consumer;
-
 import com.teammoeg.caupona.util.TabType;
 
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 public class CPGravyBoatItem extends CPBlockItem {
 
 	public CPGravyBoatItem(Block block, Properties props) {
 		super(block, props,TabType.FOODS);
 	}
-
-	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		super.initializeClient(consumer);
-	}
-
-
 
 }

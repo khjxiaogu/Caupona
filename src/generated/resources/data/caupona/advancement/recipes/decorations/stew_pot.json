@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_cobblestone": {
+    "has_claypot": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "minecraft:cobblestone"
-            ]
+            "items": "caupona:clay_cistern"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "caupona:mud_kitchen_stove"
+        "recipe": "caupona:stew_pot"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_cobblestone"
+      "has_claypot"
     ]
   ],
   "rewards": {
     "recipes": [
-      "caupona:mud_kitchen_stove"
+      "caupona:stew_pot"
     ]
   }
 }

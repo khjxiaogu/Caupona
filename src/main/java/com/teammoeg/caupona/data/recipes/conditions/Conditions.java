@@ -3,7 +3,6 @@ package com.teammoeg.caupona.data.recipes.conditions;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -11,7 +10,6 @@ import com.teammoeg.caupona.data.DataDeserializerRegistry;
 import com.teammoeg.caupona.data.Deserializer;
 import com.teammoeg.caupona.data.InvalidRecipeException;
 import com.teammoeg.caupona.data.recipes.IngredientCondition;
-import com.teammoeg.caupona.data.recipes.StewBaseCondition;
 import com.teammoeg.caupona.util.SerializeUtil;
 
 import io.netty.buffer.ByteBuf;

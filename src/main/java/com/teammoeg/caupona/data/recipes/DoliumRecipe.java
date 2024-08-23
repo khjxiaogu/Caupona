@@ -32,15 +32,10 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
-import com.teammoeg.caupona.fluid.SoupFluid;
-import com.teammoeg.caupona.item.StewItem;
-import com.teammoeg.caupona.util.SerializeUtil;
 import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -70,19 +65,19 @@ public class DoliumRecipe extends IDataRecipe {
 
 	public List<Pair<Ingredient, Integer>> items;
 	public Ingredient extra;
-	public ResourceLocation base;
+	public Fluid base;
 	public Fluid fluid = Fluids.EMPTY;
 	public int amount = 250;
 	public float density = 0;
 	public boolean keepInfo = false;
 	public ItemStack output;
 
-	public DoliumRecipe(ResourceLocation base, Fluid fluid, int amount, float density,
+	public DoliumRecipe(Fluid base, Fluid fluid, int amount, float density,
 			boolean keep, ItemStack out, List<Pair<Ingredient, Integer>> items) {
 		this( base, fluid, amount, density, keep, out, items, null);
 	}
 
-	public DoliumRecipe(List<Pair<Ingredient, Integer>> items, Optional<Ingredient> extra, Optional<ResourceLocation> base, Fluid fluid,
+	public DoliumRecipe(List<Pair<Ingredient, Integer>> items, Optional<Ingredient> extra, Optional<Fluid> base, Fluid fluid,
 			int amount, float density, boolean keepInfo, Ingredient output) {
 		super();
 		this.items = items;
@@ -95,7 +90,7 @@ public class DoliumRecipe extends IDataRecipe {
 		this.output = output.getItems()[0];
 	}
 
-	public DoliumRecipe(ResourceLocation base, Fluid fluid, int amount, float density,
+	public DoliumRecipe(Fluid base, Fluid fluid, int amount, float density,
 			boolean keep, ItemStack out, Collection<Pair<Ingredient, Integer>> items, Ingredient ext) {
 		if (items != null)
 			this.items = new ArrayList<>(items);
@@ -114,7 +109,7 @@ public class DoliumRecipe extends IDataRecipe {
 			RecordCodecBuilder.mapCodec(t->t.group(
 					Codec.list(Utils.pairCodec("item",Ingredient.CODEC_NONEMPTY,"count", Codec.INT)).fieldOf("items").forGetter(o->o.items),
 					Ingredient.CODEC.optionalFieldOf("container").forGetter(o->Optional.ofNullable(o.extra)),
-					ResourceLocation.CODEC.optionalFieldOf("base").forGetter(o->Optional.ofNullable(o.base)),
+					BuiltInRegistries.FLUID.byNameCodec().optionalFieldOf("base").forGetter(o->Optional.ofNullable(o.base)),
 					BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(o->o.fluid),
 					Codec.INT.fieldOf("amount").forGetter(o->o.amount),
 					Codec.FLOAT.fieldOf("density").forGetter(o->o.density),

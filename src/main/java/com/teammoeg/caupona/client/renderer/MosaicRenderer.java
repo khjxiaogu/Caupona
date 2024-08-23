@@ -4,12 +4,9 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPCapability;
-import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicBlock;
 import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicData;
-import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicMaterial;
-import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicPattern;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,7 +15,6 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;

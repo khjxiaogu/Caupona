@@ -33,9 +33,7 @@ import com.teammoeg.caupona.data.recipes.ComplexCalculated;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
 import com.teammoeg.caupona.data.recipes.IPendingContext;
 import com.teammoeg.caupona.util.FloatemTagStack;
-import com.teammoeg.caupona.util.SerializeUtil;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 

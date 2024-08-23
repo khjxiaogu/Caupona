@@ -23,7 +23,6 @@ package com.teammoeg.caupona.data.recipes.conditions;
 
 import java.util.stream.Stream;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
@@ -32,7 +31,6 @@ import com.teammoeg.caupona.data.recipes.IPendingContext;
 import com.teammoeg.caupona.data.recipes.numbers.Numbers;
 import com.teammoeg.caupona.util.FloatemTagStack;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 public class MainlyOfType extends NumberedStewCondition {

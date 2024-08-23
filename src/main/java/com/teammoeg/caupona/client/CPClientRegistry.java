@@ -25,6 +25,7 @@ import com.teammoeg.caupona.CPBlockEntityTypes;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPEntityTypes;
 import com.teammoeg.caupona.CPGui;
+import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.client.gui.DoliumScreen;
 import com.teammoeg.caupona.client.gui.KitchenStoveScreen;
@@ -37,13 +38,16 @@ import com.teammoeg.caupona.client.particle.SteamParticle;
 import com.teammoeg.caupona.client.renderer.BowlRenderer;
 import com.teammoeg.caupona.client.renderer.CPBoatRenderer;
 import com.teammoeg.caupona.client.renderer.CounterDoliumRenderer;
+import com.teammoeg.caupona.client.renderer.MosaicRenderer;
 import com.teammoeg.caupona.client.renderer.PanRenderer;
 import com.teammoeg.caupona.client.renderer.StewPotRenderer;
+import com.teammoeg.caupona.generated.CPStewTexture;
 
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
@@ -59,6 +63,10 @@ import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = CPMain.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CPClientRegistry {
@@ -68,26 +76,29 @@ public class CPClientRegistry {
 		LayerDefinition layer = BoatModel.createBodyModel();
 		for (String wood : CPBlocks.woods)
 			ClientHooks.registerLayerDefinition(
-					new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "boat/" + wood), "main"), () -> layer);
+				new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "boat/" + wood), "main"), () -> layer);
 
-		/*ItemBlockRenderTypes.setRenderLayer(CPBlocks.stew_pot, RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove1, RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove2, RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove3, RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove4, RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove5, RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(CPBlocks.bowl, RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(CPBlocks.GRAVY_BOAT, RenderType.translucent());*/
+		/*
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.stew_pot, RenderType.cutout());
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove1, RenderType.cutout());
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove2, RenderType.cutout());
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove3, RenderType.cutout());
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove4, RenderType.cutout());
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.stove5, RenderType.cutout());
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.bowl, RenderType.cutout());
+		 * ItemBlockRenderTypes.setRenderLayer(CPBlocks.GRAVY_BOAT,
+		 * RenderType.translucent());
+		 */
 		BlockEntityRenderers.register(CPBlockEntityTypes.STEW_POT.get(), StewPotRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.BOWL.get(), BowlRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.SIGN.get(), SignRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.DOLIUM.get(), CounterDoliumRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.PAN.get(), PanRenderer::new);
 		Sheets.addWoodType(CPBlocks.WALNUT);
-		EntityRenderers.register(CPEntityTypes.BOAT.get(), c->new CPBoatRenderer(c,false));
+		EntityRenderers.register(CPEntityTypes.BOAT.get(), c -> new CPBoatRenderer(c, false));
 
 	}
-	
+
 	@SubscribeEvent
 	public static void registerParticleFactories(RegisterMenuScreensEvent event) {
 		event.register(CPGui.STEWPOT.get(), StewPotScreen::new);
@@ -97,6 +108,43 @@ public class CPClientRegistry {
 		event.register(CPGui.PAN.get(), PanScreen::new);
 		event.register(CPGui.T_BENCH.get(), TBenchScreen::new);
 	}
+
+	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+		event.registerItem(new IClientItemExtensions() {
+			MosaicRenderer renderer = new MosaicRenderer();
+
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return renderer;
+			}
+
+		}, CPBlocks.MOSAIC.get().asItem());
+		for (String i : CPItems.soups) {
+			ResourceLocation rt = CPStewTexture.texture.get(i);
+			int cx = 0xffffffff;
+			event.registerFluidType(
+				new IClientFluidTypeExtensions() {
+
+					@Override
+					public int getTintColor() {
+						return cx;
+					}
+
+					@Override
+					public ResourceLocation getStillTexture() {
+						return rt;
+					}
+
+					@Override
+					public ResourceLocation getFlowingTexture() {
+						return rt;
+					}
+
+				}, NeoForgeRegistries.FLUID_TYPES.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, i)));
+		}
+
+	}
+
 	@SubscribeEvent
 	public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(CPParticles.STEAM.get(), SteamParticle.Factory::new);
@@ -107,12 +155,12 @@ public class CPClientRegistry {
 	public static void onTint(RegisterColorHandlersEvent.Block ev) {
 		ev.register((p_92626_, p_92627_, p_92628_, p_92629_) -> {
 			return p_92627_ != null && p_92628_ != null ? BiomeColors.getAverageFoliageColor(p_92627_, p_92628_)
-					: FoliageColor.getDefaultColor();
-		}, CPBlocks.leaves.stream().map(t->t.value()).toArray(Block[]::new));
+				: FoliageColor.getDefaultColor();
+		}, CPBlocks.leaves.stream().map(t -> t.value()).toArray(Block[]::new));
 	}
 
 	@SubscribeEvent
 	public static void onTint(RegisterColorHandlersEvent.Item ev) {
-		ev.register((i, t) -> 0x5bd449,CPBlocks.leaves.stream().map(t->t.value()).toArray(Block[]::new));
+		ev.register((i, t) -> 0x5bd449, CPBlocks.leaves.stream().map(t -> t.value()).toArray(Block[]::new));
 	}
 }

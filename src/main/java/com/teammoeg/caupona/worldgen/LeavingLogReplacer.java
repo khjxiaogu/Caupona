@@ -24,10 +24,10 @@ package com.teammoeg.caupona.worldgen;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPWorldGen;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.treedecorators.TreeDecorator;

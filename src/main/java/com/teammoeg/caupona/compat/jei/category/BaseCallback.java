@@ -30,12 +30,13 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
 
 public class BaseCallback implements IRecipeSlotTooltipCallback {
-	ResourceLocation base;
+	Fluid base;
 	float dense;
 
-	public BaseCallback(ResourceLocation base, float density) {
+	public BaseCallback(Fluid base, float density) {
 		super();
 		this.base = base;
 		this.dense = density;
@@ -45,7 +46,7 @@ public class BaseCallback implements IRecipeSlotTooltipCallback {
 	public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
 		if (base != null)
 			tooltip.add(Utils.translate("recipe.caupona.base",
-					BuiltInRegistries.FLUID.get(base).getFluidType().getDescription()));
+					base.getFluidType().getDescription()));
 		if (dense != 0)
 			tooltip.add(Utils.translate("recipe.caupona.density", dense));
 	}

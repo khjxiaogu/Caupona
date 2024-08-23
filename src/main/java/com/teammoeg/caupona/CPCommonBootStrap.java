@@ -69,7 +69,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.Capabilities.FluidHandler;
-import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.fluids.FluidActionResult;
@@ -113,7 +112,7 @@ public class CPCommonBootStrap {
 			});
 
 	}
-	
+
 	public static <R extends ItemLike,T extends R> DeferredHolder<R,T> asCompositable(DeferredHolder<R,T> obj, float val) {
 		compositables.add(Pair.of(obj, val));
 		return obj;
@@ -122,7 +121,7 @@ public class CPCommonBootStrap {
 		flamables.add(Pair.of(obj, Pair.of(v1, v2)));
 		return obj;
 	}
-	
+
 	@SubscribeEvent
 	public static void onCommonSetup(@SuppressWarnings("unused") FMLCommonSetupEvent event) {
 		registerDispensers();
@@ -138,7 +137,7 @@ public class CPCommonBootStrap {
 			@SuppressWarnings("resource")
 			@Override
 			protected ItemStack execute(BlockSource bp, ItemStack is) {
-				
+
 				Direction d = bp.state().getValue(DispenserBlock.FACING);
 				BlockPos front = bp.pos().relative(d);
 				FluidState fs = bp.level().getBlockState(front).getFluidState();
@@ -216,16 +215,16 @@ public class CPCommonBootStrap {
 										}
 									}
 								}
-								
+
 							}
 						}
 					}else if(blockTarget instanceof IFoodContainer contt) {
-						
+
 						@Nullable IFluidHandler ipsrc = bp.level().getCapability(Capabilities.FluidHandler.BLOCK,front, d.getOpposite());
 						if(besrc instanceof IFoodContainer cont) {
 							outer:for(int i=0;i<cont.getSlots();i++) {
 								ItemStack its=cont.getInternal(i);
-								
+
 								if(!its.isEmpty()&&Utils.isExtractAllowed(its)) {
 									for(int j=0;j<contt.getSlots();j++) {
 										ItemStack its2=contt.getInternal(j);
@@ -239,7 +238,7 @@ public class CPCommonBootStrap {
 							}
 						}else if(ipsrc!=null){
 							IFluidHandler tank=ipsrc;
-							
+
 							FluidStack fs=tank.drain(250, FluidAction.SIMULATE);
 							if(!fs.isEmpty()) {
 								for(int j=0;j<contt.getSlots();j++) {
@@ -260,7 +259,7 @@ public class CPCommonBootStrap {
 								}
 							}
 						}
-						
+
 					}
 
 					return is;
@@ -272,6 +271,7 @@ public class CPCommonBootStrap {
 		DispenserBlock.registerBehavior(CPItems.walnut_boat.get(), new DefaultDispenseItemBehavior() {
 			private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
+			@Override
 			public ItemStack execute(BlockSource pSource, ItemStack pStack) {
 				Direction direction = pSource.state().getValue(DispenserBlock.FACING);
 				Level level = pSource.level();
@@ -298,6 +298,7 @@ public class CPCommonBootStrap {
 				return pStack;
 			}
 
+			@Override
 			protected void playSound(BlockSource pSource) {
 				pSource.level().levelEvent(1000, pSource.pos(), 0);
 			}
@@ -308,7 +309,7 @@ public class CPCommonBootStrap {
 			@SuppressWarnings("resource")
 			@Override
 			protected ItemStack execute(BlockSource bp, ItemStack is) {
-				
+
 				Direction d = bp.state().getValue(DispenserBlock.FACING);
 				BlockPos front = bp.pos().relative(d);
 				BlockState bs=bp.level().getBlockState(front);
@@ -328,6 +329,7 @@ public class CPCommonBootStrap {
 			/**
 			 * Dispense the specified stack, play the dispense sound and spawn particles.
 			 */
+			@Override
 			@SuppressWarnings("resource")
 			public ItemStack execute(BlockSource source, ItemStack stack) {
 
@@ -345,8 +347,8 @@ public class CPCommonBootStrap {
 					}
 					return stack;
 				}
-					
-				
+
+
 				return this.defaultBehaviour.dispense(source, stack);
 			}
 		};

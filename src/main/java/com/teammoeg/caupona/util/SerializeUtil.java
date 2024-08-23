@@ -23,7 +23,6 @@ package com.teammoeg.caupona.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,17 +40,16 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
+import com.teammoeg.caupona.CPMain;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 /**
@@ -171,12 +169,12 @@ public class SerializeUtil {
     }
     public static <T> void writeCodec(FriendlyByteBuf pb, Codec<T> codec, T obj) {
     	DataResult<Object> ob=codec.encodeStart(DataOps.COMPRESSED, obj);
-    	Optional<Object> ret=ob.resultOrPartial(EncoderException::new);
+    	Optional<Object> ret=ob.resultOrPartial(CPMain.logger::error);
     	ObjectWriter.writeObject(pb,ret.get());
     }
     public static <T> T readCodec(FriendlyByteBuf pb, Codec<T> codec) {
     	DataResult<Pair<T, Object>> ob=codec.decode(DataOps.COMPRESSED, ObjectWriter.readObject(pb));
-    	Optional<Pair<T, Object>> ret=ob.resultOrPartial(DecoderException::new);
+    	Optional<Pair<T, Object>> ret=ob.resultOrPartial(CPMain.logger::error);
     	return ret.get().getFirst();
     }
 

@@ -21,8 +21,6 @@
 
 package com.teammoeg.caupona.data.recipes.baseconditions;
 
-import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
@@ -57,10 +55,10 @@ public class FluidTag implements StewBaseCondition {
 		return test(u) ? 2 : test(t) ? 1 : 0;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean test(Fluid t) {
-		return t.is(this.f);
+		return BuiltInRegistries.FLUID.wrapAsHolder(t).is(f);
+
 	}
 /*
 	public JsonObject serialize() {

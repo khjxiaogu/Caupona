@@ -181,7 +181,7 @@ public class CPBlockTagGenerator extends TagsProvider<Block> {
 	}
 
 	private ResourceLocation rl(String r) {
-		return new ResourceLocation(r);
+		return ResourceLocation.parse(r);
 	}
 
 	private TagKey<Block> otag(String s) {
@@ -193,15 +193,15 @@ public class CPBlockTagGenerator extends TagsProvider<Block> {
 	}
 
 	private ResourceLocation mrl(String s) {
-		return new ResourceLocation(CPMain.MODID, s);
+		return ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s);
 	}
 
 	private ResourceLocation frl(String s) {
-		return new ResourceLocation("forge", s);
+		return ResourceLocation.fromNamespaceAndPath("forge", s);
 	}
 
 	private ResourceLocation mcrl(String s) {
-		return new ResourceLocation(s);
+		return ResourceLocation.withDefaultNamespace(s);
 	}
 
 	@Override

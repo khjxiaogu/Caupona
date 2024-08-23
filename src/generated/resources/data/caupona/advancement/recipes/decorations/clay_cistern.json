@@ -1,13 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_claypot": {
+    "has_clay": {
       "conditions": {
         "items": [
           {
-            "items": [
-              "caupona:clay_cistern"
-            ]
+            "items": "minecraft:clay_ball"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "caupona:stew_pot"
+        "recipe": "caupona:clay_cistern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -23,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_claypot"
+      "has_clay"
     ]
   ],
   "rewards": {
     "recipes": [
-      "caupona:stew_pot"
+      "caupona:clay_cistern"
     ]
   }
 }

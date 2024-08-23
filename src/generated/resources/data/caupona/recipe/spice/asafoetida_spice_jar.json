@@ -1,0 +1,16 @@
+{
+  "type": "caupona:spice",
+  "effect": {
+    "duration": 200,
+    "id": "minecraft:resistance",
+    "neoforge:cures": [
+      "protected_by_totem",
+      "milk"
+    ],
+    "show_icon": true
+  },
+  "reacts_lead": false,
+  "spice": {
+    "item": "caupona:asafoetida_spice_jar"
+  }
+}

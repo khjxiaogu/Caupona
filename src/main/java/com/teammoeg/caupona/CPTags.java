@@ -29,7 +29,7 @@ public class CPTags {
 		private static TagKey<Block> create(String s){
 			return  BlockTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s));
 		}
-		
+
 	}
 	public static class Items{
 
@@ -63,11 +63,11 @@ public class CPTags {
 		private static TagKey<Item> create(String s){
 			return ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s));
 		}
-		
+
 	}
-	
+
 	public static class Fluids{
-		
+
 		public static final TagKey<Fluid> STEWS = create("stews");
 		public static final TagKey<Fluid> ANY_WATER = create("water");
 		public static final TagKey<Fluid> BOILABLE = create("boilable");
@@ -76,7 +76,7 @@ public class CPTags {
 			return FluidTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s));
 		}
 
-		
+
 	}
-	
+
 }

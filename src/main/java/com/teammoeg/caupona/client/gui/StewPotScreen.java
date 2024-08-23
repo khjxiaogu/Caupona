@@ -30,7 +30,6 @@ import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
 import com.teammoeg.caupona.blocks.pot.StewPotContainer;
 import com.teammoeg.caupona.client.util.GuiUtils;
-import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.Utils;
@@ -100,7 +99,7 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 		super.render(transform, mouseX, mouseY, partial);
 		if (blockEntity.proctype < 2 && !blockEntity.getTank().isEmpty()) {
 			if (isMouseIn(mouseX, mouseY, 105, 20, 16, 46)) {
-				tooltip.add(blockEntity.getTank().getFluid().getDisplayName());
+				tooltip.add(blockEntity.getTank().getFluid().getHoverName());
 				StewInfo si = Utils.getOrCreateInfo(blockEntity.getTank().getFluid());
 				FloatemStack fs = si.stacks.stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))

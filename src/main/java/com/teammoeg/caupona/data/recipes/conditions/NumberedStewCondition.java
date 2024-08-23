@@ -24,7 +24,6 @@ package com.teammoeg.caupona.data.recipes.conditions;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
@@ -32,7 +31,6 @@ import com.teammoeg.caupona.data.recipes.IPendingContext;
 import com.teammoeg.caupona.data.recipes.IngredientCondition;
 import com.teammoeg.caupona.data.recipes.numbers.Numbers;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class NumberedStewCondition implements IngredientCondition {

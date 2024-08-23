@@ -16,9 +16,7 @@
           "offsetY": 1,
           "predicate": {
             "block": {
-              "blocks": [
-                "caupona:silphium_block"
-              ],
+              "blocks": "caupona:silphium_block",
               "state": {
                 "half": "upper"
               }
@@ -60,9 +58,7 @@
           "offsetY": -1,
           "predicate": {
             "block": {
-              "blocks": [
-                "caupona:silphium_block"
-              ],
+              "blocks": "caupona:silphium_block",
               "state": {
                 "half": "lower"
               }

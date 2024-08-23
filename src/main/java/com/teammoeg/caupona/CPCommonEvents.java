@@ -27,11 +27,10 @@ import org.jetbrains.annotations.Nullable;
 
 import com.teammoeg.caupona.api.CauponaApi;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
-import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
 import com.teammoeg.caupona.api.events.EventResult;
+import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
 import com.teammoeg.caupona.data.RecipeReloadListener;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
-import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.util.ITickableContainer;
 import com.teammoeg.caupona.util.StewInfo;
 
@@ -53,7 +52,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -86,7 +84,7 @@ public class CPCommonEvents {
 	}
 	@SubscribeEvent
 	public static void onPlayerTick(PlayerTickEvent.Pre event) {
-		if (event.getEntity().containerMenu instanceof ITickableContainer container) 
+		if (event.getEntity().containerMenu instanceof ITickableContainer container)
 			container.tick(event.getEntity() instanceof ServerPlayer);
 	}
 	@SubscribeEvent
@@ -101,9 +99,8 @@ public class CPCommonEvents {
 	}
 	@SubscribeEvent
 	public static void addManualToPlayer(PlayerEvent.PlayerLoggedInEvent event) {
-		
-		if(!CPConfig.SERVER.addManual.get())return;
-		if(!ModList.get().isLoaded("patchouli"))return;
+
+		if(!CPConfig.SERVER.addManual.get() || !ModList.get().isLoaded("patchouli"))return;
 		CompoundTag nbt = event.getEntity().getPersistentData();
 		CompoundTag persistent;
 
@@ -173,7 +170,7 @@ public class CPCommonEvents {
 				}
 			}
 		}
-		
+
 	}
 
 	@SubscribeEvent
@@ -190,7 +187,7 @@ public class CPCommonEvents {
 					event.setCancellationResult(InteractionResult.FAIL);
 					event.setCanceled(true);
 				}
-				
+
 			}
 		}
 	}

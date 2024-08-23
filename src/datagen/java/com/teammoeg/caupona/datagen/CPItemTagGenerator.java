@@ -202,7 +202,7 @@ public class CPItemTagGenerator extends TagsProvider<Item> {
 	}
 
 	private ResourceLocation rl(String r) {
-		return new ResourceLocation(r);
+		return ResourceLocation.parse(r);
 	}
 
 	private TagKey<Item> otag(String s) {
@@ -214,21 +214,21 @@ public class CPItemTagGenerator extends TagsProvider<Item> {
 	}
 
 	private ResourceLocation mrl(String s) {
-		return new ResourceLocation(CPMain.MODID, s);
+		return ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s);
 	}
 
 	private ResourceLocation frl(String s) {
-		return new ResourceLocation("forge", s);
+		return ResourceLocation.fromNamespaceAndPath("forge", s);
 	}
 
 	private TagKey<Item> ftag(String s) {
-		TagKey<Item> tag = ItemTags.create(new ResourceLocation("forge", s));
+		TagKey<Item> tag = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", s));
 		this.tag(tag);
 		return tag;
 	}
 
 	private ResourceLocation mcrl(String s) {
-		return new ResourceLocation(s);
+		return ResourceLocation.withDefaultNamespace(s);
 	}
 
 	@Override

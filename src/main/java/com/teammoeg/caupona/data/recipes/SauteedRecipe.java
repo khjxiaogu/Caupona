@@ -33,10 +33,8 @@ import com.teammoeg.caupona.CPTags.Items;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.data.recipes.conditions.Conditions;
 import com.teammoeg.caupona.util.FloatemTagStack;
-import com.teammoeg.caupona.util.SerializeUtil;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;

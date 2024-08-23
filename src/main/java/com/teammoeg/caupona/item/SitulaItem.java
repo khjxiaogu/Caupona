@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.ICreativeModeTabItem;
@@ -31,7 +30,6 @@ import com.teammoeg.caupona.util.TabType;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -73,13 +71,13 @@ public class SitulaItem extends Item  implements ICreativeModeTabItem{
 		if(e!=null){
 			FluidStack f=e.getFluidInTank(0);
 			if(!f.isEmpty()) {
-				tooltip.add(f.getDisplayName());
+				tooltip.add(f.getHoverName());
 				StewInfo info = Utils.getOrCreateInfo(f);
 				FloatemStack fs = info.stacks.stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);
 				if (fs != null)
-					tooltip.add(Utils.translate("tooltip.caupona.main_ingredient", fs.getStack().getDisplayName()));
+					tooltip.add(Utils.translate("tooltip.caupona.main_ingredient", fs.getStack().getHoverName()));
 				ResourceLocation rl = info.spiceName;
 				if (rl != null)
 					tooltip.add(Utils.translate("tooltip.caupona.spice",

@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.blocks.CPHorizontalBlock;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;

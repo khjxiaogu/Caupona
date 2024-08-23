@@ -25,7 +25,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.teammoeg.caupona.data.ITranlatable;
-import com.teammoeg.caupona.data.Writeable;
 
 import net.minecraft.resources.ResourceLocation;
 

@@ -89,7 +89,7 @@ public class CPBookGenerator extends JsonGenerator {
 
 	private void loadLang(String locale) {
 		try {
-			Resource rc = helper.getResource(new ResourceLocation(CPMain.MODID, "lang/" + locale + ".json"),
+			Resource rc = helper.getResource(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "lang/" + locale + ".json"),
 					PackType.CLIENT_RESOURCES);
 			JsonObject jo = JsonParser.parseReader(new InputStreamReader(rc.open(), "UTF-8")).getAsJsonObject();
 			langs.put(locale, jo);
@@ -133,12 +133,12 @@ public class CPBookGenerator extends JsonGenerator {
 	StewBaseCondition stock = new FluidType(CPRecipeProvider.stock);
 	StewBaseCondition milk = new FluidType(CPRecipeProvider.milk);
 	private ResourceLocation PictureRL(Pair<ResourceLocation, ?> pair) {
-		return new ResourceLocation(pair.getFirst().getNamespace(), "textures/gui/recipes/" + pair.getFirst().getPath() + ".png");
+		return ResourceLocation.fromNamespaceAndPath(pair.getFirst().getNamespace(), "textures/gui/recipes/" + pair.getFirst().getPath() + ".png");
 	}
 	private JsonObject createRecipe(String name, String locale, Pair<ResourceLocation, StewCookingRecipe> pair) {
 		JsonObject page = new JsonObject();
 		page.add("name", langs.get(locale).get("item.caupona." + name));
-		page.addProperty("icon", new ResourceLocation(CPMain.MODID, name).toString());
+		page.addProperty("icon", ResourceLocation.fromNamespaceAndPath(CPMain.MODID, name).toString());
 		page.addProperty("category", "caupona:cook_recipes");
 		Item baseType = CPItems.any.get();
 		if (pair.getSecond().getBase() != null && !pair.getSecond().getBase().isEmpty()) {
@@ -154,7 +154,7 @@ public class CPBookGenerator extends JsonGenerator {
 		JsonObject imgpage = new JsonObject();
 		imgpage.addProperty("type", "caupona:cookrecipe");
 		imgpage.addProperty("img",PictureRL(pair).toString());
-		imgpage.addProperty("result", new ResourceLocation(CPMain.MODID, name).toString());
+		imgpage.addProperty("result", ResourceLocation.fromNamespaceAndPath(CPMain.MODID, name).toString());
 		imgpage.addProperty("recipe", pair.getFirst().toString());
 		imgpage.addProperty("base", Utils.getRegistryName(baseType).toString());
 		pages.add(imgpage);
@@ -165,13 +165,13 @@ public class CPBookGenerator extends JsonGenerator {
 	private JsonObject createFryingRecipe(String name, String locale, Pair<ResourceLocation, SauteedRecipe> pair) {
 		JsonObject page = new JsonObject();
 		page.add("name", langs.get(locale).get("item.caupona." + name));
-		page.addProperty("icon", new ResourceLocation(CPMain.MODID, name).toString());
+		page.addProperty("icon", ResourceLocation.fromNamespaceAndPath(CPMain.MODID, name).toString());
 		page.addProperty("category", "caupona:sautee_recipes");
 		JsonArray pages = new JsonArray();
 		JsonObject imgpage = new JsonObject();
 		imgpage.addProperty("type", "caupona:fryrecipe");
 		imgpage.addProperty("img",PictureRL(pair).toString());
-		imgpage.addProperty("result",new ResourceLocation(CPMain.MODID, name).toString());
+		imgpage.addProperty("result",ResourceLocation.fromNamespaceAndPath(CPMain.MODID, name).toString());
 		imgpage.addProperty("recipe", pair.getFirst().toString());
 		imgpage.addProperty("base", Utils.getRegistryName(CPBlocks.GRAVY_BOAT).toString());
 		pages.add(imgpage);
@@ -180,11 +180,11 @@ public class CPBookGenerator extends JsonGenerator {
 	}
 
 	private void saveEntry(String name, String locale,JsonStorage reciver, JsonObject entry) {
-		reciver.accept(new ResourceLocation(CPMain.MODID,"patchouli_books/book/"+locale + "/entries/recipes/" + name + ".json"),entry);
+		reciver.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"patchouli_books/book/"+locale + "/entries/recipes/" + name + ".json"),entry);
 	}
 
 	private void saveFryEntry(String name, String locale,JsonStorage reciver, JsonObject entry) {
-		reciver.accept(new ResourceLocation(CPMain.MODID,"patchouli_books/book/"+locale + "/entries/sautee_recipes/" + name + ".json"),entry);
+		reciver.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"patchouli_books/book/"+locale + "/entries/sautee_recipes/" + name + ".json"),entry);
 	}
 
 

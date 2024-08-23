@@ -29,6 +29,42 @@ import net.minecraft.resources.ResourceLocation;
 public class CPStewTexture {
 	public static Map<String, ResourceLocation> texture = new HashMap<>();
 	static {
-
+		texture.put("acquacotta", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/acquacotta"));
+		texture.put("bisque", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/bisque"));
+		texture.put("borscht", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/borscht"));
+		texture.put("borscht_cream", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/borscht_cream"));
+		texture.put("congee", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/congee"));
+		texture.put("cream_of_meat_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/cream_of_meat_soup"));
+		texture.put("cream_of_mushroom_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/cream_of_mushroom_soup"));
+		texture.put("custard", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/custard"));
+		texture.put("dilute_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/dilute_soup"));
+		texture.put("egg_drop_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/egg_drop_soup"));
+		texture.put("egg_tongsui", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/egg_tongsui"));
+		texture.put("fish_chowder", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/fish_chowder"));
+		texture.put("fish_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/fish_soup"));
+		texture.put("fricassee", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/fricassee"));
+		texture.put("goji_tongsui", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/goji_tongsui"));
+		texture.put("goulash", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/goulash"));
+		texture.put("gruel", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/gruel"));
+		texture.put("hodgepodge", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/hodgepodge"));
+		texture.put("meat_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/meat_soup"));
+		texture.put("mushroom_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/mushroom_soup"));
+		texture.put("nail_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/nail_soup"));
+		texture.put("nettle_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/nettle_soup"));
+		texture.put("okroshka", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/okroshka"));
+		texture.put("porridge", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/porridge"));
+		texture.put("poultry_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/poultry_soup"));
+		texture.put("pumpkin_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/pumpkin_soup"));
+		texture.put("pumpkin_soup_cream", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/pumpkin_soup_cream"));
+		texture.put("rice_pudding", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/rice_pudding"));
+		texture.put("scalded_milk", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/scalded_milk"));
+		texture.put("seaweed_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/seaweed_soup"));
+		texture.put("stock", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/stock"));
+		texture.put("stracciatella", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/stracciatella"));
+		texture.put("ukha", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/ukha"));
+		texture.put("vegetable_chowder", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/vegetable_chowder"));
+		texture.put("vegetable_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/vegetable_soup"));
+		texture.put("walnut_soup", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/walnut_soup"));
+		texture.put("bone_gelatin", ResourceLocation.fromNamespaceAndPath("caupona", "block/soups/bone_gelatin"));
 	}
 }

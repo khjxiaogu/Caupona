@@ -106,7 +106,7 @@ public class CPStatesProvider extends BlockStateProvider {
 		for(MosaicMaterial m:MosaicMaterial.values())
 			for(MosaicPattern p:MosaicPattern.values()) 
 				for(int i:new int[] {0,1})
-					super.models().withExistingParent("block/mosaic/mosaic_"+p+"_"+m.shortName+"_"+i,new ResourceLocation(CPMain.MODID,"block/template_mosaic_tile_"+i)).texture(""+i,new ResourceLocation(CPMain.MODID,"block/mosaic/components/mosaic_"+p+"_"+m.shortName+"_"+i)).texture("particle", "#"+i);
+					super.models().withExistingParent("block/mosaic/mosaic_"+p+"_"+m.shortName+"_"+i,ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"block/template_mosaic_tile_"+i)).texture(""+i,ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"block/mosaic/components/mosaic_"+p+"_"+m.shortName+"_"+i)).texture("particle", "#"+i);
 		MultiPartBlockStateBuilder mosaic=this.getMultipartBuilder(CPBlocks.MOSAIC.get());
 		for(MosaicMaterial m:MosaicMaterial.values())
 			for(MosaicPattern p:MosaicPattern.values()) 
@@ -114,7 +114,7 @@ public class CPStatesProvider extends BlockStateProvider {
 					this.horizontalMultipart(mosaic, bmf("mosaic/mosaic_"+p+"_"+m.shortName+"_"+i),b->b.condition(MosaicBlock.MATERIAL[i], m).condition(MosaicBlock.PATTERN, p));
 					
 				}
-		//itemModels().getBuilder("mosaic").parent(new UncheckedModelFile(new ResourceLocation("builtin/entity")));
+		//itemModels().getBuilder("mosaic").parent(new UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("builtin/entity")));
 		/*this.getVariantBuilder(CPBlocks.MOSAIC.get()).forAllStates(t->{
 			MosaicPattern p=t.getValue(MosaicBlock.PATTERN);
 			MosaicMaterial m1=t.getValue(MosaicBlock.MATERIAL_1);
@@ -231,7 +231,7 @@ public class CPStatesProvider extends BlockStateProvider {
 							: "_inner_corner";
 			int i = 0;
 			while (true) {
-				ResourceLocation rl = new ResourceLocation(this.modid, "block/roads/" + name + "_road" + ext + "_" + i);
+				ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(this.modid, "block/roads/" + name + "_road" + ext + "_" + i);
 				if (!existingFileHelper.exists(rl, MODEL))
 					break;
 				if (builder == null)
@@ -248,7 +248,7 @@ public class CPStatesProvider extends BlockStateProvider {
 		Builder<?> builder = null;
 		int i = 0;
 		while (true) {
-			ResourceLocation rl = new ResourceLocation(this.modid, "block/roads/" + name + "_road_" + i);
+			ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(this.modid, "block/roads/" + name + "_road_" + i);
 			if (!existingFileHelper.exists(rl, MODEL))
 				break;
 			i++;
@@ -262,7 +262,7 @@ public class CPStatesProvider extends BlockStateProvider {
 	}
 
 	private Block cpblock(String name) {
-		return BuiltInRegistries.BLOCK.get(new ResourceLocation(this.modid, name));
+		return BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(this.modid, name));
 	}
 
 	protected void blockItemModel(String n) {
@@ -270,9 +270,9 @@ public class CPStatesProvider extends BlockStateProvider {
 	}
 
 	protected void blockItemModel(String n, String p) {
-		if (this.existingFileHelper.exists(new ResourceLocation(CPMain.MODID, "textures/item/" + n + p + ".png"),
+		if (this.existingFileHelper.exists(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/item/" + n + p + ".png"),
 				PackType.CLIENT_RESOURCES)) {
-			itemModels().basicItem(new ResourceLocation(CPMain.MODID, n));
+			itemModels().basicItem(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, n));
 		} else {
 			itemModels().getBuilder(n).parent(bmf(n + p));
 		}
@@ -300,14 +300,14 @@ public class CPStatesProvider extends BlockStateProvider {
 	}
 
 	public ModelFile bmf(String name) {
-		ResourceLocation orl = new ResourceLocation(this.modid, "block/" + name);
+		ResourceLocation orl = ResourceLocation.fromNamespaceAndPath(this.modid, "block/" + name);
 		ResourceLocation rl = orl;
 		if (!existingFileHelper.exists(rl, MODEL)) {// not exists, let's guess
 			List<String> rn = Arrays.asList(name.split("_"));
 			for (int i = rn.size(); i >= 0; i--) {
 				List<String> rrn = new ArrayList<>(rn);
 				rrn.add(i, "0");
-				rl = new ResourceLocation(this.modid, "block/" + String.join("_", rrn));
+				rl = ResourceLocation.fromNamespaceAndPath(this.modid, "block/" + String.join("_", rrn));
 				if (existingFileHelper.exists(rl, MODEL))
 					return new ModelFile.ExistingModelFile(rl, existingFileHelper);
 			}

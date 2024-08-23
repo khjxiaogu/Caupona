@@ -44,10 +44,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -71,8 +71,8 @@ public class CPItems {
 	public static final String[] spices = new String[] { "chives_spice_jar", "garum_spice_jar", "sugar_spice_jar",
 			"vinegar_spice_jar", "sapa_spice_jar", "asafoetida_spice_jar" };
 	public static final List<DeferredHolder<Item,Item>> spicesItems = new ArrayList<>();
-	public static final FoodMaterialInfo[] food_material = new FoodMaterialInfo[] { 
-			new FoodMaterialInfo("fig",4,0.3f,0.6f), 
+	public static final FoodMaterialInfo[] food_material = new FoodMaterialInfo[] {
+			new FoodMaterialInfo("fig",4,0.3f,0.6f),
 			new FoodMaterialInfo("walnut",4,0.3f,0.6f),
 			new FoodMaterialInfo("wolfberries",4,0.3f,0.6f),
 			new FoodMaterialInfo("snail",2,0.3f,0.6f).food(c->c.effect(()->new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.3F)),
@@ -83,7 +83,7 @@ public class CPItems {
 
 	public static final List<Item> stews = new ArrayList<>();
 	public static final List<Item> dish = new ArrayList<>();
-	
+
 	public static DeferredHolder<Item,Item> anyWater = icon("water_or_stock_based");
 	public static DeferredHolder<Item,Item> stock = icon("stock_based");
 	public static DeferredHolder<Item,Item> milk = icon("milk_based");
@@ -96,7 +96,7 @@ public class CPItems {
 	public static DeferredHolder<Item,Item> situla = ITEMS.register("situla",()->new SitulaItem( createProps().stacksTo(1)));
 	public static DeferredHolder<Item,Item> redstone_ladle= item("redstone_ladle",createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,Item> scraps= CPCommonBootStrap.asCompositable(item("scraps",createProps(),TabType.MAIN),0.7f);
-	
+
 	public static DeferredHolder<Item,SkimmerItem> b_skimmer = ITEMS.register("bamboo_skimmer",()->new SkimmerItem( createProps().durability(20)));
 	public static DeferredHolder<Item,SkimmerItem> i_skimmer = ITEMS.register("iron_skimmer",()->new SkimmerItem( createProps().durability(200)));
 	static{
@@ -118,7 +118,7 @@ public class CPItems {
 			Properties props=createProps();
 			if(s.food!=null)
 				props.food(s.food.build());
-				
+
 			DeferredHolder<Item,Item> item=item(s.name,props,TabType.FOODS);
 			if(s.composite!=0)
 				CPCommonBootStrap.asCompositable(item,s.composite);

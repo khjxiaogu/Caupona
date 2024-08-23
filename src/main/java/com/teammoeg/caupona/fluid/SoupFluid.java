@@ -21,15 +21,6 @@
 
 package com.teammoeg.caupona.fluid;
 
-import java.util.List;
-
-import com.google.common.collect.Lists;
-import com.teammoeg.caupona.util.FloatemStack;
-import com.teammoeg.caupona.util.StewInfo;
-import com.teammoeg.caupona.util.Utils;
-
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -37,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.fluids.FluidStack;
 
 public class SoupFluid extends BaseFlowingFluid {
 

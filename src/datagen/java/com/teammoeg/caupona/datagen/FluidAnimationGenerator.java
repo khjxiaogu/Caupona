@@ -46,11 +46,11 @@ public class FluidAnimationGenerator extends JsonGenerator {
 	@Override
 	protected void gather(JsonStorage reciver) {
 		for (String sf : CPFluids.getSoupfluids()) {
-			ResourceLocation image = new ResourceLocation(CPMain.MODID, "textures/block/soups/" + sf + ".png");
+			ResourceLocation image = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/block/soups/" + sf + ".png");
 			genImage(image,6,reciver);
 		}
 		/*for (String sf : new String[]{"soot_smoke","steam"}) {
-			ResourceLocation image = new ResourceLocation(CPMain.MODID, "textures/particle/" + sf + ".png");
+			ResourceLocation image = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/particle/" + sf + ".png");
 			genImage(image,2,reciver);
 		}*/
 	}
@@ -70,7 +70,7 @@ public class FluidAnimationGenerator extends JsonGenerator {
 				for (int i = 0; i < num; i++)
 					ja.add(i);
 				// if(rc.)
-				reciver.accept(new ResourceLocation(image.getNamespace(),image.getPath()+".mcmeta"), frame);
+				reciver.accept(ResourceLocation.fromNamespaceAndPath(image.getNamespace(),image.getPath()+".mcmeta"), frame);
 			}
 
 		} catch (IOException e) {

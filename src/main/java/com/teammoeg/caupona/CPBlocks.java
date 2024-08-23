@@ -191,7 +191,7 @@ public class CPBlocks {
 			.mapColor(MapColor.PLANT).noCollission().randomTicks().offsetType(OffsetType.XZ).instabreak().sound(SoundType.CROP).ignitedByLava()));
 	public static final DeferredHolder<Block,Block> SNAIL_MUCUS=block("snail_mucus",BlockBehaviour.Properties.of()
 			.mapColor(MapColor.PLANT).randomTicks().instabreak().sound(SoundType.CROP).noOcclusion().isViewBlocking(CPBlocks::isntSolid),TabType.MAIN_AND_DECORATION);
-	
+
 	public static final DeferredHolder<Block,SnailBlock> SNAIL = baseblock("snail_block", ()->new SnailBlock(BlockBehaviour.Properties.of()
 			.mapColor(MapColor.PLANT).noCollission().randomTicks().offsetType(OffsetType.XZ).instabreak().sound(SoundType.CROP).isViewBlocking(CPBlocks::isntSolid)),x->new CPBlockItem(x,CPItems.createProps(),TabType.MAIN));
 	public static final DeferredHolder<Block,SnailBaitBlock> SNAIL_BAIT = baseblock("snail_bait", ()->new SnailBaitBlock(BlockBehaviour.Properties.of()
@@ -269,7 +269,7 @@ public class CPBlocks {
 				.mapColor(MapColor.PLANT).offsetType(OffsetType.XZ).noCollission().randomTicks().instabreak().sound(SoundType.CROP)));
 		leaves.add(
 				CPCommonBootStrap.asCompositable(decoblock(wood + "_leaves", () -> leaves(SoundType.GRASS, a)), 0.3F));
-		
+
 		CPCommonBootStrap.asCompositable(
 				maindecoblock(wood + "_sapling", () -> new SaplingBlock(growth.get(), BlockBehaviour.Properties.of()
 						.mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS))),
@@ -293,7 +293,7 @@ public class CPBlocks {
 		CPCommonBootStrap.asFlamable(decoblock(wood + "_fence_gate", () -> new FenceGateBlock(
 				WALNUT,
 				BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD).ignitedByLava())),5,20);
-		
+
 		leaves.add(CPCommonBootStrap.asCompositable(decoblock(wood + "_leaves", () -> leaves(SoundType.GRASS, f)), 0.3F));
 		DeferredHolder<Block,Block> sl = CPCommonBootStrap.asFlamable(decoblock("stripped_" + wood + "_log", () -> log(null)),5,5);
 		CPCommonBootStrap.asFlamable(decoblock(wood + "_log", () -> log(sl)),5,5);

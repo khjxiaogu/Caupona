@@ -29,8 +29,8 @@ import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.CPWorldGen;
 import com.teammoeg.caupona.blocks.plants.BushLogBlock;
-import com.teammoeg.caupona.worldgen.LeavingLogReplacer;
 import com.teammoeg.caupona.worldgen.BushStraightTrunkPlacer;
+import com.teammoeg.caupona.worldgen.LeavingLogReplacer;
 
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup.Provider;
@@ -38,7 +38,7 @@ import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
@@ -71,7 +71,7 @@ public class CPRegistryGenerator extends DatapackBuiltinEntriesProvider {
 				.add(Registries.PLACED_FEATURE,CPRegistryGenerator::bootstrapPFeatures),
 				Set.of(CPMain.MODID));
 	}
-	public static void bootstrapPFeatures(BootstapContext<PlacedFeature> pContext) {
+	public static void bootstrapPFeatures(BootstrapContext<PlacedFeature> pContext) {
 		HolderGetter<ConfiguredFeature<?, ?>> holder=pContext.lookup(Registries.CONFIGURED_FEATURE);
 		PlacementUtils.register(pContext, CPWorldGen.TREES_WALNUT,holder.getOrThrow(CPWorldGen.WALNUT),VegetationPlacements
 				.treePlacement(PlacementUtils.countExtra(0, 0.125F, 1), sap("walnut")));
@@ -82,7 +82,7 @@ public class CPRegistryGenerator extends DatapackBuiltinEntriesProvider {
 		PlacementUtils.register(pContext, CPWorldGen.PATCH_SILPHIUM, holder.getOrThrow(CPWorldGen.SILPHIUM),
 				RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());
 	}
-	public static void bootstrapCFeatures(BootstapContext<ConfiguredFeature<?,?>> pContext) {
+	public static void bootstrapCFeatures(BootstrapContext<ConfiguredFeature<?,?>> pContext) {
 		FeatureUtils.register(pContext,CPWorldGen.WALNUT,Feature.TREE,createStraightBlobTree(log("walnut"),leave("walnut"), 4, 2, 0, 2).ignoreVines().build());
 		FeatureUtils.register(pContext,CPWorldGen.FIG,Feature.TREE,createStraightBlobBush(log("fig"), leave("fig"), 4, 2, 0, 2).ignoreVines().build());
 		FeatureUtils.register(pContext,CPWorldGen.WOLFBERRY,Feature.TREE,createStraightBlobBush(log("wolfberry"),leave("wolfberry"), 4, 2, 0, 2).ignoreVines().build());
@@ -117,7 +117,7 @@ public class CPRegistryGenerator extends DatapackBuiltinEntriesProvider {
 		return block(type+"_log");
 	}
 	public static Block block(String type) {
-		return BuiltInRegistries.BLOCK.get(new ResourceLocation(CPMain.MODID,type));
+		return BuiltInRegistries.BLOCK.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,type));
 	}
 	@Override
 	public String getName() {

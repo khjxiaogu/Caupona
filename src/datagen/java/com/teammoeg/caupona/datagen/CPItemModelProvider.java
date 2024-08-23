@@ -77,7 +77,7 @@ public class CPItemModelProvider extends ItemModelProvider {
 		/*System.out.println(new File("").getAbsolutePath());
 		try {
 			new BufferedReader(new FileReader(new File("../src/datagen/resources/assets/caupona/block/blocks.txt"))).lines().forEach( s -> {
-				if(!ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(CPMain.MODID,s.substring(0,s.lastIndexOf("."))))) {
+				if(!ForgeRegistries.BLOCKS.containsKey(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,s.substring(0,s.lastIndexOf("."))))) {
 					System.out.println(s);
 				}
 			});
@@ -85,35 +85,35 @@ public class CPItemModelProvider extends ItemModelProvider {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		super.singleTexture("walnut_sapling", new ResourceLocation("minecraft", "item/generated"), "layer0",
-				new ResourceLocation(CPMain.MODID, "block/walnut_sapling"));
-		super.singleTexture("fig_sapling", new ResourceLocation("minecraft", "item/generated"), "layer0",
-				new ResourceLocation(CPMain.MODID, "block/fig_sapling"));
-		super.singleTexture("wolfberry_sapling", new ResourceLocation("minecraft", "item/generated"), "layer0",
-				new ResourceLocation(CPMain.MODID, "block/wolfberry_sapling"));
+		super.singleTexture("walnut_sapling", ResourceLocation.fromNamespaceAndPath("minecraft", "item/generated"), "layer0",
+				ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/walnut_sapling"));
+		super.singleTexture("fig_sapling", ResourceLocation.fromNamespaceAndPath("minecraft", "item/generated"), "layer0",
+				ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/fig_sapling"));
+		super.singleTexture("wolfberry_sapling", ResourceLocation.fromNamespaceAndPath("minecraft", "item/generated"), "layer0",
+				ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/wolfberry_sapling"));
 		// super.withExistingParent("clay_cistern",new
 		// ResourceLocation(Main.MODID,"block/clay_cistern"));
 		for (String s : CPItems.spices)
 			simpleTexture(s, "");
 		for (String s : CPItems.dishes)
 			simpleTexture(s, "sauteed_dishes/");
-		texture("gravy_boat", "walnut_oil_0").override().predicate(new ResourceLocation("damaged"), 1)
-				.predicate(new ResourceLocation("damage"), 0.2f).model(texture("walnut_oil_1")).end().override()
-				.predicate(new ResourceLocation("damaged"), 1).predicate(new ResourceLocation("damage"), 0.4f)
-				.model(texture("walnut_oil_2")).end().override().predicate(new ResourceLocation("damaged"), 1)
-				.predicate(new ResourceLocation("damage"), 0.6f).model(texture("walnut_oil_3")).end().override()
-				.predicate(new ResourceLocation("damaged"), 1).predicate(new ResourceLocation("damage"), 0.8f)
-				.model(texture("walnut_oil_4")).end().override().predicate(new ResourceLocation("damaged"), 1)
-				.predicate(new ResourceLocation("damage"), 1f).model(texture("oil_bottle")).end();
+		texture("gravy_boat", "walnut_oil_0").override().predicate(ResourceLocation.withDefaultNamespace("damaged"), 1)
+				.predicate(ResourceLocation.withDefaultNamespace("damage"), 0.2f).model(texture("walnut_oil_1")).end().override()
+				.predicate(ResourceLocation.withDefaultNamespace("damaged"), 1).predicate(ResourceLocation.withDefaultNamespace("damage"), 0.4f)
+				.model(texture("walnut_oil_2")).end().override().predicate(ResourceLocation.withDefaultNamespace("damaged"), 1)
+				.predicate(ResourceLocation.withDefaultNamespace("damage"), 0.6f).model(texture("walnut_oil_3")).end().override()
+				.predicate(ResourceLocation.withDefaultNamespace("damaged"), 1).predicate(ResourceLocation.withDefaultNamespace("damage"), 0.8f)
+				.model(texture("walnut_oil_4")).end().override().predicate(ResourceLocation.withDefaultNamespace("damaged"), 1)
+				.predicate(ResourceLocation.withDefaultNamespace("damage"), 1f).model(texture("oil_bottle")).end();
 	}
 
 	public ItemModelBuilder itemModel(Item item, String name) {
-		return super.withExistingParent(Utils.getRegistryName(item).getPath(), new ResourceLocation(CPMain.MODID, "block/" + name));
+		return super.withExistingParent(Utils.getRegistryName(item).getPath(), ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/" + name));
 	}
 
 	public ItemModelBuilder simpleTexture(String name, String par) {
-		return super.singleTexture(name, new ResourceLocation("minecraft", "item/generated"), "layer0",
-				new ResourceLocation(CPMain.MODID, "item/" + par + name));
+		return super.singleTexture(name, ResourceLocation.fromNamespaceAndPath("minecraft", "item/generated"), "layer0",
+				ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "item/" + par + name));
 	}
 
 	public ItemModelBuilder texture(String name) {
@@ -123,7 +123,7 @@ public class CPItemModelProvider extends ItemModelProvider {
 		return texture(Utils.getRegistryName(name).getPath(),par);
 	}
 	public ItemModelBuilder texture(String name, String par) {
-		return super.singleTexture(name, new ResourceLocation("minecraft", "item/generated"), "layer0",
-				new ResourceLocation(CPMain.MODID, "item/" + par));
+		return super.singleTexture(name, ResourceLocation.fromNamespaceAndPath("minecraft", "item/generated"), "layer0",
+				ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "item/" + par));
 	}
 }

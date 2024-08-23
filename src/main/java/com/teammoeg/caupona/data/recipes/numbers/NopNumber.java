@@ -24,7 +24,6 @@ package com.teammoeg.caupona.data.recipes.numbers;
 import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;

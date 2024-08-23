@@ -21,10 +21,12 @@
 
 package com.teammoeg.caupona.datagen;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import com.teammoeg.caupona.CPMain;
 
+import net.minecraft.DetectedVersion;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -32,9 +34,11 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.data.registries.VanillaRegistries;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.util.InclusiveRange;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -48,15 +52,17 @@ public class CPDataGenerator {
 		
 		CompletableFuture<HolderLookup.Provider> completablefuture = CompletableFuture.supplyAsync(VanillaRegistries::createLookup, Util.backgroundExecutor());
 		gen.addProvider(event.includeClient(),new CPItemModelProvider(gen, CPMain.MODID, exHelper));
-		gen.addProvider(event.includeServer(),new CPRecipeProvider(gen));
+		gen.addProvider(event.includeServer(),new CPRecipeProvider(gen,completablefuture));
 		gen.addProvider(event.includeServer(),new CPItemTagGenerator(gen, CPMain.MODID, exHelper,event.getLookupProvider()));
 		gen.addProvider(event.includeServer(),new CPBlockTagGenerator(gen, CPMain.MODID, exHelper,event.getLookupProvider()));
 		gen.addProvider(event.includeServer(),new CPFluidTagGenerator(gen, CPMain.MODID, exHelper,event.getLookupProvider()));
-		gen.addProvider(event.includeServer(),new CPGlobalLootModifiersGenerator(gen.getPackOutput(),exHelper,CPMain.MODNAME+" global_modifiers"));
-		gen.addProvider(event.includeServer(),new CPLootGenerator(gen));
+		gen.addProvider(event.includeServer(),new CPGlobalLootModifiersGenerator(gen.getPackOutput(),completablefuture,exHelper,CPMain.MODNAME+" global_modifiers"));
+		gen.addProvider(event.includeServer(),new CPLootGenerator(gen,completablefuture));
 		gen.addProvider(event.includeClient()||event.includeServer(),new CPStatesProvider(gen, CPMain.MODID, exHelper));
 		gen.addProvider(event.includeServer(),new CPBookGenerator(gen.getPackOutput(), exHelper));
-		gen.addProvider(event.includeServer()||event.includeClient(),new PackMetadataGenerator(gen.getPackOutput()).add(PackMetadataSection.TYPE,new PackMetadataSection(MutableComponent.create(new TranslatableContents("pack.caupona.title",CPMain.MODNAME+" Data",new Object[0])),15)));
+		/*gen.addProvider(event.includeServer()||event.includeClient(),new PackMetadataGenerator(gen.getPackOutput()).add(PackMetadataSection.TYPE,new PackMetadataSection(MutableComponent.create(new TranslatableContents("pack.caupona.title",CPMain.MODNAME+" Data",new Object[0])),
+            DetectedVersion.BUILT_IN.getPackVersion(PackType.SERVER_DATA),
+            Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));*/
 		gen.addProvider(event.includeServer(),new CPRegistryGenerator(gen.getPackOutput(),completablefuture));
 		gen.addProvider(event.includeClient(),new FluidAnimationGenerator(gen.getPackOutput(),exHelper));
 		gen.addProvider(event.includeClient()||event.includeServer(), new RegistryJavaGenerator(gen.getPackOutput(),exHelper));

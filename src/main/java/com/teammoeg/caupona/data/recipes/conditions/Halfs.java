@@ -21,12 +21,10 @@
 
 package com.teammoeg.caupona.data.recipes.conditions;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.CookIngredients;
 import com.teammoeg.caupona.data.recipes.IPendingContext;
-import net.minecraft.network.FriendlyByteBuf;
 
 public class Halfs extends NumberedStewCondition {
 	public static final MapCodec<Halfs> CODEC=NumberedStewCondition.createCodec(Halfs::new);

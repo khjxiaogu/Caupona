@@ -1,9 +1,0 @@
-{
-  "pack": {
-    "description": {
-      "fallback": "Caupona Data",
-      "translate": "pack.caupona.title"
-    },
-    "pack_format": 15
-  }
-}

@@ -42,11 +42,11 @@ sourceSets {
 	datagen {
         compileClasspath += main.compileClasspath
         compileClasspath += main.output
-        resources {
+       /* resources {
             srcDirs = [
                     "$rootDir/src/datagen/resources",
             ]
-        }
+        }*/
     }
     client {}
 }
@@ -97,7 +97,7 @@ runs {
         // workingDirectory project.file('run-data')
 		//modSource project.sourceSets.datagen
         // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
-       // modSource project.sourceSets.main
+        modSource project.sourceSets.main
         modSource project.sourceSets.datagen
         programArguments.addAll '--mod', project.mod_id,
          '--all',

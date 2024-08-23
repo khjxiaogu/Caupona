@@ -170,6 +170,7 @@ public class DataOps implements DynamicOps<Object> {
 
 	public static Class<?> getElmClass(List<Object> objs) {
 		if (!objs.isEmpty()) {
+			if(objs.get(0)==null)return null;
 			Class<?> cls = objs.get(0).getClass();
 			for (Object obj : objs) {
 				if (!cls.isInstance(obj))

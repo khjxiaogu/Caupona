@@ -59,7 +59,7 @@ public class CPFluidTagGenerator extends TagsProvider<Fluid> {
 		tag(CPTags.Fluids.ANY_WATER).add(ResourceKey.create(Registries.FLUID,mrl("stock"))).add(ResourceKey.create(Registries.FLUID,mrl("nail_soup")));
 		
 		tag(CPTags.Fluids.PUMICE_ON).add(BuiltInRegistries.FLUID.getResourceKey(Fluids.WATER).get());
-		tag(new ResourceLocation("watersource", "drink")).add(ResourceKey.create(Registries.FLUID,mrl("nail_soup")));
+		tag(ResourceLocation.fromNamespaceAndPath("watersource", "drink")).add(ResourceKey.create(Registries.FLUID,mrl("nail_soup")));
 	}
 	private Fluid cp(String s) {
 		Fluid i = BuiltInRegistries.FLUID.get(mrl(s));
@@ -78,7 +78,7 @@ public class CPFluidTagGenerator extends TagsProvider<Fluid> {
 	}
 
 	private ResourceLocation rl(String r) {
-		return new ResourceLocation(r);
+		return ResourceLocation.parse(r);
 	}
 
 	private TagKey<Fluid> otag(String s) {
@@ -90,15 +90,15 @@ public class CPFluidTagGenerator extends TagsProvider<Fluid> {
 	}
 
 	private ResourceLocation mrl(String s) {
-		return new ResourceLocation(CPMain.MODID, s);
+		return ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s);
 	}
 
 	private ResourceLocation frl(String s) {
-		return new ResourceLocation("forge", s);
+		return ResourceLocation.fromNamespaceAndPath("forge", s);
 	}
 
 	private ResourceLocation mcrl(String s) {
-		return new ResourceLocation(s);
+		return ResourceLocation.withDefaultNamespace(s);
 	}
 
 	@Override

@@ -21,16 +21,11 @@
 
 package com.teammoeg.caupona.data.recipes.baseconditions;
 
-import com.google.gson.JsonObject;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.TranslationProvider;
 import com.teammoeg.caupona.data.recipes.StewBaseCondition;
-import com.teammoeg.caupona.util.Utils;
-
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 
 public class FluidType implements StewBaseCondition {
@@ -56,13 +51,10 @@ public class FluidType implements StewBaseCondition {
 		return test(u) ? 2 : test(t) ? 1 : 0;
 	}
 
-	public boolean test(ResourceLocation t) {
-		return of.equals(t);
-	}
 
 	@Override
 	public boolean test(Fluid f) {
-		return Utils.getRegistryName(f).equals(of);
+		return f==of;
 	}
 /*
 	public JsonObject serialize() {
