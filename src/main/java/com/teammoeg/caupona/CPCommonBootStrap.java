@@ -105,6 +105,7 @@ public class CPCommonBootStrap {
 		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.STEW_INFO.get()), CPItems.stews.toArray(Item[]::new));
 		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.SAUTEED_INFO.get()), CPItems.dish.toArray(Item[]::new));
 		CPBlockEntityTypes.REGISTER.getEntries().stream().map(t->t.get()).forEach(be->{
+			
 			event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<?>)be,
 				(block,ctx)->(IItemHandler)((CPBaseBlockEntity)block).getCapability(Capabilities.ItemHandler.BLOCK, ctx));
 			event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<?>)be,

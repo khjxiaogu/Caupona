@@ -109,7 +109,7 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 							fs.getStack().getDisplayName()));
 				Utils.addPotionTooltip(si.effects, tooltip::add, 1,blockEntity.getLevel());
 			}
-			GuiUtils.handleGuiTank(transform.pose(), blockEntity.getTank(), leftPos + 105, topPos + 20, 16, 46);
+			GuiUtils.handleGuiTank(transform, blockEntity.getTank(), leftPos + 105, topPos + 20, 16, 46);
 		}
 		if (!tooltip.isEmpty())
 			transform.renderTooltip(this.font,tooltip,Optional.empty(), mouseX, mouseY);

@@ -56,7 +56,7 @@ public class DoliumScreen extends AbstractContainerScreen<DoliumContainer> {
 			if (isMouseIn(mouseX, mouseY, 80, 27, 16, 46)) {
 				tooltip.add(blockEntity.tank.getFluid().getHoverName());
 			}
-			GuiUtils.handleGuiTank(transform.pose(), blockEntity.tank, leftPos + 80, topPos + 27, 16, 46);
+			GuiUtils.handleGuiTank(transform, blockEntity.tank, leftPos + 80, topPos + 27, 16, 46);
 		}
 		if (!tooltip.isEmpty())
 			transform.renderTooltip(this.font,tooltip,Optional.empty(), mouseX, mouseY);

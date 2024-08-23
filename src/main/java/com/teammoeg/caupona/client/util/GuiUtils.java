@@ -30,12 +30,15 @@ import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderStateShard.TextureStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -59,24 +62,30 @@ public class GuiUtils {
 	private GuiUtils() {
 	}
 	public static Quaternionf rotate90=new Quaternionf(new AxisAngle4f((float) (Math.PI/2),1,0,0));
-	public static void handleGuiTank(PoseStack transform, IFluidTank tank, int x, int y, int w, int h) {
+	public static void handleGuiTank(GuiGraphics transform, IFluidTank tank, int x, int y, int w, int h) {
 		FluidStack fluid = tank.getFluid();
-		transform.pushPose();
-
-		MultiBufferSource.BufferSource buffer = MultiBufferSource.immediate(new ByteBufferBuilder(1536));
+		
+		BufferSource buffer=transform.bufferSource();
 		if (fluid != null && fluid.getFluid() != null) {
 			int fluidHeight = (int) (h * (fluid.getAmount() / (float) tank.getCapacity()));
-			drawRepeatedFluidSpriteGui(buffer, transform, fluid, x, y + h - fluidHeight, w, fluidHeight);
+			drawRepeatedFluidSpriteGui(buffer, transform.pose(), fluid, x, y + h - fluidHeight, w, fluidHeight);
 		}
 		buffer.endBatch();
-		transform.popPose();
 	}
 
 	private static final Function<ResourceLocation, RenderType> GUI_CUTOUT = Util
-			.memoize(texture -> RenderType.create("gui_" + texture, DefaultVertexFormat.POSITION_TEX_COLOR, Mode.QUADS,
-					256, false, false,
-					RenderType.CompositeState.builder().setTextureState(new TextureStateShard(texture, false, false))
-							.setShaderState(RenderStateShard.POSITION_COLOR_SHADER).createCompositeState(false)));
+			.memoize(texture -> RenderType.create("gui_" + texture, 
+		        DefaultVertexFormat.BLOCK,
+		        VertexFormat.Mode.QUADS,
+		        786432,
+		        true,
+		        false,
+		        RenderType.CompositeState.builder()
+		            .setLightmapState(RenderType.LIGHTMAP)
+		            .setShaderState(RenderType.RENDERTYPE_CUTOUT_SHADER)
+		            .setTextureState(RenderType.BLOCK_SHEET)
+		            .createCompositeState(true)
+		    ));
 
 	private static void buildVertex(VertexConsumer bu, PoseStack transform, float r, float g, float b, float a,
 			float p1, float p2, float u0, float u1, int light, int overlay) {
