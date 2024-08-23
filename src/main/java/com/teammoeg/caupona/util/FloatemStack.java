@@ -69,12 +69,12 @@ public class FloatemStack {
 	public ItemStack getStack() {
 		return stack.copy();
 	}
-
+/*
 	public CompoundTag serializeNBT(HolderLookup.Provider registry) {
 		CompoundTag cnbt = (CompoundTag) stack.save(registry);
 		cnbt.putFloat("th_countf", count);
 		return cnbt;
-	}
+	}*/
 
 	public boolean isEmpty() {
 		return count <= 0.001;
@@ -83,7 +83,7 @@ public class FloatemStack {
 	public Item getItem() {
 		return stack.getItem();
 	}
-
+/*
 	public CompoundTag write(CompoundTag nbt,HolderLookup.Provider registry) {
 		CompoundTag cnbt = (CompoundTag) stack.save(registry);
 		for(String key:cnbt.getAllKeys()) {
@@ -92,7 +92,7 @@ public class FloatemStack {
 		nbt.putFloat("th_countf", count);
 		
 		return cnbt;
-	}
+	}*/
 
 	public int getMaxStackSize() {
 		return stack.getMaxStackSize();

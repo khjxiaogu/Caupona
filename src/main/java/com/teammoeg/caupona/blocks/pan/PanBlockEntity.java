@@ -191,13 +191,13 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		nbt.putBoolean("rsstate", rsstate);
 		nbt.putInt("process", process);
 		nbt.putInt("processMax", processMax);
-		nbt.put("sout", sout.save(ra));
+		nbt.put("sout", sout.saveOptional(ra));
 		nbt.put("items", inv.serializeNBT(ra));
 		if (!isClient) {
 			nbt.putBoolean("inf",isInfinite);
 			nbt.putBoolean("removeNbt",removesNBT);
 		}
-		nbt.put("result",preout.save(ra));
+		nbt.put("result",preout.saveOptional(ra));
 		
 	}
 
@@ -341,7 +341,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		}
 		interninv.clear();
 		current.completeAll();
-		current.recalculateHAS();
+		
 		PanPendingContext ctx = new PanPendingContext(current);
 		//Do recipe check
 		float tcount=0;
@@ -375,6 +375,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		this.processMax = process = 0;
 		tpt = Math.max(CPConfig.SERVER.fryTimeBase.get(), tpt);
 		current.setParts(cook);
+		current.recalculateHAS();
 		this.preout=new ItemStack(preout,cook);
 		this.preout.set(CPCapability.SAUTEED_INFO, current);
 		this.processMax=processMax;

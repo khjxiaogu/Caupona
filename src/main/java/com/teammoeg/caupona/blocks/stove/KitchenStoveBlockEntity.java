@@ -104,7 +104,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 		nbt.putInt("fuel_type", last.ordinal());
 		if (!isClient) {
 			nbt.putInt("cd", cd);
-			nbt.put("fuel", fuel.get(0).save(registries));
+			nbt.put("fuel", fuel.get(0).saveOptional(registries));
 			nbt.putInt("chimneyTick", chimneyTicks);
 			nbt.putBoolean("inf", isInfinite);
 		}

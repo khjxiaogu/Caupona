@@ -200,7 +200,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 			FoodValueRecipe fvr = FoodValueRecipe.recipes.get(fs.getItem());
 			if (fvr != null) {
 				nh += fvr.heal * fs.count;
-				ns += fvr.sat * fs.count * fvr.heal;
+				ns += fvr.sat * fs.count;
 				if(fvr.effects!=null)
 					fvr.effects.stream().map(ChancedEffect::new).forEach(foodeffect::add);
 				continue;
@@ -208,7 +208,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 			FoodProperties f = fs.getStack().getFoodProperties(null);
 			if (f != null) {
 				nh += fs.count * f.nutrition();
-				ns += fs.count * f.saturation() * f.nutrition();
+				ns += fs.count * f.saturation();
 				f.effects().stream().map(ChancedEffect::new).forEach(foodeffect::add);
 			}
 		}
@@ -227,7 +227,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		this.healing = (int) Math.ceil(nh - conv);
 		ns += conv / 2f;
 		if(this.healing>0)
-			this.saturation = Math.max(0.7f, ns / this.healing);
+			this.saturation = Math.max(0.7f, ns / this.healing/2);
 		else
 			this.saturation=0;
 	}

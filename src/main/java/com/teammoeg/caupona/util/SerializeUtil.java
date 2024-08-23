@@ -38,6 +38,7 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.teammoeg.caupona.CPMain;
@@ -45,6 +46,7 @@ import com.teammoeg.caupona.CPMain;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -198,5 +200,27 @@ public class SerializeUtil {
 		return StreamCodec.of((b,v)->{
 			writeCodec(b,codec.codec(),v);
 		},(b)->readCodec(b,codec.codec()));
+	}
+	public static <T> Codec<T> idOrKey(Registry<T> registry){
+		Codec<T> byKeyCodec=registry.byNameCodec();
+		return new Codec<T>() {
+
+			@Override
+			public <O> DataResult<O> encode(T input, DynamicOps<O> ops, O prefix) {
+				if(ops.compressMaps())
+					return DataResult.success(ops.createInt(registry.getId(input)));
+				return byKeyCodec.encode(input, ops, prefix);
+			}
+
+			@Override
+			public <O> DataResult<Pair<T, O>> decode(DynamicOps<O> ops, O input) {
+				if(ops.compressMaps())
+					return ops.getNumberValue(input).map(p->Pair.of(registry.byId(p.intValue()),input));
+				return byKeyCodec.decode(ops,input);
+			}
+			public String toString() {
+				return "IdOrKeyCodec[registry="+registry+"]";
+			}
+		};
 	}
 }

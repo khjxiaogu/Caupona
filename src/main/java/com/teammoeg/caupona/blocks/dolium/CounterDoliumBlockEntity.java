@@ -151,7 +151,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		nbt.putBoolean("inf", isInfinite);
 		if (!isClient) {
 			nbt.put("inventory", inv.serializeNBT(ra));
-			nbt.put("inner", inner.save(ra));
+			nbt.put("inner", inner.saveOptional(ra));
 			
 		}
 

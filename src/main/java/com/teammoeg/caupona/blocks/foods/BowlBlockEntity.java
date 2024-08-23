@@ -53,7 +53,7 @@ public class BowlBlockEntity extends CPBaseBlockEntity implements IInfinitable,I
 
 	@Override
 	public void writeCustomNBT(CompoundTag nbt, boolean isClient,Provider ra) {
-		nbt.put("bowl", internal.save(ra));
+		nbt.put("bowl", internal.saveOptional(ra));
 		nbt.putBoolean("inf", isInfinite);
 	}
 
