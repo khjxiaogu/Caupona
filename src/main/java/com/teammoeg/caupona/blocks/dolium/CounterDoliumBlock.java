@@ -93,7 +93,7 @@ public class CounterDoliumBlock extends CPHorizontalEntityBlock<CounterDoliumBlo
 				dolium.tank.setFluid(FluidStack.EMPTY);
 				return ItemInteractionResult.SUCCESS;
 			}
-			FluidStack out=Utils.extractFluid(held);
+			/*FluidStack out=Utils.extractFluid(held);
 			if (!out.isEmpty()) {
 				if (dolium.tryAddFluid(out)) {
 					ItemStack ret = held.getCraftingRemainingItem();

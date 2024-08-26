@@ -1,0 +1,7 @@
+{
+	"parent": "caupona:block/template_mineral_bloom",
+	"textures": {
+		"mineral": "caupona:block/litharge_bloom",
+		"particle": "caupona:block/litharge_bloom"
+	}
+}

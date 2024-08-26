@@ -122,4 +122,8 @@ run/
 /src/generated/resources/.cache/
 /bin/
 /run1/
+<<<<<<< HEAD
+=======
+/.eclipse/
+>>>>>>> branch '1.20.1' of https://github.com/TeamMoegMC/Caupona.git
 /runs/

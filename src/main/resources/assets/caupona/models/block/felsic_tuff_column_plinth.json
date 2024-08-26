@@ -2,7 +2,7 @@
 	"parent": "caupona:block/template_column_plinth",
 	"textures": {
 		"column": "caupona:block/felsic_tuff_tuscan_column",
-		"ends": "caupona:block/felsic_tuff_bricks",
-		"particle": "caupona:block/felsic_tuff_bricks"
+		"ends": "caupona:block/polished_felsic_tuff",
+		"particle": "caupona:block/polished_felsic_tuff"
 	}
 }

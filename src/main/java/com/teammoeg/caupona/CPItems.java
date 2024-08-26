@@ -109,7 +109,7 @@ public class CPItems {
 		}
 		for (String s : spices) {
 			spicesItems.add(
-					item(s, createProps().durability(16).craftRemainder(Items.FLOWER_POT).setNoRepair(),TabType.FOODS));
+					item(s, createProps().durability(6).craftRemainder(Items.FLOWER_POT).setNoRepair(),TabType.FOODS));
 		}
 		for (String s : base_material) {
 			item(s, createProps(),TabType.MAIN);

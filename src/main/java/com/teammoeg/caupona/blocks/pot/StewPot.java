@@ -79,7 +79,7 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 				blockEntity.getTank().setFluid(FluidStack.EMPTY);
 				return ItemInteractionResult.SUCCESS;
 			}
-			FluidStack out=Utils.extractFluid(held);
+			/*FluidStack out=Utils.extractFluid(held);
 			if (!out.isEmpty()) {
 				if (blockEntity.tryAddFluid(out)) {
 					ItemStack ret = held.getCraftingRemainingItem();

@@ -101,9 +101,11 @@ public class GuiUtils {
 		TextureAtlasSprite sprite = Minecraft.getInstance().getModelManager().getAtlas(InventoryMenu.BLOCK_ATLAS)
 				.getSprite(attr.getStillTexture(fluid));
 		int col = attr.getTintColor(fluid);
-
+		float alpha=(col >> 16 & 255)/255f*.8f;
+		if(alpha<0.001)alpha=1;
+		
 		drawRepeatedSprite(builder, transform, x, y, w, h,16,16, sprite.getU0(), sprite.getU1(), sprite.getV0(),
-				sprite.getV1(), (col >> 16 & 255) / 255.0f, (col >> 8 & 255) / 255.0f, (col & 255) / 255.0f, 0.8f,
+				sprite.getV1(), (col >> 16 & 255) / 255f, (col >> 8 & 255) / 255f, (col & 255) / 255f, alpha,
 				LightTexture.pack(15, 15), OverlayTexture.NO_OVERLAY);
 		buffer.endBatch(renderType);
 	}

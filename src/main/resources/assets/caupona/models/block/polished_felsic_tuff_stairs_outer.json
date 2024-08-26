@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/outer_stairs",
+	"textures": {
+		"bottom": "caupona:block/polished_felsic_tuff",
+		"top": "caupona:block/polished_felsic_tuff",
+		"side": "caupona:block/polished_felsic_tuff"
+	}
+}

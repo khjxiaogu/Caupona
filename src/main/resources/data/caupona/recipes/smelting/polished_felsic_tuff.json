@@ -1,0 +1,8 @@
+{
+	"type": "smelting",
+	"ingredient": {
+		"item": "caupona:felsic_tuff"
+	},
+	"result": "caupona:polished_felsic_tuff",
+	"experience": 0.1
+}

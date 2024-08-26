@@ -121,6 +121,7 @@ public class CPBlocks {
 			new MaterialType("opus_reticulatum").makeDecoration(),
 			new MaterialType("felsic_tuff_bricks").makeDecoration(),
 			new MaterialType("felsic_tuff").makeDecoration().makePillar().makeRoad(),
+			new MaterialType("polished_felsic_tuff").makeDecoration(),
 			new MaterialType("quartz").makePillar(),
 			new MaterialType("calcite").makePillar() };
 	// Block Lists for use in other registries

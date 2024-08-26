@@ -21,8 +21,10 @@
 
 package com.teammoeg.caupona.api;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import org.jetbrains.annotations.Nullable;
 

@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"B  ",
+		"BB ",
+		"BBB"
+	],
+	"key": {
+		"B": {
+			"item": "caupona:polished_felsic_tuff"
+		}
+	},
+	"result": {
+		"item": "caupona:polished_felsic_tuff_stairs",
+		"count": 4
+	}
+}

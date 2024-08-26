@@ -70,6 +70,10 @@ opus_reticulatum.json
 opus_reticulatum_slab.json
 opus_reticulatum_stairs.json
 opus_reticulatum_wall.json
+polished_felsic_tuff.json
+polished_felsic_tuff_slab.json
+polished_felsic_tuff_stairs.json
+polished_felsic_tuff_wall.json
 pumice.json
 pumice_bloom.json
 pumice_opus_regulatum.json

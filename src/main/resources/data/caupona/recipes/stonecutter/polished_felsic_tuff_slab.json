@@ -1,0 +1,8 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:polished_felsic_tuff"
+	},
+	"result": "caupona:polished_felsic_tuff_slab",
+	"count": 2
+}

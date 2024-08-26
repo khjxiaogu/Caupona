@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"H B",
+		"CCC",
+		"C C"
+	],
+	"key": {
+		"C": {
+			"item": "minecraft:calcite"
+		},
+		"B": {
+			"item": "minecraft:writable_book"
+		},
+		"H": {
+			"item": "minecraft:chest"
+		}
+	},
+	"result": {
+		"item": "caupona:tessellation_workbench"
+	}
+}

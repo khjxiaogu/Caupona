@@ -1,0 +1,8 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:mixed_bricks"
+	},
+	"result": "caupona:mixed_bricks_wall",
+	"count":1
+}

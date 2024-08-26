@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/cube",
-	"ambientocclusion": false,
+	"ambientocclusion": true,
 	"elements": [
 		{
 			"name": "LN1",

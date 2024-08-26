@@ -6,7 +6,7 @@
 	],
 	"key": {
 		"I": {
-			"item": "caupona:lead_ingot"
+			"tag": "forge:ingots/lead"
 		},
 		"P": {
 			"item": "caupona:copper_frying_pan"

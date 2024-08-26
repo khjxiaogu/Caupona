@@ -1,0 +1,18 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "caupona:block/polished_felsic_tuff",
+				"weight": 3
+			},
+			{
+				"model": "caupona:block/polished_felsic_tuff_1",
+				"weight": 1
+			},
+			{
+				"model": "caupona:block/polished_felsic_tuff_2",
+				"weight": 1
+			}
+		]
+	}
+}

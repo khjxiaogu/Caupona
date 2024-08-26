@@ -1,0 +1,8 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:opus_incertum"
+	},
+	"result": "caupona:opus_incertum_wall",
+	"count": 1
+}

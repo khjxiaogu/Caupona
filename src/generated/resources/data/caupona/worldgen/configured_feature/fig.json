@@ -27,7 +27,7 @@
     },
     "foliage_placer": {
       "type": "minecraft:blob_foliage_placer",
-      "height": 3,
+      "height": 2,
       "offset": 0,
       "radius": 2
     },
@@ -52,9 +52,9 @@
     },
     "trunk_placer": {
       "type": "caupona:bush_chunk",
-      "base_height": 4,
+      "base_height": 3,
       "height_rand_a": 2,
-      "height_rand_b": 0
+      "height_rand_b": 1
     },
     "trunk_provider": {
       "type": "minecraft:simple_state_provider",

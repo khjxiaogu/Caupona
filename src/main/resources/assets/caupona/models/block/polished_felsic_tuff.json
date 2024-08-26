@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/cube_all",
+	"textures": {
+		"all": "caupona:block/polished_felsic_tuff"
+	}
+}

@@ -50,6 +50,7 @@ vivid_charcoal.png
 walnut.png
 walnut_boat.png
 walnut_door.png
+walnut_hanging_sign.png
 walnut_oil_0.png
 walnut_oil_1.png
 walnut_oil_2.png

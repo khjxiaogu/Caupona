@@ -1,0 +1,8 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:felsic_tuff"
+	},
+	"result": "caupona:felsic_tuff_wall",
+	"count":1
+}

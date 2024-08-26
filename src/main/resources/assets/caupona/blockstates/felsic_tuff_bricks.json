@@ -1,7 +1,18 @@
 {
 	"variants": {
-		"": {
-			"model": "caupona:block/felsic_tuff_bricks"
-		}
+		"": [
+			{
+				"model": "caupona:block/felsic_tuff_bricks",
+				"weight": 3
+			},
+			{
+				"model": "caupona:block/felsic_tuff_bricks_1",
+				"weight": 1
+			},
+			{
+				"model": "caupona:block/felsic_tuff_bricks_2",
+				"weight": 1
+			}
+		]
 	}
 }
