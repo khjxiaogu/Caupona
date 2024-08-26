@@ -39,6 +39,7 @@ import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
 import com.teammoeg.caupona.entity.CPBoat;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
+import com.teammoeg.caupona.util.FluidItemWrapper;
 import com.teammoeg.caupona.util.ICreativeModeTabItem;
 import com.teammoeg.caupona.util.Utils;
 
@@ -111,7 +112,7 @@ public class CPCommonBootStrap {
 			event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<?>)be,
 				(block,ctx)->(IFluidHandler)((CPBaseBlockEntity)block).getCapability(Capabilities.FluidHandler.BLOCK, ctx));
 			});
-
+		event.registerItem(Capabilities.FluidHandler.ITEM,(stack,o)->new FluidItemWrapper(stack), CPItems.stews.toArray(Item[]::new));
 	}
 
 	public static <R extends ItemLike,T extends R> DeferredHolder<R,T> asCompositable(DeferredHolder<R,T> obj, float val) {

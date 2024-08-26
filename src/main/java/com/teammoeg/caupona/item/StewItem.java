@@ -105,8 +105,4 @@ public class StewItem extends EdibleBlock{
 		return info.getFood();
 		
 	}
-	@Override
-	public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-		return new FluidItemWrapper(stack);
-	}
 }

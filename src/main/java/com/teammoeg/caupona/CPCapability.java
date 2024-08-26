@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class CPCapability {
 	public static final ItemCapability<IFoodInfo, Void> FOOD_INFO=ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"food_info"), IFoodInfo.class);
+	
 
 	public static final DeferredRegister<DataComponentType<?>> REGISTRY=DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, CPMain.MODID);
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<StewInfo>> STEW_INFO=REGISTRY.register(
