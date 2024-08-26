@@ -84,7 +84,6 @@ public class CounterDoliumBlock extends CPHorizontalEntityBlock<CounterDoliumBlo
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack held,BlockState state, Level worldIn, BlockPos pos, Player player,InteractionHand hand,
 			BlockHitResult hit) {
-		@SuppressWarnings("deprecation")
 		ItemInteractionResult p = super.useItemOn(held,state, worldIn, pos, player, hand, hit);
 		if (p.consumesAction())
 			return p;
@@ -93,7 +92,7 @@ public class CounterDoliumBlock extends CPHorizontalEntityBlock<CounterDoliumBlo
 				dolium.tank.setFluid(FluidStack.EMPTY);
 				return ItemInteractionResult.SUCCESS;
 			}
-			/*FluidStack out=Utils.extractFluid(held);
+			FluidStack out=Utils.extractFluid(held);
 			if (!out.isEmpty()) {
 				if (dolium.tryAddFluid(out)) {
 					ItemStack ret = held.getCraftingRemainingItem();
@@ -137,7 +136,6 @@ public class CounterDoliumBlock extends CPHorizontalEntityBlock<CounterDoliumBlo
 		return false;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock() && worldIn.getBlockEntity(pos) instanceof CounterDoliumBlockEntity dolium) {

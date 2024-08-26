@@ -79,7 +79,7 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 				blockEntity.getTank().setFluid(FluidStack.EMPTY);
 				return ItemInteractionResult.SUCCESS;
 			}
-			/*FluidStack out=Utils.extractFluid(held);
+			FluidStack out=Utils.extractFluid(held);
 			if (!out.isEmpty()) {
 				if (blockEntity.tryAddFluid(out)) {
 					ItemStack ret = held.getCraftingRemainingItem();
@@ -181,7 +181,6 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 
 	@Override
 	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-		// TODO Auto-generated method stub
 		InteractionResult p= super.useWithoutItem(state, level, pos, player, hitResult);
 		if (p.consumesAction())
 			return p;
