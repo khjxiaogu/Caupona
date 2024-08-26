@@ -23,9 +23,12 @@ tasks.named('wrapper', Wrapper).configure {
     // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
     distributionType = Wrapper.DistributionType.BIN
 }
-version = mod_version
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+version = "${minecraft_version}-${mod_version}"
 group = mod_group_id
-archivesBaseName = "caupona-${minecraft_version}"
+archivesBaseName = mod_name
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 

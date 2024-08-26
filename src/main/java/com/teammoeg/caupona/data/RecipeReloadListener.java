@@ -71,10 +71,11 @@ import net.minecraft.world.item.crafting.SmokingRecipe;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
-
+@EventBusSubscriber
 public class RecipeReloadListener implements ResourceManagerReloadListener {
 	ReloadableServerResources data;
 	public static final Logger logger = LogManager.getLogger(CPMain.MODNAME + " recipe generator");
