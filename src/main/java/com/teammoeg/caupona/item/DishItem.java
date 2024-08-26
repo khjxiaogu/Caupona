@@ -26,9 +26,9 @@ import java.util.List;
 import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.blocks.foods.DishBlock;
+import com.teammoeg.caupona.components.IFoodInfo;
+import com.teammoeg.caupona.components.SauteedFoodInfo;
 import com.teammoeg.caupona.util.FloatemStack;
-import com.teammoeg.caupona.util.IFoodInfo;
-import com.teammoeg.caupona.util.SauteedFoodInfo;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.network.chat.Component;

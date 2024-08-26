@@ -2,8 +2,8 @@ package com.teammoeg.caupona.item;
 
 import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.FloatemStack;
-import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.TabType;
 import com.teammoeg.caupona.util.Utils;
 

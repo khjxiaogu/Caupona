@@ -19,7 +19,7 @@
  * along with Caupona. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.teammoeg.caupona.util;
+package com.teammoeg.caupona.components;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -29,6 +29,9 @@ import java.util.Optional;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.recipes.FoodValueRecipe;
+import com.teammoeg.caupona.util.ChancedEffect;
+import com.teammoeg.caupona.util.FloatemStack;
+import com.teammoeg.caupona.util.SpicedFoodInfo;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -79,7 +82,7 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 	}
 
 	public void completeData() {
-		stacks.sort(Comparator.comparingInt(e -> Item.getId(e.stack.getItem())));
+		stacks.sort(Comparator.comparingInt(e -> Item.getId(e.getStack().getItem())));
 		
 		foodeffect.sort(
 				Comparator.<ChancedEffect,String>comparing(e -> e.effect.getEffect().getRegisteredName())

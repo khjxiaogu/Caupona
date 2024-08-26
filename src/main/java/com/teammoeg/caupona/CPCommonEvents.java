@@ -29,10 +29,10 @@ import com.teammoeg.caupona.api.CauponaApi;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
 import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.RecipeReloadListener;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
 import com.teammoeg.caupona.util.ITickableContainer;
-import com.teammoeg.caupona.util.StewInfo;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

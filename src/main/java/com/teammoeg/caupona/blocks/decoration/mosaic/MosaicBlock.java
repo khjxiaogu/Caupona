@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.blocks.CPHorizontalBlock;
+import com.teammoeg.caupona.components.MosaicData;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;

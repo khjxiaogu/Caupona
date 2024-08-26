@@ -19,9 +19,11 @@
  * along with Caupona. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.teammoeg.caupona.util;
+package com.teammoeg.caupona.components;
 
 import java.util.List;
+
+import com.teammoeg.caupona.util.FloatemStack;
 
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.FoodProperties.PossibleEffect;

@@ -30,8 +30,8 @@ import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
 import com.teammoeg.caupona.blocks.pot.StewPotContainer;
 import com.teammoeg.caupona.client.util.GuiUtils;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.FloatemStack;
-import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.client.gui.GuiGraphics;

@@ -46,7 +46,7 @@ public class FloatemTagStack {
 			tags = stack.getTags().filter(CountingTags.tags::contains).collect(Collectors.toSet());
 		else
 			tags = fvr.getTags();
-		this.stack = stack.stack;
+		this.stack = stack.getStack();
 		this.count = stack.count;
 	}
 

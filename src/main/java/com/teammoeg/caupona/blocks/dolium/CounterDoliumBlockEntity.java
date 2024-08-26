@@ -24,6 +24,7 @@ package com.teammoeg.caupona.blocks.dolium;
 import com.teammoeg.caupona.CPBlockEntityTypes;
 import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.data.recipes.SpiceRecipe;
@@ -31,7 +32,6 @@ import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.IInfinitable;
 import com.teammoeg.caupona.util.LazyTickWorker;
-import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.SyncedFluidHandler;
 import com.teammoeg.caupona.util.Utils;
 

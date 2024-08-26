@@ -102,8 +102,8 @@ public class CPCommonBootStrap {
 	public static void onCapabilityInject(RegisterCapabilitiesEvent event) {
 		event.registerItem(Capabilities.FluidHandler.ITEM,(stack,o)->new FluidHandlerItemStack(CPCapability.SIMPLE_FLUID,stack,1250), CPItems.situla.get());
 		//event.registerItem(Capabilities.FluidHandler.ITEM,(stack,o)->new FluidHandlerItemStack(CPCapability.SIMPLE_FLUID,stack,1250), CPItems.situla.get());
-		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.STEW_INFO.get()), CPItems.stews.toArray(Item[]::new));
-		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.getComponents().get(CPCapability.SAUTEED_INFO.get()), CPItems.dish.toArray(Item[]::new));
+		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.get(CPCapability.STEW_INFO.get()), CPItems.stews.toArray(Item[]::new));
+		event.registerItem(CPCapability.FOOD_INFO,(stack,o)->stack.get(CPCapability.SAUTEED_INFO.get()), CPItems.dish.toArray(Item[]::new));
 		CPBlockEntityTypes.REGISTER.getEntries().stream().map(t->t.get()).forEach(be->{
 			
 			event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<?>)be,

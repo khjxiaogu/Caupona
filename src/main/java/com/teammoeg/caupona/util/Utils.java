@@ -37,6 +37,8 @@ import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
 import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
+import com.teammoeg.caupona.components.ItemHoldedFluidData;
+import com.teammoeg.caupona.components.StewInfo;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -105,7 +107,7 @@ public class Utils {
 		ItemHoldedFluidData si=stack.get(CPCapability.ITEM_FLUID);
 		if(si!=null) {
 			FluidStack fs= new FluidStack(si.getFluidType(),250);
-			fs.applyComponents(stack.getComponents());
+			fs.applyComponents(stack.getComponentsPatch());
 			fs.remove(CPCapability.ITEM_FLUID);
 			return fs;
 		}

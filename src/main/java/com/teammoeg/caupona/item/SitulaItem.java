@@ -22,10 +22,10 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.ICreativeModeTabItem;
-import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.TabType;
 import com.teammoeg.caupona.util.Utils;
 

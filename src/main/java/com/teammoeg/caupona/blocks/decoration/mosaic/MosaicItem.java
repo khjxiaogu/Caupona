@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPCapability;
+import com.teammoeg.caupona.components.MosaicData;
 import com.teammoeg.caupona.item.CPBlockItem;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
 import com.teammoeg.caupona.util.TabType;
@@ -40,9 +41,9 @@ public class MosaicItem extends CPBlockItem {
 	 public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag)  {
 		@Nullable MosaicData tag=stack.get(CPCapability.MOSAIC_DATA);
 		if(tag!=null) {
-			tooltipComponents.add(Utils.translate("tooltip.caupona.mosaic.material_1",Utils.translate("item.caupona."+tag.material1+"_tesserae")));
-			tooltipComponents.add(Utils.translate("tooltip.caupona.mosaic.material_2",Utils.translate("item.caupona."+tag.material2+"_tesserae")));
-			tooltipComponents.add(Utils.translate("tooltip.caupona.mosaic.pattern."+tag.pattern));
+			tooltipComponents.add(Utils.translate("tooltip.caupona.mosaic.material_1",Utils.translate("item.caupona."+tag.getMaterial1()+"_tesserae")));
+			tooltipComponents.add(Utils.translate("tooltip.caupona.mosaic.material_2",Utils.translate("item.caupona."+tag.getMaterial2()+"_tesserae")));
+			tooltipComponents.add(Utils.translate("tooltip.caupona.mosaic.pattern."+tag.getPattern()));
 		}
 		super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 		

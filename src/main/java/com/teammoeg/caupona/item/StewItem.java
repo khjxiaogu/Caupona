@@ -27,9 +27,9 @@ import java.util.function.Supplier;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.CPItems;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
 import com.teammoeg.caupona.util.FloatemStack;
-import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.network.chat.Component;

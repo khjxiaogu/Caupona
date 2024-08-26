@@ -33,6 +33,7 @@ import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.blocks.stove.IStove;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.recipes.AspicMeltingRecipe;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
@@ -46,7 +47,6 @@ import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.IInfinitable;
 import com.teammoeg.caupona.util.LazyTickWorker;
-import com.teammoeg.caupona.util.StewInfo;
 import com.teammoeg.caupona.util.SyncedFluidHandler;
 import com.teammoeg.caupona.util.Utils;
 
@@ -390,8 +390,8 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 				}
 				if (!hasItem)
 					proctype = 0;
-			}
-		}
+			}else proctype = 0;
+		}else proctype = 0;
 	}
 
 	private boolean doBoil() {
@@ -416,15 +416,18 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 	}
 
 	private boolean makeSoup() {
+		System.out.println("1");
 		if (tank.getFluidAmount() <= 250)
 			return false;// can't boil if under one bowl
 		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
+		System.out.println("2");
 		if (currentInfo.stacks.size() > 27)
 			return false;// too much ingredients
 		int oparts = tank.getFluidAmount() / 250;
 		int parts = oparts - 1;
 		int itms = 0;
 		List<MobEffectInstance> cr = new ArrayList<>(currentInfo.effects);
+		System.out.println("3");
 		for (int i = 0; i < 9; i++) {
 			ItemStack is = inv.getStackInSlot(i);
 			if (!is.isEmpty()) {
@@ -443,10 +446,11 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 					return false;
 			}
 		}
+		System.out.println("4:"+itms+"/"+parts+"/"+cr.size()+"/"+currentInfo.getDensity());
 		if (itms / (float) parts + (currentInfo.getDensity() * oparts) / parts > 3 || cr.size() > 3) {// too dense
 			return false;
 		}
-
+		System.out.println("5");
 		process = 0;
 		adjustParts(-1);
 		currentInfo=Utils.getOrCreateInfo(tank.getFluid());
@@ -475,12 +479,13 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 				hasItem = true;
 			}
 		}
-
+		System.out.println("6");
 		if (!hasItem) {// just reduce water
 			currentInfo.completeEffects();
 			processMax = Math.max(CPConfig.SERVER.potCookTimeBase.get(), decideSoup());
 			return true;
 		}
+		System.out.println("7");
 		int tpt = CPConfig.SERVER.potMixTimeBase.get();
 		outer: for (int i = 0; i < 9; i++) {
 			ItemStack is = interninv.get(i);
@@ -501,8 +506,9 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		tpt = Math.max(CPConfig.SERVER.potCookTimeBase.get(), tpt);
 		interninv.clear();
 		output=tank.getFluid().copy();
-		Utils.setInfo(output, currentInfo);
 		
+		Utils.setInfo(output, currentInfo);
+		decideSoup();
 		processMax = Math.max(decideSoup(), tpt);
 		
 		return true;
@@ -521,6 +527,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		
 		for (RecipeHolder<StewCookingRecipe> cr : StewCookingRecipe.sorted) {
 			int mt = cr.value().matches(ctx);
+			System.out.println(cr.id()+":"+mt);
 			if (mt != 0) {
 				if (mt == 2)
 					nextbase = become;
@@ -530,7 +537,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 				FluidStack preout=new FluidStack(become,output.getAmount());
 				if(!cr.value().removeNBT) {
 					currentInfo.base=nextbase;
-					preout.applyComponents(output.getComponents());
+					preout.applyComponents(output.getComponentsPatch());
 					currentInfo.recalculateHAS();
 					Utils.setInfo(preout, currentInfo);
 				}

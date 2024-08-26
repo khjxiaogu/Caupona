@@ -70,6 +70,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = CPMain.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class CPClientRegistry {
+	private static final ResourceLocation STILL_WATER_TEXTURE = ResourceLocation.withDefaultNamespace("block/water_still");
 	@SuppressWarnings("unused")
 	@SubscribeEvent
 	public static void onClientSetupEvent(FMLClientSetupEvent event) {
@@ -108,7 +109,7 @@ public class CPClientRegistry {
 		event.register(CPGui.PAN.get(), PanScreen::new);
 		event.register(CPGui.T_BENCH.get(), TBenchScreen::new);
 	}
-
+	@SubscribeEvent
 	public static void registerClientExtensions(RegisterClientExtensionsEvent event) {
 		event.registerItem(new IClientItemExtensions() {
 			MosaicRenderer renderer = new MosaicRenderer();
@@ -120,7 +121,7 @@ public class CPClientRegistry {
 
 		}, CPBlocks.MOSAIC.get().asItem());
 		for (String i : CPItems.soups) {
-			ResourceLocation rt = CPStewTexture.texture.get(i);
+			ResourceLocation rt = CPStewTexture.texture.getOrDefault(i,STILL_WATER_TEXTURE);
 			int cx = 0xffffffff;
 			event.registerFluidType(
 				new IClientFluidTypeExtensions() {

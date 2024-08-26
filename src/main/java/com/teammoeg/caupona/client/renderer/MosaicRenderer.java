@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.teammoeg.caupona.CPCapability;
-import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicData;
+import com.teammoeg.caupona.components.MosaicData;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

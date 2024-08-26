@@ -1,11 +1,11 @@
 package com.teammoeg.caupona;
 
-import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicData;
-import com.teammoeg.caupona.util.IFoodInfo;
-import com.teammoeg.caupona.util.ItemHoldedFluidData;
-import com.teammoeg.caupona.util.SauteedFoodInfo;
+import com.teammoeg.caupona.components.IFoodInfo;
+import com.teammoeg.caupona.components.ItemHoldedFluidData;
+import com.teammoeg.caupona.components.MosaicData;
+import com.teammoeg.caupona.components.SauteedFoodInfo;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.SerializeUtil;
-import com.teammoeg.caupona.util.StewInfo;
 
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;

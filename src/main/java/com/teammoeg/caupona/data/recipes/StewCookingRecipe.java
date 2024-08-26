@@ -26,6 +26,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -123,12 +125,12 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 
 	public StewCookingRecipe(Optional<List<IngredientCondition>> allow, Optional<List<IngredientCondition>> deny,
 			int priority, int time, float density, Optional<List<StewBaseCondition>> base, Fluid output,boolean removeNBT) {
-		this.allow = allow.orElse(null);
-		this.deny = deny.orElse(null);
+		this.allow = allow.orElseGet(ImmutableList::of);
+		this.deny = deny.orElseGet(ImmutableList::of);
 		this.priority = priority;
 		this.time = time;
 		this.density = density;
-		this.base = base.orElse(null);
+		this.base = base.orElseGet(ImmutableList::of);
 		this.output = output;
 		this.removeNBT=removeNBT;
 	}
@@ -148,7 +150,7 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 		if (ctx.getTotalItems() < density)
 			return 0;
 		int matchtype = 0;
-		if (base != null) {
+		if (base != null&&!base.isEmpty()) {
 			for (StewBaseCondition e : base) {
 				matchtype = ctx.compute(e);
 				if (matchtype != 0)
@@ -159,10 +161,10 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 		}
 		if (matchtype == 0)
 			matchtype = 1;
-		if (allow != null)
+		if (!allow.isEmpty())
 			if (!allow.stream().allMatch(ctx::compute))
 				return 0;
-		if (deny != null)
+		if (!deny.isEmpty())
 			if (deny.stream().anyMatch(ctx::compute))
 				return 0;
 		return matchtype;
@@ -170,13 +172,13 @@ public class StewCookingRecipe extends IDataRecipe implements IConditionalRecipe
 
 	public Stream<CookIngredients> getAllNumbers() {
 		return Stream.concat(
-				allow == null ? Stream.empty() : allow.stream().flatMap(IngredientCondition::getAllNumbers),
-				deny == null ? Stream.empty() : deny.stream().flatMap(IngredientCondition::getAllNumbers));
+				allow.stream().flatMap(IngredientCondition::getAllNumbers),
+				deny.stream().flatMap(IngredientCondition::getAllNumbers));
 	}
 
 	public Stream<ResourceLocation> getTags() {
-		return Stream.concat(allow == null ? Stream.empty() : allow.stream().flatMap(IngredientCondition::getTags),
-				deny == null ? Stream.empty() : deny.stream().flatMap(IngredientCondition::getTags));
+		return Stream.concat(allow.stream().flatMap(IngredientCondition::getTags),
+				deny.stream().flatMap(IngredientCondition::getTags));
 	}
 
 	public int getPriority() {

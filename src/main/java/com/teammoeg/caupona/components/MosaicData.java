@@ -1,8 +1,11 @@
-package com.teammoeg.caupona.blocks.decoration.mosaic;
+package com.teammoeg.caupona.components;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPBlocks;
+import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicBlock;
+import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicMaterial;
+import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicPattern;
 import com.teammoeg.caupona.util.SerializeUtil;
 
 import io.netty.buffer.ByteBuf;

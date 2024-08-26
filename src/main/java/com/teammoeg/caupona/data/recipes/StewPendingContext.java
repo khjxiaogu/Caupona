@@ -23,10 +23,10 @@ package com.teammoeg.caupona.data.recipes;
 
 import java.util.ArrayList;
 
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.FloatemTagStack;
 import com.teammoeg.caupona.util.ResultCachingMap;
-import com.teammoeg.caupona.util.StewInfo;
 
 import net.minecraft.world.level.material.Fluid;
 

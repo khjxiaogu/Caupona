@@ -28,6 +28,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.teammoeg.caupona.blocks.pot.StewPot;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
 import com.teammoeg.caupona.client.util.GuiUtils;
+import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -86,7 +87,7 @@ public class StewPotRenderer implements BlockEntityRenderer<StewPotBlockEntity> 
 			int col = attr0.getTintColor(fs);
 			Vector3f clr;
 			float alp = 1f;
-			if (blockEntity.output != null && blockEntity.processMax > 0) {
+			if (blockEntity.output != null&&!blockEntity.output.isEmpty() && blockEntity.processMax > 0) {
 				IClientFluidTypeExtensions attr1 = IClientFluidTypeExtensions.of(blockEntity.output.getFluid());
 				TextureAtlasSprite sprite2 = atlas.getSprite(attr1.getStillTexture(fs));
 				float proc = blockEntity.process * 1f / blockEntity.processMax;

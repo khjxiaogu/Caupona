@@ -1,4 +1,6 @@
-package com.teammoeg.caupona.util;
+package com.teammoeg.caupona.components;
+
+import java.util.Objects;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -24,6 +26,20 @@ public class ItemHoldedFluidData {
 
 	public Fluid getFluidType() {
 		return fluidType;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fluidType);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		ItemHoldedFluidData other = (ItemHoldedFluidData) obj;
+		return Objects.equals(fluidType, other.fluidType);
 	}
 
 

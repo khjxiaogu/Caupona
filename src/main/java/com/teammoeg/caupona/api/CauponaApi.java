@@ -24,8 +24,8 @@ package com.teammoeg.caupona.api;
 import java.util.Optional;
 
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
+import com.teammoeg.caupona.components.IFoodInfo;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
-import com.teammoeg.caupona.util.IFoodInfo;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.util.RandomSource;

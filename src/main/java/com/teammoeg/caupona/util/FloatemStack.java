@@ -43,8 +43,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 
 public class FloatemStack {
-	ItemStack stack;
-	float count;
+	private final ItemStack stack;
+	public float count;
 	public static final Codec<FloatemStack> CODEC=RecordCodecBuilder.create(o->o.group(SerializeUtil.fromRFBBStreamCodec(ItemStack.STREAM_CODEC,ItemStack.CODEC).fieldOf("item").forGetter(i->i.stack)
 		,Codec.FLOAT.fieldOf("count").forGetter(i->i.count))
 		.apply(o, FloatemStack::new)
@@ -55,11 +55,6 @@ public class FloatemStack {
 		this.stack = stack.copy();
 		this.stack.setCount(1);
 		this.count = count;
-	}
-
-	public FloatemStack(CompoundTag nbt,HolderLookup.Provider registry) {
-		super();
-		this.deserializeNBT(nbt,registry);
 	}
 
 	public FloatemStack(ItemStack is) {
@@ -162,10 +157,6 @@ public class FloatemStack {
 		return ItemStack.isSameItemSameComponents(this.getStack(), other);
 	}
 
-	public void deserializeNBT(CompoundTag nbt,HolderLookup.Provider registry) {
-		stack = ItemStack.parse(registry, nbt).orElse(ItemStack.EMPTY);
-		this.count = nbt.getFloat("th_countf");
-	}
 
 	@Override
 	public int hashCode() {

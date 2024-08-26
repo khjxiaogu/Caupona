@@ -25,6 +25,8 @@ import java.util.Map;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.teammoeg.caupona.CPCapability;
+import com.teammoeg.caupona.components.ItemHoldedFluidData;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.Utils;
 
@@ -92,6 +94,7 @@ public class BowlContainingRecipe extends IDataRecipe {
 		ItemStack is = new ItemStack(bowl);
 		
 		is.applyComponents(stack.getComponents());
+		is.set(CPCapability.ITEM_FLUID, new ItemHoldedFluidData(stack.getFluid()));
 		return is;
 	}
 }

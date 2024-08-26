@@ -9,6 +9,7 @@ import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.CPGui;
 import com.teammoeg.caupona.CPTags;
+import com.teammoeg.caupona.components.MosaicData;
 import com.teammoeg.caupona.container.CPBaseContainer;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -226,8 +227,8 @@ public class TBenchMenu extends CPBaseContainer<BlockEntity> {
 			@Nullable MosaicData tag = inputSlot0.getItem().get(CPCapability.MOSAIC_DATA);
 			if (tag==null)
 				return;
-			MosaicMaterial m1 = tag.material1;
-			MosaicMaterial m2 = tag.material2;
+			MosaicMaterial m1 = tag.getMaterial1();
+			MosaicMaterial m2 = tag.getMaterial2();
 			if (m1 != null && m2 != null) {
 				for (MosaicPattern pat : MosaicPattern.values()) {
 					ItemStack is = new ItemStack(CPBlocks.MOSAIC.get());

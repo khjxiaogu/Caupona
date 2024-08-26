@@ -23,9 +23,9 @@ package com.teammoeg.caupona.data.recipes;
 
 import java.util.ArrayList;
 
+import com.teammoeg.caupona.components.SauteedFoodInfo;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.FloatemTagStack;
-import com.teammoeg.caupona.util.SauteedFoodInfo;
 
 public class PanPendingContext extends IPendingContext {
 
