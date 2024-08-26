@@ -56,7 +56,7 @@ public class FluidItemWrapper implements IFluidHandlerItem
         }
 
         FluidStack fluidStack = getFluid();
-        if (!fluidStack.isEmpty() && fluidStack.isFluidEqual(resource))
+        if (!fluidStack.isEmpty() && FluidStack.isSameFluidSameComponents(fluidStack,resource))
         {
             if (action.execute())
             {
