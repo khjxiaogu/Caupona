@@ -197,7 +197,6 @@ public class SerializeUtil {
 		return map;
 	}
 	public static <K, V> void writeEntry(FriendlyByteBuf buffer, Map<K, V> elms, BiConsumer<Map.Entry<K, V>, FriendlyByteBuf> func) {
-		buffer.writeVarInt(elms.size());
 		elms.entrySet().forEach(e -> func.accept(e, buffer));
 	}
 	public static <F extends RegistryFriendlyByteBuf,V> StreamCodec<F,V> toStreamCodec(Codec<V> codec){
