@@ -45,6 +45,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class BrazierCategory implements IRecipeCategory<RecipeHolder<AspicMeltingRecipe>> {
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "aspic_thawing_brazier",RecipeHolder.class);
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
@@ -89,6 +90,7 @@ public class BrazierCategory implements IRecipeCategory<RecipeHolder<AspicMeltin
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<AspicMeltingRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

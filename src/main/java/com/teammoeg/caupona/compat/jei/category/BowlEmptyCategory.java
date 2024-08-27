@@ -43,6 +43,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class BowlEmptyCategory implements IRecipeCategory<RecipeHolder<BowlContainingRecipe>> {
 
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "bowl_draining",RecipeHolder.class);
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
@@ -82,6 +83,7 @@ public class BowlEmptyCategory implements IRecipeCategory<RecipeHolder<BowlConta
 
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<BowlContainingRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

@@ -251,9 +251,9 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		for (ChancedEffect es : foodeffect) {
 			es.adjustParts(oparts, parts);
 		}
-		float delta = 0;
+		/*float delta = 0;
 		if (oparts > parts)
-			delta = oparts - parts;
+			delta = oparts - parts;*/
 		clearSpice();
 		healing = (int) (healing * oparts / parts);
 		

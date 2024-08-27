@@ -30,9 +30,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.ChancedEffect;
-import com.teammoeg.caupona.util.Utils;
-
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -43,7 +41,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class FluidFoodValueRecipe extends IDataRecipe {
-	public static Map<ResourceLocation, RecipeHolder<FluidFoodValueRecipe>> recipes;
+	public static Map<Fluid, RecipeHolder<FluidFoodValueRecipe>> recipes;
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
 
@@ -62,7 +60,7 @@ public class FluidFoodValueRecipe extends IDataRecipe {
 	public List<ChancedEffect> effects;
 	private Ingredient repersent;
 	public int parts;
-	public ResourceLocation f;
+	public Fluid f;
 	public static final MapCodec<FluidFoodValueRecipe> CODEC=
 		RecordCodecBuilder.mapCodec(t->t.group(
 			Codec.INT.fieldOf("heal").forGetter(o->o.heal),
@@ -70,14 +68,14 @@ public class FluidFoodValueRecipe extends IDataRecipe {
 			Codec.list(ChancedEffect.CODEC).optionalFieldOf("effects").forGetter(o->Optional.ofNullable(o.effects)),
 			Ingredient.CODEC.optionalFieldOf("item").forGetter(o->o.repersent==null?Optional.empty():Optional.of(o.repersent)),
 			Codec.INT.fieldOf("parts").forGetter(o->o.parts),
-			ResourceLocation.CODEC.fieldOf("fluid").forGetter(o->o.f)
+			BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(o->o.f)
 				).apply(t, FluidFoodValueRecipe::new));
 	public FluidFoodValueRecipe(int heal, float sat, ItemStack repersent, int parts, Fluid f) {
 		this.heal = heal;
 		this.sat = sat;
 		this.repersent = Ingredient.of(repersent);
 		this.parts = parts;
-		this.f = Utils.getRegistryName(f);
+		this.f = f;
 	}
 /*
 	public FluidFoodValueRecipe(FriendlyByteBuf data) {
@@ -89,7 +87,7 @@ public class FluidFoodValueRecipe extends IDataRecipe {
 		repersent = SerializeUtil.readOptional(data, d -> ItemStack.of(d.readNbt())).orElse(null);
 	}
 */
-	public FluidFoodValueRecipe(int heal, float sat, Optional<List<ChancedEffect>> effects, Optional<Ingredient> repersent, int parts, ResourceLocation f) {
+	public FluidFoodValueRecipe(int heal, float sat, Optional<List<ChancedEffect>> effects, Optional<Ingredient> repersent, int parts, Fluid f) {
 		super();
 		this.heal = heal;
 		this.sat = sat;
@@ -100,16 +98,7 @@ public class FluidFoodValueRecipe extends IDataRecipe {
 		this.f = f;
 	}
 
-	public FluidFoodValueRecipe(int heal, float sat, ItemStack repersent, int parts,
-			ResourceLocation f) {
-		this.heal = heal;
-		this.sat = sat;
-		if(repersent!=null)
-		this.repersent =  Ingredient.of(repersent);
-		this.parts = parts;
-		this.f = f;
-	}
-/*
+	/*
 
 	public void write(FriendlyByteBuf data) {
 		data.writeVarInt(heal);

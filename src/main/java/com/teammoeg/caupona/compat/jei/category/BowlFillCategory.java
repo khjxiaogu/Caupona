@@ -43,6 +43,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class BowlFillCategory implements IRecipeCategory<RecipeHolder<BowlContainingRecipe>> {
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "bowl_filling",RecipeHolder.class);
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
@@ -79,6 +80,7 @@ public class BowlFillCategory implements IRecipeCategory<RecipeHolder<BowlContai
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<BowlContainingRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

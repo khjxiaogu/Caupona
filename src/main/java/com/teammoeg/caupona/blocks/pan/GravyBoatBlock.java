@@ -118,7 +118,6 @@ public class GravyBoatBlock extends CPHorizontalBlock implements ICreativeModeTa
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public List<ItemStack> getDrops(BlockState pState,
 			net.minecraft.world.level.storage.loot.LootParams.Builder pBuilder) {

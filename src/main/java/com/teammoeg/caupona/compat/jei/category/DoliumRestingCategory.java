@@ -34,8 +34,9 @@ import com.teammoeg.caupona.util.Utils;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -55,6 +56,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRecipe>> {
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "dolium_resting",RecipeHolder.class);
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
@@ -115,7 +117,7 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 		return ps.getSecond() == 0 ? RecipeIngredientRole.CATALYST : RecipeIngredientRole.INPUT;
 	}
 
-	private static class CatalistCallback implements IRecipeSlotTooltipCallback {
+	private static class CatalistCallback implements IRecipeSlotRichTooltipCallback {
 		int cnt;
 
 		public CatalistCallback(int cnt) {
@@ -124,7 +126,7 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 		}
 
 		@Override
-		public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
+		public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
 			if (cnt == 0)
 				tooltip.add(Utils.translate("gui.jei.category.caupona.catalyst"));
 		}
@@ -140,15 +142,15 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 		if (recipe.value().items.size() > 0) {
 			builder.addSlot(type(recipe.value().items.get(0)), 4, 6)
 					.addIngredients(VanillaTypes.ITEM_STACK, unpack(recipe.value().items.get(0)))
-					.addTooltipCallback(cb(recipe.value().items.get(0)));
+					.addRichTooltipCallback(cb(recipe.value().items.get(0)));
 			if (recipe.value().items.size() > 1) {
 				builder.addSlot(type(recipe.value().items.get(1)), 4, 24)
 						.addIngredients(VanillaTypes.ITEM_STACK, unpack(recipe.value().items.get(1)))
-						.addTooltipCallback(cb(recipe.value().items.get(1)));
+						.addRichTooltipCallback(cb(recipe.value().items.get(1)));
 				if (recipe.value().items.size() > 2) {
 					builder.addSlot(type(recipe.value().items.get(2)), 4, 42)
 							.addIngredients(VanillaTypes.ITEM_STACK, unpack(recipe.value().items.get(2)))
-							.addTooltipCallback(cb(recipe.value().items.get(2)));
+							.addRichTooltipCallback(cb(recipe.value().items.get(2)));
 				}
 			}
 		}
@@ -160,11 +162,12 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 			builder.addSlot(RecipeIngredientRole.INPUT, 26, 9)
 					.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(recipe.value().fluid, recipe.value().amount))
 					.setFluidRenderer(1250, false, 16, 46)
-					.addTooltipCallback(new BaseCallback(recipe.value().base, recipe.value().density));
+					.addRichTooltipCallback(new BaseCallback(recipe.value().base, recipe.value().density));
 
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<DoliumRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

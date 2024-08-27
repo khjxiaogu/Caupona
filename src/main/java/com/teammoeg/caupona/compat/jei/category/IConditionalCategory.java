@@ -33,6 +33,7 @@ import com.teammoeg.caupona.data.recipes.IConditionalRecipe;
 import com.teammoeg.caupona.data.recipes.IngredientCondition;
 import com.teammoeg.caupona.util.Utils;
 
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -119,8 +120,7 @@ public abstract class IConditionalCategory<T extends IConditionalRecipe&Recipe<?
 	}
 
 	@Override
-	public List<Component> getTooltipStrings(RecipeHolder<T> recipe, IRecipeSlotsView recipeSlotsView, double mouseX,
-			double mouseY) {
+	public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<T> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 		if (inRange(mouseX, mouseY, 0, 50, 100, 50)) {
 			List<Component> allowence = null;
 			List<IngredientCondition> conds;
@@ -136,12 +136,10 @@ public abstract class IConditionalCategory<T extends IConditionalRecipe&Recipe<?
 					allowence.add(0, Utils.translate("recipe.caupona.allow"));
 				else
 					allowence.add(0, Utils.translate("recipe.caupona.deny"));
-				return allowence;
+				allowence.forEach(tooltip::add);
 			}
 
 		}
-		return Arrays.asList();
 	}
-
 
 }

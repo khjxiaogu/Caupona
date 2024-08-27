@@ -34,6 +34,7 @@ import com.teammoeg.caupona.util.Utils;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -52,6 +53,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class StewCookingCategory extends IConditionalCategory<StewCookingRecipe> {
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "stew_cooking",RecipeHolder.class);
 	private IDrawable ICON;
 	private IGuiHelper helper;
@@ -122,14 +124,14 @@ public class StewCookingCategory extends IConditionalCategory<StewCookingRecipe>
 	}
 
 	@Override
-	public List<Component> getTooltipStrings(RecipeHolder<StewCookingRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX,
-			double mouseY) {
+	public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<StewCookingRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
 		if (inRange(mouseX, mouseY, 21, 6, 34, 30)) {
-			return Arrays.asList(Utils.translate("recipe.caupona.density", recipe.value().getDensity()));
-		}
-		return super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+			tooltip.add(Utils.translate("recipe.caupona.density", recipe.value().getDensity()));
+		}else
+			super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<StewCookingRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

@@ -28,7 +28,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.teammoeg.caupona.blocks.pot.StewPot;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
 import com.teammoeg.caupona.client.util.GuiUtils;
-import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

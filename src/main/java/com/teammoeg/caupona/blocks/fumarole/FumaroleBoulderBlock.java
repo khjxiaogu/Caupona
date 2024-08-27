@@ -56,7 +56,6 @@ public class FumaroleBoulderBlock extends Block implements SimpleWaterloggedBloc
 		return shape;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel,
 			BlockPos pCurrentPos, BlockPos pFacingPos) {
@@ -88,7 +87,6 @@ public class FumaroleBoulderBlock extends Block implements SimpleWaterloggedBloc
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState pState) {
 		return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
 	}

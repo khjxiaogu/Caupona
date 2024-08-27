@@ -32,6 +32,7 @@ import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
@@ -53,7 +54,7 @@ public class AllowenceTooltip implements ICustomComponent {
 
 	@SuppressWarnings("resource")
 	@Override
-	public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
+	public void onVariablesAvailable(UnaryOperator<IVariable> lookup, Provider registries) {
 		recipe = lookup.apply(recipe);
 		ResourceLocation out = ResourceLocation.parse(recipe.asString());
 		Recipe<?> r = Minecraft.getInstance().level.getRecipeManager().byKey(out).map(t->t.value()).orElse(null);
@@ -85,5 +86,6 @@ public class AllowenceTooltip implements ICustomComponent {
 			if (allowence != null && !allowence.isEmpty())
 				context.setHoverTooltipComponents(allowence);
 	}
+
 
 }

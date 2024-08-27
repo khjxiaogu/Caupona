@@ -96,7 +96,6 @@ public class KitchenStove extends CPRegisteredEntityBlock<KitchenStoveBlockEntit
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()&&worldIn.getBlockEntity(pos) instanceof KitchenStoveBlockEntity stove) {
@@ -138,7 +137,6 @@ public class KitchenStove extends CPRegisteredEntityBlock<KitchenStoveBlockEntit
 		super.stepOn(pLevel, pPos, pState, pEntity);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player,BlockHitResult hit) {
 		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);

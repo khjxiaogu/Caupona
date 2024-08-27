@@ -54,7 +54,6 @@ public class PanBlock extends CPHorizontalEntityBlock<PanBlockEntity> {
 		return sshape;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
 		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
@@ -67,7 +66,6 @@ public class PanBlock extends CPHorizontalEntityBlock<PanBlockEntity> {
 		return InteractionResult.sidedSuccess(worldIn.isClientSide);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()&&worldIn.getBlockEntity(pos) instanceof PanBlockEntity pan) {

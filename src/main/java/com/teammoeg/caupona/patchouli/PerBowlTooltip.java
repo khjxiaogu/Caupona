@@ -29,6 +29,7 @@ import com.teammoeg.caupona.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -47,7 +48,7 @@ public class PerBowlTooltip implements ICustomComponent {
 
 	@SuppressWarnings("resource")
 	@Override
-	public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {
+	public void onVariablesAvailable(UnaryOperator<IVariable> lookup, Provider registries) {
 		recipe = lookup.apply(recipe);
 		ResourceLocation out = ResourceLocation.parse(recipe.asString());
 		Recipe<?> r = Minecraft.getInstance().level.getRecipeManager().byKey(out).map(t->t.value()).orElse(null);

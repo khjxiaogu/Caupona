@@ -27,6 +27,7 @@ public class ObjectWriter {
 	}
 	public ObjectWriter() {
 	}
+	@SuppressWarnings("unchecked")
 	public static TypedValue getTyped(Object input) {
 		if(input instanceof Byte) {
 			return new TypedValue(1,input);
@@ -65,6 +66,7 @@ public class ObjectWriter {
 			return new TypedValue(0,input);
 		}
 	}
+	@SuppressWarnings("unchecked")
 	public static void writeTyped(FriendlyByteBuf pb,TypedValue input) {
 		switch(input.type) {
 		case 1:pb.writeByte((Byte)input.value);break;
@@ -86,7 +88,7 @@ public class ObjectWriter {
 		case 10:SerializeUtil.writeList(pb, ((List<Integer>)input.value), (t,p)->p.writeVarInt(t));break;
 		case 11:SerializeUtil.writeList(pb, ((List<Long>)input.value), (t,p)->p.writeLong(t));break;
 		case 12:SerializeUtil.writeList(pb, ((List<String>)input.value), (t,p)->p.writeUtf(t));break;
-		case 13:SerializeUtil.writeList(pb, ((List<Map>)input.value), (t,p)->writeTyped(p,new TypedValue(8,t)));break;
+		case 13:SerializeUtil.writeList(pb, ((List<Map<Object,Object>>)input.value), (t,p)->writeTyped(p,new TypedValue(8,t)));break;
 		case 14:{
 			List<Object> obj=(List<Object>) input.value;
 			List<TypedValue> typed=obj.stream().map(o->getTyped(o)).collect(Collectors.toList());

@@ -45,6 +45,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class BoilingCategory implements IRecipeCategory<RecipeHolder<BoilingRecipe>> {
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "boiling",RecipeHolder.class);
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
@@ -94,6 +95,7 @@ public class BoilingCategory implements IRecipeCategory<RecipeHolder<BoilingReci
 
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<BoilingRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

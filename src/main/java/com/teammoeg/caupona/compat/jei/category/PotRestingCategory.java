@@ -46,6 +46,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class PotRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRecipe>> {
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "pot_resting",RecipeHolder.class);
 	private IDrawable BACKGROUND;
 	private IDrawable ICON;
@@ -86,10 +87,11 @@ public class PotRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRe
 		builder.addSlot(RecipeIngredientRole.INPUT, 30, 9)
 				.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(recipe.value().fluid, recipe.value().amount))
 				.setFluidRenderer(1250, false, 16, 46)
-				.addTooltipCallback(new BaseCallback(recipe.value().base, recipe.value().density));
+				.addRichTooltipCallback(new BaseCallback(recipe.value().base, recipe.value().density));
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<DoliumRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

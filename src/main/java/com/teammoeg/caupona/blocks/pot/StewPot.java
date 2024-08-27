@@ -125,7 +125,6 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (worldIn.getBlockEntity(pos) instanceof StewPotBlockEntity pot && state.getBlock() != newState.getBlock()) {

@@ -49,18 +49,13 @@ import com.teammoeg.caupona.CPMain;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.DecoderException;
-import io.netty.handler.codec.EncoderException;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 /**
@@ -166,7 +161,7 @@ public class SerializeUtil {
             valuewriter.accept(p.getValue(), b);
         });
     }
-	public static <T extends Enum> StreamCodec<ByteBuf,T> createEnumStreamCodec(T[] values) {
+	public static <T extends Enum<T>> StreamCodec<ByteBuf,T> createEnumStreamCodec(T[] values) {
 		return ByteBufCodecs.BYTE.map(n->values[n], v->(byte)v.ordinal());
 	}
     public static <K, V> Map<K, V> readMap(FriendlyByteBuf buffer, Map<K, V> map, Function<FriendlyByteBuf, K> keyreader, Function<FriendlyByteBuf, V> valuereader) {

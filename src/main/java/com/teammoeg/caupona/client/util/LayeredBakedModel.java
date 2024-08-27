@@ -29,11 +29,8 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
-@OnlyIn(Dist.CLIENT)
 public class LayeredBakedModel implements BakedModel {
 	protected Map<String,int[]> faces;
 	protected List<BakedQuad> unculledFaces;
@@ -135,7 +132,6 @@ public class LayeredBakedModel implements BakedModel {
 		return BakedModel.super.getRenderTypes(itemStack, fabulous);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	public static class Builder {
 		private final List<BakedQuad> unculledFaces = Lists.newArrayList();
 		private final Map<String,Set<Integer>> faces=new HashMap<>();

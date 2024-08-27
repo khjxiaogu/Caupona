@@ -43,6 +43,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class FryingCategory extends IConditionalCategory<SauteedRecipe> {
+	@SuppressWarnings("rawtypes")
 	public static RecipeType<RecipeHolder> TYPE=RecipeType.create(CPMain.MODID, "frying",RecipeHolder.class);
 	private IDrawable ICON;
 	private IGuiHelper helper;
@@ -82,9 +83,10 @@ public class FryingCategory extends IConditionalCategory<SauteedRecipe> {
 		builder.addSlot(RecipeIngredientRole.INPUT, 30, 13).addIngredient(VanillaTypes.ITEM_STACK,
 				new ItemStack(CPItems.gravy_boat.get()));
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 18).addIngredient(VanillaTypes.ITEM_STACK,
-				new ItemStack(recipe.value().output)).addTooltipCallback((v,t)->{t.add(Utils.translate("gui.jei.category.caupona.ingredientPer",recipe.value().count));});
+				new ItemStack(recipe.value().output)).addRichTooltipCallback((v,t)->{t.add(Utils.translate("gui.jei.category.caupona.ingredientPer",recipe.value().count));});
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public RecipeType<RecipeHolder<SauteedRecipe>> getRecipeType() {
 		return (RecipeType)TYPE;

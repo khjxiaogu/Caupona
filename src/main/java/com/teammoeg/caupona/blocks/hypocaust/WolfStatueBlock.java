@@ -80,7 +80,6 @@ public class WolfStatueBlock extends CPHorizontalEntityBlock<WolfStatueBlockEnti
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel,
 			BlockPos pCurrentPos, BlockPos pFacingPos) {
 		if (pState.getValue(WATERLOGGED)) {
@@ -89,7 +88,6 @@ public class WolfStatueBlock extends CPHorizontalEntityBlock<WolfStatueBlockEnti
 		return super.updateShape(pState, pFacing, pState, pLevel, pCurrentPos, pFacingPos);
 	}
 
-	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState pState) {
 		return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
 	}
@@ -99,7 +97,6 @@ public class WolfStatueBlock extends CPHorizontalEntityBlock<WolfStatueBlockEnti
 		return false;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
 		super.entityInside(pState, pLevel, pPos, pEntity);

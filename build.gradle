@@ -85,7 +85,7 @@ runs {
 
     server {
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
+        argument '--nogui'
     }
 
     // This run config launches GameTestServer and runs all registered gametests, then exits.
@@ -102,7 +102,7 @@ runs {
         // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
         modSource project.sourceSets.main
         modSource project.sourceSets.datagen
-        programArguments.addAll '--mod', project.mod_id,
+        arguments.addAll '--mod', project.mod_id,
          '--all',
          '--output', file('src/generated/resources/').getAbsolutePath(),
          '--existing', file('src/main/resources/').getAbsolutePath()
@@ -118,14 +118,6 @@ mixin {
 repositories {
     mavenLocal()
     mavenCentral()
-    // Needed for JEI
-    maven {
-        name = "latvian maven"
-        url = "https://maven.latmod.com/"
-        content {
-            includeGroup "mezz.jei"
-        }
-    }
     //    maven { url "https://maven.shedaniel.me" }
    maven {
         url "https://www.khjxiaogu.com/maven"
@@ -141,7 +133,7 @@ repositories {
         }
     }
 
-    //for patchouli books
+    //for patchouli books and jei
     maven { url 'https://maven.blamejared.com' }
     maven {
         url "https://maven.architectury.dev/"
@@ -164,7 +156,11 @@ dependencies {
     //implementation fg.deobf("curse.maven:diet-443570:3758891")
 
 	//compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:11.2.0.247")
-	compileOnly "curse.maven:jei-238222:5071127"
+	//implementation "curse.maven:jei-238222:5665038"
+	compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+ 	compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+  	// at runtime, use the full JEI jar for NeoForge
+  	runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 	
 	compileOnly "curse.maven:diet-443570:4813904"
 	//implementation fg.deobf("mezz.jei:jei-1.19.3-forge:12.3.0.21")
@@ -184,7 +180,7 @@ dependencies {
 	//implementation fg.deobf("curse.maven:simple-farming-327554:3400041")
 
     //compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-81-FORGE:api")
-    compileOnly "vazkii.patchouli:Patchouli:1.20.1-81-FORGE:api"
+    compileOnly "vazkii.patchouli:Patchouli:${mc_version}-${patchouli_version}:api"
 	//compileOnly "me.shedaniel:RoughlyEnoughItems-neoforge:14.0.688"
 	//clientRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:14.0.688"
     // FG5 requires 0.8.3

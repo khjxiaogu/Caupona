@@ -103,7 +103,6 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player,
 			BlockHitResult hit) {

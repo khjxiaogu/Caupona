@@ -42,41 +42,14 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries.Keys;
 
 public class CPFluids {
-	private static class TextureColorPair {
-		ResourceLocation texture;
-		int c;
 
-		public TextureColorPair(ResourceLocation t, int c) {
-			this.texture = t;
-			this.c = c;
-		}
-		public FluidType create(String n){
 
-			FluidType ft=new FluidType(FluidType.Properties.create().viscosity(1200)
-					.temperature(333).rarity(Rarity.UNCOMMON).descriptionId("item."+CPMain.MODID+"."+n));
-
-			return ft;
-		}
-	}
-
-	private static final ResourceLocation STILL_WATER_TEXTURE = ResourceLocation.withDefaultNamespace("block/water_still");
-	private static final ResourceLocation STILL_SOUP_TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/soup_fluid");
-	private static final ResourceLocation STILL_MILK_TEXTURE = ResourceLocation.fromNamespaceAndPath("forge", "block/milk_still");
+	public static final ResourceLocation STILL_WATER_TEXTURE = ResourceLocation.withDefaultNamespace("block/water_still");
+	public static final ResourceLocation STILL_SOUP_TEXTURE = ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/soup_fluid");
+	public static final ResourceLocation STILL_MILK_TEXTURE = ResourceLocation.fromNamespaceAndPath("neoforge", "block/milk_still");
 	static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, CPMain.MODID);
 	static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(Keys.FLUID_TYPES, CPMain.MODID);
 	//private static final Map<String, TextureColorPair> soupfluids = new HashMap<>();
-
-	public static TextureColorPair soup(int c) {
-		return new TextureColorPair(STILL_SOUP_TEXTURE, c);
-	}
-
-	public static TextureColorPair water(int c) {
-		return new TextureColorPair(STILL_WATER_TEXTURE, c);
-	}
-
-	public static TextureColorPair milk(int c) {
-		return new TextureColorPair(STILL_MILK_TEXTURE, c);
-	}
 
 	public static Stream<Fluid> getAll() {
 		return Arrays.stream(CPItems.soups).map(e -> ResourceLocation.fromNamespaceAndPath(CPMain.MODID, e))

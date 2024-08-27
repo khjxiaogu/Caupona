@@ -68,7 +68,6 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 		return shape;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock() && worldIn.getBlockEntity(pos) instanceof BowlBlockEntity bowl) {
@@ -77,7 +76,6 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 		super.onRemove(state, worldIn, pos, newState, isMoving);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player,
 			BlockHitResult hit) {

@@ -439,18 +439,21 @@ public class DataOps implements DynamicOps<Object> {
 		this.compress = compress;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static <T> DataResult<T> cast(Class<T> type, Object input) {
 		if (type.isInstance(input))
 			return DataResult.success((T) input);
 		return DataResult.error(()->"Not a " + type.getSimpleName());
 	}
 
+	@SuppressWarnings("unchecked")
 	private static DataResult<Map<Object, Object>> castToMap(Object input) {
 		if (input instanceof Map)
 			return DataResult.success((Map<Object, Object>) input);
 		return DataResult.error(()->"Not a Map");
 	}
 
+	@SuppressWarnings("unchecked")
 	private static DataResult<List<Object>> castToList(Object input) {
 		if (input instanceof List)
 			return DataResult.success((List<Object>) input);
@@ -462,6 +465,7 @@ public class DataOps implements DynamicOps<Object> {
 		return compress;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <U> U convertTo(DynamicOps<U> outOps, Object input) {
 		if (input instanceof Byte) {
@@ -654,6 +658,7 @@ public class DataOps implements DynamicOps<Object> {
 		return new MBuilder(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public DataResult<Object> mergeToList(Object list, List<Object> values) {
 		if (list instanceof List) {
@@ -665,6 +670,7 @@ public class DataOps implements DynamicOps<Object> {
 		return DataResult.error(()->"Not a Map or Empty");
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public DataResult<Object> mergeToList(Object list, Object value) {
 		// System.out.println(list);
@@ -677,6 +683,7 @@ public class DataOps implements DynamicOps<Object> {
 		return (DataResult) ret;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public DataResult<Object> mergeToMap(Object map, Map<Object, Object> values) {
 		if (map instanceof Map) {
@@ -696,6 +703,7 @@ public class DataOps implements DynamicOps<Object> {
 		return DynamicOps.super.mergeToMap(map, values);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public DataResult<Object> mergeToMap(Object map, Object key, Object value) {
 		if (map == NULLTAG || map == null) {

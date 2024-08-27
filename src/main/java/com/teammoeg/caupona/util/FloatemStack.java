@@ -31,10 +31,8 @@ import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentHolder;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -210,6 +208,7 @@ public class FloatemStack {
 		stack.copyFrom(src, componentTypes);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void copyFrom(DataComponentHolder src, Supplier<? extends DataComponentType<?>>... componentTypes) {
 		stack.copyFrom(src, componentTypes);
 	}

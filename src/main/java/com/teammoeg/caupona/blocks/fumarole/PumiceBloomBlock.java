@@ -71,7 +71,6 @@ public class PumiceBloomBlock extends Block implements SimpleWaterloggedBlock {
 		return true;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel,
 			BlockPos pCurrentPos, BlockPos pFacingPos) {
@@ -103,7 +102,6 @@ public class PumiceBloomBlock extends Block implements SimpleWaterloggedBlock {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	public FluidState getFluidState(BlockState pState) {
 		return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
 	}

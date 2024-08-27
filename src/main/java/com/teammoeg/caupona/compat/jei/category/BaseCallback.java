@@ -21,18 +21,14 @@
 
 package com.teammoeg.caupona.compat.jei.category;
 
-import java.util.List;
-
 import com.teammoeg.caupona.util.Utils;
 
-import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 
-public class BaseCallback implements IRecipeSlotTooltipCallback {
+public class BaseCallback implements IRecipeSlotRichTooltipCallback {
 	Fluid base;
 	float dense;
 
@@ -42,13 +38,15 @@ public class BaseCallback implements IRecipeSlotTooltipCallback {
 		this.dense = density;
 	}
 
+
 	@Override
-	public void onTooltip(IRecipeSlotView recipeSlotView, List<Component> tooltip) {
+	public void onRichTooltip(IRecipeSlotView recipeSlotView, ITooltipBuilder tooltip) {
 		if (base != null)
 			tooltip.add(Utils.translate("recipe.caupona.base",
 					base.getFluidType().getDescription()));
 		if (dense != 0)
 			tooltip.add(Utils.translate("recipe.caupona.density", dense));
+		
 	}
 
 }
