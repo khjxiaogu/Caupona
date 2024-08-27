@@ -127,9 +127,9 @@ public class CPRecipeProvider extends RecipeProvider {
 		// ShapelessRecipeBuilder.shapelessRecipe(THPItems.BOOK).addIngredient(Items.BOOK).addIngredient(Items.BOWL).unlockedBy("has_bowl",
 		// hasItem(Items.BOWL)).build(out);
 		out.accept(rl("fluid_food/milk"), new FluidFoodValueRecipe(0, 1f, new ItemStack(Items.MILK_BUCKET), 4,
-				ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "scalded_milk")));
+				cpfluid("scalded_milk")));
 		out.accept(rl("fluid_food/stock"), new FluidFoodValueRecipe(2, 1f, null, 4,
-				ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "stock")));
+			cpfluid("stock")));
 		simpleFood(out, 2, 0.4f, Items.HONEYCOMB);
 		/*
 		 * simpleFood(out,3,5f,ItemRegistry.amaranthitem);
