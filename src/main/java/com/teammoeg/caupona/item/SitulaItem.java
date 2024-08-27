@@ -85,7 +85,8 @@ public class SitulaItem extends Item  implements ICreativeModeTabItem{
 				if (info.base != null&&!info.stacks.isEmpty())
 					tooltip.add(Utils.translate("tooltip.caupona.base", 
 							info.base.getFluidType().getDescription()));
-				PotionContents.addPotionTooltip(info.effects, tooltip::add, 1,20);
+				if(!info.effects.isEmpty())
+					PotionContents.addPotionTooltip(info.effects, tooltip::add, 1,20);
 
 				tooltip.add(Utils.string(f.getAmount()+"/1250 mB"));
 			}

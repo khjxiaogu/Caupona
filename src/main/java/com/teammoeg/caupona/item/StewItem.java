@@ -67,7 +67,8 @@ public class StewItem extends EdibleBlock{
 		if (base != null&&!info.stacks.isEmpty())
 			tooltip.add(Utils.translate("tooltip.caupona.base", 
 					base.getFluidType().getDescription()));
-		PotionContents.addPotionTooltip(info.effects, tooltip::add, 1,20);
+		if(!info.effects.isEmpty())
+			PotionContents.addPotionTooltip(info.effects, tooltip::add, 1,20);
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 

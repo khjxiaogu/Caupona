@@ -204,7 +204,8 @@ public class Utils {
 	}
 	
 	public static void addPotionTooltip(List<MobEffectInstance> list, Consumer<Component> lores, float durationFactor,Level pLevel) {
-		PotionContents.addPotionTooltip(list, lores, durationFactor, pLevel == null ? 20.0F : pLevel.tickRateManager().tickrate());
+		if(list.isEmpty())
+			PotionContents.addPotionTooltip(list, lores, durationFactor, pLevel == null ? 20.0F : pLevel.tickRateManager().tickrate());
 	}
 	public static void writeItemFluid(ItemStack is, Fluid f) {
 		is.set(CPCapability.ITEM_FLUID, new ItemHoldedFluidData(f));
