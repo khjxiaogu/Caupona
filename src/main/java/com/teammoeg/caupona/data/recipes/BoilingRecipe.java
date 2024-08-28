@@ -21,7 +21,7 @@
 
 package com.teammoeg.caupona.data.recipes;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import com.mojang.serialization.Codec;
@@ -36,19 +36,20 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BoilingRecipe extends IDataRecipe {
-	public static Map<Fluid, RecipeHolder<BoilingRecipe>> recipes;
+	public static List<RecipeHolder<BoilingRecipe>> recipes;
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
 	public static Set<Fluid> allBoilables;
-	public Fluid before;
+	public FluidIngredient before;
 	public Fluid after;
 	public int time;
 	public static final MapCodec<BoilingRecipe> CODEC=
 			RecordCodecBuilder.mapCodec(t->t.group(
-					BuiltInRegistries.FLUID.byNameCodec().fieldOf("from").forGetter(o->o.before),
+					FluidIngredient.CODEC.fieldOf("from").forGetter(o->o.before),
 					BuiltInRegistries.FLUID.byNameCodec().fieldOf("to").forGetter(o->o.after),
 					Codec.INT.fieldOf("time").forGetter(o->o.time)).apply(t, BoilingRecipe::new));
 	@Override
@@ -68,8 +69,13 @@ public class BoilingRecipe extends IDataRecipe {
 		time = data.readVarInt();
 	}
 */
-	public BoilingRecipe(Fluid before, Fluid after, int time) {
+	public BoilingRecipe(FluidIngredient before, Fluid after, int time) {
 		this.before = before;
+		this.after = after;
+		this.time = time;
+	}
+	public BoilingRecipe(Fluid before, Fluid after, int time) {
+		this.before = FluidIngredient.of(before);
 		this.after = after;
 		this.time = time;
 	}
@@ -80,6 +86,9 @@ public class BoilingRecipe extends IDataRecipe {
 		data.writeVarInt(time);
 	}
 */
+	public boolean matches(FluidStack org) {
+		return before.test(org);
+	}
 	public FluidStack handle(FluidStack org) {
 		FluidStack fs = new FluidStack(after, org.getAmount());
 		fs.applyComponents(org.getComponentsPatch());

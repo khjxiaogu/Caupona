@@ -1,8 +1,6 @@
 {
   "type": "caupona:dolium",
-  "amount": 0,
   "density": 0.0,
-  "fluid": "minecraft:empty",
   "items": [
     {
       "count": 1,

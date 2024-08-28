@@ -1,5 +1,7 @@
 {
   "type": "caupona:bowl",
-  "fluid": "caupona:hodgepodge",
+  "fluid": {
+    "fluid": "caupona:hodgepodge"
+  },
   "item": "caupona:hodgepodge"
 }

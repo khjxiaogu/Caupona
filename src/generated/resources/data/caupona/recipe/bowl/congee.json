@@ -1,5 +1,7 @@
 {
   "type": "caupona:bowl",
-  "fluid": "caupona:congee",
+  "fluid": {
+    "fluid": "caupona:congee"
+  },
   "item": "caupona:congee"
 }

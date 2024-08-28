@@ -30,6 +30,7 @@ import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
+import com.teammoeg.caupona.util.SizedOrCatalystFluidIngredient;
 import com.teammoeg.caupona.util.Utils;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -54,6 +55,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRecipe>> {
 	@SuppressWarnings("rawtypes")
@@ -96,7 +98,12 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 			sl.add(is.copyWithCount(ps.getSecond() > 0 ? ps.getSecond() : 1));
 		return sl;
 	}
-
+	private static List<FluidStack> unpack(SizedOrCatalystFluidIngredient ps) {
+		List<FluidStack> sl = new ArrayList<>();
+		for (FluidStack is : ps.getFluids())
+			sl.add(is.copy());
+		return sl;
+	}
 	private static List<ItemStack> unpack(Ingredient ps) {
 		if (ps.getClass()!=Ingredient.class)
 			return Arrays.asList(ps.getItems());
@@ -158,9 +165,9 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 		if (recipe.value().extra != null) {
 			builder.addSlot(RecipeIngredientRole.INPUT, 89, 10).addIngredients(VanillaTypes.ITEM_STACK, unpack(recipe.value().extra));
 		}
-		if (!(recipe.value().fluid == Fluids.EMPTY))
+		if (recipe.value().fluid!=null)
 			builder.addSlot(RecipeIngredientRole.INPUT, 26, 9)
-					.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(recipe.value().fluid, recipe.value().amount))
+					.addIngredients(NeoForgeTypes.FLUID_STACK, unpack(recipe.value().fluid))
 					.setFluidRenderer(1250, false, 16, 46)
 					.addRichTooltipCallback(new BaseCallback(recipe.value().base, recipe.value().density));
 

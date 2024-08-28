@@ -44,6 +44,7 @@ import com.teammoeg.caupona.compat.jei.category.IConditionalCategory;
 import com.teammoeg.caupona.compat.jei.category.PotCategory;
 import com.teammoeg.caupona.compat.jei.category.PotRestingCategory;
 import com.teammoeg.caupona.compat.jei.category.StewCookingCategory;
+import com.teammoeg.caupona.compat.jei.interpreter.GravyBoatInterpreter;
 import com.teammoeg.caupona.data.recipes.AspicMeltingRecipe;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
@@ -59,10 +60,12 @@ import mezz.jei.api.gui.handlers.IGuiClickableArea;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IModInfoRegistration;
 import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -93,9 +96,9 @@ public class JEICompat implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		registration.addRecipes(BrazierCategory.TYPE,new ArrayList<>(AspicMeltingRecipe.recipes));
 		registration.addRecipes(PotCategory.TYPE,new ArrayList<>(AspicMeltingRecipe.recipes));
-		registration.addRecipes(BoilingCategory.TYPE,new ArrayList<>(BoilingRecipe.recipes.values()));
-		registration.addRecipes(BowlEmptyCategory.TYPE,new ArrayList<>(BowlContainingRecipe.recipes.values()));
-		registration.addRecipes(BowlFillCategory.TYPE,new ArrayList<>(BowlContainingRecipe.recipes.values()));
+		registration.addRecipes(BoilingCategory.TYPE,new ArrayList<>(BoilingRecipe.recipes));
+		registration.addRecipes(BowlEmptyCategory.TYPE,new ArrayList<>(BowlContainingRecipe.recipes));
+		registration.addRecipes(BowlFillCategory.TYPE,new ArrayList<>(BowlContainingRecipe.recipes));
 		registration.addRecipes(DoliumRestingCategory.TYPE,new ArrayList<>(DoliumRecipe.recipes));
 		registration.addRecipes(StewCookingCategory.TYPE,new ArrayList<>(StewCookingRecipe.sorted));
 		registration.addRecipes(FryingCategory.TYPE,new ArrayList<>(SauteedRecipe.sorted));
@@ -144,6 +147,17 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerIngredients(IModIngredientRegistration registration) {
+
+	}
+
+	@Override
+	public void registerItemSubtypes(ISubtypeRegistration registration) {
+		registration.registerSubtypeInterpreter(CPItems.gravy_boat.get(),GravyBoatInterpreter.INSTANCE);
+	}
+
+	@Override
+	public void registerModInfo(IModInfoRegistration modAliasRegistration) {
+		modAliasRegistration.addModAliases("caupona", "CP","Caupona");
 
 	}
 

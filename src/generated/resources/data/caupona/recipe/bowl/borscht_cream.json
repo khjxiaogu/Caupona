@@ -1,5 +1,7 @@
 {
   "type": "caupona:bowl",
-  "fluid": "caupona:borscht_cream",
+  "fluid": {
+    "fluid": "caupona:borscht_cream"
+  },
   "item": "caupona:borscht_cream"
 }

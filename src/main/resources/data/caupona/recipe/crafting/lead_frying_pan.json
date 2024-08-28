@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" I ",
+		"IPI"
+	],
+	"key": {
+		"I": {
+			"tag": "c:ingots/lead"
+		},
+		"P": {
+			"item": "caupona:copper_frying_pan"
+		}
+	},
+	"result": {
+		"item": "caupona:lead_frying_pan"
+	}
+}

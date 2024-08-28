@@ -1,5 +1,7 @@
 {
   "type": "caupona:bowl",
-  "fluid": "caupona:scalded_milk",
+  "fluid": {
+    "fluid": "caupona:scalded_milk"
+  },
   "item": "caupona:scalded_milk"
 }

@@ -1,5 +1,7 @@
 {
   "type": "caupona:bowl",
-  "fluid": "minecraft:milk",
+  "fluid": {
+    "fluid": "minecraft:milk"
+  },
   "item": "caupona:milk"
 }

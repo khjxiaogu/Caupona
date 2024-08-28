@@ -1,11 +1,9 @@
 {
   "type": "caupona:dolium",
-  "amount": 0,
   "container": {
     "item": "minecraft:glass_bottle"
   },
   "density": 0.0,
-  "fluid": "minecraft:empty",
   "items": [
     {
       "count": 8,

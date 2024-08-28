@@ -1,5 +1,7 @@
 {
   "type": "caupona:bowl",
-  "fluid": "caupona:bone_gelatin",
+  "fluid": {
+    "fluid": "caupona:bone_gelatin"
+  },
   "item": "caupona:bone_gelatin"
 }

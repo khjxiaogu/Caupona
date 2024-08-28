@@ -1,0 +1,28 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" I ",
+		"#S#",
+		"RCR"
+	],
+	"key": {
+		"I": {
+			"tag": "c:ingots/lead"
+		},
+		"#": {
+			"item": "minecraft:chain"
+		},
+		"S": {
+			"item": "minecraft:wooden_shovel"
+		},
+		"R": {
+			"item": "minecraft:repeater"
+		},
+		"C": {
+			"item": "minecraft:comparator"
+		}
+	},
+	"result": {
+		"item": "caupona:redstone_ladle"
+	}
+}

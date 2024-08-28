@@ -1,0 +1,55 @@
+{
+	"values": [
+		"minecraft:carrot",
+		"minecraft:beetroot",
+		"minecraft:pumpkin",
+		"#caupona:vegetables/greens",
+		"#caupona:mushroom",
+		"#caupona:vegetables/roots",
+		"#caupona:vegetables/pumpkin",
+		{
+			"id": "#c:vegetables",
+			"required": false
+		},
+		{
+			"id": "#c:vegetable",
+			"required": false
+		},
+		{
+			"id": "#c:salad_ingredients",
+			"required": false
+		},
+		{
+			"id": "#c:crops/bellpepper",
+			"required": false
+		},
+		{
+			"id": "#c:crops/pepper",
+			"required": false
+		},
+		{
+			"id": "#c:crops/tomato",
+			"required": false
+		},
+		{
+			"id": "#c:crops/eggplant",
+			"required": false
+		},
+		{
+			"id": "#c:crops/cucumber",
+			"required": false
+		},
+		{
+			"id": "#c:crops/radish",
+			"required": false
+		},
+		{
+			"id": "#c:crops/pea",
+			"required": false
+		},
+		{
+			"id": "#c:crops/bean",
+			"required": false
+		}
+	]
+}

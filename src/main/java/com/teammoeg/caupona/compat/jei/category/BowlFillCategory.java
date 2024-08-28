@@ -21,9 +21,13 @@
 
 package com.teammoeg.caupona.compat.jei.category;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
+import com.teammoeg.caupona.util.SizedOrCatalystFluidIngredient;
 import com.teammoeg.caupona.util.Utils;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -41,6 +45,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 public class BowlFillCategory implements IRecipeCategory<RecipeHolder<BowlContainingRecipe>> {
 	@SuppressWarnings("rawtypes")
@@ -68,14 +73,19 @@ public class BowlFillCategory implements IRecipeCategory<RecipeHolder<BowlContai
 	public IDrawable getIcon() {
 		return ICON;
 	}
-
+	private static List<FluidStack> unpack(FluidIngredient ps,int amount) {
+		List<FluidStack> sl = new ArrayList<>();
+		for (FluidStack is : ps.getStacks())
+			sl.add(is.copyWithAmount(amount));
+		return sl;
+	}
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<BowlContainingRecipe> recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 83, 28).addIngredient(VanillaTypes.ITEM_STACK,
 				new ItemStack(recipe.value().bowl));
 		builder.addSlot(RecipeIngredientRole.INPUT, 56, 14).addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Items.BOWL));
 		builder.addSlot(RecipeIngredientRole.INPUT, 30, 9)
-				.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(recipe.value().fluid, 250))
+				.addIngredients(NeoForgeTypes.FLUID_STACK, unpack(recipe.value().fluid,250))
 				.setFluidRenderer(250, true, 16, 46);
 	}
 

@@ -1,0 +1,26 @@
+{
+	"values": [
+		"minecraft:chicken",
+		"minecraft:rabbit",
+		{
+			"id": "simplefarming:raw_chicken_wings",
+			"required": false
+		},
+		{
+			"id": "simplefarming:raw_sausage",
+			"required": false
+		},
+		{
+			"id": "simplefarming:raw_horse_meat",
+			"required": false
+		},
+		{
+			"id": "#c:raw_chicken",
+			"required": false
+		},
+		{
+			"id": "#c:raw_rabbit",
+			"required": false
+		}
+	]
+}

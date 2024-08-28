@@ -21,9 +21,13 @@
 
 package com.teammoeg.caupona.compat.jei.category;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
+import com.teammoeg.caupona.util.SizedOrCatalystFluidIngredient;
 import com.teammoeg.caupona.util.Utils;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -80,12 +84,17 @@ public class PotRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRe
 	public IDrawable getIcon() {
 		return ICON;
 	}
-
+	private static List<FluidStack> unpack(SizedOrCatalystFluidIngredient ps) {
+		List<FluidStack> sl = new ArrayList<>();
+		for (FluidStack is : ps.getFluids())
+			sl.add(is.copy());
+		return sl;
+	}
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<DoliumRecipe> recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 83, 24).addIngredient(VanillaTypes.ITEM_STACK, recipe.value().output);
 		builder.addSlot(RecipeIngredientRole.INPUT, 30, 9)
-				.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(recipe.value().fluid, recipe.value().amount))
+				.addIngredients(NeoForgeTypes.FLUID_STACK, unpack(recipe.value().fluid))
 				.setFluidRenderer(1250, false, 16, 46)
 				.addRichTooltipCallback(new BaseCallback(recipe.value().base, recipe.value().density));
 	}

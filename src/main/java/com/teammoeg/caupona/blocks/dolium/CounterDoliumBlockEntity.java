@@ -217,7 +217,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		ItemStack is = inv.getStackInSlot(4);
 		if (!is.isEmpty() && inv.getStackInSlot(5).isEmpty()) {
 			if (is.getItem() == Items.BOWL && tank.getFluidAmount() >= 250) {
-				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.get(this.tank.getFluid().getFluid());
+				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
 				if (recipe != null) {
 					is.shrink(1);
 					inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));

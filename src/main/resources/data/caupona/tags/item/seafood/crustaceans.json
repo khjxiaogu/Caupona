@@ -1,0 +1,38 @@
+{
+	"values": [
+		"caupona:snail",
+		"caupona:plump_snail",
+		{
+			"id": "quark:crab_leg",
+			"required": false
+		},
+		{
+			"id": "alexsmobs:lobster_tail",
+			"required": false
+		},
+		{
+			"id": "#c:crabs",
+			"required": false
+		},
+		{
+			"id": "#c:crab_legs",
+			"required": false
+		},
+		{
+			"id": "#c:clams",
+			"required": false
+		},
+		{
+			"id": "#c:lobsters",
+			"required": false
+		},
+		{
+			"id": "#c:mussel",
+			"required": false
+		},
+		{
+			"id": "#aquaculture:turtle",
+			"required": false
+		}
+	]
+}

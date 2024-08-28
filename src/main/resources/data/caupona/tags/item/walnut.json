@@ -1,0 +1,9 @@
+{
+	"values": [
+		"caupona:walnut",
+		{
+			"id": "#c:nuts/walnut",
+			"required": false
+		}
+	]
+}

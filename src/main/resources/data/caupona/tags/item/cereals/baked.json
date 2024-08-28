@@ -1,0 +1,17 @@
+{
+	"values": [
+		"minecraft:bread",
+		{
+			"id": "#c:pasta",
+			"required": false
+		},
+		{
+			"id": "farmersdelight:pie_crust",
+			"required": false
+		},
+		{
+			"id": "c:bread",
+			"required": false
+		}
+	]
+}

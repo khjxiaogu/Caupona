@@ -1,0 +1,38 @@
+{
+	"values": [
+		"minecraft:potato",
+		"minecraft:baked_potato",
+		{
+			"id": "#c:rootvegetables",
+			"required": false
+		},
+		{
+			"id": "#c:crops/parsnip",
+			"required": false
+		},
+		{
+			"id": "#c:crops/turnip",
+			"required": false
+		},
+		{
+			"id": "#c:crops/radish",
+			"required": false
+		},
+		{
+			"id": "#c:crops/cassava",
+			"required": false
+		},
+		{
+			"id": "#c:crops/yam",
+			"required": false
+		},
+		{
+			"id": "#c:crops/sweet_potato",
+			"required": false
+		},
+		{
+			"id": "#c:crops/onion",
+			"required": false
+		}
+	]
+}

@@ -1,0 +1,13 @@
+{
+	"values": [
+		"#minecraft:fishes",
+		{
+			"id": "#c:raw_fishes",
+			"required": false
+		},
+		{
+			"id": "#c:cooked_fishes",
+			"required": false
+		}
+	]
+}

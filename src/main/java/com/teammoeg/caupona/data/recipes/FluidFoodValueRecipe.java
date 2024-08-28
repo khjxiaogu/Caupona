@@ -73,7 +73,9 @@ public class FluidFoodValueRecipe extends IDataRecipe {
 	public FluidFoodValueRecipe(int heal, float sat, ItemStack repersent, int parts, Fluid f) {
 		this.heal = heal;
 		this.sat = sat;
+		if(repersent!=null)
 		this.repersent = Ingredient.of(repersent);
+		
 		this.parts = parts;
 		this.f = f;
 	}

@@ -259,7 +259,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		ItemStack is = inv.getStackInSlot(9);
 		if (!is.isEmpty() && inv.getStackInSlot(10).isEmpty()) {
 			if (is.getItem() == Items.BOWL && tank.getFluidAmount() >= 250) {
-				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.get(this.tank.getFluid().getFluid());
+				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
 				if (recipe != null) {
 					is.shrink(1);
 					inv.setStackInSlot(10, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
@@ -395,7 +395,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 	}
 
 	private boolean doBoil() {
-		RecipeHolder<BoilingRecipe> recipeh = BoilingRecipe.recipes.get(this.tank.getFluid().getFluid());
+		RecipeHolder<BoilingRecipe> recipeh = BoilingRecipe.recipes.stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
 		if (recipeh == null)
 			return false;
 		BoilingRecipe recipe=recipeh.value();
@@ -569,7 +569,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
 		if ((currentInfo.base!=n.base)
 				&& (n.base!=tank.getFluid().getFluid())) {
-			RecipeHolder<BoilingRecipe> bnx = BoilingRecipe.recipes.get(fs.getFluid());
+			RecipeHolder<BoilingRecipe> bnx = BoilingRecipe.recipes.stream().filter(t->t.value().matches(fs)).findFirst().orElse(null);
 			if (bnx == null)
 				return false;
 			if (currentInfo.base!=bnx.value().after)
@@ -619,7 +619,8 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
 		if (currentInfo.base!=n.base && currentInfo.base!=fs.getFluid()
 				&& n.base!=tank.getFluid().getFluid()) {
-			RecipeHolder<BoilingRecipe> bnx = BoilingRecipe.recipes.get(fs.getFluid());
+			FluidStack fst=fs;
+			RecipeHolder<BoilingRecipe> bnx = BoilingRecipe.recipes.stream().filter(t->t.value().matches(fst)).findFirst().orElse(null);
 			if (bnx == null)
 				return false;
 			if (currentInfo.base!=bnx.value().after)

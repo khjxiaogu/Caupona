@@ -1,5 +1,7 @@
 {
   "type": "caupona:bowl",
-  "fluid": "caupona:goji_tongsui",
+  "fluid": {
+    "fluid": "caupona:goji_tongsui"
+  },
   "item": "caupona:goji_tongsui"
 }

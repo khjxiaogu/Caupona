@@ -21,6 +21,9 @@
 
 package com.teammoeg.caupona.compat.jei.category;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.util.Utils;
@@ -43,6 +46,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 public class BoilingCategory implements IRecipeCategory<RecipeHolder<BoilingRecipe>> {
 	@SuppressWarnings("rawtypes")
@@ -82,11 +86,16 @@ public class BoilingCategory implements IRecipeCategory<RecipeHolder<BoilingReci
 	public IDrawable getIcon() {
 		return ICON;
 	}
-
+	private static List<FluidStack> unpack(FluidIngredient ps,int amount) {
+		List<FluidStack> sl = new ArrayList<>();
+		for (FluidStack is : ps.getStacks())
+			sl.add(is.copyWithAmount(amount));
+		return sl;
+	}
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<BoilingRecipe> recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 30, 9)
-				.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(recipe.value().before, 250))
+				.addIngredients(NeoForgeTypes.FLUID_STACK, unpack(recipe.value().before, 250))
 				.setFluidRenderer(1250, false, 16, 46);
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 83, 9)
 				.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(recipe.value().after, 250))

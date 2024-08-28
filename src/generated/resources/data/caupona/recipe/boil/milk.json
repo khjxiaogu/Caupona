@@ -1,6 +1,8 @@
 {
   "type": "caupona:boiling",
-  "from": "minecraft:milk",
+  "from": {
+    "fluid": "minecraft:milk"
+  },
   "time": 200,
   "to": "caupona:scalded_milk"
 }

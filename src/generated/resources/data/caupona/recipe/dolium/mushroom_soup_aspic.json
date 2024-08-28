@@ -1,9 +1,11 @@
 {
   "type": "caupona:dolium",
-  "amount": 250,
   "base": "caupona:stock",
   "density": 0.25,
-  "fluid": "caupona:mushroom_soup",
+  "fluid": {
+    "amount": 250,
+    "fluid": "caupona:mushroom_soup"
+  },
   "items": [],
   "keepInfo": true,
   "output": {

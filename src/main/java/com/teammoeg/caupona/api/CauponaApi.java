@@ -81,7 +81,7 @@ public class CauponaApi {
 	public static Optional<ItemStack> fillBowl(FluidStack stack) {
 		if (stack.getAmount() != 250)
 			return Optional.empty();
-		RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.get(stack.getFluid());
+		RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(stack)).findFirst().orElse(null);
 		if (recipe != null) {
 			ItemStack ret = recipe.value().handle(stack);
 			return Optional.of(ret);

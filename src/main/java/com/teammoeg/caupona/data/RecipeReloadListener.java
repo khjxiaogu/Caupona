@@ -161,7 +161,7 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		Numbers.clearCache();
 		BaseConditions.clearCache();
 		BowlContainingRecipe.recipes = filterRecipes(recipes, BowlContainingRecipe.class, BowlContainingRecipe.TYPE)
-				.collect(Collectors.toMap(e -> e.value().fluid, UnaryOperator.identity()));
+				.collect(Collectors.toList());
 
 		FoodValueRecipe.recipes = filterRecipes(recipes, FoodValueRecipe.class, FoodValueRecipe.TYPE)
 				.flatMap(t -> t.value().processtimes.keySet().stream().map(i -> new Pair<>(i, t.value())))
@@ -172,8 +172,9 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 				.collect(Collectors.toList());
 
 		BoilingRecipe.recipes = filterRecipes(recipes, BoilingRecipe.class, BoilingRecipe.TYPE)
-				.collect(Collectors.toMap(e -> e.value().before, UnaryOperator.identity()));
-		BoilingRecipe.allBoilables=BoilingRecipe.recipes.values().stream().flatMap(t->Arrays.stream(new Fluid[] {t.value().before,t.value().after})).collect(Collectors.toSet());
+				.collect(Collectors.toList());
+		BoilingRecipe.allBoilables=BoilingRecipe.recipes.stream().flatMap(t->
+		Stream.concat(Arrays.stream(t.value().before.getStacks()).map(fs->fs.getFluid()),Stream.of(t.value().after))).collect(Collectors.toSet());
 		FluidFoodValueRecipe.recipes = filterRecipes(recipes, FluidFoodValueRecipe.class, FluidFoodValueRecipe.TYPE)
 				.collect(Collectors.toMap(e -> e.value().f, UnaryOperator.identity()));
 

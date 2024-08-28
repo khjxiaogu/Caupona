@@ -33,6 +33,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.IDataRecipe;
+import com.teammoeg.caupona.util.SizedOrCatalystFluidIngredient;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -45,6 +46,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -66,8 +68,7 @@ public class DoliumRecipe extends IDataRecipe {
 	public List<Pair<Ingredient, Integer>> items;
 	public Ingredient extra;
 	public Fluid base;
-	public Fluid fluid = Fluids.EMPTY;
-	public int amount = 250;
+	public SizedOrCatalystFluidIngredient fluid ;
 	public float density = 0;
 	public boolean keepInfo = false;
 	public ItemStack output;
@@ -77,14 +78,13 @@ public class DoliumRecipe extends IDataRecipe {
 		this( base, fluid, amount, density, keep, out, items, null);
 	}
 
-	public DoliumRecipe(List<Pair<Ingredient, Integer>> items, Optional<Ingredient> extra, Optional<Fluid> base, Fluid fluid,
-			int amount, float density, boolean keepInfo, Ingredient output) {
+	public DoliumRecipe(List<Pair<Ingredient, Integer>> items, Optional<Ingredient> extra, Optional<Fluid> base, Optional<SizedOrCatalystFluidIngredient> fluid,
+			 float density, boolean keepInfo, Ingredient output) {
 		super();
 		this.items = items;
 		this.extra = extra.orElse(null);
 		this.base = base.orElse(null);
-		this.fluid = fluid;
-		this.amount = amount;
+		this.fluid = fluid.orElse(null);
 		this.density = density;
 		this.keepInfo = keepInfo;
 		this.output = output.getItems()[0];
@@ -98,9 +98,9 @@ public class DoliumRecipe extends IDataRecipe {
 			this.items = new ArrayList<>();
 
 		this.base = base;
-		this.fluid = fluid;
+		if(fluid!=Fluids.EMPTY)
+			this.fluid = SizedOrCatalystFluidIngredient.of(fluid,amount);
 		this.density = density;
-		this.amount = amount;
 		this.output = out;
 		this.extra = ext;
 		keepInfo = keep;
@@ -110,8 +110,7 @@ public class DoliumRecipe extends IDataRecipe {
 					Codec.list(Utils.pairCodec("item",Ingredient.CODEC_NONEMPTY,"count", Codec.INT)).fieldOf("items").forGetter(o->o.items),
 					Ingredient.CODEC.optionalFieldOf("container").forGetter(o->Optional.ofNullable(o.extra)),
 					BuiltInRegistries.FLUID.byNameCodec().optionalFieldOf("base").forGetter(o->Optional.ofNullable(o.base)),
-					BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(o->o.fluid),
-					Codec.INT.fieldOf("amount").forGetter(o->o.amount),
+					SizedOrCatalystFluidIngredient.FLAT_CODEC.optionalFieldOf("fluid").forGetter(o->Optional.ofNullable(o.fluid)),
 					Codec.FLOAT.fieldOf("density").forGetter(o->o.density),
 					Codec.BOOL.fieldOf("keepInfo").forGetter(o->o.keepInfo),
 					Ingredient.CODEC_NONEMPTY.fieldOf("output").forGetter(o->Ingredient.of(o.output))
@@ -150,10 +149,7 @@ public class DoliumRecipe extends IDataRecipe {
 		}
 		if (extra != null && !extra.test(container))
 			return false;
-		if (fluid.isSame(Fluids.EMPTY) && f.isEmpty()) {
-		} else if (!f.getFluid().isSame(fluid))
-			return false;
-		if (amount > 0 && f.getAmount() < amount)
+		if(fluid!=null&&!fluid.test(f))
 			return false;
 
 		if (density != 0 || base != null) {
@@ -179,22 +175,22 @@ public class DoliumRecipe extends IDataRecipe {
 
 	public ItemStack handle(FluidStack f) {
 		int times = 1;
-		if (amount > 0)
-			times = f.getAmount() / amount;
+		if (fluid.amount() > 0)
+			times = f.getAmount() / fluid.amount();
 		ItemStack out = output.copy();
 		out.setCount(out.getCount() * times);
 		if (keepInfo) {
 			StewInfo info = Utils.getOrCreateInfo(f);
 			Utils.setInfo(out, info);
 		}
-		f.shrink(times * amount);
+		f.shrink(times * fluid.amount());
 		return out;
 	}
 
 	public ItemStack handleDolium(FluidStack f, ItemStackHandler inv) {
 		int times = output.getMaxStackSize();
-		if (amount > 0)
-			times = Math.min(f.getAmount() / amount, times);
+		if (fluid.amount() > 0)
+			times = Math.min(f.getAmount() / fluid.amount(), times);
 		if (extra != null)
 			times = Math.min(times, inv.getStackInSlot(4).getCount());
 		for (Pair<Ingredient, Integer> igd : items) {
@@ -228,8 +224,8 @@ public class DoliumRecipe extends IDataRecipe {
 			StewInfo info = Utils.getOrCreateInfo(f);
 			Utils.setInfo(out, info);
 		}
-		if (amount > 0)
-			f.shrink(times * amount);
+		if (fluid.amount() > 0)
+			f.shrink(times * fluid.amount());
 		return out;
 	}
 /*

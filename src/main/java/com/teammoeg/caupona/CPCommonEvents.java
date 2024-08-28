@@ -90,7 +90,7 @@ public class CPCommonEvents {
 	@SubscribeEvent
 	public static void bowlContainerFood(ContanerContainFoodEvent ev) {
 		if(ev.origin.getItem()==Items.BOWL) {
-			RecipeHolder<BowlContainingRecipe> recipe=BowlContainingRecipe.recipes.get(ev.fs.getFluid());
+			RecipeHolder<BowlContainingRecipe> recipe=BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(ev.fs)).findFirst().orElse(null);
 			if(recipe!=null) {
 				ev.out=recipe.value().handle(ev.fs);
 				ev.setResult(EventResult.ALLOW);

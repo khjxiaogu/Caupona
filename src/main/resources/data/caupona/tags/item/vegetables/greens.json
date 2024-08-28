@@ -1,0 +1,48 @@
+{
+	"values": [
+		"minecraft:fern",
+		"minecraft:large_fern",
+		"minecraft:allium",
+		"caupona:fresh_wolfberry_leaves",
+		{
+			"id": "#c:crops/asparagus",
+			"required": false
+		},
+		{
+			"id": "#c:crops/cabbage",
+			"required": false
+		},
+		{
+			"id": "#c:crops/leek",
+			"required": false
+		},
+		{
+			"id": "#c:crops/kale",
+			"required": false
+		},
+		{
+			"id": "#c:crops/lettuce",
+			"required": false
+		},
+		{
+			"id": "#c:crops/cauliflower",
+			"required": false
+		},
+		{
+			"id": "#c:crops/broccoli",
+			"required": false
+		},
+		{
+			"id": "#c:crops/spinach",
+			"required": false
+		},
+		{
+			"id": "#c:crops/brusselsprout",
+			"required": false
+		},
+		{
+			"id": "#c:crops/artichoke",
+			"required": false
+		}
+	]
+}

@@ -1,0 +1,15 @@
+{
+	"values": [
+		"minecraft:ice",
+		"minecraft:blue_ice",
+		"minecraft:packed_ice",
+		{
+			"id": "#c:ices",
+			"required": false
+		},
+		{
+			"id": "#c:ice_cubes",
+			"required": false
+		}
+	]
+}

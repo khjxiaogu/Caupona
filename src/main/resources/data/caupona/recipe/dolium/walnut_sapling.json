@@ -1,0 +1,28 @@
+{
+	"type": "caupona:dolium",
+	"items": [
+		{
+			"item": {
+				"item": "caupona:walnut"
+			},
+			"count": 1
+		},
+		{
+			"item": {
+				"item": "minecraft:dirt"
+			},
+			"count": 2
+		}
+	],
+	"fluid": {
+    	"amount": 1000,
+    	"fluid": "minecraft:water"
+    },
+	"density": 0.0,
+	"keepInfo": false,
+	"output": {
+		"type": "neoforge:nbt",
+		"item": "caupona:walnut_sapling",
+		"count": 1
+	}
+}

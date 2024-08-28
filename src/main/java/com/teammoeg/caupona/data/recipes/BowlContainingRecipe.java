@@ -21,6 +21,7 @@
 
 package com.teammoeg.caupona.data.recipes;
 
+import java.util.List;
 import java.util.Map;
 
 import com.mojang.serialization.MapCodec;
@@ -39,10 +40,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BowlContainingRecipe extends IDataRecipe {
-	public static Map<Fluid, RecipeHolder<BowlContainingRecipe>> recipes;
+	public static List<RecipeHolder<BowlContainingRecipe>> recipes;
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
  
@@ -57,11 +59,11 @@ public class BowlContainingRecipe extends IDataRecipe {
 	}
 
 	public Item bowl;
-	public Fluid fluid;
+	public FluidIngredient fluid;
 	public static final MapCodec<BowlContainingRecipe> CODEC=
 			RecordCodecBuilder.mapCodec(t->t.group(
 					BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(o->o.bowl),
-					BuiltInRegistries.FLUID.byNameCodec().fieldOf("fluid").forGetter(o->o.fluid)
+					FluidIngredient.CODEC.fieldOf("fluid").forGetter(o->o.fluid)
 					).apply(t, BowlContainingRecipe::new));
 /*
 	public BowlContainingRecipe(FriendlyByteBuf pb) {
@@ -70,6 +72,10 @@ public class BowlContainingRecipe extends IDataRecipe {
 	}*/
 
 	public BowlContainingRecipe(Item bowl, Fluid fluid) {
+		this.bowl = bowl;
+		this.fluid = FluidIngredient.of(fluid);
+	}
+	public BowlContainingRecipe(Item bowl, FluidIngredient fluid) {
 		this.bowl = bowl;
 		this.fluid = fluid;
 	}/*
@@ -86,8 +92,8 @@ public class BowlContainingRecipe extends IDataRecipe {
 		return is;
 	}
 
-	public boolean matches(Fluid f) {
-		return fluid == f;
+	public boolean matches(FluidStack f) {
+		return fluid.test(f);
 	}
 
 	public ItemStack handle(FluidStack stack) {
@@ -97,4 +103,9 @@ public class BowlContainingRecipe extends IDataRecipe {
 		is.set(CPCapability.ITEM_FLUID, new ItemHoldedFluidData(stack.getFluid()));
 		return is;
 	}
+
+	public Object test(Fluid fluid2) {
+		return fluid.test(new FluidStack(fluid2,250));
+	}
+
 }

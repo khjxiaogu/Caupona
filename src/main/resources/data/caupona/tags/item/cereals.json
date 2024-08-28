@@ -1,0 +1,16 @@
+{
+	"values": [
+		"#caupona:cereals/rice",
+		"#caupona:cereals/baked",
+		"minecraft:wheat",
+		"minecraft:wheat_seeds",
+		{
+			"id": "#c:grain",
+			"required": false
+		},
+		{
+			"id": "#c:bread",
+			"required": false
+		}
+	]
+}

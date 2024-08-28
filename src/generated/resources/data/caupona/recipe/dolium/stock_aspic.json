@@ -1,8 +1,10 @@
 {
   "type": "caupona:dolium",
-  "amount": 250,
   "density": 0.25,
-  "fluid": "caupona:stock",
+  "fluid": {
+    "amount": 250,
+    "fluid": "caupona:stock"
+  },
   "items": [],
   "keepInfo": true,
   "output": {
