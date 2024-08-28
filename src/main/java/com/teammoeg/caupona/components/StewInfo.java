@@ -352,6 +352,10 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		return Objects.equals(base, other.base) && Objects.equals(effects, other.effects) && Objects.equals(foodeffect, other.foodeffect) && healing == other.healing
 			&& Float.floatToIntBits(saturation) == Float.floatToIntBits(other.saturation) && Objects.equals(stacks, other.stacks);
 	}
+	@Override
+	public Fluid getBase() {
+		return base;
+	}
 
 
 }

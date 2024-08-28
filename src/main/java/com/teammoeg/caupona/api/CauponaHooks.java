@@ -87,5 +87,7 @@ public class CauponaHooks {
 		}
 		return Optional.empty();
 	}
-	
+	public static Optional<IFoodInfo> getInfo(FluidStack stack) {
+		return stack.getComponents().stream().map(t->t.value()).filter(t->t instanceof IFoodInfo).map(t->(IFoodInfo)t).findAny();
+	}
 }

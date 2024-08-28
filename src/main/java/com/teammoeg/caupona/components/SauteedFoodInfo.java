@@ -39,6 +39,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.FoodProperties.PossibleEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 
 public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 	public static final Codec<SauteedFoodInfo> CODEC=RecordCodecBuilder.create(o->codecStart(o)
@@ -184,6 +185,11 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 		for (ChancedEffect ef : foodeffect) {
 			li.add(new PossibleEffect(ef.effectSupplier(),ef.chance));
 		}
+		return null;
+	}
+
+	@Override
+	public Fluid getBase() {
 		return null;
 	}
 

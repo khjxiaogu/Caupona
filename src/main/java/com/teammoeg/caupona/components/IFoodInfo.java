@@ -27,11 +27,16 @@ import com.teammoeg.caupona.util.FloatemStack;
 
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.FoodProperties.PossibleEffect;
+import net.minecraft.world.level.material.Fluid;
 
 public interface IFoodInfo {
 	List<FloatemStack> getStacks();
 	int getHealing();
 	float getSaturation();
 	FoodProperties getFood();
+	Fluid getBase();
 	public List<PossibleEffect> getEffects();
+	default float getDensity() {
+		return getStacks().stream().map(FloatemStack::getCount).reduce(0f, Float::sum);
+	}
 }

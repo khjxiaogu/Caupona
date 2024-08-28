@@ -31,6 +31,9 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.teammoeg.caupona.CPCapability;
+import com.teammoeg.caupona.api.CauponaHooks;
+import com.teammoeg.caupona.components.IFoodInfo;
 import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.SizedOrCatalystFluidIngredient;
@@ -153,8 +156,11 @@ public class DoliumRecipe extends IDataRecipe {
 			return false;
 
 		if (density != 0 || base != null) {
-			StewInfo info = Utils.getOrCreateInfo(f);
-			if (base != null && !info.base.equals(base))
+			Optional<IFoodInfo> opinfo = CauponaHooks.getInfo(f);
+			if(opinfo.isEmpty())
+				return false;
+			IFoodInfo info=opinfo.get();
+			if (base != null && base!=info.getBase())
 				return false;
 			if (info.getDensity() < density)
 				return false;
