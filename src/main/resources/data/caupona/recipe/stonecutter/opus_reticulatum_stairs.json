@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:opus_reticulatum"
 	},
-	"result": "caupona:opus_reticulatum_stairs",
+	"result": {
+		"id": "caupona:opus_reticulatum_stairs"
+	},
 	"count":1
 }

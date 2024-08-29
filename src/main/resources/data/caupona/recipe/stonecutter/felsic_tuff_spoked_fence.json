@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:felsic_tuff"
 	},
-	"result": "caupona:felsic_tuff_spoked_fence",
+	"result": {
+		"id": "caupona:felsic_tuff_spoked_fence"
+	},
 	"count": 1
 }

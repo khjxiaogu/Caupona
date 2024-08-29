@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:clay_portable_brazier"
 	},
-	"result": "caupona:portable_brazier",
+	"result": {
+		"id": "caupona:portable_brazier"
+	},
 	"experience": 0.35
 }

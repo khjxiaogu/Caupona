@@ -5,7 +5,7 @@
 		{"item": "minecraft:tuff"}
 	],
 	"result": {
-		"item": "caupona:felsic_tuff",
+		"id": "caupona:felsic_tuff",
 		"count": 2
 	}
 }

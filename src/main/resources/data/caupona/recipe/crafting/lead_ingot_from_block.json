@@ -4,7 +4,7 @@
 		{"item": "caupona:lead_block"}
 	],
 	"result": {
-		"item": "caupona:lead_ingot",
+		"id": "caupona:lead_ingot",
 		"count": 9
 	}
 }

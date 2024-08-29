@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:basalt"
 	},
-	"result": "caupona:basalt_tesserae",
+	"result": {
+		"id": "caupona:basalt_tesserae"
+	},
 	"count": 8
 }

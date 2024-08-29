@@ -7,7 +7,7 @@
 		{"item": "minecraft:magma_cream"}
 	],
 	"result": {
-		"item": "caupona:vivid_charcoal",
+		"id": "caupona:vivid_charcoal",
 		"count": 8
 	}
 }

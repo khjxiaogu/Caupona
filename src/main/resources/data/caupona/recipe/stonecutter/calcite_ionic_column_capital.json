@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:calcite"
 	},
-	"result": "caupona:calcite_ionic_column_capital",
+	"result": {
+		"id": "caupona:calcite_ionic_column_capital"
+	},
 	"count": 1
 }

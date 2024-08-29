@@ -16,7 +16,7 @@
 		}
 	},
 	"result": {
-		"item": "caupona:stone_road_side",
+		"id": "caupona:stone_road_side",
 		"count": 3
 	}
 }

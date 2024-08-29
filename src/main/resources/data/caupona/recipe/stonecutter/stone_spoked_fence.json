@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:stone"
 	},
-	"result": "caupona:stone_spoked_fence",
+	"result": {
+		"id": "caupona:stone_spoked_fence"
+	},
 	"count": 1
 }

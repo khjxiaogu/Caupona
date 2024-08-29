@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:opus_incertum"
 	},
-	"result": "caupona:opus_incertum_stairs",
+	"result": {
+		"id": "caupona:opus_incertum_stairs"
+	},
 	"count": 1
 }

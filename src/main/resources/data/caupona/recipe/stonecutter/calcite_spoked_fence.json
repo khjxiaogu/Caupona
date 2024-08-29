@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:calcite"
 	},
-	"result": "caupona:calcite_spoked_fence",
+	"result": {
+		"id": "caupona:calcite_spoked_fence"
+	},
 	"count": 1
 }

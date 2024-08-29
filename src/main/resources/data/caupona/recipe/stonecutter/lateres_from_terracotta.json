@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:terracotta"
 	},
-	"result": "caupona:lateres",
+	"result": {
+		"id": "caupona:lateres"
+	},
 	"count": 3
 }

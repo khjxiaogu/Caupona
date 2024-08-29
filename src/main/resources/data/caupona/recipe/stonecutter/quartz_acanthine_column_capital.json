@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:quartz_block"
 	},
-	"result": "caupona:quartz_acanthine_column_capital",
+	"result": {
+		"id": "caupona:quartz_acanthine_column_capital"
+	},
 	"count": 1
 }

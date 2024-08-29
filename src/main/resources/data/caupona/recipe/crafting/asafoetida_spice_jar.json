@@ -8,6 +8,6 @@
 		{"item": "caupona:asafoetida"}
 	],
 	"result": {
-		"item": "caupona:asafoetida_spice_jar"
+		"id": "caupona:asafoetida_spice_jar"
 	}
 }

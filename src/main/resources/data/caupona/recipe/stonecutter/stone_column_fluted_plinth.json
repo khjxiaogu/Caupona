@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:stone"
 	},
-	"result": "caupona:stone_column_fluted_plinth",
+	"result": {
+		"id": "caupona:stone_column_fluted_plinth"
+	},
 	"count": 1
 }

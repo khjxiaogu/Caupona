@@ -218,11 +218,11 @@ public class CPItemTagGenerator extends TagsProvider<Item> {
 	}
 
 	private ResourceLocation frl(String s) {
-		return ResourceLocation.fromNamespaceAndPath("forge", s);
+		return ResourceLocation.fromNamespaceAndPath("c", s);
 	}
 
 	private TagKey<Item> ftag(String s) {
-		TagKey<Item> tag = ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", s));
+		TagKey<Item> tag = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", s));
 		this.tag(tag);
 		return tag;
 	}

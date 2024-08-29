@@ -8,6 +8,6 @@
 		{"item": "minecraft:sugar"}
 	],
 	"result": {
-		"item": "caupona:sugar_spice_jar"
+		"id": "caupona:sugar_spice_jar"
 	}
 }

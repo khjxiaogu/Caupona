@@ -12,6 +12,6 @@
 		{"item": "caupona:lead_nugget"}
 	],
 	"result": {
-		"item": "caupona:lead_ingot"
+		"id": "caupona:lead_ingot"
 	}
 }

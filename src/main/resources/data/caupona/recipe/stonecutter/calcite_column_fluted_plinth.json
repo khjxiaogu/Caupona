@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:calcite"
 	},
-	"result": "caupona:calcite_column_fluted_plinth",
+	"result": {
+		"id": "caupona:calcite_column_fluted_plinth"
+	},
 	"count": 1
 }

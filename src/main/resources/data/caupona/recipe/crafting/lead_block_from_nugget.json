@@ -12,6 +12,6 @@
 		{"item": "caupona:lead_ingot"}
 	],
 	"result": {
-		"item": "caupona:lead_block"
+		"id": "caupona:lead_block"
 	}
 }

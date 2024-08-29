@@ -14,7 +14,7 @@
 		}
 	},
 	"result": {
-		"item": "caupona:brick_chimney_flue",
+		"id": "caupona:brick_chimney_flue",
 		"count": 2
 	}
 }

@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:calcite"
 	},
-	"result": "caupona:calcite_column_shaft",
+	"result": {
+		"id": "caupona:calcite_column_shaft"
+	},
 	"count": 1
 }

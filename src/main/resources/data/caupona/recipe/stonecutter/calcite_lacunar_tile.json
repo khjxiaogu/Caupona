@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:calcite"
 	},
-	"result": "caupona:calcite_lacunar_tile",
+	"result": {
+		"id": "caupona:calcite_lacunar_tile"
+	},
 	"count": 1
 }

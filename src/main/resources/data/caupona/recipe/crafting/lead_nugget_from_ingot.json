@@ -4,7 +4,7 @@
 		{"item": "caupona:lead_ingot"}
 	],
 	"result": {
-		"item": "caupona:lead_nugget",
+		"id": "caupona:lead_nugget",
 		"count": 9
 	}
 }

@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:felsic_tuff"
 	},
-	"result": "caupona:felsic_tuff_tuscan_column_capital",
+	"result": {
+		"id": "caupona:felsic_tuff_tuscan_column_capital"
+	},
 	"count": 1
 }

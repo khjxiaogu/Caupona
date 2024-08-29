@@ -6,6 +6,6 @@
 		{"item": "minecraft:allium"}
 	],
 	"result": {
-		"item": "caupona:chives_spice_jar"
+		"id": "caupona:chives_spice_jar"
 	}
 }

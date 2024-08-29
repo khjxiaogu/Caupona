@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:opus_latericium"
 	},
-	"result": "caupona:opus_latericium_wall",
+	"result": {
+		"id": "caupona:opus_latericium_wall"
+	},
 	"count":1
 }

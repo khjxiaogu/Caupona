@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:brick"
 	},
-	"result": "caupona:brick_tesserae",
+	"result": {
+		"id": "caupona:brick_tesserae"
+	},
 	"count": 2
 }

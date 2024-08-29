@@ -15,8 +15,7 @@
 	"density": 1.25,
 	"keepInfo": false,
 	"output": {
-		"type": "neoforge:nbt",
-		"item": "minecraft:brown_dye",
+		"id": "minecraft:brown_dye",
 		"count": 4
 	}
 }

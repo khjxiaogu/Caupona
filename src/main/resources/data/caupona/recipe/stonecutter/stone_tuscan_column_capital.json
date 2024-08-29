@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:stone"
 	},
-	"result": "caupona:stone_tuscan_column_capital",
+	"result": {
+		"id": "caupona:stone_tuscan_column_capital"
+	},
 	"count": 1
 }

@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:polished_felsic_tuff"
 	},
-	"result": "caupona:polished_felsic_tuff_stairs",
+	"result": {
+		"id": "caupona:polished_felsic_tuff_stairs"
+	},
 	"count":1
 }

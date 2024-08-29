@@ -7,6 +7,6 @@
     "item": "caupona:litharge_cake"
   },
   "result": {
-    "item": "caupona:lead_nugget"
-  }
+		"id": "caupona:lead_nugget"
+	}
 }

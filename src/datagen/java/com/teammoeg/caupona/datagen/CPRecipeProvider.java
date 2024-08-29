@@ -345,7 +345,7 @@ public class CPRecipeProvider extends RecipeProvider {
 	}
 
 	private ResourceLocation ftag(String s) {
-		return ResourceLocation.fromNamespaceAndPath("forge", s);
+		return ResourceLocation.fromNamespaceAndPath("c", s);
 	}
 
 	private ResourceLocation mcrl(String s) {

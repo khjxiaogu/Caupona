@@ -4,6 +4,6 @@
 		{"item": "caupona:pumice_bloom"}
 	],
 	"result": {
-		"item": "caupona:pumice"
+		"id": "caupona:pumice"
 	}
 }

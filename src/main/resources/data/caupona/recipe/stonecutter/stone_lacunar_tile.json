@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:stone"
 	},
-	"result": "caupona:stone_lacunar_tile",
+	"result": {
+		"id": "caupona:stone_lacunar_tile"
+	},
 	"count": 1
 }

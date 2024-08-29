@@ -6,6 +6,6 @@
 		{"item": "minecraft:kelp"}
 	],
 	"result": {
-		"item": "minecraft:slime_ball"
+		"id": "minecraft:slime_ball"
 	}
 }

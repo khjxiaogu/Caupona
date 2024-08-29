@@ -15,8 +15,7 @@
 	"density": 2.0,
 	"keepInfo": false,
 	"output": {
-		"type": "neoforge:nbt",
-		"item": "minecraft:black_dye",
+		"id": "minecraft:black_dye",
 		"count": 2
 	}
 }

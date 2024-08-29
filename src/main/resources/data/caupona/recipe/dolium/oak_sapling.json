@@ -21,8 +21,7 @@
 	"density": 0.0,
 	"keepInfo": false,
 	"output": {
-		"type": "neoforge:nbt",
-		"item": "minecraft:oak_sapling",
+		"id": "minecraft:oak_sapling",
 		"count": 1
 	}
 }

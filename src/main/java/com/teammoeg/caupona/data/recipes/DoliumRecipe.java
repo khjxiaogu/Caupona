@@ -82,7 +82,7 @@ public class DoliumRecipe extends IDataRecipe {
 	}
 
 	public DoliumRecipe(List<Pair<Ingredient, Integer>> items, Optional<Ingredient> extra, Optional<Fluid> base, Optional<SizedOrCatalystFluidIngredient> fluid,
-			 float density, boolean keepInfo, Ingredient output) {
+			 float density, boolean keepInfo, ItemStack output) {
 		super();
 		this.items = items;
 		this.extra = extra.orElse(null);
@@ -90,7 +90,7 @@ public class DoliumRecipe extends IDataRecipe {
 		this.fluid = fluid.orElse(null);
 		this.density = density;
 		this.keepInfo = keepInfo;
-		this.output = output.getItems()[0];
+		this.output = output;
 	}
 
 	public DoliumRecipe(Fluid base, Fluid fluid, int amount, float density,
@@ -116,7 +116,7 @@ public class DoliumRecipe extends IDataRecipe {
 					SizedOrCatalystFluidIngredient.FLAT_CODEC.optionalFieldOf("fluid").forGetter(o->Optional.ofNullable(o.fluid)),
 					Codec.FLOAT.fieldOf("density").forGetter(o->o.density),
 					Codec.BOOL.fieldOf("keepInfo").forGetter(o->o.keepInfo),
-					Ingredient.CODEC_NONEMPTY.fieldOf("output").forGetter(o->Ingredient.of(o.output))
+					ItemStack.CODEC.fieldOf("output").forGetter(o->o.output)
 					).apply(t, DoliumRecipe::new));
 
 	public static DoliumRecipe testPot(FluidStack fluidStack) {

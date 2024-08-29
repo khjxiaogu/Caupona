@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:felsic_tuff"
 	},
-	"result": "caupona:felsic_tuff_wall",
+	"result": {
+		"id": "caupona:felsic_tuff_wall"
+	},
 	"count":1
 }

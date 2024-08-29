@@ -94,7 +94,7 @@ public class CPFluidTagGenerator extends TagsProvider<Fluid> {
 	}
 
 	private ResourceLocation frl(String s) {
-		return ResourceLocation.fromNamespaceAndPath("forge", s);
+		return ResourceLocation.fromNamespaceAndPath("c", s);
 	}
 
 	private ResourceLocation mcrl(String s) {

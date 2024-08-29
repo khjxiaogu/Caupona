@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:felsic_tuff"
 	},
-	"result": "caupona:felsic_tuff_column_fluted_shaft",
+	"result": {
+		"id": "caupona:felsic_tuff_column_fluted_shaft"
+	},
 	"count": 1
 }

@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:quartz_block"
 	},
-	"result": "caupona:quartz_lacunar_tile",
+	"result": {
+		"id": "caupona:quartz_lacunar_tile"
+	},
 	"count": 1
 }

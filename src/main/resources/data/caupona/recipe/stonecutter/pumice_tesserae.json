@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "caupona:pumice"
 	},
-	"result": "caupona:pumice_tesserae",
+	"result": {
+		"id": "caupona:pumice_tesserae"
+	},
 	"count": 8
 }

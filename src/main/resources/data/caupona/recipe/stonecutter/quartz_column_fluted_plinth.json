@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:quartz_block"
 	},
-	"result": "caupona:quartz_column_fluted_plinth",
+	"result": {
+		"id": "caupona:quartz_column_fluted_plinth"
+	},
 	"count": 1
 }

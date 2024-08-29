@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:quartz_block"
 	},
-	"result": "caupona:quartz_spoked_fence",
+	"result": {
+		"id": "caupona:quartz_spoked_fence"
+	},
 	"count": 1
 }

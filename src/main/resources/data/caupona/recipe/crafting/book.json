@@ -10,10 +10,10 @@
 		]
 	],
 	"result": {
-		"item": "patchouli:guide_book",
+		"id": "patchouli:guide_book",
 		"nbt": "{\"patchouli:book\":\"caupona:book\"}"
 	},
-  "conditions": [
+  "neoforge:conditions": [
     {
         "modid": "patchouli",
         "type": "neoforge:mod_loaded"

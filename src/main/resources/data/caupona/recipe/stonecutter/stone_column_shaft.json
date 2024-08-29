@@ -3,6 +3,8 @@
 	"ingredient": {
 		"item": "minecraft:stone"
 	},
-	"result": "caupona:stone_column_shaft",
+	"result": {
+		"id": "caupona:stone_column_shaft"
+	},
 	"count": 1
 }
