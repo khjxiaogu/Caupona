@@ -22,7 +22,6 @@
 package com.teammoeg.caupona.data.recipes;
 
 import java.util.List;
-import java.util.Map;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -37,7 +37,6 @@ import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
 import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
-import com.teammoeg.caupona.components.IFoodInfo;
 import com.teammoeg.caupona.components.ItemHoldedFluidData;
 import com.teammoeg.caupona.components.StewInfo;
 
@@ -237,6 +236,7 @@ public class Utils {
 		out.set(CPCapability.STEW_INFO, info);
 		
 	}
+	@SuppressWarnings("unchecked")
 	public static <T> Optional<T> getInterface(MutableDataComponentHolder stack,Class<T> componentClass) {
 		return stack.getComponents().stream().map(t->t.value()).filter(componentClass::isInstance).map(t->(T)t).findAny();
 	}

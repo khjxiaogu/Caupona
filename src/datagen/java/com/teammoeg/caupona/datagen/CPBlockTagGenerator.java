@@ -171,7 +171,7 @@ public class CPBlockTagGenerator extends TagsProvider<Block> {
 		return ResourceKey.create(Registries.BLOCK,mrl(s));
 	}
 	private ResourceKey<Block> rk(Block  b) {
-		return BuiltInRegistries.BLOCK.getResourceKey(b).orElseGet(()->b.builtInRegistryHolder().key());
+		return BuiltInRegistries.BLOCK.getResourceKey(b).get();
 	}
 	private TagAppender<Block> tag(ResourceLocation s) {
 		return this.tag(BlockTags.create(s));

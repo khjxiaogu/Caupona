@@ -22,7 +22,6 @@
 package com.teammoeg.caupona.compat.jei.category;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
