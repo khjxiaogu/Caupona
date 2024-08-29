@@ -39,7 +39,7 @@ public final class SizedOrCatalystIngredient {
      */
     public static final Codec<SizedOrCatalystIngredient> NESTED_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(SizedOrCatalystIngredient::ingredient),
-            NeoForgeExtraCodecs.optionalFieldAlwaysWrite(ExtraCodecs.POSITIVE_INT, "count", 1).forGetter(SizedOrCatalystIngredient::count))
+            NeoForgeExtraCodecs.optionalFieldAlwaysWrite(ExtraCodecs.NON_NEGATIVE_INT, "count", 1).forGetter(SizedOrCatalystIngredient::count))
             .apply(instance, SizedOrCatalystIngredient::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SizedOrCatalystIngredient> STREAM_CODEC = StreamCodec.composite(
