@@ -14,6 +14,7 @@
   ],
   "keepInfo": false,
   "output": {
-    "item": "caupona:garum_spice_jar"
+    "count": 1,
+    "id": "caupona:garum_spice_jar"
   }
 }

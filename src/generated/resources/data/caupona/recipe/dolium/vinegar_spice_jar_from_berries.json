@@ -14,6 +14,7 @@
   ],
   "keepInfo": false,
   "output": {
-    "item": "caupona:vinegar_spice_jar"
+    "count": 1,
+    "id": "caupona:vinegar_spice_jar"
   }
 }

@@ -20,6 +20,7 @@
   ],
   "keepInfo": false,
   "output": {
-    "item": "caupona:gravy_boat"
+    "count": 1,
+    "id": "caupona:gravy_boat"
   }
 }
