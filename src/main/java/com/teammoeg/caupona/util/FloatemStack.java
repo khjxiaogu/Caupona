@@ -50,17 +50,23 @@ public class FloatemStack {
 		);
 	public FloatemStack(ItemStack stack, float count) {
 		super();
-		this.stack = stack.copy();
-		this.stack.setCount(1);
+		this.stack = stack.copyWithCount(1);
 		this.count = count;
 	}
-
+	public FloatemStack(ItemStack stack, float count,boolean copy) {
+		super();
+		if(copy)
+			this.stack = stack.copy();
+		else
+		this.stack=stack;
+			this.count = count;
+	}
 	public FloatemStack(ItemStack is) {
 		this(is, is.getCount());
 	}
 
 	public ItemStack getStack() {
-		return stack.copy();
+		return stack;
 	}
 /*
 	public CompoundTag serializeNBT(HolderLookup.Provider registry) {
@@ -100,10 +106,10 @@ public class FloatemStack {
 	}
 
 	public FloatemStack copy() {
-		return new FloatemStack(stack.copy(), this.count);
+		return new FloatemStack(stack, this.count,false);
 	}
 	public FloatemStack copyWithCount(float count) {
-		return new FloatemStack(stack.copy(), count);
+		return new FloatemStack(stack, count,false);
 	}
 
 	public boolean isItemEqual(ItemStack other) {

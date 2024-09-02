@@ -155,7 +155,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 			}
 		}
 		for (FloatemStack fs : f.stacks) {
-			this.addItem(new FloatemStack(fs.getStack(), fs.count * oparts / cparts));
+			this.addItem(fs.copyWithCount(fs.count * oparts / cparts));
 		}
 		completeAll();
 	}
@@ -268,7 +268,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 				return;
 			}
 		}
-		stacks.add(new FloatemStack(is.copy(), is.getCount() / parts));
+		stacks.add(new FloatemStack(is, is.getCount() / parts));
 	}
 
 	public void addItem(FloatemStack is) {

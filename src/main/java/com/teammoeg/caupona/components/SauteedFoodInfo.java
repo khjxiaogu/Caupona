@@ -135,7 +135,7 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 				return;
 			}
 		}
-		stacks.add(new FloatemStack(is.copy(), is.getCount()));
+		stacks.add(new FloatemStack(is));
 	}
 
 	public void addItem(FloatemStack is) {
