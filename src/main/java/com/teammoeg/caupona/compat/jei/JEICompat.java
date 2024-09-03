@@ -24,6 +24,7 @@ package com.teammoeg.caupona.compat.jei;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.teammoeg.caupona.CPBlocks;
@@ -67,6 +68,8 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
+import mezz.jei.api.runtime.IClickableIngredient;
+import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -128,6 +131,7 @@ public class JEICompat implements IModPlugin {
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registry) {
+		IIngredientManager ingredientManager = registry.getJeiHelpers().getIngredientManager();
 		registry.addGuiContainerHandler(PortableBrazierScreen.class, new IGuiContainerHandler<PortableBrazierScreen>() {
 			@Override
 			public Collection<IGuiClickableArea> getGuiClickableAreas(PortableBrazierScreen containerScreen,
@@ -139,10 +143,13 @@ public class JEICompat implements IModPlugin {
 		});
 
 		registry.addRecipeClickArea(DoliumScreen.class, 118, 32, 10, 25, DoliumRestingCategory.TYPE);
+		registry.addGuiContainerHandler(DoliumScreen.class,  new GuiTankHandler<DoliumScreen>(ingredientManager).addTank(80, 27, 16, 46, t->t.blockEntity.tank.getFluid()));
 		registry.addRecipeClickArea(StewPotScreen.class, 132, 34, 38, 16, PotCategory.TYPE, BoilingCategory.TYPE,
 				PotRestingCategory.TYPE, StewCookingCategory.TYPE);
+		registry.addGuiContainerHandler(StewPotScreen.class,  new GuiTankHandler<StewPotScreen>(ingredientManager).addTank(105, 20, 16, 46, t->t.getBlockEntity().getTank().getFluid()));
 		registry.addRecipeClickArea(KitchenStoveScreen.class, 61, 0, 54, 28, RecipeTypes.FUELING);
 		registry.addRecipeClickArea(PanScreen.class, 125, 30, 38, 16, FryingCategory.TYPE);
+		
 	}
 
 	@Override

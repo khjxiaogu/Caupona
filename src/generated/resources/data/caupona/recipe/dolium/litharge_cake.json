@@ -4,15 +4,11 @@
   "items": [
     {
       "count": 1,
-      "item": {
-        "item": "caupona:leaden_walnut"
-      }
+      "item": "caupona:leaden_walnut"
     },
     {
       "count": 0,
-      "item": {
-        "tag": "minecraft:anvil"
-      }
+      "tag": "minecraft:anvil"
     }
   ],
   "keepInfo": false,

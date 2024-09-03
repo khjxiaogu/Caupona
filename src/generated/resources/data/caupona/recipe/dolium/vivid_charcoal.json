@@ -8,15 +8,11 @@
   "items": [
     {
       "count": 3,
-      "item": {
-        "tag": "minecraft:coals"
-      }
+      "tag": "minecraft:coals"
     },
     {
       "count": 1,
-      "item": {
-        "item": "minecraft:slime_ball"
-      }
+      "item": "minecraft:slime_ball"
     }
   ],
   "keepInfo": false,

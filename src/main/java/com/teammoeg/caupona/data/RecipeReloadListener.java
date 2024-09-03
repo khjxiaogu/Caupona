@@ -197,8 +197,8 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		DoliumRecipe.recipes
 				.sort(((Comparator<RecipeHolder<DoliumRecipe>>) (c1, c2) -> Integer.compare(c2.value().items.size(), c1.value().items.size()))
 						.thenComparing((c1, c2) -> Integer.compare(
-								c2.value().items.stream().reduce(0, (a, b) -> a + b.getSecond(), (a, b) -> a + b),
-								c1.value().items.stream().reduce(0, (a, b) -> a + b.getSecond(), (a, b) -> a + b))));
+								c2.value().items.stream().reduce(0, (a, b) -> a + b.count(), (a, b) -> a + b),
+								c1.value().items.stream().reduce(0, (a, b) -> a + b.count(), (a, b) -> a + b))));
 
 		AspicMeltingRecipe.recipes = filterRecipes(recipes, AspicMeltingRecipe.class, AspicMeltingRecipe.TYPE)
 				.collect(Collectors.toList());

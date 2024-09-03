@@ -46,6 +46,7 @@ import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.data.recipes.FluidFoodValueRecipe;
 import com.teammoeg.caupona.data.recipes.FoodValueRecipe;
 import com.teammoeg.caupona.data.recipes.SpiceRecipe;
+import com.teammoeg.caupona.util.SizedOrCatalystIngredient;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.Holder;
@@ -168,43 +169,41 @@ public class CPRecipeProvider extends RecipeProvider {
 		frying(out);
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/garum_spice_jar"), new DoliumRecipe(null, Fluids.EMPTY, 0,
 				0f, false, new ItemStack(cpitem("garum_spice_jar")),
-				Arrays.asList(
-						Pair.of(Ingredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "garum_fish"))), 4)),
-				Ingredient.of(Items.FLOWER_POT)));
+				Arrays.asList(SizedOrCatalystIngredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "garum_fish")), 4)),
+				Ingredient.of(Items.FLOWER_POT),6000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/vinegar_spice_jar_from_fruits"), new DoliumRecipe(null,
 				Fluids.EMPTY, 0, 0f, false, new ItemStack(cpitem("vinegar_spice_jar")),
 				Arrays.asList(
-						Pair.of(Ingredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "vinegar_fruits"))), 4)),
-				Ingredient.of(Items.FLOWER_POT)));
+					SizedOrCatalystIngredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "vinegar_fruits")), 4)),
+				Ingredient.of(Items.FLOWER_POT),6000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/vinegar_spice_jar_from_berries"), new DoliumRecipe(null,
 				Fluids.EMPTY, 0, 0f, false, new ItemStack(cpitem("vinegar_spice_jar")),
-				Arrays.asList(Pair.of(
-						Ingredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "vinegar_fruits_small"))), 16)),
-				Ingredient.of(Items.FLOWER_POT)));
+				Arrays.asList(SizedOrCatalystIngredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "vinegar_fruits_small")), 16)),
+				Ingredient.of(Items.FLOWER_POT),6000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/gravy_boat"), new DoliumRecipe(null, Fluids.EMPTY, 0, 0f,
 				false, new ItemStack(CPItems.gravy_boat.get()),
-				Arrays.asList(Pair.of(Ingredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "walnut"))), 8),
-						Pair.of(Ingredient.of(ItemTags.ANVIL), 0)),
-				Ingredient.of(CPItems.gravy_boat.get())));
+				Arrays.asList(SizedOrCatalystIngredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "walnut")), 8),
+					SizedOrCatalystIngredient.of(ItemTags.ANVIL, 0)),
+				Ingredient.of(CPItems.gravy_boat.get()),6000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/gravy_boat_glass_bottle"), new DoliumRecipe(null,
 				Fluids.EMPTY, 0, 0f, false, new ItemStack(CPItems.gravy_boat.get()),
-				Arrays.asList(Pair.of(Ingredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "walnut"))), 8),
-						Pair.of(Ingredient.of(ItemTags.ANVIL), 0)),
-				Ingredient.of(Items.GLASS_BOTTLE)));
+				Arrays.asList(SizedOrCatalystIngredient.of(ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "walnut")), 8),
+					SizedOrCatalystIngredient.of(ItemTags.ANVIL, 0)),
+				Ingredient.of(Items.GLASS_BOTTLE),6000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/vivid_charcoal"), new DoliumRecipe(null, Fluids.LAVA, 250,
 				0f, false, new ItemStack(cpitem("vivid_charcoal"), 8),
-				Arrays.asList(Pair.of(Ingredient.of(ItemTags.COALS), 3), Pair.of(Ingredient.of(Items.SLIME_BALL), 1)),
-				null));
+				Arrays.asList(SizedOrCatalystIngredient.of(ItemTags.COALS, 3),SizedOrCatalystIngredient.of(Items.SLIME_BALL, 1)),
+				null,6000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/asafoetida"), new DoliumRecipe(null, Fluids.EMPTY, 0, 0f,
 				false, new ItemStack(cpitem("asafoetida")),
-				Arrays.asList(Pair.of(Ingredient.of(cpitem("silphium")), 1),
-						Pair.of(Ingredient.of(ItemTags.ANVIL), 0)),
-				null));
+				Arrays.asList(SizedOrCatalystIngredient.of(cpitem("silphium"), 1),
+					SizedOrCatalystIngredient.of(ItemTags.ANVIL, 0)),
+				null,6000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/litharge_cake"), new DoliumRecipe(null, Fluids.EMPTY, 0, 0f,
 				false, new ItemStack(cpitem("litharge_cake")),
-				Arrays.asList(Pair.of(Ingredient.of(cpitem("leaden_walnut")), 1),
-						Pair.of(Ingredient.of(ItemTags.ANVIL), 0)),
-				null));
+				Arrays.asList(SizedOrCatalystIngredient.of(cpitem("leaden_walnut"), 1),
+				SizedOrCatalystIngredient.of(ItemTags.ANVIL, 0)),
+				null,6000));
 		//SimpleCookingRecipeBuilder.blasting(Ingredient.of(cpitem("litharge_cake")),RecipeCategory.MISC,cpitem("lead_nugget"), 0.7f, 100).unlockedBy("has_litharge_cake", has(cpitem("litharge_cake"))).save(outx,ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "blasting/lead_nugget"));
 		//SimpleCookingRecipeBuilder.smelting(Ingredient.of(cpitem("litharge_cake")),RecipeCategory.MISC,cpitem("lead_nugget"), 0.7f, 200).unlockedBy("has_litharge_cake", has(cpitem("litharge_cake"))).save(outx,ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "smelting/lead_nugget"));
 	}
@@ -298,12 +297,12 @@ public class CPRecipeProvider extends RecipeProvider {
 	private void aspic(String soup, BiConsumer<ResourceLocation, IDataRecipe> out) {
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/" + soup + "_aspic"), 
 				new DoliumRecipe(stock,
-						cpfluid(soup), 250, 0.25F, true, new ItemStack(cpitem(soup + "_aspic")), null));
+						cpfluid(soup), 250, 0.25F, true, new ItemStack(cpitem(soup + "_aspic")), null,12000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "melt/" + soup + "_aspic"),
 			new AspicMeltingRecipe(Ingredient.of(cpitem(soup + "_aspic")), cpfluid(soup)));
 	}
 	private void aspicNoBase(String soup, BiConsumer<ResourceLocation, IDataRecipe> out) {
-		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/" + soup + "_aspic"), new DoliumRecipe(null,cpfluid(soup), 250, 0.25F, true, new ItemStack(cpitem(soup + "_aspic")), null));
+		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "dolium/" + soup + "_aspic"), new DoliumRecipe(null,cpfluid(soup), 250, 0.25F, true, new ItemStack(cpitem(soup + "_aspic")), null,12000));
 		out.accept(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "melt/" + soup + "_aspic"),new AspicMeltingRecipe(Ingredient.of(cpitem(soup + "_aspic")), cpfluid(soup)));
 	}
 

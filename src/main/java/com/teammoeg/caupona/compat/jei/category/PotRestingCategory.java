@@ -71,7 +71,7 @@ public class PotRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRe
 	@Override
 	public void draw(RecipeHolder<DoliumRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics stack, double mouseX,
 			double mouseY) {
-		String burnTime = String.valueOf(CPConfig.COMMON.staticTime.get() / 20f) + "s";
+		String burnTime = String.valueOf(recipe.value().time / 20f) + "s";
 		stack.drawString(Minecraft.getInstance().font, burnTime, 90, 55, 0xFFFFFF);
 	}
 
@@ -93,6 +93,7 @@ public class PotRestingCategory implements IRecipeCategory<RecipeHolder<DoliumRe
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<DoliumRecipe> recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 83, 24).addIngredient(VanillaTypes.ITEM_STACK, recipe.value().output);
+		if(recipe.value().fluid!=null)
 		builder.addSlot(RecipeIngredientRole.INPUT, 30, 9)
 				.addIngredients(NeoForgeTypes.FLUID_STACK, unpack(recipe.value().fluid))
 				.setFluidRenderer(1250, false, 16, 46)

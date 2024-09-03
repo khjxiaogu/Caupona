@@ -4,15 +4,11 @@
   "items": [
     {
       "count": 1,
-      "item": {
-        "item": "caupona:silphium"
-      }
+      "item": "caupona:silphium"
     },
     {
       "count": 0,
-      "item": {
-        "tag": "minecraft:anvil"
-      }
+      "tag": "minecraft:anvil"
     }
   ],
   "keepInfo": false,

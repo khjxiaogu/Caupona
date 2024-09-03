@@ -2,15 +2,11 @@
 	"type": "caupona:dolium",
 	"items": [
 		{
-			"item": {
-				"item": "minecraft:apple"
-			},
+			"item": "minecraft:apple",
 			"count": 1
 		},
 		{
-			"item": {
-				"item": "minecraft:dirt"
-			},
+			"item":"minecraft:dirt",
 			"count": 2
 		}
 	],

@@ -110,23 +110,24 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 
 	private FluidTank tank = new FluidTank(1250, StewCookingRecipe::isBoilable) {
 		protected void onContentsChanged() {
-			still.rewind();
+			resetStillCounter();
 		}
 
 	};
 
 	public StewPotBlockEntity(BlockPos p, BlockState s) {
 		super(CPBlockEntityTypes.STEW_POT.get(), p, s);
-		still=new LazyTickWorker(CPConfig.COMMON.staticTime.get(),()->{
+		still=new LazyTickWorker(()->{
 			if (inv.getStackInSlot(10).isEmpty()) {
 				DoliumRecipe recipe = DoliumRecipe.testPot(getTank().getFluid());
 				if (recipe != null) {
 					ItemStack out = recipe.handle(getTank().getFluid());
-
+					
 					inv.setStackInSlot(10, out);
 				}
-
+				
 			}
+			resetStillCounter();
 			return true;
 		});
 		contain=new LazyTickWorker(CPConfig.SERVER.containerTick.get(),()->{
@@ -162,6 +163,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 	public boolean operate = false;
 	public short proctype = 0;
 	public boolean rsstate = false;
+	boolean mayBeStill=true;
 	
 	boolean isInfinite = false;
 
@@ -174,14 +176,17 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 	public static final short BOILING = 1;
 	public static final short COOKING = 2;
 	public static final short STIRING = 3;
-
+	public void resetStillCounter() {
+		mayBeStill=true;
+		still.stop();
+	}
 	@Override
 	public void tick() {
 		boolean syncNeeded=false;
 		if (!level.isClientSide) {
 			working = false;
 			if (processMax > 0) {
-				still.rewind();
+				resetStillCounter();
 				if (level.getBlockEntity(worldPosition.below()) instanceof IStove stove) {
 					int rh = stove.requestHeat();
 					if (!isInfinite) {
@@ -203,6 +208,12 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			} else {
 				if (!tank.isEmpty() && !isInfinite) {
 					syncNeeded|=still.tick();
+					if(!still.isRunning()&&mayBeStill) {
+						DoliumRecipe rcp=DoliumRecipe.testPot(tank.getFluid());
+						if(rcp!=null) {
+							still.start(rcp.time);
+						}else mayBeStill=false;
+					}
 				}
 				if (!isInfinite&&proctype<=1) {
 					prepareWork();
@@ -263,7 +274,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 				if (recipe != null) {
 					is.shrink(1);
 					inv.setStackInSlot(10, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
-					still.rewind();
+					resetStillCounter();
 					return true;
 				}
 			}
@@ -273,7 +284,6 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 				if (tryAddFluid(out)) {
 					ItemStack ret = is.getCraftingRemainingItem();
 					is.shrink(1);
-					still.rewind();
 					inv.setStackInSlot(10, ret);
 					return true;
 				}
@@ -290,7 +300,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 						ItemStack ret = is.getCraftingRemainingItem();
 						ret.setCount(produce);
 						is.shrink(produce);
-						still.rewind();
+						still.stop();
 						inv.setStackInSlot(10, ret);
 						return true;
 					}
@@ -301,7 +311,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			if (far.isSuccess()) {
 				is.shrink(1);
 				if (far.getResult() != null) {
-					still.rewind();
+					still.stop();
 					inv.setStackInSlot(10, far.getResult());
 				}
 			}
@@ -590,7 +600,6 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			if (tryfill > 0) {
 				if (tryfill == fs.getAmount()) {
 					tank.fill(fs, FluidAction.EXECUTE);
-					still.rewind();
 					return true;
 				}
 				return false;
@@ -604,7 +613,6 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 					this.process = 0;
 					this.processMax = extraTime;
 					resetResult();
-					still.rewind();
 					return true;
 				}
 				return false;
@@ -635,7 +643,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			this.proctype = 3;
 			this.process = 0;
 			this.processMax = Math.max(pm, num);
-			still.rewind();
+			resetStillCounter();
 			return true;
 		}
 

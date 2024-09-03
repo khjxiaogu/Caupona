@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mojang.datafixers.util.Pair;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.util.SizedOrCatalystFluidIngredient;
+import com.teammoeg.caupona.util.SizedOrCatalystIngredient;
 import com.teammoeg.caupona.util.Utils;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -76,7 +76,7 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 	@Override
 	public void draw(RecipeHolder<DoliumRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics stack, double mouseX,
 			double mouseY) {
-		String burnTime = String.valueOf(CPConfig.COMMON.staticTime.get() / 20f) + "s";
+		String burnTime = String.valueOf(recipe.value().time / 20f) + "s";
 		stack.drawString(Minecraft.getInstance().font,  burnTime, 100, 55, 0xFFFFFF);
 	}
 
@@ -90,11 +90,8 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 		return ICON;
 	}
 
-	private static List<ItemStack> unpack(Pair<Ingredient, Integer> ps) {
-		List<ItemStack> sl = new ArrayList<>();
-		for (ItemStack is : ps.getFirst().getItems())
-			sl.add(is.copyWithCount(ps.getSecond() > 0 ? ps.getSecond() : 1));
-		return sl;
+	private static List<ItemStack> unpack(SizedOrCatalystIngredient ps) {
+		return Arrays.asList(ps.getItems());
 	}
 	private static List<FluidStack> unpack(SizedOrCatalystFluidIngredient ps) {
 		List<FluidStack> sl = new ArrayList<>();
@@ -118,8 +115,8 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 		return sl;
 	}
 
-	private static RecipeIngredientRole type(Pair<Ingredient, Integer> ps) {
-		return ps.getSecond() == 0 ? RecipeIngredientRole.CATALYST : RecipeIngredientRole.INPUT;
+	private static RecipeIngredientRole type(SizedOrCatalystIngredient ps) {
+		return ps.count() == 0 ? RecipeIngredientRole.CATALYST : RecipeIngredientRole.INPUT;
 	}
 
 	private static class CatalistCallback implements IRecipeSlotRichTooltipCallback {
@@ -138,8 +135,8 @@ public class DoliumRestingCategory implements IRecipeCategory<RecipeHolder<Doliu
 
 	};
 
-	private static CatalistCallback cb(Pair<Ingredient, Integer> ps) {
-		return new CatalistCallback(ps.getSecond());
+	private static CatalistCallback cb(SizedOrCatalystIngredient ps) {
+		return new CatalistCallback(ps.count());
 	}
 
 	@Override

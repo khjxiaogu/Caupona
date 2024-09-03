@@ -73,12 +73,21 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 			}
 			return false;
 		}
+
+		@Override
+		protected void onContentsChanged(int slot) {
+			if(slot<5&&slot!=3)
+				recipeTested=false;
+			super.onContentsChanged(slot);
+		}
+		
 	};
 	public final FluidTank tank = new FluidTank(1250, f -> !f.getFluid().getFluidType().isLighterThanAir()) {
 
 		@Override
 		protected void onContentsChanged() {
 			super.onContentsChanged();
+			recipeTested=false;
 			process = -1;
 		}
 
@@ -110,10 +119,10 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 	public LazyTickWorker contain;
 	boolean isInfinite = false;
 	ItemStack inner = ItemStack.EMPTY;
+	boolean recipeTested=false;
 
 	public CounterDoliumBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(CPBlockEntityTypes.DOLIUM.get(), pWorldPosition, pBlockState);
-		processMax = CPConfig.COMMON.staticTime.get();
 		contain = new LazyTickWorker(CPConfig.SERVER.containerTick.get(),()->{
 			if (isInfinite) {
 				FluidStack fs = tank.getFluid().copy();
@@ -134,6 +143,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 	@Override
 	public void readCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
 		process=nbt.getInt("process");
+		processMax=nbt.getInt("processMax");
 		tank.readFromNBT(ra,nbt.getCompound("tank"));
 		isInfinite = nbt.getBoolean("inf");
 		if (!isClient) {
@@ -147,6 +157,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 	@Override
 	public void writeCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
 		nbt.putInt("process",process);
+		nbt.putInt("processMax",processMax);
 		nbt.put("tank", tank.writeToNBT(ra,new CompoundTag()));
 		nbt.putBoolean("inf", isInfinite);
 		if (!isClient) {
@@ -161,39 +172,31 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 	public void tick() {
 		if (this.level.isClientSide)
 			return;
-		if (!inner.isEmpty()) {
-			inner = Utils.insertToOutput(inv, 5, inner);
-			this.setChanged();
-			return;
-		}
 		boolean updateNeeded = contain.tick();
-		
-		
-		if ((process < 0 || process % 20 == 0) && !isInfinite) {
-			if (DoliumRecipe.testDolium(tank.getFluid(), inv) != null) {
-				if (process == -1) {
-					process = 0;
-					updateNeeded=true;
+		if(!isInfinite) {
+			if (!inner.isEmpty()) {
+				inner = Utils.insertToOutput(inv, 5, inner);
+				this.setChanged();
+				return;
+			}
+			if(!recipeTested) {
+				DoliumRecipe recipe=DoliumRecipe.testDolium(tank.getFluid(), inv);
+				if (recipe!= null) {
+					process=processMax=recipe.time;
 				}
-			} else if(process!=-1) {
-				process = -1;
+				recipeTested=true;
+			}
+			if (process > 0) {
+				process--;
+				if(process<=0) {
+					DoliumRecipe recipe = DoliumRecipe.testDolium(tank.getFluid(), inv);
+					inner=recipe.handleDolium(tank.getFluid(), inv);
+					recipeTested=false;
+				}
 				updateNeeded=true;
 			}
 		}
-		if (process >= 0 && !isInfinite) {
-			process++;
-			if (process >= processMax) {
-				process = -1;
-				if (inner.isEmpty()) {
-					DoliumRecipe recipe = DoliumRecipe.testDolium(tank.getFluid(), inv);
-					if (recipe != null) {
-						inner = recipe.handleDolium(tank.getFluid(), inv);
-					}
 
-				}
-			}
-			updateNeeded=true;
-		}
 		if(updateNeeded)
 			this.syncData();
 	}
@@ -205,7 +208,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		if (tryfill > 0) {
 			if (tryfill == fs.getAmount()) {
 				tank.fill(fs, FluidAction.EXECUTE);
-				process = -1;
 				return true;
 			}
 			return false;
@@ -221,7 +223,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 				if (recipe != null) {
 					is.shrink(1);
 					inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
-					process = -1;
 					return true;
 				}
 			}
@@ -230,7 +231,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 				if (tryAddFluid(out)) {
 					ItemStack ret = is.getCraftingRemainingItem();
 					is.shrink(1);
-					process = -1;
 					inv.setStackInSlot(5, ret);
 				}
 				return true;
@@ -239,7 +239,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 			if (far.isSuccess()) {
 				is.shrink(1);
 				if (far.getResult() != null) {
-					process = -1;
 					inv.setStackInSlot(5, far.getResult());
 				}
 				return true;
@@ -249,7 +248,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 				if (far.isSuccess()) {
 					is.shrink(1);
 					if (far.getResult() != null) {
-						process = -1;
 						inv.setStackInSlot(5, far.getResult());
 					}
 					return true;
@@ -319,7 +317,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 		@Override
 		public int fill(FluidStack resource, FluidAction action) {
-			process = -1;
 			if (!isInfinite)
 				return tank.fill(resource, action);
 			return 0;
@@ -327,7 +324,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 		@Override
 		public FluidStack drain(FluidStack resource, FluidAction action) {
-			process = -1;
 			if (isInfinite)
 				return action.simulate() ? resource : tryAddSpice(resource);
 			return action.simulate() ? tank.drain(resource, action) : tryAddSpice(tank.drain(resource, action));
@@ -336,7 +332,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 		@Override
 		public FluidStack drain(int maxDrain, FluidAction action) {
-			process = -1;
 			if (isInfinite)
 				return action.simulate() ? tank.getFluid().copyWithAmount(maxDrain)
 						: tryAddSpice(tank.getFluid().copyWithAmount(maxDrain));

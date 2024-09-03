@@ -2,19 +2,16 @@
 	"type": "caupona:dolium",
 	"items": [
 		{
-			"item": {
-				"item": "minecraft:bread"
-			},
+			"item": "minecraft:bread",
 			"count": 1
 		},
 		{
-			"item": {
-				"item": "caupona:walnut"
-			},
+			"item": "caupona:walnut",
 			"count": 2
 		},
 		{
-			"item": [
+			"type": "neoforge:compound", 
+			"ingredients": [
 				{
 					"item": "minecraft:sugar"
 				},

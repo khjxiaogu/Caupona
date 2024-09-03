@@ -81,11 +81,11 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 		this.addRenderableWidget(	
 				btn1 = new ImageButton(Button.builder(start, btn -> {
 					if (btn1.state == 0)
-						blockEntity.sendMessage((short) 0, 0);
+						getBlockEntity().sendMessage((short) 0, 0);
 				}).pos(leftPos + 7,topPos +48).size(20, 12), 176, 83,256,256,TEXTURE,() ->(btn1.state == 0?Tooltip.create(start):Tooltip.create(started))));
 			this.addRenderableWidget(	
 					btn2 = new ImageButton(Button.builder(rs, btn -> {
-						blockEntity.sendMessage((short) 1, btn2.state);
+						getBlockEntity().sendMessage((short) 1, btn2.state);
 					}).pos(leftPos + 7,topPos +61).size(20, 20), 176, 107,256,256,TEXTURE,() ->(btn2.state == 2?Tooltip.create(rs):Tooltip.create(nors))));
 			
 
@@ -94,22 +94,23 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 	@Override
 	public void render(GuiGraphics transform, int mouseX, int mouseY, float partial) {
 		tooltip.clear();
-		btn1.state = blockEntity.proctype > 0 ? 1 : 0;
-		btn2.state = blockEntity.rsstate ? 1 : 2;
+		btn1.state = getBlockEntity().proctype > 0 ? 1 : 0;
+		btn2.state = getBlockEntity().rsstate ? 1 : 2;
 		super.render(transform, mouseX, mouseY, partial);
-		if (blockEntity.proctype < 2 && !blockEntity.getTank().isEmpty()) {
+		if (getBlockEntity().proctype < 2 && !getBlockEntity().getTank().isEmpty()) {
 			if (isMouseIn(mouseX, mouseY, 105, 20, 16, 46)) {
-				tooltip.add(blockEntity.getTank().getFluid().getHoverName());
-				StewInfo si = Utils.getOrCreateInfo(blockEntity.getTank().getFluid());
+				tooltip.add(getBlockEntity().getTank().getFluid().getHoverName());
+				StewInfo si = Utils.getOrCreateInfo(getBlockEntity().getTank().getFluid());
 				FloatemStack fs = si.stacks.stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);
 				if (fs != null)
 					tooltip.add(Utils.translate("tooltip.caupona.main_ingredient",
 							fs.getStack().getDisplayName()));
-				Utils.addPotionTooltip(si.effects, tooltip::add, 1,blockEntity.getLevel());
+				if(!si.effects.isEmpty())
+					Utils.addPotionTooltip(si.effects, tooltip::add, 1,getBlockEntity().getLevel());
 			}
-			GuiUtils.handleGuiTank(transform, blockEntity.getTank(), leftPos + 105, topPos + 20, 16, 46);
+			GuiUtils.handleGuiTank(transform, getBlockEntity().getTank(), leftPos + 105, topPos + 20, 16, 46);
 		}
 		if (!tooltip.isEmpty())
 			transform.renderTooltip(this.font,tooltip,Optional.empty(), mouseX, mouseY);
@@ -131,12 +132,12 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
 		transform.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		if (blockEntity.processMax > 0 && blockEntity.process > 0) {
-			int h = (int) (29 * (blockEntity.process / (float) blockEntity.processMax));
+		if (getBlockEntity().processMax > 0 && getBlockEntity().process > 0) {
+			int h = (int) (29 * (getBlockEntity().process / (float) getBlockEntity().processMax));
 			transform.blit(TEXTURE, leftPos + 9, topPos + 17 + h, 176, 54 + h, 16, 29 - h);
 		}
-		if (blockEntity.proctype > 1) {
-			if (blockEntity.proctype == 2)
+		if (getBlockEntity().proctype > 1) {
+			if (getBlockEntity().proctype == 2)
 				transform.blit(TEXTURE, leftPos + 44, topPos + 16, 176, 0, 54, 54);
 			transform.blit(TEXTURE, leftPos + 102, topPos + 17, 230, 0, 21, 51);
 		}
@@ -144,6 +145,10 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 
 	public boolean isMouseIn(int mouseX, int mouseY, int x, int y, int w, int h) {
 		return mouseX >= leftPos + x && mouseY >= topPos + y && mouseX < leftPos + x + w && mouseY < topPos + y + h;
+	}
+
+	public StewPotBlockEntity getBlockEntity() {
+		return blockEntity;
 	}
 
 }

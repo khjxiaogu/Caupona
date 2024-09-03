@@ -2,15 +2,11 @@
 	"type": "caupona:dolium",
 	"items": [
 		{
-			"item": {
-				"item": "caupona:wolfberries"
-			},
+			"item": "caupona:wolfberries",
 			"count": 1
 		},
 		{
-			"item": {
-				"item": "minecraft:dirt"
-			},
+			"item": "minecraft:dirt",
 			"count": 2
 		}
 	],

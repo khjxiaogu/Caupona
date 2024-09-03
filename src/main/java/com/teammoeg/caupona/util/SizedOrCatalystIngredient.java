@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public final class SizedOrCatalystIngredient {
     public static final Codec<SizedOrCatalystIngredient> FLAT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Ingredient.MAP_CODEC_NONEMPTY.forGetter(SizedOrCatalystIngredient::ingredient),
-            NeoForgeExtraCodecs.optionalFieldAlwaysWrite(ExtraCodecs.POSITIVE_INT, "count", 1).forGetter(SizedOrCatalystIngredient::count))
+            NeoForgeExtraCodecs.optionalFieldAlwaysWrite(ExtraCodecs.NON_NEGATIVE_INT, "count", 1).forGetter(SizedOrCatalystIngredient::count))
             .apply(instance, SizedOrCatalystIngredient::new));
 
     /**
@@ -98,7 +98,7 @@ public final class SizedOrCatalystIngredient {
     public ItemStack[] getItems() {
         if (cachedStacks == null) {
             cachedStacks = Stream.of(ingredient.getItems())
-                    .map(s -> s.copyWithCount(count))
+                    .map(s -> s.copyWithCount(count>0?count:1))
                     .toArray(ItemStack[]::new);
         }
         return cachedStacks;

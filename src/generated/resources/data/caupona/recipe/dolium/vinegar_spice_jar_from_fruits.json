@@ -7,9 +7,7 @@
   "items": [
     {
       "count": 4,
-      "item": {
-        "tag": "caupona:vinegar_fruits"
-      }
+      "tag": "caupona:vinegar_fruits"
     }
   ],
   "keepInfo": false,

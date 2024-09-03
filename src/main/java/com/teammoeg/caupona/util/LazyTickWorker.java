@@ -30,11 +30,21 @@ public class LazyTickWorker {
 		}
 		return false;
 	}
+	public boolean isRunning() {
+		return tMax!=0;
+	}
 	public void rewind() {
 		tCur=0;
 	}
 	public void enqueue() {
 		tCur=tMax;
+	}
+	public void start(int time) {
+		tCur=0;
+		tMax=time;
+	}
+	public void stop() {
+		tMax=0;
 	}
 	public void read(CompoundTag cnbt) {
 		if(!isStaticMax)

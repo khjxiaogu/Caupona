@@ -70,7 +70,7 @@ public final class SizedOrCatalystFluidIngredient {
      */
     public static final Codec<SizedOrCatalystFluidIngredient> NESTED_CODEC = RecordCodecBuilder.create(instance -> instance.group(
             FluidIngredient.CODEC_NON_EMPTY.fieldOf("ingredient").forGetter(SizedOrCatalystFluidIngredient::ingredient),
-            NeoForgeExtraCodecs.optionalFieldAlwaysWrite(ExtraCodecs.POSITIVE_INT, "amount", FluidType.BUCKET_VOLUME).forGetter(SizedOrCatalystFluidIngredient::amount))
+            NeoForgeExtraCodecs.optionalFieldAlwaysWrite(ExtraCodecs.NON_NEGATIVE_INT, "amount", FluidType.BUCKET_VOLUME).forGetter(SizedOrCatalystFluidIngredient::amount))
             .apply(instance, SizedOrCatalystFluidIngredient::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SizedOrCatalystFluidIngredient> STREAM_CODEC = StreamCodec.composite(

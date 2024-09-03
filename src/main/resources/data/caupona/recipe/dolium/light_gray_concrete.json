@@ -2,13 +2,12 @@
 	"type": "caupona:dolium",
 	"items": [
 		{
-			"item": {
-				"item": "minecraft:sand"
-			},
+			"item": "minecraft:sand",
 			"count": 8
 		},
 		{
-			"item": [
+			 "type": "neoforge:compound", 
+			 "ingredients": [
 				{
 					"item": "minecraft:calcite"
 				},

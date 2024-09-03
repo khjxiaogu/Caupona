@@ -34,6 +34,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 
 public class DoliumScreen extends AbstractContainerScreen<DoliumContainer> {
@@ -75,7 +76,8 @@ public class DoliumScreen extends AbstractContainerScreen<DoliumContainer> {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		transform.blit(TEXTURE,leftPos, topPos, 0, 0, imageWidth, imageHeight);
 		if (blockEntity.process > 0) {
-			int w = (int) (12 * (blockEntity.process / (float) blockEntity.processMax));
+			int w = Mth.ceil(12 * (1-blockEntity.process / (float) blockEntity.processMax));
+
 			transform.blit(TEXTURE, leftPos + 117, topPos + 32, 176, 0, w, 25);
 		}
 	}

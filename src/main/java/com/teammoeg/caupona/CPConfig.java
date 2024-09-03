@@ -48,17 +48,17 @@ public class CPConfig {
 	}
 
 	public static class Common {
-		public ConfigValue<Integer> staticTime;
+		//public ConfigValue<Integer> staticTime;
 		public ConfigValue<Double> roadSpeedAddtion;
 		/**
 		 * @param builder
 		 */
 
 		Common(ModConfigSpec.Builder builder) {
-			builder.push("recipe");
+			/*builder.push("recipe");
 			staticTime = builder.comment("Ticks before do still recipe").defineInRange("StillRecipeTicks", 12000, 1,
 					Integer.MAX_VALUE);
-			builder.pop();
+			builder.pop();*/
 			builder.push("road");
 			roadSpeedAddtion = builder.comment("Additional speed added per tick for roads").defineInRange("roadSpeedAddtion",2D,0D,10D);
 			builder.pop();

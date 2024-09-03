@@ -7,9 +7,7 @@
   "items": [
     {
       "count": 4,
-      "item": {
-        "tag": "caupona:garum_fish"
-      }
+      "tag": "caupona:garum_fish"
     }
   ],
   "keepInfo": false,
