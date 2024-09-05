@@ -26,6 +26,10 @@ public class ImmutableStewInfo extends StewInfo {
 		super(info.spice,info.hasSpice, info.spiceName,ImmutableList.copyOf(info.stacks), ImmutableList.copyOf(info.effects), ImmutableList.copyOf(info.foodeffect), info.healing, info.saturation, info.base);
 	}
 	@Override
+	public ImmutableStewInfo toImmutable() {
+		return this;
+	}
+	@Override
 	public boolean merge(StewInfo f, float cparts, float oparts) {
 		throw new UnsupportedOperationException();
 	}

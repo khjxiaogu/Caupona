@@ -233,7 +233,8 @@ public class Utils {
 		return si;
 	}
 	public static void setInfo(MutableDataComponentHolder out, StewInfo info) {
-		out.set(CPCapability.STEW_INFO, info);
+		
+		out.set(CPCapability.STEW_INFO, info.toImmutable());
 		
 	}
 	@SuppressWarnings("unchecked")

@@ -76,7 +76,7 @@ public class StewItem extends EdibleBlock{
 	public void fillItemCategory(CreativeTabItemHelper helper) {
 		if (helper.isFoodTab()) {
 			ItemStack is = new ItemStack(this);
-			is.set(CPCapability.STEW_INFO, new StewInfo(fluid.get()));
+			is.set(CPCapability.STEW_INFO, new StewInfo(fluid.get()).toImmutable());
 			super.addCreativeHints(is);
 			helper.accept(is);
 		}

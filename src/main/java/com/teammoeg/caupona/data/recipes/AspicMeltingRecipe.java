@@ -97,7 +97,7 @@ public class AspicMeltingRecipe extends IDataRecipe {
 	public FluidStack handle(ItemStack s) {
 		StewInfo si=s.get(CPCapability.STEW_INFO);
 		FluidStack fs = new FluidStack(fluid, amount);
-		fs.set(CPCapability.STEW_INFO, si);
+		fs.set(CPCapability.STEW_INFO, si.toImmutable());
 		return fs;
 	}
 
