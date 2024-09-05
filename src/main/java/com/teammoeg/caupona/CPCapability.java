@@ -1,6 +1,7 @@
 package com.teammoeg.caupona;
 
 import com.teammoeg.caupona.components.IFoodInfo;
+import com.teammoeg.caupona.components.ImmutableStewInfo;
 import com.teammoeg.caupona.components.ItemHoldedFluidData;
 import com.teammoeg.caupona.components.MosaicData;
 import com.teammoeg.caupona.components.SauteedFoodInfo;
@@ -18,9 +19,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class CPCapability {
 	public static final ItemCapability<IFoodInfo, Void> FOOD_INFO=ItemCapability.createVoid(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"food_info"), IFoodInfo.class);
 	public static final DeferredRegister<DataComponentType<?>> REGISTRY=DeferredRegister.create(BuiltInRegistries.DATA_COMPONENT_TYPE, CPMain.MODID);
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<StewInfo>> STEW_INFO=REGISTRY.register(
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ImmutableStewInfo>> STEW_INFO=REGISTRY.register(
 		"stew_info",
-		()->DataComponentType.<StewInfo>builder().persistent(StewInfo.CODEC).networkSynchronized(SerializeUtil.toStreamCodec(StewInfo.CODEC)).build());
+		()->DataComponentType.<ImmutableStewInfo>builder().persistent(ImmutableStewInfo.CODEC).networkSynchronized(SerializeUtil.toStreamCodec(StewInfo.CODEC)).build());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SauteedFoodInfo>> SAUTEED_INFO=REGISTRY.register(
 		"sauteed_info",
 		()->DataComponentType.<SauteedFoodInfo>builder().persistent(SauteedFoodInfo.CODEC).networkSynchronized(SerializeUtil.toStreamCodec(SauteedFoodInfo.CODEC)).build());
