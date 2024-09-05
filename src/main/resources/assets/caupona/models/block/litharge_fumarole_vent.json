@@ -1,0 +1,145 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/cube",
+	"ambientocclusion": false,
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "caupona:block/fumarole",
+		"particle": "caupona:block/fumarole"
+	},
+	"elements": [
+		{
+			"name": "ventCornerNE",
+			"from": [11.01, 0.01, 2.51],
+			"to": [14.99, 2.99, 4.49],
+			"rotation": {"angle": -45, "axis": "y", "origin": [13, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 10, 1.99, 11.49], "texture": "#0"},
+				"up": {"uv": [0, 9, 1.99, 9.99], "texture": "#0"},
+				"down": {"uv": [1.5, 9, 3.49, 9.99], "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventBase1",
+			"from": [4.005, 0.005, 0.005],
+			"to": [11.995, 1.995, 15.995],
+			"faces": {
+				"north": {"uv": [2, 11, 5.995, 11.995], "texture": "#0"},
+				"east": {"uv": [0, 14.0075, 7.9925, 15], "texture": "#0"},
+				"south": {"uv": [4, 11, 7.995, 11.995], "texture": "#0"},
+				"west": {"uv": [0, 15.0075, 7.9925, 16], "texture": "#0"},
+				"down": {"uv": [2, 0, 5.995, 7.995], "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventBase2",
+			"from": [0.0075, 0.0075, 4.0075],
+			"to": [15.9925, 1.9925, 11.9925],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 10.0075, 7.9925, 11], "texture": "#0"},
+				"east": {"uv": [2, 11, 5.9925, 11.9925], "texture": "#0"},
+				"south": {"uv": [0, 14.0075, 7.9925, 15], "texture": "#0"},
+				"west": {"uv": [0, 11, 3.9925, 11.9925], "texture": "#0"},
+				"down": {"uv": [0, 2, 7.9925, 5.9925], "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventSlopeS",
+			"from": [4, -1, 10.333],
+			"to": [12, 2, 16],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 2, 16]},
+			"faces": {
+				"north": {"uv": [4, 6.5, 8, 8], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [0, 8, 1.5, 10.8335], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [2.5, 8, 4, 10.8335], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [4, 8, 8, 10.8335], "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventSlopeN",
+			"from": [4, -1, 0],
+			"to": [12, 2, 5.667],
+			"rotation": {"angle": -45, "axis": "x", "origin": [8, 2, 0]},
+			"faces": {
+				"east": {"uv": [0.5, 8, 2, 10.8335], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [2, 6.5, 6, 8], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [6, 8, 7.5, 10.8335], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [2, 8, 6, 10.8335], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventPlateau",
+			"from": [5, 2, 5],
+			"to": [11, 5, 11],
+			"faces": {
+				"up": {"uv": [12, 3, 15, 6], "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventSlopeW",
+			"from": [0, -1, 4],
+			"to": [5.667, 2, 12],
+			"rotation": {"angle": 45, "axis": "z", "origin": [0, 2, 8]},
+			"faces": {
+				"north": {"uv": [6.5, 8, 8, 10.8335], "rotation": 270, "texture": "#0"},
+				"east": {"uv": [0, 6.5, 4, 8], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [4, 8, 5.5, 10.8335], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [0, 8, 4, 10.8335], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventSlopeE",
+			"from": [10.333, -1, 4],
+			"to": [16, 2, 12],
+			"rotation": {"angle": -45, "axis": "z", "origin": [16, 2, 8]},
+			"faces": {
+				"north": {"uv": [6, 8, 7.5, 10.8335], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [0.5, 8, 2, 10.8335], "rotation": 270, "texture": "#0"},
+				"west": {"uv": [2, 6.5, 6, 8], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [2, 8, 6, 10.8335], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventCornerNW",
+			"from": [1.01, 0.01, 2.51],
+			"to": [4.99, 2.99, 4.49],
+			"rotation": {"angle": 45, "axis": "y", "origin": [3, 0, 3]},
+			"faces": {
+				"north": {"uv": [6, 10, 7.99, 11.49], "texture": "#0"},
+				"up": {"uv": [6, 9, 7.99, 9.99], "texture": "#0"},
+				"down": {"uv": [6, 9, 7.99, 9.99], "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventCornerSW",
+			"from": [2.51, 0.01, 11.01],
+			"to": [4.49, 2.99, 14.99],
+			"rotation": {"angle": 45, "axis": "y", "origin": [3, 0, 13]},
+			"faces": {
+				"west": {"uv": [5, 10, 6.99, 11.49], "texture": "#0"},
+				"up": {"uv": [5, 9, 6.99, 9.99], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [5, 9, 6.99, 9.99], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "ventCornerSE",
+			"from": [11.01, 0.01, 11.51],
+			"to": [14.99, 2.99, 13.49],
+			"rotation": {"angle": 45, "axis": "y", "origin": [13, 0, 13]},
+			"faces": {
+				"south": {"uv": [1.5, 10, 3.49, 11.49], "texture": "#0"},
+				"up": {"uv": [1.5, 9, 3.49, 9.99], "texture": "#0"},
+				"down": {"uv": [0, 9, 1.99, 9.99], "texture": "#0"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "FumaroleVent",
+			"origin": [13, 0, 13],
+			"color": 9,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+		}
+	]
+}
