@@ -66,11 +66,11 @@ public class CauponaHooks {
 		@Nullable IFluidHandlerItem cap = stack.getCapability(Capabilities.FluidHandler.ITEM);
 		if (cap!=null) {
 			IFluidHandlerItem data = cap;
-			return Utils.getOrCreateInfo(data.getFluidInTank(0)).base;
+			return Utils.getOrCreateInfo(data.getFluidInTank(0)).getBase();
 		}else {
 			@Nullable StewInfo data=stack.get(CPCapability.STEW_INFO);
 			if(data!=null)
-				return data.base;
+				return data.getBase();
 		}
 		return Fluids.EMPTY;
 	}

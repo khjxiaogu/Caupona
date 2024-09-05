@@ -101,14 +101,14 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 			if (isMouseIn(mouseX, mouseY, 105, 20, 16, 46)) {
 				tooltip.add(getBlockEntity().getTank().getFluid().getHoverName());
 				StewInfo si = Utils.getOrCreateInfo(getBlockEntity().getTank().getFluid());
-				FloatemStack fs = si.stacks.stream()
+				FloatemStack fs = si.getStacks().stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);
 				if (fs != null)
 					tooltip.add(Utils.translate("tooltip.caupona.main_ingredient",
 							fs.getStack().getDisplayName()));
-				if(!si.effects.isEmpty())
-					Utils.addPotionTooltip(si.effects, tooltip::add, 1,getBlockEntity().getLevel());
+				if(!si.getPotionEffects().isEmpty())
+					Utils.addPotionTooltip(si.getPotionEffects(), tooltip::add, 1,getBlockEntity().getLevel());
 			}
 			GuiUtils.handleGuiTank(transform, getBlockEntity().getTank(), leftPos + 105, topPos + 20, 16, 46);
 		}

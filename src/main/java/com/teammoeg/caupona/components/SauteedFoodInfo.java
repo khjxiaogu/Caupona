@@ -31,7 +31,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.data.recipes.FoodValueRecipe;
 import com.teammoeg.caupona.util.ChancedEffect;
 import com.teammoeg.caupona.util.FloatemStack;
-import com.teammoeg.caupona.util.SpicedFoodInfo;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -56,8 +55,8 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 	public SauteedFoodInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName, List<FloatemStack> stacks, List<ChancedEffect> foodeffect, int healing,
 		float saturation) {
 		super(spice, hasSpice, spiceName);
-		this.stacks = new ArrayList<>(stacks);
-		this.foodeffect = new ArrayList<>(foodeffect);
+		this.stacks = stacks;
+		this.foodeffect = foodeffect;
 		this.healing = healing;
 		this.saturation = saturation;
 	}

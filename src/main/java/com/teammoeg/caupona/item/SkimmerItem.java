@@ -38,7 +38,7 @@ public class SkimmerItem extends CPItem {
 				 if(dense>0.5) {
 					 float toreduce=Math.min(dense-0.5f,0.5f);
 					 float reduced=toreduce*fluid.getAmount()/250f;
-					 for(FloatemStack lstack:si.stacks) {
+					 for(FloatemStack lstack:si.getStacks()) {
 						 lstack.shrink(lstack.getCount()/dense*toreduce);
 					 }
 					 si.recalculateHAS();

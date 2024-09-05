@@ -73,7 +73,7 @@ public class SitulaItem extends Item  implements ICreativeModeTabItem{
 			if(!f.isEmpty()) {
 				tooltip.add(f.getHoverName());
 				StewInfo info = Utils.getOrCreateInfo(f);
-				FloatemStack fs = info.stacks.stream()
+				FloatemStack fs = info.getStacks().stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);
 				if (fs != null)
@@ -82,11 +82,11 @@ public class SitulaItem extends Item  implements ICreativeModeTabItem{
 				if (rl != null)
 					tooltip.add(Utils.translate("tooltip.caupona.spice",
 							Utils.translate("spice." + rl.getNamespace() + "." + rl.getPath())));
-				if (info.base != null&&!info.stacks.isEmpty())
+				if (info.getBase() != null&&!info.getStacks().isEmpty())
 					tooltip.add(Utils.translate("tooltip.caupona.base", 
-							info.base.getFluidType().getDescription()));
-				if(!info.effects.isEmpty())
-					PotionContents.addPotionTooltip(info.effects, tooltip::add, 1,20);
+							info.getBase().getFluidType().getDescription()));
+				if(!info.getPotionEffects().isEmpty())
+					PotionContents.addPotionTooltip(info.getPotionEffects(), tooltip::add, 1,20);
 
 				tooltip.add(Utils.string(f.getAmount()+"/1250 mB"));
 			}

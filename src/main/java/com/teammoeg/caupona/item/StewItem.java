@@ -53,7 +53,7 @@ public class StewItem extends EdibleBlock{
 	public void appendHoverText(ItemStack stack, TooltipContext worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		StewInfo info = stack.get(CPCapability.STEW_INFO);
 		if(info==null)return;
-		FloatemStack fs = info.stacks.stream()
+		FloatemStack fs = info.getStacks().stream()
 				.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 				.orElse(null);
 		if (fs != null)
@@ -63,12 +63,12 @@ public class StewItem extends EdibleBlock{
 			tooltip.add(Utils.translate("tooltip.caupona.spice",
 					Utils.translate("spice." + rl.getNamespace() + "." + rl.getPath())));
 		;
-		Fluid base = info.base;
-		if (base != null&&!info.stacks.isEmpty())
+		Fluid base = info.getBase();
+		if (base != null&&!info.getStacks().isEmpty())
 			tooltip.add(Utils.translate("tooltip.caupona.base", 
 					base.getFluidType().getDescription()));
-		if(!info.effects.isEmpty())
-			PotionContents.addPotionTooltip(info.effects, tooltip::add, 1,20);
+		if(!info.getPotionEffects().isEmpty())
+			PotionContents.addPotionTooltip(info.getPotionEffects(), tooltip::add, 1,20);
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 

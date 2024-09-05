@@ -52,11 +52,15 @@ public abstract class CPBaseBlockEntity extends BlockEntity {
 	public abstract void readCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries);
 
 	public abstract void writeCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries);
-	boolean fromNetwork=false;
+	private boolean fromNetwork=false;
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries) {
-		fromNetwork=true;
-		super.onDataPacket(net, pkt, registries);
+		try {
+			fromNetwork=true;
+			super.onDataPacket(net, pkt, registries);
+		}finally{
+			fromNetwork=false;
+		}
 	}
 
 	public abstract void tick();
@@ -67,7 +71,7 @@ public abstract class CPBaseBlockEntity extends BlockEntity {
 	public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
 		this.readCustomNBT(nbt, fromNetwork, registries);
 		super.loadAdditional(nbt,registries);
-		fromNetwork=false;
+		
 
 	}
 
@@ -87,5 +91,9 @@ public abstract class CPBaseBlockEntity extends BlockEntity {
 		CompoundTag nbt = super.getUpdateTag(registries);
 		writeCustomNBT(nbt, true,registries);
 		return nbt;
+	}
+
+	public boolean isHandlingPacket() {
+		return fromNetwork;
 	}
 }

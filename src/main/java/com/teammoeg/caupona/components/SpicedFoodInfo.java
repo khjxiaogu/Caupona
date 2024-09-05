@@ -19,7 +19,7 @@
  * along with Caupona. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.teammoeg.caupona.util;
+package com.teammoeg.caupona.components;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +29,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mojang.serialization.codecs.RecordCodecBuilder.Instance;
 import com.mojang.serialization.codecs.RecordCodecBuilder.Mu;
+import com.teammoeg.caupona.util.SerializeUtil;
+import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -40,11 +42,15 @@ public class SpicedFoodInfo{
 	public ResourceLocation spiceName;
 	public SpicedFoodInfo() {}
 	public SpicedFoodInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName) {
-		this.spice=spice.orElse(null);
-		this.hasSpice=hasSpice;
-		this.spiceName=spiceName.orElse(null);
+		this(spice.orElse(null),hasSpice,spiceName.orElse(null));
 	}
 	
+	public SpicedFoodInfo(MobEffectInstance spice, boolean hasSpice, ResourceLocation spiceName) {
+		super();
+		this.spice = spice;
+		this.hasSpice = hasSpice;
+		this.spiceName = spiceName;
+	}
 	public static <P extends SpicedFoodInfo> P3<Mu<P>, Optional<MobEffectInstance>, Boolean, Optional<ResourceLocation>>  codecStart(Instance<P> i) {
 		return i.group(SerializeUtil.fromRFBBStreamCodec(MobEffectInstance.STREAM_CODEC,MobEffectInstance.CODEC).optionalFieldOf("spice").forGetter(o->Optional.ofNullable(o.spice)), Codec.BOOL.fieldOf("hasSpice").forGetter(o->o.hasSpice), ResourceLocation.CODEC.optionalFieldOf("spiceName").forGetter(o->Optional.ofNullable(o.spiceName)));
 		

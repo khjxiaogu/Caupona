@@ -37,7 +37,7 @@ public class StewPendingContext extends IPendingContext {
 	private StewInfo info;
 	Fluid cur;
 	private ResultCachingMap<StewBaseCondition, Integer> basetypes = new ResultCachingMap<>(
-			e -> e.apply(info.base, cur));
+			e -> e.apply(info.getBase(), cur));
 
 	public Fluid getCur() {
 		return cur;
@@ -46,8 +46,8 @@ public class StewPendingContext extends IPendingContext {
 	public StewPendingContext(StewInfo info, Fluid current) {
 		super();
 		this.info = info;
-		items = new ArrayList<>(info.stacks.size());
-		for (FloatemStack fs : info.stacks) {
+		items = new ArrayList<>(info.getStacks().size());
+		for (FloatemStack fs : info.getStacks()) {
 			FloatemTagStack fst = new FloatemTagStack(fs);
 			items.add(fst);
 			totalItems += fs.getCount();

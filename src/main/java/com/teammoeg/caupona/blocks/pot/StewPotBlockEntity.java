@@ -431,12 +431,12 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			return false;// can't boil if under one bowl
 		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
 		//System.out.println("2");
-		if (currentInfo.stacks.size() > 27)
+		if (currentInfo.getStacks().size() > 27)
 			return false;// too much ingredients
 		int oparts = tank.getFluidAmount() / 250;
 		int parts = oparts - 1;
 		int itms = 0;
-		List<MobEffectInstance> cr = new ArrayList<>(currentInfo.effects);
+		List<MobEffectInstance> cr = new ArrayList<>(currentInfo.getPotionEffects());
 		//System.out.println("3");
 		for (int i = 0; i < 9; i++) {
 			ItemStack is = inv.getStackInSlot(i);
@@ -542,11 +542,11 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 				if (mt == 2)
 					nextbase = become;
 				else
-					nextbase = currentInfo.base;
+					nextbase = currentInfo.getBase();
 				become = cr.value().output;
 				FluidStack preout=new FluidStack(become,output.getAmount());
 				if(!cr.value().removeNBT) {
-					currentInfo.base=nextbase;
+					currentInfo.setBase(nextbase);
 					preout.applyComponents(output.getComponentsPatch());
 					currentInfo.recalculateHAS();
 					Utils.setInfo(preout, currentInfo);
@@ -577,12 +577,12 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			return false;
 		StewInfo n = Utils.getOrCreateInfo(fs);
 		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
-		if ((currentInfo.base!=n.base)
-				&& (n.base!=tank.getFluid().getFluid())) {
+		if ((currentInfo.getBase()!=n.getBase())
+				&& (n.getBase()!=tank.getFluid().getFluid())) {
 			RecipeHolder<BoilingRecipe> bnx = BoilingRecipe.recipes.stream().filter(t->t.value().matches(fs)).findFirst().orElse(null);
 			if (bnx == null)
 				return false;
-			if (currentInfo.base!=bnx.value().after)
+			if (currentInfo.getBase()!=bnx.value().after)
 				return false;
 		}
 		return currentInfo.canMerge(n, tank.getFluidAmount() / 250f, fs.getAmount() / 250f);
@@ -625,13 +625,13 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		StewInfo n = Utils.getOrCreateInfo(fs);
 		int pm = 0;
 		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
-		if (currentInfo.base!=n.base && currentInfo.base!=fs.getFluid()
-				&& n.base!=tank.getFluid().getFluid()) {
+		if (currentInfo.getBase()!=n.getBase() && currentInfo.getBase()!=fs.getFluid()
+				&& n.getBase()!=tank.getFluid().getFluid()) {
 			FluidStack fst=fs;
 			RecipeHolder<BoilingRecipe> bnx = BoilingRecipe.recipes.stream().filter(t->t.value().matches(fst)).findFirst().orElse(null);
 			if (bnx == null)
 				return false;
-			if (currentInfo.base!=bnx.value().after)
+			if (currentInfo.getBase()!=bnx.value().after)
 				return false;
 			fs = bnx.value().handle(fs);
 			pm = (int) (bnx.value().time * (fs.getAmount() / 250f));

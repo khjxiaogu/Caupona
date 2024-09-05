@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.ToIntFunction;
@@ -16,6 +17,8 @@ import java.util.stream.IntStream;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 
@@ -33,6 +36,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class LayeredBakedModel implements BakedModel {
 	protected Map<String,int[]> faces;
+	protected Map<ImmutableSet<String>,List<BakedQuad>> modelCache=new ConcurrentHashMap<>();
 	protected List<BakedQuad> unculledFaces;
 	protected final boolean hasAmbientOcclusion;
 	protected final boolean isGui3d;
@@ -44,8 +48,7 @@ public class LayeredBakedModel implements BakedModel {
 	protected final net.neoforged.neoforge.client.ChunkRenderTypeSet blockRenderTypes;
 	protected final List<net.minecraft.client.renderer.RenderType> itemRenderTypes;
 	protected final List<net.minecraft.client.renderer.RenderType> fabulousItemRenderTypes;
-	private final Function<Map.Entry<String,int[]>,int[]> values;
-	private final Function<int[],IntStream> istr;
+	private final Function<Map.Entry<String,int[]>,IntStream> values;
 	private final IntFunction<BakedQuad> tobaked;
 	public LayeredBakedModel(List<BakedQuad> pUnculledFaces, boolean pHasAmbientOcclusion, boolean pUsesBlockLight,
 			boolean pIsGui3d, TextureAtlasSprite pParticleIcon, ItemTransforms pTransforms, ItemOverrides pOverrides) {
@@ -69,16 +72,15 @@ public class LayeredBakedModel implements BakedModel {
 				: null;
 		this.itemRenderTypes = !renderTypes.isEmpty() ? List.of(renderTypes.entity()) : null;
 		this.fabulousItemRenderTypes = !renderTypes.isEmpty() ? List.of(renderTypes.entityFabulous()) : null;
-		values=Map.Entry::getValue;
-		istr=Arrays::stream;
+		values=t->Arrays.stream(t.getValue());
 		tobaked=unculledFaces::get;
 	}
 
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @Nullable RenderType renderType) {
 		ImmutableSet<String> groups=data.get(DisplayGroupProperty.PROPERTY);
 		if(groups!=null)
-			return faces.entrySet().stream().filter(e->groups.contains(e.getKey())).map(values)
-					.flatMapToInt(istr).distinct().mapToObj(tobaked).collect(Collectors.toUnmodifiableList());
+			return modelCache.computeIfAbsent(groups, t->faces.entrySet().stream().filter(e->t.contains(e.getKey())).flatMapToInt(values)
+				.distinct().mapToObj(tobaked).collect(Collectors.toUnmodifiableList()));
 		return this.unculledFaces;
 	}
 
