@@ -429,7 +429,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 		//System.out.println("1");
 		if (tank.getFluidAmount() <= 250)
 			return false;// can't boil if under one bowl
-		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
+		StewInfo currentInfo=Utils.getOrCreateInfoForRead(tank.getFluid());
 		//System.out.println("2");
 		if (currentInfo.getStacks().size() > 27)
 			return false;// too much ingredients
@@ -575,8 +575,8 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			return false;
 		if (!(level.getBlockEntity(worldPosition.below()) instanceof IStove stove) || !stove.canEmitHeat())
 			return false;
-		StewInfo n = Utils.getOrCreateInfo(fs);
-		StewInfo currentInfo=Utils.getOrCreateInfo(tank.getFluid());
+		StewInfo n = Utils.getOrCreateInfoForRead(fs);
+		StewInfo currentInfo=Utils.getOrCreateInfoForRead(tank.getFluid());
 		if ((currentInfo.getBase()!=n.getBase())
 				&& (n.getBase()!=tank.getFluid().getFluid())) {
 			RecipeHolder<BoilingRecipe> bnx = BoilingRecipe.recipes.stream().filter(t->t.value().matches(fs)).findFirst().orElse(null);

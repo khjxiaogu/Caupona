@@ -221,7 +221,7 @@ public class Utils {
 		}
 		return si;
 	}
-	public static StewInfo getOrCreateInfo(FluidStack stack) {
+	public static StewInfo getOrCreateInfoForRead(FluidStack stack) {
 		StewInfo si= stack.get(CPCapability.STEW_INFO);
 		if(si==null) {
 			Fluid type=stack.getFluid();
@@ -231,6 +231,17 @@ public class Utils {
 				return new StewInfo(type);
 		}
 		return si;
+	}
+	public static StewInfo getOrCreateInfo(FluidStack stack) {
+		StewInfo si= stack.get(CPCapability.STEW_INFO);
+		if(si==null) {
+			Fluid type=stack.getFluid();
+			if(type==Fluids.EMPTY)
+				return new StewInfo();
+			else
+				return new StewInfo(type);
+		}
+		return si.copy();
 	}
 	public static void setInfo(MutableDataComponentHolder out, StewInfo info) {
 		

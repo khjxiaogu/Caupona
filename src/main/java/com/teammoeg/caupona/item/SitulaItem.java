@@ -72,7 +72,7 @@ public class SitulaItem extends Item  implements ICreativeModeTabItem{
 			FluidStack f=e.getFluidInTank(0);
 			if(!f.isEmpty()) {
 				tooltip.add(f.getHoverName());
-				StewInfo info = Utils.getOrCreateInfo(f);
+				StewInfo info = Utils.getOrCreateInfoForRead(f);
 				FloatemStack fs = info.getStacks().stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);

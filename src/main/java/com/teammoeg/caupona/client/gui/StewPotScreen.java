@@ -100,7 +100,7 @@ public class StewPotScreen extends AbstractContainerScreen<StewPotContainer> {
 		if (getBlockEntity().proctype < 2 && !getBlockEntity().getTank().isEmpty()) {
 			if (isMouseIn(mouseX, mouseY, 105, 20, 16, 46)) {
 				tooltip.add(getBlockEntity().getTank().getFluid().getHoverName());
-				StewInfo si = Utils.getOrCreateInfo(getBlockEntity().getTank().getFluid());
+				StewInfo si = Utils.getOrCreateInfoForRead(getBlockEntity().getTank().getFluid());
 				FloatemStack fs = si.getStacks().stream()
 						.max((t1, t2) -> t1.getCount() > t2.getCount() ? 1 : (t1.getCount() == t2.getCount() ? 0 : -1))
 						.orElse(null);

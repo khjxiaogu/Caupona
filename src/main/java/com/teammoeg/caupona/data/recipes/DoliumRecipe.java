@@ -188,7 +188,7 @@ public class DoliumRecipe extends IDataRecipe {
 		ItemStack out = output.copy();
 		out.setCount(out.getCount() * times);
 		if (keepInfo) {
-			StewInfo info = Utils.getOrCreateInfo(f);
+			StewInfo info = Utils.getOrCreateInfoForRead(f);
 			Utils.setInfo(out, info);
 		}
 		f.shrink(times * fluid.amount());
@@ -229,7 +229,7 @@ public class DoliumRecipe extends IDataRecipe {
 		ItemStack out = output.copy();
 		out.setCount(out.getCount() * times);
 		if (keepInfo) {
-			StewInfo info = Utils.getOrCreateInfo(f);
+			StewInfo info = Utils.getOrCreateInfoForRead(f);
 			Utils.setInfo(out, info);
 		}
 		if (fluid!=null&&fluid.amount() > 0)
