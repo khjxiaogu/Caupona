@@ -1,7 +1,9 @@
 package com.teammoeg.caupona.client.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +35,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.common.util.ConcatenatedListView;
 
 public class LayeredBakedModel implements BakedModel {
-	protected Map<String,int[]> faces;
+	protected Map<String,List<BakedQuad>> faces;
 	protected Map<ImmutableSet<String>,List<BakedQuad>> modelCache=new ConcurrentHashMap<>();
+	private Function<ImmutableSet<String>,List<BakedQuad>> cacheFunction;
 	protected List<BakedQuad> unculledFaces;
 	protected final boolean hasAmbientOcclusion;
 	protected final boolean isGui3d;
@@ -66,21 +70,30 @@ public class LayeredBakedModel implements BakedModel {
 		this.particleIcon = pParticleIcon;
 		this.transforms = pTransforms;
 		this.overrides = pOverrides;
-		this.faces=names;
+		values=t->Arrays.stream(t.getValue());
+		tobaked=unculledFaces::get;
+		this.faces=names.entrySet().stream().collect(Collectors.toMap(t->t.getKey(),t->IntStream.of(t.getValue()).mapToObj(tobaked).collect(Collectors.toUnmodifiableList())));
 		this.blockRenderTypes = !renderTypes.isEmpty()
 				? net.neoforged.neoforge.client.ChunkRenderTypeSet.of(renderTypes.block())
 				: null;
 		this.itemRenderTypes = !renderTypes.isEmpty() ? List.of(renderTypes.entity()) : null;
 		this.fabulousItemRenderTypes = !renderTypes.isEmpty() ? List.of(renderTypes.entityFabulous()) : null;
-		values=t->Arrays.stream(t.getValue());
-		tobaked=unculledFaces::get;
+		cacheFunction=t->{
+			List<List<BakedQuad>> listview=new ArrayList<>(t.size());
+			for(String s:t) {
+				listview.add(faces.get(s));
+			}
+			return ConcatenatedListView.of(listview);
+		};
+
 	}
 
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @Nullable RenderType renderType) {
 		ImmutableSet<String> groups=data.get(DisplayGroupProperty.PROPERTY);
-		if(groups!=null)
-			return modelCache.computeIfAbsent(groups, t->faces.entrySet().stream().filter(e->t.contains(e.getKey())).flatMapToInt(values)
-				.distinct().mapToObj(tobaked).collect(Collectors.toUnmodifiableList()));
+		if(groups!=null) {
+			
+			return modelCache.computeIfAbsent(groups,cacheFunction);
+		}
 		return this.unculledFaces;
 	}
 

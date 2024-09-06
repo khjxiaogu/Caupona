@@ -127,7 +127,7 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 		if (!pLevel.isAreaLoaded(pPos, 1))
 			return false;
 		int cnt = 0;
-		AABB aabb = new AABB(pPos.getX()-1,pPos.getY(),pPos.getZ()-1, pPos.getX()+1,pPos.getY(),pPos.getZ()+1);
+		AABB aabb = AABB.ofSize(pPos.getCenter(), 2, 0, 2);
 		Iterator<BlockState> it = pLevel.getBlockStates(aabb).iterator();
 		while (it.hasNext()) {
 			if (it.next().getBlock() == CPBlocks.PUMICE_BLOOM.get())

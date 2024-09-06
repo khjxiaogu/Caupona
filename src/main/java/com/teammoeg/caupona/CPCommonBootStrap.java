@@ -127,6 +127,7 @@ public class CPCommonBootStrap {
 	@SubscribeEvent
 	public static void onCommonSetup(@SuppressWarnings("unused") FMLCommonSetupEvent event) {
 		registerDispensers();
+	
 		compositables.forEach(p -> ComposterBlock.COMPOSTABLES.put(p.getFirst().get(), (float) p.getSecond()));
 		FireBlock fire=(FireBlock) Blocks.FIRE;
 		flamables.forEach(p->fire.setFlammable(p.getFirst().get(), p.getSecond().getFirst(), p.getSecond().getSecond()));

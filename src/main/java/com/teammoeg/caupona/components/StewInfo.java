@@ -78,7 +78,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		this.foodeffect = foodeffect;
 		this.healing = healing;
 		this.saturation = saturation;
-		this.setBase(base);
+		this.base=base;
 	}
 	public StewInfo(List<FloatemStack> stacks, List<MobEffectInstance> effects, int healing, float saturation,
 		Fluid base) {
@@ -87,7 +87,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		this.effects = effects;
 		this.healing = healing;
 		this.saturation = saturation;
-		this.setBase(base);
+		this.base=base;
 	}
 
 	public StewInfo(Fluid fluid) {
