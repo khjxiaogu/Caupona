@@ -104,7 +104,7 @@ public class StewInfo extends SpicedFoodInfo implements IFoodInfo {
 		this.foodeffect = foodeffect;
 		this.healing = healing;
 		this.saturation = saturation;
-		this.setBase(base);
+		this.base=base;
 	}
 	public StewInfo copy() {
 		return new StewInfo(spice,hasSpice,spiceName,stacks.stream().map(t->t.copy()).collect(Collectors.toList()),effects.stream().map(t->new MobEffectInstance(t)).collect(Collectors.toList()),foodeffect.stream().map(t->t.copy()).collect(Collectors.toList()),healing,saturation,base);

@@ -45,13 +45,15 @@ public class LoafHelper {
 			for(Vec3i p:origins) {
 				Vec3i[] neighbors=bound_table[encodeXY(1,p.getX(),p.getY())];
 				current.clear();
-				for(Vec3i neighbor:neighbors) {
-					BlockState state=l.getBlockState(origin.offset(neighbor.getX(), currentLayer, neighbor.getZ()));
-					if(state.isEmpty()||state.is(Blocks.LOAF_HEATING_IGNORE))
-						current.add(neighbor);
-					else if(state.is(Blocks.LOAF_HEATING_BLOCKS))
-						heat_factor++;	
-				}
+				BlockState cstate=l.getBlockState(origin.offset(p.getX(), currentLayer, p.getZ()));
+				if(cstate.isEmpty()||cstate.is(Blocks.LOAF_HEATING_IGNORE))
+					for(Vec3i neighbor:neighbors) {
+						BlockState state=l.getBlockState(origin.offset(neighbor.getX(), currentLayer, neighbor.getZ()));
+						if(state.isEmpty()||state.is(Blocks.LOAF_HEATING_IGNORE))
+							current.add(neighbor);
+						else if(state.is(Blocks.LOAF_HEATING_BLOCKS))
+							heat_factor++;	
+					}
 			}
 			Set<Vec3i> temp=origins;
 			origins=current;
