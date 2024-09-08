@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class FruitsLeavesBlock extends LeavesBlock implements BonemealableBlock {
@@ -66,7 +67,7 @@ public class FruitsLeavesBlock extends LeavesBlock implements BonemealableBlock 
 			return false;
 		int cnt = 0;
 		
-		AABB aabb = new AABB(pPos.getX()-1,pPos.getY(),pPos.getZ()-1, pPos.getX()+1,pPos.getY(),pPos.getZ()+1);
+		AABB aabb = AABB.ofSize(pPos.getCenter(),2,0,2);
 		Iterator<BlockState> it = pLevel.getBlockStates(aabb).iterator();
 		while (it.hasNext()) {
 			if (it.next().getBlock() == fruit.get())

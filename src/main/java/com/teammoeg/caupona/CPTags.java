@@ -26,6 +26,8 @@ public class CPTags {
 		public static final TagKey<Block> SNAIL_GROWABLE_ON = create("snail_growable");
 		public static final TagKey<Block> SNAIL_FOOD = create("snail_food");
 		public static final TagKey<Block> SNAIL_PLUMP_FOOD = create("snail_plump_food");
+		public static final TagKey<Block> LOAF_HEATING_BLOCKS=create("loaf_baking_blocks");
+		public static final TagKey<Block> LOAF_HEATING_IGNORE=create("loaf_baking_ignore");
 		private static TagKey<Block> create(String s){
 			return  BlockTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s));
 		}

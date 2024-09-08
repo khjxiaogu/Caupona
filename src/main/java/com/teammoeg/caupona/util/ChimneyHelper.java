@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public class ChimneyHelper {
-	public ChimneyHelper() {
+	private ChimneyHelper() {
 	}
 
 	public static BlockPos getNearestChimney(Level l, BlockPos from, int maxdist) {

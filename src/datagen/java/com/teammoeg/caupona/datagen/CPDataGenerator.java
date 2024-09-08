@@ -21,22 +21,14 @@
 
 package com.teammoeg.caupona.datagen;
 
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import com.teammoeg.caupona.CPMain;
 
-import net.minecraft.DetectedVersion;
 import net.minecraft.Util;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.data.registries.VanillaRegistries;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.util.InclusiveRange;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
