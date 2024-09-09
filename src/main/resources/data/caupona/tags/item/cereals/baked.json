@@ -10,7 +10,7 @@
 			"required": false
 		},
 		{
-			"id": "c:bread",
+			"id": "#c:bread",
 			"required": false
 		}
 	]

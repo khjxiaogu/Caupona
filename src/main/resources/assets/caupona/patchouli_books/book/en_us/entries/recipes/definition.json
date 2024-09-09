@@ -1,12 +1,12 @@
 {
-  "name": "Interpretation of Recipe Pictures",
+  "name": "What do the icons mean?",
   "icon": "minecraft:bowl",
   "category": "caupona:cook_recipes",
   "priority": true,
   "pages": [
      {
       "type": "text",
-      "text": "The top-left corner of the picture signifies the base requirement and density (unit: items per bowl of soup) requirement. Lower part of the image, split into two panels, specifies ingredient requirements. Requirements on the left panel should be fulfilled, while those on the right panel should be avoided."
+      "text": "The top-left pot-shaped icon of the recipe page signifies the base requirement and density (unit: items per bowl of soup) requirement. The lower part, split into two panels, specifies ingredient requirements. Requirements on the left panel should be fulfilled, while those on the right panel should be avoided."
     },
     {
       "type": "text",

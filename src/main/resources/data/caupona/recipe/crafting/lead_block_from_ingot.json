@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{"item": "caupona:lead_ingot"},
+		{"tag": "c:ingots/lead"},
+		{"tag": "c:ingots/lead"},
+		{"tag": "c:ingots/lead"},
+		{"tag": "c:ingots/lead"},
+		{"tag": "c:ingots/lead"},
+		{"tag": "c:ingots/lead"},
+		{"tag": "c:ingots/lead"},
+		{"tag": "c:ingots/lead"}
+	],
+	"result": {
+		"id": "caupona:lead_block"
+	}
+}
