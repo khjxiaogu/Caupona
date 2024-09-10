@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "minecraft:milk"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:milk"
 }

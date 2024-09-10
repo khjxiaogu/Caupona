@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "caupona:borscht_cream"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:borscht_cream"
 }

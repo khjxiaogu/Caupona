@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "caupona:egg_tongsui"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:egg_tongsui"
 }

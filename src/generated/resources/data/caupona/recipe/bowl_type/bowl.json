@@ -1,0 +1,7 @@
+{
+  "type": "caupona:bowl_type",
+  "bowl": "caupona:bowl",
+  "item": {
+    "item": "minecraft:bowl"
+  }
+}

@@ -45,26 +45,31 @@ public class LoafHelper {
 		Set<BlockPos> visited=new HashSet<>(63);
 		current.add(origin);
 		float heat_factor=0;
-		for(BlockPos pos:current) {
-			if(visited.add(pos)) {
-				BlockState curState=l.getBlockState(pos);
-				if(!curState.getFluidState().isEmpty())continue;
-				if(curState.is(Blocks.LOAF_HEATING_BLOCKS)&&(!curState.hasProperty(BlockStateProperties.LIT)||curState.getValue(BlockStateProperties.LIT)))
-					heat_factor++;
-				if(curState.isEmpty()||curState.is(Blocks.LOAF_HEATING_IGNORE)||curState.getCollisionShape(l, pos).isEmpty()) {
-					for(Direction dir:Direction.Plane.HORIZONTAL) {
-						BlockPos rel=pos.relative(dir);
-						if(isPlaceValid(rel,bounds)) {
-							BlockState aboveState=l.getBlockState(rel.above());
-							if(!aboveState.isEmpty()&&!aboveState.is(Blocks.LOAF_HEATING_IGNORE)&&!aboveState.getCollisionShape(l, pos).isEmpty()) {
-								next.add(rel);
+		while(!current.isEmpty()) {
+			next.clear();
+			for(BlockPos pos:current) {
+				if(visited.add(pos)) {
+					BlockState curState=l.getBlockState(pos);
+					if(!curState.getFluidState().isEmpty())continue;
+					if(curState.is(Blocks.LOAF_HEATING_BLOCKS)&&(!curState.hasProperty(BlockStateProperties.LIT)||curState.getValue(BlockStateProperties.LIT)))
+						heat_factor++;
+					//System.out.println(pos.subtract(origin));
+					if(curState.isEmpty()||curState.is(Blocks.LOAF_HEATING_IGNORE)||curState.getCollisionShape(l, pos).isEmpty()) {
+						for(Direction dir:Direction.Plane.HORIZONTAL) {
+							BlockPos rel=pos.relative(dir);
+							if(isPlaceValid(rel,bounds)) {
+								BlockState aboveState=l.getBlockState(rel.above());
+								if(!aboveState.isEmpty()&&!aboveState.is(Blocks.LOAF_HEATING_IGNORE)&&!aboveState.getCollisionShape(l, pos).isEmpty()) {
+									next.add(rel);
+								}
 							}
 						}
+						BlockPos belowPos=pos.below();
+						if(isPlaceValid(belowPos,bounds))
+							next.add(belowPos);
 					}
-					BlockPos belowPos=pos.below();
-					if(isPlaceValid(belowPos,bounds))
-						next.add(belowPos);
 				}
+	
 			}
 			Set<BlockPos> temp=current;
 			current=next;
@@ -106,11 +111,11 @@ public class LoafHelper {
 		
 	}
 	public static boolean isPlaceValid(BlockPos pos,AABB bound) {
-		return  pos.getX()>bound.minX&&
-				pos.getY()>bound.minY&&
-				pos.getZ()>bound.minZ&&
-				pos.getX()<bound.maxX&&
-				pos.getY()<bound.maxY&&
-				pos.getZ()<bound.maxZ;
+		return  pos.getX()>=bound.minX&&
+				pos.getY()>=bound.minY&&
+				pos.getZ()>=bound.minZ&&
+				pos.getX()<=bound.maxX&&
+				pos.getY()<=bound.maxY&&
+				pos.getZ()<=bound.maxZ;
 	}
 }

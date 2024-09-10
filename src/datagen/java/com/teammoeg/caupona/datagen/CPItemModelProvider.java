@@ -47,16 +47,16 @@ public class CPItemModelProvider extends ItemModelProvider {
 		
 		for (String s : CPItems.soups) {
 			simpleTexture(s, "soups/");
-			texture(s+"_loaf", "bread_bowls/"+s);
+			
 		}
+		for(String s:CPItems.bread_bowls)
+			texture(s+"_loaf", "bread_bowls/"+s);
 		for (String s : CPItems.base_material)
 			texture(s);
 		for (FoodMaterialInfo s : CPItems.food_material)
 			texture(s.name);
 		simpleTexture("water", "soups/");
 		simpleTexture("milk", "soups/");
-		texture("water_loaf", "bread_bowls/water");
-		texture("milk_loaf", "bread_bowls/milk");
 		texture("loaf_bowl", "bread_bowl");
 		for (String s : CPItems.aspics)
 			simpleTexture(s, "aspics/");

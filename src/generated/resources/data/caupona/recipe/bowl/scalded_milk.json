@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "caupona:scalded_milk"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:scalded_milk"
 }

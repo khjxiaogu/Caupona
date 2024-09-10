@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "caupona:fish_chowder"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:fish_chowder"
 }

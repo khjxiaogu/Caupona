@@ -1,0 +1,8 @@
+{
+  "type": "caupona:bowl",
+  "fluid": {
+    "fluid": "caupona:stracciatella"
+  },
+  "inType": "caupona:loaf",
+  "item": "caupona:stracciatella"
+}
