@@ -36,6 +36,7 @@ import com.teammoeg.caupona.blocks.foods.IFoodContainer;
 import com.teammoeg.caupona.blocks.pan.GravyBoatBlock;
 import com.teammoeg.caupona.blocks.pan.PanBlockEntity;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
+import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
 import com.teammoeg.caupona.entity.CPBoat;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
@@ -124,6 +125,7 @@ public class CPCommonBootStrap {
 		return obj;
 	}
 
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onCommonSetup(@SuppressWarnings("unused") FMLCommonSetupEvent event) {
 		registerDispensers();
@@ -148,7 +150,7 @@ public class CPCommonBootStrap {
 				if (blockEntity != null) {
 					IFluidHandler ip=bp.level().getCapability(Capabilities.FluidHandler.BLOCK,front, d.getOpposite());
 					if (ip!=null) {
-						ItemStack ret = CauponaApi.fillBowl(ip).orElse(null);
+						ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.WOODEN_BOWL,ip).orElse(null);
 						if (ret != null) {
 							if (is.getCount() == 1)
 								return ret;
@@ -167,7 +169,54 @@ public class CPCommonBootStrap {
 
 					return is;
 				} else if (!fs.isEmpty()) {
-					ItemStack ret = CauponaApi.fillBowl(new FluidStack(fs.getType(), 250)).orElse(null);
+					ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.WOODEN_BOWL,new FluidStack(fs.getType(), 250)).orElse(null);
+					if (ret != null) {
+						if (is.getCount() == 1)
+							return ret;
+						is.shrink(1);
+						if (!bp.blockEntity().insertItem(ret).isEmpty())
+							this.defaultBehaviour.dispense(bp, ret);
+					}
+					return is;
+				}
+				return this.defaultBehaviour.dispense(bp, is);
+			}
+
+		});
+		DispenserBlock.registerBehavior(CPBlocks.LOAF_BOWL.get().asItem(), new DefaultDispenseItemBehavior() {
+			private final DefaultDispenseItemBehavior defaultBehaviour = new DefaultDispenseItemBehavior();
+
+			@SuppressWarnings("resource")
+			@Override
+			protected ItemStack execute(BlockSource bp, ItemStack is) {
+
+				Direction d = bp.state().getValue(DispenserBlock.FACING);
+				BlockPos front = bp.pos().relative(d);
+				FluidState fs = bp.level().getBlockState(front).getFluidState();
+				BlockEntity blockEntity = bp.level().getBlockEntity(front);
+				if (blockEntity != null) {
+					IFluidHandler ip=bp.level().getCapability(Capabilities.FluidHandler.BLOCK,front, d.getOpposite());
+					if (ip!=null) {
+						ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.BREAD_BOWL,ip).orElse(null);
+						if (ret != null) {
+							if (is.getCount() == 1)
+								return ret;
+							is.shrink(1);
+							if (!bp.blockEntity().insertItem(ret).isEmpty())
+								this.defaultBehaviour.dispense(bp, ret);
+						}
+					} else if (blockEntity instanceof PanBlockEntity pan) {
+						ItemStack out = pan.inv.getStackInSlot(10);
+						if (!out.isEmpty()) {
+							pan.inv.setStackInSlot(10, ItemStack.EMPTY);
+							if (!bp.blockEntity().insertItem(out).isEmpty())
+								this.defaultBehaviour.dispense(bp, out);
+						}
+					}
+
+					return is;
+				} else if (!fs.isEmpty()) {
+					ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.BREAD_BOWL,new FluidStack(fs.getType(), 250)).orElse(null);
 					if (ret != null) {
 						if (is.getCount() == 1)
 							return ret;

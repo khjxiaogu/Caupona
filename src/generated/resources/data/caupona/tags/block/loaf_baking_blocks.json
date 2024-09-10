@@ -1,0 +1,9 @@
+{
+  "values": [
+    "minecraft:fire",
+    "minecraft:campfire",
+    "minecraft:lava",
+    "minecraft:lava_cauldron",
+    "caupona:fumarole_vent"
+  ]
+}

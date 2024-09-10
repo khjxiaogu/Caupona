@@ -1,0 +1,15 @@
+{
+  "values": [
+    "#minecraft:all_signs",
+    "#minecraft:all_hanging_signs",
+    "#minecraft:banners",
+    "#minecraft:buttons",
+    "#minecraft:fences",
+    "#minecraft:crops",
+    "#caupona:pans",
+    "caupona:wolf_statue",
+    "caupona:loaf",
+    "caupona:loaf_dough",
+    "caupona:pumice_bloom"
+  ]
+}

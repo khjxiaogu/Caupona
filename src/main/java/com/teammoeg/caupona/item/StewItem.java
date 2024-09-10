@@ -40,6 +40,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
 public class StewItem extends EdibleBlock{
@@ -91,8 +92,8 @@ public class StewItem extends EdibleBlock{
 	public static final FoodProperties fakefood = new FoodProperties.Builder().nutrition(4).saturationModifier(0.2f).fast()
 			.build();
 
-	public StewItem(Supplier<Fluid> fluid, Properties properties) {
-		super(CPBlocks.BOWL.get(), properties.food(fakefood));
+	public StewItem(Block block,Supplier<Fluid> fluid, Properties properties) {
+		super(block, properties.food(fakefood));
 		CPItems.stews.add(this);
 		this.fluid = fluid;
 	}

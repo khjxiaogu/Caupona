@@ -68,7 +68,7 @@ public class EdibleBlock extends CPBlockItem {
 	public ItemStack finishUsingItem(ItemStack itemstack, Level worldIn, LivingEntity entityLiving) {
 		//System.out.println("finished using "+this.getFoodProperties(itemstack, entityLiving).nutrition());
 		super.finishUsingItem(itemstack, worldIn, entityLiving);
-		return new ItemStack(Items.BOWL);
+		return itemstack.getCraftingRemainingItem();
 	}
 
 	/**

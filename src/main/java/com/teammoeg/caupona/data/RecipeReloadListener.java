@@ -21,9 +21,11 @@
 
 package com.teammoeg.caupona.data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,6 +44,7 @@ import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.AspicMeltingRecipe;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
+import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.data.recipes.CountingTags;
 import com.teammoeg.caupona.data.recipes.DissolveRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
@@ -159,8 +162,9 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		Conditions.clearCache();
 		Numbers.clearCache();
 		BaseConditions.clearCache();
-		BowlContainingRecipe.recipes = filterRecipes(recipes, BowlContainingRecipe.class, BowlContainingRecipe.TYPE)
-				.collect(Collectors.toList());
+		BowlContainingRecipe.recipes=new HashMap<>();
+		filterRecipes(recipes, BowlContainingRecipe.class, BowlContainingRecipe.TYPE)
+			.forEach(o->BowlContainingRecipe.recipes.computeIfAbsent(o.value().inBowl, n->new ArrayList<>()).add(o));
 
 		FoodValueRecipe.recipes = filterRecipes(recipes, FoodValueRecipe.class, FoodValueRecipe.TYPE)
 				.flatMap(t -> t.value().processtimes.keySet().stream().map(i -> new Pair<>(i, t.value())))
@@ -176,7 +180,7 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		Stream.concat(Arrays.stream(t.value().before.getStacks()).map(fs->fs.getFluid()),Stream.of(t.value().after))).collect(Collectors.toSet());
 		FluidFoodValueRecipe.recipes = filterRecipes(recipes, FluidFoodValueRecipe.class, FluidFoodValueRecipe.TYPE)
 				.collect(Collectors.toMap(e -> e.value().f, UnaryOperator.identity()));
-
+		BowlTypeRecipe.recipes=filterRecipes(recipes, BowlTypeRecipe.class, BowlTypeRecipe.TYPE).collect(Collectors.toList());
 		StewCookingRecipe.sorted = filterRecipes(recipes, StewCookingRecipe.class, StewCookingRecipe.TYPE).collect(Collectors.toList());
 		StewCookingRecipe.sorted.sort((t2, t1) -> t1.value().getPriority() - t2.value().getPriority());
 		StewCookingRecipe.cookables = StewCookingRecipe.sorted.stream().map(t->t.value()).flatMap(StewCookingRecipe::getAllNumbers).collect(Collectors.toSet());

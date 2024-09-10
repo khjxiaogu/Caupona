@@ -45,6 +45,7 @@ import com.teammoeg.caupona.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
@@ -52,8 +53,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -103,6 +106,16 @@ public class CPStatesProvider extends BlockStateProvider {
 				.partialState().with(FruitBlock.AGE, 6)
 				.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false)).partialState()
 				.with(FruitBlock.AGE, 7).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false));
+		this.getVariantBuilder(CPBlocks.LOAF_DOUGH.get())
+		.partialState().with(SlabBlock.TYPE,SlabType.TOP).addModels(new ConfiguredModel(bmf("loaf_dough_top")))
+		.partialState().with(SlabBlock.TYPE,SlabType.BOTTOM).addModels(new ConfiguredModel(bmf("loaf_dough_bottom")))
+		.partialState().with(SlabBlock.TYPE,SlabType.DOUBLE).addModels(new ConfiguredModel(bmf("loaf_dough_top_bottom")));
+		blockItemModel(CPBlocks.LOAF_DOUGH,bmf("loaf_dough"));
+		this.getVariantBuilder(CPBlocks.LOAF.get())
+		.partialState().with(SlabBlock.TYPE,SlabType.TOP).addModels(new ConfiguredModel(bmf("loaf_top")))
+		.partialState().with(SlabBlock.TYPE,SlabType.BOTTOM).addModels(new ConfiguredModel(bmf("loaf_bottom")))
+		.partialState().with(SlabBlock.TYPE,SlabType.DOUBLE).addModels(new ConfiguredModel(bmf("loaf_top_bottom")));
+		blockItemModel(CPBlocks.LOAF,bmf("loaf"));
 		for(MosaicMaterial m:MosaicMaterial.values())
 			for(MosaicPattern p:MosaicPattern.values()) 
 				for(int i:new int[] {0,1})
@@ -277,7 +290,10 @@ public class CPStatesProvider extends BlockStateProvider {
 			itemModels().getBuilder(n).parent(bmf(n + p));
 		}
 	}
+	protected void blockItemModel(Holder<Block> n, ModelFile p) {
 
+		itemModels().getBuilder(n.getRegisteredName()).parent(p);
+	}
 	protected ItemModelBuilder blockItemModelBuilder(String n, String p) {
 		return itemModels().getBuilder(n).parent(bmf(n + p));
 	}

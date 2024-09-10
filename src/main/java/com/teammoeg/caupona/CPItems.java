@@ -46,6 +46,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -88,8 +89,10 @@ public class CPItems {
 	public static DeferredHolder<Item,Item> stock = icon("stock_based");
 	public static DeferredHolder<Item,Item> milk = icon("milk_based");
 	public static DeferredHolder<Item,Item> any = icon("any_based");
-	public static DeferredHolder<Item,Item> water_bowl = stew("water",()->Fluids.WATER, createSoupProps());
-	public static DeferredHolder<Item,Item> milk_bowl = stew("milk",NeoForgeMod.MILK, createSoupProps());
+	public static DeferredHolder<Item,Item> water_bowl = stew("water",()->Fluids.WATER,CPBlocks.BOWL, createSoupProps());
+	public static DeferredHolder<Item,Item> milk_bowl = stew("milk",NeoForgeMod.MILK,CPBlocks.BOWL, createSoupProps());
+	public static DeferredHolder<Item,Item> water_loaf_bowl = stew("water_loaf",()->Fluids.WATER,CPBlocks.LOAF_BOWL, createLoafSoupProps());
+	public static DeferredHolder<Item,Item> milk_loaf_bowl = stew("milk_loaf",NeoForgeMod.MILK,CPBlocks.LOAF_BOWL, createLoafSoupProps());
 	public static DeferredHolder<Item,Item> clay_pot = item("clay_cistern", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,Item> soot = item("soot", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,PortableBrazierItem> pbrazier = ITEMS.register("portable_brazier",()->new PortableBrazierItem( createProps()));
@@ -101,7 +104,8 @@ public class CPItems {
 	public static DeferredHolder<Item,SkimmerItem> i_skimmer = ITEMS.register("iron_skimmer",()->new SkimmerItem( createProps().durability(200)));
 	static{
 		for (String s : soups) {
-			stew(s,Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))), createSoupProps());
+			stew(s,Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))),CPBlocks.BOWL, createSoupProps());
+			stew(s+"_loaf",Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))),CPBlocks.LOAF_BOWL, createSoupProps());
 		}
 
 		for (String s : aspics) {
@@ -134,15 +138,17 @@ public class CPItems {
 	public static DeferredHolder<Item,Item> item(String name,Properties props,TabType tab){
 		return ITEMS.register(name,()->new CPItem(props,tab));
 	}
-	public static DeferredHolder<Item,Item> stew(String name,Supplier<Fluid> base,Properties props){
-		return ITEMS.register(name,()->new StewItem(base,props));
+	public static DeferredHolder<Item,Item> stew(String name,Supplier<Fluid> base,Supplier<? extends Block> block,Supplier<Properties> props){
+		return ITEMS.register(name,()->new StewItem(block.get(),base,props.get()));
 	}
 
 
-	static Properties createSoupProps() {
-		return new Item.Properties().craftRemainder(Items.BOWL).stacksTo(1);
+	static Supplier<Properties> createSoupProps() {
+		return ()->new Item.Properties().craftRemainder(Items.BOWL).stacksTo(1);
 	}
-
+	static Supplier<Properties> createLoafSoupProps() {
+		return ()->new Item.Properties().craftRemainder(CPBlocks.LOAF_BOWL.get().asItem()).stacksTo(1);
+	}
 	static Properties createProps() {
 		return new Item.Properties();
 	}

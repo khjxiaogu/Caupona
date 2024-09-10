@@ -37,6 +37,7 @@ import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.recipes.AspicMeltingRecipe;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
+import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.data.recipes.DissolveRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.data.recipes.FoodValueRecipe;
@@ -62,7 +63,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -88,8 +88,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 			if (slot < 9)
 				return (stack.getItem() == Items.POTION&&!StreamSupport.stream(stack.get(DataComponents.POTION_CONTENTS).getAllEffects().spliterator(),false).anyMatch(t->t.getDuration()==1)) || StewCookingRecipe.isCookable(stack);
 			if (slot == 9) {
-				Item i = stack.getItem();
-				return i == Items.BOWL || Utils.getFluidType(stack)!=Fluids.EMPTY || AspicMeltingRecipe.find(stack) != null;
+				return stack.is(Items.BOWL) || stack.is(CPBlocks.LOAF_BOWL.get().asItem()) || Utils.getFluidType(stack)!=Fluids.EMPTY || AspicMeltingRecipe.find(stack) != null;
 			}
 			if (slot == 11)
 				return SpiceRecipe.isValid(stack);
@@ -269,16 +268,18 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 	private boolean tryContianFluid() {
 		ItemStack is = inv.getStackInSlot(9);
 		if (!is.isEmpty() && inv.getStackInSlot(10).isEmpty()) {
-			if (is.getItem() == Items.BOWL && tank.getFluidAmount() >= 250) {
-				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
-				if (recipe != null) {
-					is.shrink(1);
-					inv.setStackInSlot(10, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
-					resetStillCounter();
-					return true;
+			if (tank.getFluidAmount() >= 250) {
+				for(RecipeHolder<BowlTypeRecipe> type:BowlTypeRecipe.recipes) {
+					if(type.value().test(is)) {
+						RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(type.value().bowl).stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
+						if (recipe != null) {
+							is.shrink(1);
+							inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
+							return true;
+						}
+					}
 				}
 			}
-
 			FluidStack out=Utils.extractFluid(is);
 			if (!out.isEmpty()) {
 				if (tryAddFluid(out)) {

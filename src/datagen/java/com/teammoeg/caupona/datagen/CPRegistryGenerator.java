@@ -35,6 +35,7 @@ import com.teammoeg.caupona.worldgen.LeavingLogReplacer;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.RegistrySetBuilder.RegistryBootstrap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -64,10 +65,9 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 
 
 public class CPRegistryGenerator extends DatapackBuiltinEntriesProvider {
-	@SuppressWarnings("unchecked")
 	public CPRegistryGenerator(PackOutput output, CompletableFuture<Provider> registries) {
 		super(output, registries,new RegistrySetBuilder()
-				.add(Registries.CONFIGURED_FEATURE,(RegistrySetBuilder.RegistryBootstrap)CPRegistryGenerator::bootstrapCFeatures)
+				.add(Registries.CONFIGURED_FEATURE,(RegistryBootstrap<ConfiguredFeature<?, ?>>)CPRegistryGenerator::bootstrapCFeatures)
 				.add(Registries.PLACED_FEATURE,CPRegistryGenerator::bootstrapPFeatures),
 				Set.of(CPMain.MODID));
 	}

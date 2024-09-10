@@ -96,8 +96,10 @@ public class CPBlockTagGenerator extends TagsProvider<Block> {
 			tag(CPTags.Blocks.FRUITS_GROWABLE_ON).add(cp(wood + "_leaves"));
 			tag(frl("fence_gates")).add(cp(wood + "_fence_gate"));
 			tag(frl("fence_gates/wooden")).add(cp(wood + "_fence_gate"));
+			
 		}
-
+		tag(CPTags.Blocks.LOAF_HEATING_BLOCKS).add(rk(Blocks.FIRE)).add(rk(Blocks.CAMPFIRE)).add(rk(Blocks.LAVA)).add(rk(Blocks.LAVA_CAULDRON)).add(CPBlocks.FUMAROLE_VENT.getKey());
+		tag(CPTags.Blocks.LOAF_HEATING_IGNORE).addTags(BlockTags.ALL_SIGNS,BlockTags.ALL_HANGING_SIGNS,BlockTags.BANNERS,BlockTags.BUTTONS,BlockTags.FENCES,BlockTags.CROPS,CPTags.Blocks.PANS).add(CPBlocks.WOLF.getKey(),CPBlocks.LOAF.getKey(),CPBlocks.LOAF_DOUGH.getKey(),CPBlocks.PUMICE_BLOOM.getKey());
 		for (MaterialType tye : CPBlocks.all_materials) {
 			String str=tye.getName();
 			if(tye.isPillarMaterial())

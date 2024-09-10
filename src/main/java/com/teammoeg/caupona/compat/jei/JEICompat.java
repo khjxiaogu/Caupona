@@ -24,7 +24,6 @@ package com.teammoeg.caupona.compat.jei;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.teammoeg.caupona.CPBlocks;
@@ -68,7 +67,6 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
-import mezz.jei.api.runtime.IClickableIngredient;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -100,8 +98,8 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipes(BrazierCategory.TYPE,new ArrayList<>(AspicMeltingRecipe.recipes));
 		registration.addRecipes(PotCategory.TYPE,new ArrayList<>(AspicMeltingRecipe.recipes));
 		registration.addRecipes(BoilingCategory.TYPE,new ArrayList<>(BoilingRecipe.recipes));
-		registration.addRecipes(BowlEmptyCategory.TYPE,new ArrayList<>(BowlContainingRecipe.recipes));
-		registration.addRecipes(BowlFillCategory.TYPE,new ArrayList<>(BowlContainingRecipe.recipes));
+		registration.addRecipes(BowlEmptyCategory.TYPE,BowlContainingRecipe.recipes.values().stream().flatMap(t->t.stream()).collect(Collectors.toList()));
+		registration.addRecipes(BowlFillCategory.TYPE,BowlContainingRecipe.recipes.values().stream().flatMap(t->t.stream()).collect(Collectors.toList()));
 		registration.addRecipes(DoliumRestingCategory.TYPE,new ArrayList<>(DoliumRecipe.recipes));
 		registration.addRecipes(StewCookingCategory.TYPE,new ArrayList<>(StewCookingRecipe.sorted));
 		registration.addRecipes(FryingCategory.TYPE,new ArrayList<>(SauteedRecipe.sorted));

@@ -22,10 +22,12 @@
 package com.teammoeg.caupona.data.recipes;
 
 import java.util.List;
+import java.util.Map;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPCapability;
+import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.components.ItemHoldedFluidData;
 import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.util.Utils;
@@ -43,10 +45,11 @@ import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BowlContainingRecipe extends IDataRecipe {
-	public static List<RecipeHolder<BowlContainingRecipe>> recipes;
+	public static Map<BowlType,List<RecipeHolder<BowlContainingRecipe>>> recipes;
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
- 
+	public static final BowlType WOODEN_BOWL=BowlType.getOrCreateByName(CPMain.rl("bowl"));
+	public static final BowlType BREAD_BOWL=BowlType.getOrCreateByName(CPMain.rl("loaf"));
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER.get();
@@ -56,13 +59,23 @@ public class BowlContainingRecipe extends IDataRecipe {
 	public RecipeType<?> getType() {
 		return TYPE.get();
 	}
-
+	public static List<RecipeHolder<BowlContainingRecipe>> getRecipes(BowlType type){
+		return recipes.get(type);
+	}
+	/*public static List<RecipeHolder<BowlContainingRecipe>> getWoodenRecipes(){
+		return recipes.get(WOODEN_BOWL);
+	}
+	public static List<RecipeHolder<BowlContainingRecipe>> getBreadRecipes(){
+		return recipes.get(BREAD_BOWL);
+	}*/
 	public Item bowl;
+	public BowlType inBowl;
 	public FluidIngredient fluid;
 	public static final MapCodec<BowlContainingRecipe> CODEC=
 			RecordCodecBuilder.mapCodec(t->t.group(
 					BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(o->o.bowl),
-					FluidIngredient.CODEC.fieldOf("fluid").forGetter(o->o.fluid)
+					FluidIngredient.CODEC.fieldOf("fluid").forGetter(o->o.fluid),
+					BowlType.GET_OR_CREATE_CODEC.fieldOf("inType").forGetter(o->o.inBowl)
 					).apply(t, BowlContainingRecipe::new));
 /*
 	public BowlContainingRecipe(FriendlyByteBuf pb) {
@@ -70,13 +83,15 @@ public class BowlContainingRecipe extends IDataRecipe {
 		fluid = pb.readById(BuiltInRegistries.FLUID);
 	}*/
 
-	public BowlContainingRecipe(Item bowl, Fluid fluid) {
+	public BowlContainingRecipe(Item bowl, Fluid fluid,BowlType bowlType) {
 		this.bowl = bowl;
 		this.fluid = FluidIngredient.of(fluid);
+		this.inBowl=bowlType;
 	}
-	public BowlContainingRecipe(Item bowl, FluidIngredient fluid) {
+	public BowlContainingRecipe(Item bowl, FluidIngredient fluid,BowlType bowlType) {
 		this.bowl = bowl;
 		this.fluid = fluid;
+		this.inBowl=bowlType;
 	}/*
 
 	public void write(FriendlyByteBuf pack) {

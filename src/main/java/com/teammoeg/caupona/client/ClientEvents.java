@@ -3,6 +3,7 @@ package com.teammoeg.caupona.client;
 
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.client.util.LayeredElementsModel;
+import com.teammoeg.caupona.client.util.RotatedElementsModel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -25,6 +26,7 @@ public class ClientEvents {
 	public static void registerLoaders(ModelEvent.RegisterGeometryLoaders ev)
 	{
 		ev.register(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"layered"),new LayeredElementsModel.Loader());
+		ev.register(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"rotated"),new RotatedElementsModel.Loader());
 	}
 	
 }

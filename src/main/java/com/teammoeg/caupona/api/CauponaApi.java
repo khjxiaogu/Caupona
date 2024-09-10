@@ -26,6 +26,7 @@ import java.util.Optional;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
 import com.teammoeg.caupona.components.IFoodInfo;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
+import com.teammoeg.caupona.data.recipes.BowlType;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.util.RandomSource;
@@ -57,13 +58,21 @@ public class CauponaApi {
 			}
 		}
 	}
-
+	@Deprecated
 	public static Optional<ItemStack> fillBowl(IFluidHandler handler) {
 		FluidStack stack = handler.drain(250, FluidAction.SIMULATE);
 		if (stack.getAmount() == 250)
 			return fillBowl(handler.drain(250, FluidAction.EXECUTE));
 		return Optional.empty();
 	}
+	
+	public static Optional<ItemStack> fillBowl(BowlType bowl,IFluidHandler handler) {
+		FluidStack stack = handler.drain(250, FluidAction.SIMULATE);
+		if (stack.getAmount() == 250)
+			return fillBowl(bowl,handler.drain(250, FluidAction.EXECUTE));
+		return Optional.empty();
+	}
+	
 	public static Optional<ItemStack> getFilledItemStack(IFluidHandler handler,ItemStack in) {
 		FluidStack stack = handler.drain(250, FluidAction.SIMULATE);
 		ContanerContainFoodEvent ev=Utils.contain(in, stack,true);
@@ -78,10 +87,21 @@ public class CauponaApi {
 		return Optional.empty();
 		
 	}
+	@Deprecated
 	public static Optional<ItemStack> fillBowl(FluidStack stack) {
 		if (stack.getAmount() != 250)
 			return Optional.empty();
-		RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(stack)).findFirst().orElse(null);
+		RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(BowlContainingRecipe.WOODEN_BOWL).stream().filter(t->t.value().matches(stack)).findFirst().orElse(null);
+		if (recipe != null) {
+			ItemStack ret = recipe.value().handle(stack);
+			return Optional.of(ret);
+		}
+		return Optional.empty();
+	}
+	public static Optional<ItemStack> fillBowl(BowlType bowl,FluidStack stack) {
+		if (stack.getAmount() != 250)
+			return Optional.empty();
+		RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(bowl).stream().filter(t->t.value().matches(stack)).findFirst().orElse(null);
 		if (recipe != null) {
 			ItemStack ret = recipe.value().handle(stack);
 			return Optional.of(ret);

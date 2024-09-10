@@ -34,6 +34,7 @@ import com.teammoeg.caupona.blocks.fumarole.FumaroleVentBlockEntity;
 import com.teammoeg.caupona.blocks.hypocaust.CaliductBlockEntity;
 import com.teammoeg.caupona.blocks.hypocaust.FireboxBlockEntity;
 import com.teammoeg.caupona.blocks.hypocaust.WolfStatueBlockEntity;
+import com.teammoeg.caupona.blocks.loaf.LoafDoughBlockEntity;
 import com.teammoeg.caupona.blocks.pan.PanBlockEntity;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
 import com.teammoeg.caupona.blocks.stove.ChimneyPotBlockEntity;
@@ -80,6 +81,9 @@ public class CPBlockEntityTypes {
 					()->CPBlocks.firebox));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<WolfStatueBlockEntity>> WOLF_STATUE = REGISTER.register("wolf_statue",makeType(WolfStatueBlockEntity::new,
 					()->CPBlocks.WOLF));
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<LoafDoughBlockEntity>> LOAF_DOUGH = REGISTER.register("loaf_dough",makeType(LoafDoughBlockEntity::new,
+		()->CPBlocks.LOAF_DOUGH));
+	
 	/*private static <T extends BlockEntity> DeferredHolder<BlockEntityType<?>,BlockEntityType<T>> register(String key,BlockEntitySupplier<T> factory,DeferredHolder<Block,? extends Block>...validBlocks){
 		return REGISTER.register(key, () -> new BlockEntityType<T>(factory,(Arrays.stream(validBlocks).map(t->t.get()).collect(Collectors.toSet())), null));
 	}*/

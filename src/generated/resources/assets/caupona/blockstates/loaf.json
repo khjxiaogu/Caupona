@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "caupona:block/loaf_bottom"
+    },
+    "type=double": {
+      "model": "caupona:block/loaf_top_bottom"
+    },
+    "type=top": {
+      "model": "caupona:block/loaf_top"
+    }
+  }
+}

@@ -26,7 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.teammoeg.caupona.CPBlocks;
-import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.util.SizedOrCatalystFluidIngredient;

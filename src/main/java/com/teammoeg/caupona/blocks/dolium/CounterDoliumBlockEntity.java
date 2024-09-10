@@ -22,10 +22,12 @@
 package com.teammoeg.caupona.blocks.dolium;
 
 import com.teammoeg.caupona.CPBlockEntityTypes;
+import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
+import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.data.recipes.SpiceRecipe;
 import com.teammoeg.caupona.fluid.SoupFluid;
@@ -218,12 +220,16 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 	private boolean tryContianFluid() {
 		ItemStack is = inv.getStackInSlot(4);
 		if (!is.isEmpty() && inv.getStackInSlot(5).isEmpty()) {
-			if (is.getItem() == Items.BOWL && tank.getFluidAmount() >= 250) {
-				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
-				if (recipe != null) {
-					is.shrink(1);
-					inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
-					return true;
+			if (tank.getFluidAmount() >= 250) {
+				for(RecipeHolder<BowlTypeRecipe> type:BowlTypeRecipe.recipes) {
+					if(type.value().test(is)) {
+						RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(type.value().bowl).stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
+						if (recipe != null) {
+							is.shrink(1);
+							inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
+							return true;
+						}
+					}
 				}
 			}
 			FluidStack out=Utils.extractFluid(is);

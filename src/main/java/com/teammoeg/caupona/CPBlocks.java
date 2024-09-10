@@ -55,6 +55,8 @@ import com.teammoeg.caupona.blocks.fumarole.PumiceBloomBlock;
 import com.teammoeg.caupona.blocks.hypocaust.CaliductBlock;
 import com.teammoeg.caupona.blocks.hypocaust.FireboxBlock;
 import com.teammoeg.caupona.blocks.hypocaust.WolfStatueBlock;
+import com.teammoeg.caupona.blocks.loaf.LoafBlock;
+import com.teammoeg.caupona.blocks.loaf.LoafDoughBlock;
 import com.teammoeg.caupona.blocks.pan.GravyBoatBlock;
 import com.teammoeg.caupona.blocks.pan.PanBlock;
 import com.teammoeg.caupona.blocks.plants.BushLogBlock;
@@ -182,6 +184,13 @@ public class CPBlocks {
 			() -> new BowlBlock(Block.Properties.of().sound(SoundType.WOOD).instabreak().noOcclusion()
 					.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
 					.isViewBlocking(CPBlocks::isntSolid), CPBlockEntityTypes.BOWL));
+	public static final DeferredHolder<Block,BowlBlock> LOAF_BOWL = 
+		
+		foodblock("loaf_bowl",
+		() -> new BowlBlock(Block.Properties.of().sound(SoundType.WOOD).instabreak().noOcclusion()
+				.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
+				.isViewBlocking(CPBlocks::isntSolid), CPBlockEntityTypes.BOWL));
+	
 	public static final DeferredHolder<Block,MosaicBlock> MOSAIC = baseblock("mosaic",
 			() -> new MosaicBlock(getStoneProps()),b->new MosaicItem(CPItems.createProps()));
 	public static final DeferredHolder<Block,SilphiumBlock> SILPHIUM = mainblock("silphium_block",
@@ -198,6 +207,12 @@ public class CPBlocks {
 	public static final DeferredHolder<Block,SnailBaitBlock> SNAIL_BAIT = baseblock("snail_bait", ()->new SnailBaitBlock(BlockBehaviour.Properties.of()
 			.mapColor(MapColor.PLANT).noCollission().randomTicks().offsetType(OffsetType.XZ).instabreak().sound(SoundType.CROP).isViewBlocking(CPBlocks::isntSolid)),x->new CPBlockItem(x,CPItems.createProps(),TabType.MAIN));
 	public static final DeferredHolder<Block,Block> LEAD_BLOCK=block("lead_block",BlockBehaviour.Properties.of().mapColor(MapColor.METAL).sound(SoundType.METAL).strength(3.5f, 10).requiresCorrectToolForDrops(),TabType.DECORATION);
+	public static final DeferredHolder<Block,LoafDoughBlock> LOAF_DOUGH=foodblock("loaf_dough",()->new LoafDoughBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOL).instabreak().noOcclusion()
+		.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
+		.isViewBlocking(CPBlocks::isntSolid)));
+	public static final DeferredHolder<Block,SlabBlock> LOAF=foodblock("loaf",()->new LoafBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOL).instabreak().noOcclusion()
+		.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
+		.isViewBlocking(CPBlocks::isntSolid)));
 	// Bulk register blocks
 	static {
 
@@ -256,7 +271,7 @@ public class CPBlocks {
 				() -> new DishBlock(Block.Properties.of().sound(SoundType.WOOD).instabreak().noOcclusion()
 							.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
 							.isViewBlocking(CPBlocks::isntSolid)),
-					b -> new DishItem(b, CPItems.createSoupProps()));
+					b -> new DishItem(b, CPItems.createSoupProps().get()));
 
 		}
 	}
@@ -341,6 +356,12 @@ public class CPBlocks {
 	static <T extends Block> DeferredHolder<Block,T> mainblock(String name, Supplier<T> bl) {
 		DeferredHolder<Block,T> blx = BLOCKS.register(name, bl);
 		CPItems.ITEMS.register(name, () -> new CPBlockItem(blx.get(), CPItems.createProps(), TabType.MAIN));
+		return blx;
+	}
+	// register any block to caupona registry
+	static <T extends Block> DeferredHolder<Block,T> foodblock(String name, Supplier<T> bl) {
+		DeferredHolder<Block,T> blx = BLOCKS.register(name, bl);
+		CPItems.ITEMS.register(name, () -> new CPBlockItem(blx.get(), CPItems.createProps(), TabType.FOODS));
 		return blx;
 	}
 	static <T extends Block> DeferredHolder<Block,T> decoblock(String name, Supplier<T> bl) {

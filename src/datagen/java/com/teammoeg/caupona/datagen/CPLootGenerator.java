@@ -148,8 +148,9 @@ public class CPLootGenerator extends LootTableProvider {
 			for(MaterialType rtype:CPBlocks.all_materials) {
 				String stone=rtype.getName();
 				if(rtype.isDecorationMaterial()) {
-					for (String type : ImmutableSet.of("", "_slab", "_stairs", "_wall"))
+					for (String type : ImmutableSet.of("", "_stairs", "_wall"))
 						dropSelf(cp(stone + type));
+					add(cp(stone+"_slab"),super.createSlabItemTable(cp(stone+"_slab")));
 				}
 				if(rtype.isCounterMaterial()) {
 					for (String type : ImmutableSet.of("_chimney_flue", "_chimney_pot", "_counter", "_counter_with_dolium",
@@ -177,7 +178,8 @@ public class CPLootGenerator extends LootTableProvider {
 		
 			}		add(cp("fig_leaves"), createLeavesDrops(cp("fig_leaves"), cp("fig_sapling"), 0.05F, 0.0625F,
 				0.083333336F, 0.1F));
-			
+			add(CPBlocks.LOAF.get(),super.createSlabItemTable(CPBlocks.LOAF.get()));
+			add(CPBlocks.LOAF_DOUGH.get(),super.createSlabItemTable(CPBlocks.LOAF_DOUGH.get()));
 			/*add(CPBlocks.SNAIL_MUCUS.get(),createSilkTouchOrShearsDispatchTable(CPBlocks.SNAIL_MUCUS.get(),
 					this.applyExplosionDecay(CPBlocks.SNAIL_MUCUS.get(), LootItem.lootTableItem(Items.STICK)
 							.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F))

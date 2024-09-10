@@ -102,6 +102,7 @@ public class CPItemTagGenerator extends TagsProvider<Item> {
 			tag(ItemTags.WOODEN_BUTTONS).add(cp(wood + "_button"));
 
 			tag(ItemTags.SIGNS).add(cp(wood + "_sign"));
+
 		}
 		for (String wood : ImmutableList.of("fig", "wolfberry")) {
 			tag(ItemTags.LEAVES).add(cp(wood + "_leaves"));

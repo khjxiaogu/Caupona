@@ -11,7 +11,7 @@
               "add": false,
               "conditions": [
                 {
-                  "block": "caupona:polished_felsic_tuff_slab",
+                  "block": "caupona:loaf",
                   "condition": "minecraft:block_state_property",
                   "properties": {
                     "type": "double"
@@ -25,11 +25,11 @@
               "function": "minecraft:explosion_decay"
             }
           ],
-          "name": "caupona:polished_felsic_tuff_slab"
+          "name": "caupona:loaf"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "caupona:blocks/polished_felsic_tuff_slab"
+  "random_sequence": "caupona:blocks/loaf"
 }

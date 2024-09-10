@@ -21,6 +21,8 @@
 
 package com.teammoeg.caupona.container;
 
+import java.util.List;
+
 import com.teammoeg.caupona.CPGui;
 import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.CPTags.Items;
@@ -55,7 +57,7 @@ public class PortableBrazierContainer extends AbstractContainerMenu implements I
 			if (slot == INGREDIENT)
 				return AspicMeltingRecipe.find(stack) != null;
 			if (slot == CONTAINER)
-				return stack.is(CPItems.water_bowl.get());
+				return stack.is(CPItems.water_bowl)||stack.is(CPItems.water_loaf_bowl);
 			if (slot == FUEL)
 				return stack.is(Items.PORTABLE_BRAZIER_FUEL_TYPE);
 			return false;
@@ -208,15 +210,21 @@ public class PortableBrazierContainer extends AbstractContainerMenu implements I
 				AspicMeltingRecipe recipe = AspicMeltingRecipe.find(items.getStackInSlot(INGREDIENT));
 				if (recipe != null) {
 					FluidStack simulated=new FluidStack(recipe.fluid,250);
-					
-					RecipeHolder<BowlContainingRecipe> recipe2 = BowlContainingRecipe.recipes.stream().filter(t->t.value().matches(simulated)).findFirst().orElse(null);
-					if (recipe2 != null) {
-						this.processMax = recipe.time;
-						this.process = 0;
-						bowl = items.getStackInSlot(CONTAINER).split(1);
-						aspic = items.getStackInSlot(INGREDIENT).split(1);
-						items.getStackInSlot(FUEL).shrink(1);
-						pout = recipe2.value().handle(recipe.handle(aspic));
+					List<RecipeHolder<BowlContainingRecipe>> recipeList=null;
+					if(items.getStackInSlot(CONTAINER).is(CPItems.water_bowl))
+						recipeList=BowlContainingRecipe.getRecipes(BowlContainingRecipe.WOODEN_BOWL);
+					if(items.getStackInSlot(CONTAINER).is(CPItems.water_loaf_bowl))
+						recipeList=BowlContainingRecipe.getRecipes(BowlContainingRecipe.BREAD_BOWL);
+					if(recipeList!=null) {
+						RecipeHolder<BowlContainingRecipe> recipe2 = recipeList.stream().filter(t->t.value().matches(simulated)).findFirst().orElse(null);
+						if (recipe2 != null) {
+							this.processMax = recipe.time;
+							this.process = 0;
+							bowl = items.getStackInSlot(CONTAINER).split(1);
+							aspic = items.getStackInSlot(INGREDIENT).split(1);
+							items.getStackInSlot(FUEL).shrink(1);
+							pout = recipe2.value().handle(recipe.handle(aspic));
+						}
 					}
 				}
 			}

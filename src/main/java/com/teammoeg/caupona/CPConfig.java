@@ -50,15 +50,21 @@ public class CPConfig {
 	public static class Common {
 		//public ConfigValue<Integer> staticTime;
 		public ConfigValue<Double> roadSpeedAddtion;
+		public ConfigValue<Integer> loafCooking;
+		public ConfigValue<Integer> loafStacking;
 		/**
 		 * @param builder
 		 */
 
 		Common(ModConfigSpec.Builder builder) {
-			/*builder.push("recipe");
-			staticTime = builder.comment("Ticks before do still recipe").defineInRange("StillRecipeTicks", 12000, 1,
-					Integer.MAX_VALUE);
-			builder.pop();*/
+			builder.push("recipe");
+			/*staticTime = builder.comment("Ticks before do still recipe").defineInRange("StillRecipeTicks", 12000, 1,
+					Integer.MAX_VALUE);*/
+			loafCooking = builder.comment("Loaf dough cooking time").defineInRange("loafCookingTime",
+				1200, 1, Integer.MAX_VALUE);
+			loafStacking = builder.comment("Loaf dough maximum stacking height in blocks").defineInRange("maxLoafStackingHeight",
+				6, 1, Integer.MAX_VALUE);
+			builder.pop();
 			builder.push("road");
 			roadSpeedAddtion = builder.comment("Additional speed added per tick for roads").defineInRange("roadSpeedAddtion",2D,0D,10D);
 			builder.pop();
@@ -106,6 +112,7 @@ public class CPConfig {
 					Integer.MAX_VALUE);
 			containerTick = builder.comment("Tick interval between container input check").defineInRange("containTick",
 					10, 1, Integer.MAX_VALUE);
+			
 			builder.pop();
 
 			builder.push("chimney");
