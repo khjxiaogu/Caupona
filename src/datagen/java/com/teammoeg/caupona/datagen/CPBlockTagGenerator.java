@@ -100,6 +100,7 @@ public class CPBlockTagGenerator extends TagsProvider<Block> {
 		}
 		tag(CPTags.Blocks.LOAF_HEATING_BLOCKS).add(rk(Blocks.FIRE)).add(rk(Blocks.CAMPFIRE)).add(rk(Blocks.LAVA)).add(rk(Blocks.LAVA_CAULDRON)).add(CPBlocks.FUMAROLE_VENT.getKey());
 		tag(CPTags.Blocks.LOAF_HEATING_IGNORE).addTags(BlockTags.ALL_SIGNS,BlockTags.ALL_HANGING_SIGNS,BlockTags.BANNERS,BlockTags.BUTTONS,BlockTags.FENCES,BlockTags.CROPS,CPTags.Blocks.PANS).add(CPBlocks.WOLF.getKey(),CPBlocks.LOAF.getKey(),CPBlocks.LOAF_DOUGH.getKey(),CPBlocks.PUMICE_BLOOM.getKey());
+		tag(BlockTags.CLIMBABLE).add(CPBlocks.LOAF_DOUGH.getKey()).add(CPBlocks.LOAF.getKey());
 		for (MaterialType tye : CPBlocks.all_materials) {
 			String str=tye.getName();
 			if(tye.isPillarMaterial())

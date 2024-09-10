@@ -1,0 +1,8 @@
+{
+  "type": "caupona:bowl",
+  "fluid": {
+    "fluid": "minecraft:water"
+  },
+  "inType": "caupona:loaf",
+  "item": "caupona:water"
+}

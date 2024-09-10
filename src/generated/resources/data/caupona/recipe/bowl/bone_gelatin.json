@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "caupona:bone_gelatin"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:bone_gelatin"
 }

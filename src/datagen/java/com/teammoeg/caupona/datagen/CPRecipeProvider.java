@@ -93,8 +93,14 @@ public class CPRecipeProvider extends RecipeProvider {
 		for (String s : CPFluids.getSoupfluids()) {
 			ResourceLocation fs = mrl(s);
 			out.accept(rl("bowl/" + s),new BowlContainingRecipe( item(fs), fluid(fs),BowlContainingRecipe.WOODEN_BOWL));
-			out.accept(rl("bowl/" + s),new BowlContainingRecipe( item(fs), fluid(fs),BowlContainingRecipe.BREAD_BOWL));
+			
 		}
+		for (String s : CPItems.bread_bowls) {
+			ResourceLocation fs = mrl(s);
+			out.accept(rl("bowl/" + s+"_loaf"),new BowlContainingRecipe( item(fs), fluid(fs),BowlContainingRecipe.BREAD_BOWL));
+			
+		}
+		
 		// out.accept(dissolve(RankineItems.CORN_EAR.get()));
 		out.accept(rl("bowl_type/bowl"), new BowlTypeRecipe(BowlContainingRecipe.WOODEN_BOWL,Ingredient.of(Items.BOWL)));
 		out.accept(rl("bowl_type/loaf_bowl"), new BowlTypeRecipe(BowlContainingRecipe.WOODEN_BOWL,Ingredient.of(CPBlocks.LOAF_BOWL.get().asItem())));

@@ -57,7 +57,7 @@ public class PortableBrazierContainer extends AbstractContainerMenu implements I
 			if (slot == INGREDIENT)
 				return AspicMeltingRecipe.find(stack) != null;
 			if (slot == CONTAINER)
-				return stack.is(CPItems.water_bowl)||stack.is(CPItems.water_loaf_bowl);
+				return stack.is(CPItems.water_bowl);
 			if (slot == FUEL)
 				return stack.is(Items.PORTABLE_BRAZIER_FUEL_TYPE);
 			return false;
@@ -213,8 +213,6 @@ public class PortableBrazierContainer extends AbstractContainerMenu implements I
 					List<RecipeHolder<BowlContainingRecipe>> recipeList=null;
 					if(items.getStackInSlot(CONTAINER).is(CPItems.water_bowl))
 						recipeList=BowlContainingRecipe.getRecipes(BowlContainingRecipe.WOODEN_BOWL);
-					if(items.getStackInSlot(CONTAINER).is(CPItems.water_loaf_bowl))
-						recipeList=BowlContainingRecipe.getRecipes(BowlContainingRecipe.BREAD_BOWL);
 					if(recipeList!=null) {
 						RecipeHolder<BowlContainingRecipe> recipe2 = recipeList.stream().filter(t->t.value().matches(simulated)).findFirst().orElse(null);
 						if (recipe2 != null) {

@@ -38,6 +38,21 @@
     "caupona:vegetable_chowder",
     "caupona:vegetable_soup",
     "caupona:walnut_soup",
-    "caupona:bone_gelatin"
+    "caupona:bone_gelatin",
+    "caupona:bisque_loaf",
+    "caupona:borscht_loaf",
+    "caupona:egg_drop_soup_loaf",
+    "caupona:fish_soup_loaf",
+    "caupona:goulash_loaf",
+    "caupona:hodgepodge_loaf",
+    "caupona:meat_soup_loaf",
+    "caupona:mushroom_soup_loaf",
+    "caupona:nettle_soup_loaf",
+    "caupona:poultry_soup_loaf",
+    "caupona:pumpkin_soup_loaf",
+    "caupona:seaweed_soup_loaf",
+    "caupona:stock_loaf",
+    "caupona:stracciatella_loaf",
+    "caupona:vegetable_soup_loaf"
   ]
 }

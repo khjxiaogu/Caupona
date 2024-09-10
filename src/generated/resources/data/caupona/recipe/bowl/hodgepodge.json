@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "caupona:hodgepodge"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:hodgepodge"
 }

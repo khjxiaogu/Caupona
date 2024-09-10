@@ -66,6 +66,10 @@ public class CPItems {
 			"egg_drop_soup_aspic", "fish_soup_aspic", "goulash_aspic", "hodgepodge_aspic", "meat_soup_aspic",
 			"mushroom_soup_aspic", "nettle_soup_aspic", "poultry_soup_aspic", "pumpkin_soup_aspic",
 			"seaweed_soup_aspic", "stock_aspic", "stracciatella_aspic", "vegetable_soup_aspic" };
+	public static final String[] bread_bowls = new String[] { "bisque", "borscht",
+		"egg_drop_soup", "fish_soup", "goulash", "hodgepodge", "meat_soup",
+		"mushroom_soup", "nettle_soup", "poultry_soup", "pumpkin_soup",
+		"seaweed_soup", "stock", "stracciatella", "vegetable_soup" };
 	public static final String[] dishes = new String[] { "huevos_pericos", "sauteed_beef", "sauteed_greens",
 			"sauteed_hodgepodge", "sauteed_meat", "sauteed_mushrooms", "sauteed_roots", "sauteed_seafood",
 			"sauteed_vegetables", "seared_fillet", "seared_poultry" };
@@ -91,8 +95,6 @@ public class CPItems {
 	public static DeferredHolder<Item,Item> any = icon("any_based");
 	public static DeferredHolder<Item,Item> water_bowl = stew("water",()->Fluids.WATER,CPBlocks.BOWL, createSoupProps());
 	public static DeferredHolder<Item,Item> milk_bowl = stew("milk",NeoForgeMod.MILK,CPBlocks.BOWL, createSoupProps());
-	public static DeferredHolder<Item,Item> water_loaf_bowl = stew("water_loaf",()->Fluids.WATER,CPBlocks.LOAF_BOWL, createLoafSoupProps());
-	public static DeferredHolder<Item,Item> milk_loaf_bowl = stew("milk_loaf",NeoForgeMod.MILK,CPBlocks.LOAF_BOWL, createLoafSoupProps());
 	public static DeferredHolder<Item,Item> clay_pot = item("clay_cistern", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,Item> soot = item("soot", createProps(),TabType.MAIN);
 	public static DeferredHolder<Item,PortableBrazierItem> pbrazier = ITEMS.register("portable_brazier",()->new PortableBrazierItem( createProps()));
@@ -105,9 +107,14 @@ public class CPItems {
 	static{
 		for (String s : soups) {
 			stew(s,Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))),CPBlocks.BOWL, createSoupProps());
+			
+		}
+		for(String s:bread_bowls) {
 			stew(s+"_loaf",Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))),CPBlocks.LOAF_BOWL, createSoupProps());
 		}
-
+		
+		
+		
 		for (String s : aspics) {
 			CPCommonBootStrap.asCompositable(item(s, createProps(),TabType.FOODS),1f);
 		}

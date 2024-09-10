@@ -3,5 +3,6 @@
   "fluid": {
     "fluid": "caupona:acquacotta"
   },
+  "inType": "caupona:bowl",
   "item": "caupona:acquacotta"
 }
