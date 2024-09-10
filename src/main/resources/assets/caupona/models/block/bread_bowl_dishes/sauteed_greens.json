@@ -1,0 +1,7 @@
+{
+    "parent": "caupona:block/template_servings_in_bread_bowl",
+    "textures": {
+        "dish": "caupona:block/dishful_of_servings/sauteed_greens",
+        "particle": "caupona:block/dishful_of_servings/sauteed_greens"
+    }
+}

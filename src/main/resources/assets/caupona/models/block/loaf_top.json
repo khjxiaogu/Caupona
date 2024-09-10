@@ -7,21 +7,12 @@
 	},
 	"elements": [
 		{
-			"name": "top2",
-			"from": [4, 13.65685, 4],
+			"name": "bottom2",
+			"from": [4, 8, 4],
 			"to": [12, 13.65685, 12],
 			"rotation": {"angle": 0, "axis": "y", "origin": [0, 8, 0]},
 			"faces": {
-				"up": {"uv": [2, 2, 6, 6], "texture": "#0"}
-			}
-		},
-		{
-			"name": "bottom2",
-			"from": [4, 8, 4],
-			"to": [12, 10, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [0, 8, 0]},
-			"faces": {
-				"up": {"uv": [2, 10, 6, 14], "texture": "#0"},
+				"up": {"uv": [2, 2, 6, 6], "texture": "#0"},
 				"down": {"uv": [10, 2, 14, 6], "texture": "#0"}
 			}
 		},
@@ -181,7 +172,7 @@
 			"name": "Loaf2",
 			"origin": [12, 0, 8],
 			"color": 0,
-			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8]
 		},
 		{
 			"name": "Ropes",
@@ -192,15 +183,15 @@
 					"name": "RopeSetNW",
 					"origin": [1.5, 2, 1.5],
 					"color": 0,
-					"children": [10]
+					"children": [9]
 				},
 				{
 					"name": "RopeSetSE",
 					"origin": [1.5, 2, 1.5],
 					"color": 0,
-					"children": [11]
+					"children": [10]
 				},
-				12
+				11
 			]
 		}
 	]

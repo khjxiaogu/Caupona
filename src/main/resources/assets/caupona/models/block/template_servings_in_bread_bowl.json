@@ -1,0 +1,53 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/cube",
+	"ambientocclusion": false,
+	"elements": [
+		{
+			"name": "baseline",
+			"from": [4, 2, 4],
+			"to": [12, 5, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"up": {"uv": [0, 0, 8, 8], "texture": "#dish"}
+			}
+		},
+		{
+			"name": "lump1",
+			"from": [5, 4, 4.5],
+			"to": [7, 6, 6.5],
+			"rotation": {"angle": 45, "axis": "x", "origin": [6, 4, 5.5]},
+			"faces": {
+				"north": {"uv": [4, 4, 6, 6], "texture": "#dish"},
+				"east": {"uv": [3, 4, 5, 6], "texture": "#dish"},
+				"west": {"uv": [5, 4, 7, 6], "texture": "#dish"},
+				"up": {"uv": [4, 3, 6, 5], "rotation": 180, "texture": "#dish"}
+			}
+		},
+		{
+			"name": "lump2",
+			"from": [9, 3.5, 6],
+			"to": [11, 5.5, 8],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [10, 3.5, 7]},
+			"faces": {
+				"north": {"uv": [5, 7, 7, 9], "texture": "#dish"},
+				"east": {"uv": [4, 7, 6, 9], "texture": "#dish"},
+				"south": {"uv": [3, 7, 5, 9], "texture": "#dish"},
+				"west": {"uv": [2, 7, 4, 9], "texture": "#dish"},
+				"up": {"uv": [3, 6, 5, 8], "texture": "#dish"}
+			}
+		},
+		{
+			"name": "lump3",
+			"from": [7, 3.5, 9],
+			"to": [9, 5.5, 11],
+			"rotation": {"angle": -22.5, "axis": "z", "origin": [8, 3.5, 10]},
+			"faces": {
+				"north": {"uv": [1, 7, 3, 9], "texture": "#dish"},
+				"south": {"uv": [3, 7, 5, 9], "texture": "#dish"},
+				"west": {"uv": [2, 7, 4, 9], "texture": "#dish"},
+				"up": {"uv": [3, 6, 5, 8], "texture": "#dish"}
+			}
+		}
+	]
+}
