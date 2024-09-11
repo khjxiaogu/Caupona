@@ -6,6 +6,7 @@
 		"0": "caupona:block/kitchen_stove_charcoal",
 		"particle": "caupona:block/kitchen_stove_charcoal"
 	},
+	"loader":"caupona:layered",
 	"elements": [
 		{
 			"name": "C1",

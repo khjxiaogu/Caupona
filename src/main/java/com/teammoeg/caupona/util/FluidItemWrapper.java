@@ -1,6 +1,10 @@
 package com.teammoeg.caupona.util;
 
+import org.jetbrains.annotations.Nullable;
+
+import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
+import com.teammoeg.caupona.components.ItemHoldedFluidData;
 
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -23,7 +27,13 @@ public class FluidItemWrapper implements IFluidHandlerItem
 
     public FluidStack getFluid()
     {
-        return Utils.extractFluid(container);
+        @Nullable ItemHoldedFluidData comp=container.get(CPCapability.ITEM_FLUID);
+        if(comp==null)
+        	return FluidStack.EMPTY;
+        FluidStack fs=new FluidStack(comp.fluidType(),250);
+        fs.applyComponents(container.getComponentsPatch());
+        fs.remove(CPCapability.ITEM_FLUID);
+        return fs;
     }
 
     protected void setFluid(FluidStack fluidStack)

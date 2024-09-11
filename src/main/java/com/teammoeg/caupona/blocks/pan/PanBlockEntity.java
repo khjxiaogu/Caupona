@@ -46,6 +46,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -76,6 +77,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 	boolean removesNBT;
 	public ItemStack preout = ItemStack.EMPTY;
 	public ItemStack sout = ItemStack.EMPTY;
+	public ResourceLocation model;
 	//Capabilities
 	public ItemStackHandler inv = new ItemStackHandler(12) {
 		@Override
@@ -170,17 +172,21 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		rsstate = nbt.getBoolean("rsstate");
 		process = nbt.getInt("process");
 		processMax = nbt.getInt("processMax");
-		
-		if (nbt.contains("sout"))
-			sout = ItemStack.parseOptional(ra,nbt.getCompound("sout"));
+		if(nbt.contains("model"))
+			model=ResourceLocation.parse(nbt.getString("model"));
 		else
-			sout = ItemStack.EMPTY;
-		inv.deserializeNBT(ra,nbt.getCompound("items"));
+			model=null;
 		if (!isClient) {
+			if (nbt.contains("sout"))
+				sout = ItemStack.parseOptional(ra,nbt.getCompound("sout"));
+			else
+				sout = ItemStack.EMPTY;
+			inv.deserializeNBT(ra,nbt.getCompound("items"));
 			isInfinite =nbt.getBoolean("inf");
 			removesNBT=nbt.getBoolean("removeNbt");
+			preout = ItemStack.parseOptional(ra,nbt.getCompound("result"));
 		}
-		preout = ItemStack.parseOptional(ra,nbt.getCompound("result"));
+		
 
 	}
 
@@ -191,13 +197,16 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		nbt.putBoolean("rsstate", rsstate);
 		nbt.putInt("process", process);
 		nbt.putInt("processMax", processMax);
-		nbt.put("sout", sout.saveOptional(ra));
-		nbt.put("items", inv.serializeNBT(ra));
+		if(model!=null)
+		nbt.putString("model", model.toString());
 		if (!isClient) {
+			nbt.put("sout", sout.saveOptional(ra));
+			nbt.put("items", inv.serializeNBT(ra));
 			nbt.putBoolean("inf",isInfinite);
 			nbt.putBoolean("removeNbt",removesNBT);
+			nbt.put("result",preout.saveOptional(ra));
 		}
-		nbt.put("result",preout.saveOptional(ra));
+		
 		
 	}
 
@@ -250,6 +259,10 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 					else
 						inv.setStackInSlot(10, tryAddSpice(sout.copyWithCount(1)));
 					this.setChanged();
+					if(sout.isEmpty()) {
+						model=null;
+						this.syncData();
+					}
 				}
 			} else {
 				prepareWork();
@@ -348,13 +361,15 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		
 		Item preout=Items.AIR;
 		int processMax=0;
+		ResourceLocation tmodel = null;
 		boolean removesNBT=false;
 		for (RecipeHolder<SauteedRecipe> cr : SauteedRecipe.sorted) {
-			if (cr.value().matches(ctx)) {
+			if (cr.value().bowl.test(inv.getStackInSlot(9))&&cr.value().matches(ctx)) {
 				processMax = Math.max(cr.value().time, tpt);
 				preout = cr.value().output;
 				removesNBT=cr.value().removeNBT;
 				tcount=cr.value().count;
+				tmodel=cr.value().model;
 				break;
 			}
 		}
@@ -380,6 +395,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		this.preout.set(CPCapability.SAUTEED_INFO, current);
 		this.processMax=processMax;
 		this.removesNBT=removesNBT;
+		this.model=tmodel;
 		inv.getStackInSlot(9).shrink(cook);
 		if (this.getBlockState().is(CPBlocks.STONE_PAN.get()))
 			tpt *= 2;

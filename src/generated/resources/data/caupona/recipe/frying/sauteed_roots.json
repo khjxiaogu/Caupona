@@ -9,8 +9,12 @@
       }
     }
   ],
+  "bowl": {
+    "item": "minecraft:bowl"
+  },
   "deny": [],
   "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_roots",
   "output": "caupona:sauteed_roots",
   "priority": 128,
   "removeNBT": false,

@@ -3,130 +3,209 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"0": "caupona:block/kitchen_stove_firewoods",
-		"particle": "caupona:block/kitchen_stove_firewoods"
+		"0": "minecraft:block/coal_block",
+		"particle": "minecraft:block/coal_block"
 	},
+	"loader":"caupona:layered",
 	"elements": [
 		{
-			"name": "L1",
+			"name": "C1",
 			"from": [
 				3,
 				0,
-				6
+				11
 			],
 			"to": [
 				5,
 				2,
-				16
+				14
 			],
 			"faces": {
 				"north": {
 					"uv": [
 						3,
-						1,
+						0,
 						5,
-						3
+						2
 					],
 					"texture": "#0"
 				},
 				"east": {
 					"uv": [
-						3,
-						3,
-						5,
-						13
+						4,
+						6,
+						6,
+						9
 					],
-					"rotation": 270,
+					"rotation": 90,
 					"texture": "#0"
 				},
 				"south": {
 					"uv": [
-						3,
+						4,
 						1,
-						5,
-						3
+						5.99,
+						2.99
 					],
-					"texture": "#0"
-				},
-				"west": {
-					"uv": [
-						3,
-						3,
-						5,
-						13
-					],
-					"rotation": 270,
 					"texture": "#0"
 				},
 				"up": {
 					"uv": [
+						4,
 						3,
-						3,
-						5,
-						13
+						6,
+						6
 					],
-					"rotation": 180,
 					"texture": "#0"
 				},
 				"down": {
 					"uv": [
+						4,
 						3,
-						3,
-						5,
-						13
+						6,
+						6
 					],
-					"rotation": 180,
 					"texture": "#0"
 				}
 			}
 		},
 		{
-			"name": "L2",
+			"name": "C2",
 			"from": [
-				5,
-				0,
-				6
+				6.005,
+				0.005,
+				9.005
 			],
 			"to": [
-				8,
-				3,
-				15
+				7.995,
+				1.995,
+				14.995
 			],
+			"rotation": {
+				"angle": -22.5,
+				"axis": "y",
+				"origin": [
+					6,
+					0,
+					11
+				]
+			},
 			"faces": {
 				"north": {
 					"uv": [
-						0,
-						0,
 						3,
+						1,
+						5,
 						3
 					],
 					"texture": "#0"
 				},
 				"east": {
 					"uv": [
+						0,
 						5,
-						3,
-						8,
-						12
+						1.99,
+						10.99
 					],
 					"rotation": 90,
 					"texture": "#0"
 				},
 				"south": {
 					"uv": [
-						0,
-						0,
-						3,
-						3
+						4,
+						1,
+						5.99,
+						2.99
 					],
 					"texture": "#0"
 				},
 				"west": {
 					"uv": [
-						5,
+						0,
+						7,
+						1.99,
+						12.99
+					],
+					"rotation": 90,
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						0,
 						3,
-						8,
-						12
+						1.99,
+						8.99
+					],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [
+						3,
+						3,
+						4.99,
+						8.99
+					],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"name": "C3",
+			"from": [
+				7,
+				0,
+				10
+			],
+			"to": [
+				11,
+				3,
+				12
+			],
+			"rotation": {
+				"angle": -45,
+				"axis": "y",
+				"origin": [
+					6,
+					0,
+					11
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						2,
+						7,
+						5,
+						11
+					],
+					"rotation": 90,
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						2,
+						0,
+						4,
+						3
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						2,
+						3,
+						5,
+						7
+					],
+					"rotation": 90,
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [
+						0,
+						7,
+						2,
+						11
 					],
 					"rotation": 90,
 					"texture": "#0"
@@ -135,60 +214,70 @@
 					"uv": [
 						0,
 						3,
-						3,
-						12
+						2,
+						7
 					],
+					"rotation": 90,
 					"texture": "#0"
 				}
 			}
 		},
 		{
-			"name": "L4",
+			"name": "C4",
 			"from": [
-				10,
+				11,
 				0,
-				6
+				11
 			],
 			"to": [
 				13,
-				3,
-				16
+				2,
+				14
 			],
+			"rotation": {
+				"angle": -22.5,
+				"axis": "y",
+				"origin": [
+					12,
+					0,
+					11
+				]
+			},
 			"faces": {
 				"north": {
 					"uv": [
-						0,
-						0,
 						3,
-						3
+						0,
+						5,
+						2
 					],
 					"texture": "#0"
 				},
 				"east": {
 					"uv": [
-						5,
+						0,
 						3,
-						8,
-						13
+						2,
+						6
 					],
-					"rotation": 90,
+					"rotation": 270,
 					"texture": "#0"
 				},
 				"south": {
 					"uv": [
-						0,
-						0,
 						3,
+						1,
+						5,
 						3
 					],
 					"texture": "#0"
 				},
 				"west": {
 					"uv": [
-						5,
+						0,
 						3,
-						8,
-						13
+						2,
+						6
 					],
 					"rotation": 90,
 					"texture": "#0"
@@ -196,92 +285,41 @@
 				"up": {
 					"uv": [
 						0,
-						3,
-						3,
-						13
+						6,
+						2,
+						9
 					],
 					"texture": "#0"
 				},
 				"down": {
 					"uv": [
 						0,
-						3,
-						3,
-						13
+						6,
+						2,
+						9
 					],
 					"texture": "#0"
 				}
 			}
 		},
 		{
-			"name": "L3",
+			"name": "C5",
 			"from": [
-				8,
-				0,
-				6
+				5,
+				2,
+				10
 			],
 			"to": [
-				10,
-				2,
+				7,
+				5,
 				14
 			],
 			"faces": {
 				"north": {
 					"uv": [
-						3,
-						1,
-						5,
-						3
-					],
-					"texture": "#0"
-				},
-				"south": {
-					"uv": [
-						3,
-						1,
-						5,
-						3
-					],
-					"texture": "#0"
-				},
-				"up": {
-					"uv": [
-						3,
-						5,
-						5,
-						13
-					],
-					"texture": "#0"
-				},
-				"down": {
-					"uv": [
-						3,
-						5,
-						5,
-						13
-					],
-					"texture": "#0"
-				}
-			}
-		},
-		{
-			"name": "L7",
-			"from": [
-				7,
-				3,
-				6
-			],
-			"to": [
-				10,
-				6,
-				16
-			],
-			"faces": {
-				"north": {
-					"uv": [
 						0,
 						0,
-						3,
+						2,
 						3
 					],
 					"texture": "#0"
@@ -289,9 +327,9 @@
 				"east": {
 					"uv": [
 						0,
+						7,
 						3,
-						3,
-						13
+						11
 					],
 					"rotation": 90,
 					"texture": "#0"
@@ -300,7 +338,7 @@
 					"uv": [
 						0,
 						0,
-						3,
+						2,
 						3
 					],
 					"texture": "#0"
@@ -310,169 +348,198 @@
 						0,
 						3,
 						3,
-						13
+						7
 					],
 					"rotation": 90,
 					"texture": "#0"
 				},
 				"up": {
 					"uv": [
-						5,
 						3,
-						8,
-						13
-					],
-					"texture": "#0"
-				},
-				"down": {
-					"uv": [
-						5,
 						3,
-						8,
-						13
+						5,
+						7
 					],
 					"texture": "#0"
 				}
 			}
 		},
 		{
-			"name": "L5",
+			"name": "C6",
 			"from": [
-				3,
+				7,
 				2,
-				6
+				11
 			],
 			"to": [
-				5,
+				11,
 				4,
-				14
+				13
 			],
+			"rotation": {
+				"angle": -22.5,
+				"axis": "y",
+				"origin": [
+					9,
+					2,
+					12
+				]
+			},
 			"faces": {
 				"north": {
 					"uv": [
-						3,
+						4,
+						9,
+						6,
+						13
+					],
+					"rotation": 90,
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						4,
 						1,
-						5,
-						3
+						5.99,
+						2.99
 					],
 					"texture": "#0"
 				},
 				"south": {
 					"uv": [
-						3,
-						1,
-						5,
-						3
+						4,
+						7,
+						6,
+						11
 					],
+					"rotation": 90,
 					"texture": "#0"
 				},
 				"west": {
 					"uv": [
-						3,
 						4,
-						5,
-						12
+						1,
+						5.99,
+						2.99
 					],
-					"rotation": 270,
 					"texture": "#0"
 				},
 				"up": {
 					"uv": [
-						3,
 						4,
-						5,
-						12
+						3,
+						6,
+						7
 					],
-					"rotation": 180,
+					"rotation": 90,
 					"texture": "#0"
 				}
 			}
 		},
 		{
-			"name": "L6",
+			"name": "CBase",
 			"from": [
-				5,
-				3,
-				6
+				3.01,
+				0.01,
+				7.01
 			],
 			"to": [
-				7,
-				5,
-				15
+				12.99,
+				0.99,
+				14.99
 			],
 			"faces": {
-				"north": {
-					"uv": [
-						3,
-						1,
-						5,
-						3
-					],
-					"texture": "#0"
-				},
 				"south": {
 					"uv": [
-						3,
-						1,
-						5,
-						3
-					],
-					"texture": "#0"
-				},
-				"west": {
-					"uv": [
-						3,
-						3,
-						5,
-						12
+						8,
+						0,
+						8.98,
+						9.98
 					],
 					"rotation": 90,
 					"texture": "#0"
 				},
 				"up": {
 					"uv": [
-						3,
-						3,
-						5,
-						12
+						8.02,
+						0,
+						16,
+						9.98
 					],
+					"rotation": 90,
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [
+						8.02,
+						0,
+						16,
+						9.98
+					],
+					"rotation": 90,
 					"texture": "#0"
 				}
 			}
 		},
 		{
-			"name": "L8",
+			"name": "C7",
 			"from": [
-				10,
-				3,
-				6
+				3.005,
+				2.005,
+				10.005
 			],
 			"to": [
-				12,
-				5,
-				15
+				4.995,
+				3.995,
+				11.995
 			],
+			"rotation": {
+				"angle": 22.5,
+				"axis": "y",
+				"origin": [
+					4,
+					0,
+					10
+				]
+			},
 			"faces": {
 				"north": {
 					"uv": [
 						3,
-						1,
+						0,
 						5,
-						3
+						2
 					],
 					"texture": "#0"
 				},
 				"east": {
 					"uv": [
 						3,
-						3,
+						1,
 						5,
-						12
+						3
 					],
-					"rotation": 270,
 					"texture": "#0"
 				},
 				"south": {
+					"uv": [
+						3,
+						0,
+						5,
+						2
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						4,
+						1,
+						5.99,
+						2.99
+					],
+					"texture": "#0"
+				},
+				"up": {
 					"uv": [
 						3,
 						1,
@@ -480,13 +547,73 @@
 						3
 					],
 					"texture": "#0"
+				}
+			}
+		},
+		{
+			"name": "C8",
+			"from": [
+				9.005,
+				2.005,
+				12.005
+			],
+			"to": [
+				10.995,
+				4.995,
+				13.995
+			],
+			"rotation": {
+				"angle": 22.5,
+				"axis": "y",
+				"origin": [
+					4,
+					0,
+					10
+				]
+			},
+			"faces": {
+				"north": {
+					"uv": [
+						2,
+						3,
+						3.99,
+						5.99
+					],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [
+						0,
+						6,
+						1.99,
+						8.99
+					],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [
+						0,
+						3,
+						1.99,
+						5.99
+					],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [
+						2,
+						6,
+						3.99,
+						8.99
+					],
+					"texture": "#0"
 				},
 				"up": {
 					"uv": [
-						3,
-						3,
-						5,
-						12
+						4,
+						1,
+						5.99,
+						2.99
 					],
 					"texture": "#0"
 				}
@@ -495,11 +622,11 @@
 	],
 	"groups": [
 		{
-			"name": "FirewoodFuel",
+			"name": "CharcoalFuel",
 			"origin": [
-				8,
-				8,
-				8
+				4,
+				0,
+				10
 			],
 			"color": 0,
 			"children": [
@@ -510,7 +637,8 @@
 				4,
 				5,
 				6,
-				7
+				7,
+				8
 			]
 		}
 	]

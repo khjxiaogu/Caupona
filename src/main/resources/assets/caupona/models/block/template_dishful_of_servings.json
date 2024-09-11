@@ -2,6 +2,7 @@
 	"parent": "minecraft:block/cube",
 	"ambientocclusion": false,
 	"credit": "Made with Blockbench",
+	"loader":"caupona:layered",
 	"elements": [
 		{
 			"name": "servings3",
@@ -44,7 +45,7 @@
 	],
 	"groups": [
 		{
-			"name": "DishfulOfServings",
+			"name": "ServingsOnPlate",
 			"origin": [0, 0, 0],
 			"color": 0,
 			"children": [0, 1, 2]

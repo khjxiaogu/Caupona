@@ -1,0 +1,22 @@
+{
+  "type": "caupona:frying",
+  "allow": [
+    {
+      "type": "mainly",
+      "number": {
+        "type": "tag",
+        "tag": "caupona:meats/meat"
+      }
+    }
+  ],
+  "bowl": {
+    "item": "caupona:loaf_bowl"
+  },
+  "deny": [],
+  "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_meat",
+  "output": "caupona:sauteed_meat_loaf",
+  "priority": 64,
+  "removeNBT": false,
+  "time": 200
+}

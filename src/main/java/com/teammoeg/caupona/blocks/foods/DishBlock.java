@@ -28,6 +28,7 @@ import com.teammoeg.caupona.item.DishItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -119,8 +120,7 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 				}
 			} else {
 				if (player.canEat(fp.canAlwaysEat())) {
-					ItemStack iout = dish.internal.getCraftingRemainingItem();
-					player.eat(worldIn, dish.internal);
+					ItemStack iout = player.eat(worldIn, dish.internal);
 					dish.internal = iout;
 					if (dish.internal.is(Items.BOWL)) {
 						worldIn.setBlockAndUpdate(pos, CPBlocks.DISH.get().defaultBlockState());
@@ -139,6 +139,7 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		if (pLevel.getBlockEntity(pPos) instanceof DishBlockEntity dish) {
+			dish.setComponents(DataComponentMap.EMPTY);
 			dish.internal = pStack.copyWithCount(1);
 		}
 	}

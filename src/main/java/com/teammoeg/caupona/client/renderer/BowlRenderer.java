@@ -56,15 +56,23 @@ public class BowlRenderer implements BlockEntityRenderer<BowlBlockEntity> {
 		if (!blockEntity.getLevel().hasChunkAt(blockEntity.getBlockPos()))
 			return;
 		BlockState state = blockEntity.getBlockState();
-		if (state.getBlock() != CPBlocks.BOWL.get())
+		int type=0;
+		if (state.getBlock() == CPBlocks.BOWL.get()) {
+			type=1;
+		}else if(state.getBlock() == CPBlocks.LOAF_BOWL.get()) {
+			type=2;
+		}else
 			return;
-
+		
 		if (blockEntity.internal == null || !(blockEntity.internal.getItem() instanceof StewItem))
 			return;
 		FluidStack fs = Utils.extractFluid(blockEntity.internal);
 		matrixStack.pushPose();
 		if (fs != null && !fs.isEmpty() && fs.getFluid() != null) {
-			matrixStack.translate(0, .28125f, 0);
+			float y=type==2?.3125f:.28125f;
+			float lowerXZ=.28125f;
+			float higherXZ=.4375f;
+			matrixStack.translate(0, y, 0);
 			matrixStack.mulPose(GuiUtils.rotate90);
 
 			IClientFluidTypeExtensions attr = IClientFluidTypeExtensions.of(fs.getFluid());
@@ -77,7 +85,7 @@ public class BowlRenderer implements BlockEntityRenderer<BowlBlockEntity> {
 			float alp = 1f;
 
 			GuiUtils.drawTexturedColoredRect(builder, matrixStack,
-				.28125f, .28125f, .4375f, .4375f,
+				lowerXZ , lowerXZ, higherXZ, higherXZ,
 				(col >> 16 & 255) / 255.0f, (col >> 8 & 255) / 255.0f, (col & 255) / 255.0f, alp,
 				sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1(),
 					combinedLightIn, combinedOverlayIn);

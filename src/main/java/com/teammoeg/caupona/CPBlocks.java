@@ -74,6 +74,7 @@ import com.teammoeg.caupona.blocks.stove.KitchenStoveBlockEntity;
 import com.teammoeg.caupona.item.CPBlockItem;
 import com.teammoeg.caupona.item.CPSignItem;
 import com.teammoeg.caupona.item.DishItem;
+import com.teammoeg.caupona.item.LoafDishItem;
 import com.teammoeg.caupona.util.MaterialType;
 import com.teammoeg.caupona.util.TabType;
 
@@ -112,6 +113,7 @@ public class CPBlocks {
 	public static final String[] woods = new String[] { "walnut" };
 	// Dynamic block types
 	public static final MaterialType[] all_materials = new MaterialType[] {
+			new MaterialType("loaf_heap").makeDecoration(),
 			new MaterialType("mud").makeCounter(1),
 			new MaterialType("stone_brick").makeCounter(2).makeHypocaust(),
 			new MaterialType("stone").setBase(()->Blocks.STONE.defaultBlockState()).makePillar().makeRoad(),
@@ -272,7 +274,11 @@ public class CPBlocks {
 							.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
 							.isViewBlocking(CPBlocks::isntSolid)),
 					b -> new DishItem(b, CPItems.createSoupProps().get()));
-
+			baseblock(s+"_loaf",
+				() -> new DishBlock(Block.Properties.of().sound(SoundType.WOOD).instabreak().noOcclusion()
+							.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
+							.isViewBlocking(CPBlocks::isntSolid)),
+					b -> new LoafDishItem(b, CPItems.createLoafSoupProps().get()));
 		}
 	}
 	// Convenient block registry wrapper

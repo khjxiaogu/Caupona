@@ -1,0 +1,22 @@
+{
+  "type": "caupona:frying",
+  "allow": [
+    {
+      "type": "mainly",
+      "number": {
+        "type": "tag",
+        "tag": "caupona:vegetables/greens"
+      }
+    }
+  ],
+  "bowl": {
+    "item": "caupona:loaf_bowl"
+  },
+  "deny": [],
+  "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_greens",
+  "output": "caupona:sauteed_greens_loaf",
+  "priority": 128,
+  "removeNBT": false,
+  "time": 200
+}

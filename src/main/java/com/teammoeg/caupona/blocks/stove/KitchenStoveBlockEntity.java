@@ -23,10 +23,13 @@ package com.teammoeg.caupona.blocks.stove;
 
 import java.util.Objects;
 
+import com.google.common.collect.ImmutableSet;
 import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.CPTags.Blocks;
 import com.teammoeg.caupona.client.CPParticles;
+import com.teammoeg.caupona.client.ClientProxy;
+import com.teammoeg.caupona.client.util.DisplayGroupProperty;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.ChimneyHelper;
 import com.teammoeg.caupona.util.FuelType;
@@ -51,6 +54,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Container, MenuProvider, IStove, IInfinitable {
 	private NonNullList<ItemStack> fuel = NonNullList.withSize(1, ItemStack.EMPTY);
@@ -64,7 +69,8 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 	private int chimneyTicks = 0;
 	private int chimneyCheckTicks = 20;
 	boolean isInfinite = false;
-	public FuelType last = FuelType.OTHER;
+	public FuelType inventory_fuel = FuelType.OTHER;
+	public FuelType current=FuelType.OTHER;
 
 	public KitchenStoveBlockEntity(BlockEntityType<KitchenStoveBlockEntity> tet, BlockPos p, BlockState s, int spd) {
 		super(tet, p, s);
@@ -86,22 +92,30 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 			attachedChimney = BlockPos.of(nbt.getLong("chimneyPos"));
 		else
 			attachedChimney = null;
-		last = FuelType.values()[nbt.getInt("fuel_type")];
+		inventory_fuel = FuelType.parse(nbt.getString("fuel_type"));
+		current = FuelType.parse(nbt.getString("current_fuel"));
 		if (!isClient) {
 			cd = nbt.getInt("cd");
 			fuel.set(0, ItemStack.parseOptional(registries,nbt.getCompound("fuel")));
 			chimneyTicks = nbt.getInt("chimneyTick");
 			isInfinite = nbt.getBoolean("inf");
 		}
+		refreshModel();
 	}
-
+	public void refreshModel() {
+		if(this.getLevel().isClientSide) {
+			getLevel().getModelDataManager().requestRefresh(this);
+			getLevel().sendBlockUpdated(this.getBlockPos(), getBlockState(),getBlockState(),3);
+		}
+	}
 	@Override
 	public void writeCustomNBT(CompoundTag nbt, boolean isClient, HolderLookup.Provider registries) {
 		nbt.putInt("process", process);
 		nbt.putInt("processMax", processMax);
 		if (attachedChimney != null)
 			nbt.putLong("chimneyPos", attachedChimney.asLong());
-		nbt.putInt("fuel_type", last.ordinal());
+		nbt.putString("fuel_type", inventory_fuel.serialize());
+		nbt.putString("current_fuel", current.serialize());
 		if (!isClient) {
 			nbt.putInt("cd", cd);
 			nbt.put("fuel", fuel.get(0).saveOptional(registries));
@@ -111,8 +125,17 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 	}
 
 	@Override
+	public ModelData getModelData() {
+		String ash=this.getBlockState().getValue(BlockStateProperties.LIT)?current.hot_ash():current.cold_ash();
+		String model=inventory_fuel.modelLayer();
+		return ModelData.builder().with(DisplayGroupProperty.PROPERTY, ash==null?(model!=null?ImmutableSet.of(model):ImmutableSet.of()):(model!=null?ImmutableSet.of(model,ash):ImmutableSet.of(ash))).build();
+	}
+
+	@Override
 	public void clearContent() {
 		fuel.clear();
+		inventory_fuel=FuelType.OTHER;
+		refreshModel();
 	}
 
 	@Override
@@ -132,11 +155,16 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 
 	@Override
 	public ItemStack removeItem(int index, int count) {
-		return ContainerHelper.removeItem(fuel, index, count);
+		ItemStack removed=ContainerHelper.removeItem(fuel, index, count);
+		inventory_fuel=FuelType.getType(fuel.get(0));
+		refreshModel();
+		return removed;
 	}
 
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
+		inventory_fuel=FuelType.OTHER;
+		refreshModel();
 		return ContainerHelper.takeItem(fuel, index);
 	}
 
@@ -146,6 +174,8 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 		if (stack.getCount() > this.getMaxStackSize()) {
 			stack.setCount(this.getMaxStackSize());
 		}
+		inventory_fuel=FuelType.getType(fuel.get(0));
+		refreshModel();
 	}
 
 	@Override
@@ -173,10 +203,13 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 		int time = fuel.get(0).getBurnTime(RecipeType.SMELTING);
 		if (time <= 0) {
 			process = processMax = 0;
+			current=FuelType.OTHER;
 			return false;
 		}
-		last = FuelType.getType(fuel.get(0));
+		current = FuelType.getType(fuel.get(0));
+		
 		fuel.get(0).shrink(1);
+		inventory_fuel=FuelType.getType(fuel.get(0));
 		float ftime = time * fuelMod / speed;
 		float frac = Mth.frac(ftime);
 		if (frac > 0)
@@ -185,13 +218,13 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 			processMax = process = (int) ftime;
 		return true;
 	}
-
+	boolean syncNeeded=false;
 	@SuppressWarnings("resource")
 	@Override
 	public void tick() {
 		if (!level.isClientSide) {// server logic
 			BlockState bs = this.getBlockState();
-			boolean syncNeeded=false;
+			
 			chimneyTicks++;
 			if (chimneyTicks >= chimneyCheckTicks) {
 				chimneyTicks = 0;
@@ -204,31 +237,16 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 				}
 			}
 			boolean flag = false;
-			if (process <= 0 && (bs.getValue(KitchenStove.LIT) || bs.getValue(KitchenStove.ASH))) {
-				bs = bs.setValue(KitchenStove.LIT, false).setValue(KitchenStove.ASH, false);
+			if (process <= 0 && (bs.getValue(KitchenStove.LIT))) {
+				bs = bs.setValue(KitchenStove.LIT, false);
 				flag = true;
-			}
-			int fs = bs.getValue(KitchenStove.FUELED);
-			if (!fuel.get(0).isEmpty()) {
-				FuelType type = FuelType.getType(fuel.get(0));
-				if (type.getModelId() != fs) {
-					flag = true;
-					bs = bs.setValue(KitchenStove.FUELED, type.getModelId());
-				}
-			} else if (fs != 0) {
-				flag = true;
-				bs = bs.setValue(KitchenStove.FUELED, 0);
 			}
 			if (process > 0) {
-				if (!bs.getValue(KitchenStove.ASH)) {
-					flag = true;
-					bs = bs.setValue(KitchenStove.ASH, true);
-				}
 				if (bs.getValue(KitchenStove.LIT)) {
 					cd--;
 					if (!isInfinite) {
 						process--;
-						syncNeeded=true;
+						
 					}
 					if (attachedChimney != null) {
 						if (this.getLevel().getBlockEntity(attachedChimney) instanceof ChimneyPotBlockEntity chimney) {
@@ -239,12 +257,15 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 						bs = bs.setValue(KitchenStove.LIT, false);
 						flag = true;
 					}
+					this.setChanged();
 				}
 			}
 			if (flag)
 				this.level.setBlockAndUpdate(this.getBlockPos(), bs);
-			if(syncNeeded)
+			if(syncNeeded) {
+				syncNeeded=false;
 				this.syncData();
+			}
 		} else {// client particles
 			if (this.getBlockState().getValue(KitchenStove.LIT)) {
 				double d0 = this.getBlockPos().getX();
@@ -278,6 +299,8 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 			if (!consumeFuel()) {
 				return 0;
 			}
+			syncNeeded=true;
+			this.setChanged();
 			if (!isInfinite)
 				process--;
 		}

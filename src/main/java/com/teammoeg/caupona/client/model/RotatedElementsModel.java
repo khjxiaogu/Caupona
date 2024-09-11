@@ -1,4 +1,4 @@
-package com.teammoeg.caupona.client.util;
+package com.teammoeg.caupona.client.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.mojang.math.Transformation;
 import com.mojang.serialization.JsonOps;
-import com.teammoeg.caupona.client.util.RotatedBakedModel.Builder;
+import com.teammoeg.caupona.client.model.RotatedBakedModel.Builder;
 
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockElement;

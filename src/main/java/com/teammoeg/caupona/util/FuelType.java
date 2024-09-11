@@ -21,6 +21,10 @@
 
 package com.teammoeg.caupona.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 import com.teammoeg.caupona.CPMain;
 
 import net.minecraft.resources.ResourceLocation;
@@ -29,27 +33,63 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public enum FuelType {
-	WOODS(2, "fuel/woods"), CHARCOAL(1, "fuel/charcoals"), FOSSIL(3, "fuel/fossil"), GEOTHERMAL(0, "fuel/lava"),
-	OTHER(0, "fuel/others");
+public record FuelType (TagKey<Item> it,String modelLayer,String cold_ash,String hot_ash){
+	private static final Map<ResourceLocation,FuelType> types=new HashMap<>();
+	public static final FuelType WOODS=register(new FuelType("fuel/woods","FirewoodFuel","ColdAsh","HotAsh"));
+	public static final FuelType CHARCOAL=register(new FuelType("fuel/charcoals","CharcoalFuel","ColdAsh","HotAsh"));
+	public static final FuelType FOSSIL=register(new FuelType("fuel/fossil","CharcoalFuel","ColdAsh","HotAsh"));
+	public static final FuelType GEOTHERMAL=register(new FuelType("fuel/lava",null,null,null));
+	public static final FuelType OTHER=register(new FuelType("fuel/others",null,null,null));
+	
 
-	private final int modelId;
-	private final TagKey<Item> it;
 
-	private FuelType(int modelId, String tagname) {
-		this.modelId = modelId;
-		it = ItemTags.create(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, tagname));
+	public static final FuelType register(FuelType type) {
+		//FuelType orig=types.get(type.it.location());
+		types.put(type.it.location(), type);
+		return type;
+	}
+
+
+	public FuelType(String tagname,String modelLayer, String hot_ash, String cold_ash) {
+		this(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, tagname),modelLayer,hot_ash,cold_ash);
+	}
+	public FuelType(ResourceLocation tag,String modelLayer, String hot_ash, String cold_ash) {
+		this(ItemTags.create(tag),modelLayer,hot_ash,cold_ash);
 	}
 
 	public static FuelType getType(ItemStack is) {
-		for (FuelType ft : FuelType.values()) {
+		if(is.isEmpty())
+			return FuelType.OTHER;
+		for (FuelType ft : types.values()) {
 			if (is.is(ft.it))
 				return ft;
 		}
 		return FuelType.OTHER;
 	}
+	public static FuelType parse(String toParse) {
+		return types.getOrDefault(ResourceLocation.parse(toParse),FuelType.OTHER);
+	}
+	public String serialize() {
+		return it.location().toString();
+	}
 
-	public int getModelId() {
-		return modelId;
+
+	public TagKey<Item> it() {
+		return it;
+	}
+
+
+	public String modelLayer() {
+		return modelLayer;
+	}
+
+
+	public String cold_ash() {
+		return cold_ash;
+	}
+
+
+	public String hot_ash() {
+		return hot_ash;
 	}
 }

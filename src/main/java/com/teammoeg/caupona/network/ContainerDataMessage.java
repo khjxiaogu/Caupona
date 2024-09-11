@@ -52,12 +52,7 @@ public class ContainerDataMessage implements CustomPacketPayload{
 	}
 
 	void handle(IPayloadContext context) {
-		context.enqueueWork(()->
-		{
-			ClientProxy.data = nbt;
-			if(FMLEnvironment.dist==Dist.CLIENT)
-				ClientProxy.run();
-		});
+		context.enqueueWork(()->ClientProxy.syncContainerInfo(nbt));
 	}
 
 	@Override

@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.teammoeg.caupona.client.CPParticles;
 import com.teammoeg.caupona.network.PacketHandler;
+import com.teammoeg.caupona.util.FuelType;
 import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.registries.Registries;
@@ -78,6 +79,7 @@ public class CPMain {
 		CPData.LOOT_MODIFIERS.register(mod);//
 		CPCapability.REGISTRY.register(mod);//
 		CPConfig.register();
+		FuelType.OTHER.cold_ash();
 	}
 
 	@SuppressWarnings("unused")

@@ -9,8 +9,12 @@
       }
     }
   ],
+  "bowl": {
+    "item": "minecraft:bowl"
+  },
   "deny": [],
   "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_vegetables",
   "output": "caupona:sauteed_vegetables",
   "priority": 64,
   "removeNBT": false,

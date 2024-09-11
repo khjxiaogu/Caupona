@@ -1,4 +1,4 @@
-package com.teammoeg.caupona.client.util;
+package com.teammoeg.caupona.client.model;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -12,7 +12,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.teammoeg.caupona.client.util.LayeredBakedModel.Builder;
+import com.teammoeg.caupona.client.model.LayeredBakedModel.Builder;
 
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockElement;
@@ -49,7 +49,7 @@ public class LayeredElementsModel implements IUnbakedGeometry<LayeredElementsMod
     {
 		try {
         TextureAtlasSprite particle = spriteGetter.apply(context.getMaterial("particle"));
-
+        
         var renderTypeHint = context.getRenderTypeHint();
         var renderTypes = renderTypeHint != null ? context.getRenderType(renderTypeHint) : RenderTypeGroup.EMPTY;
         Builder builder = new LayeredBakedModel.Builder(context.useAmbientOcclusion(), context.useBlockLight(), context.isGui3d(),

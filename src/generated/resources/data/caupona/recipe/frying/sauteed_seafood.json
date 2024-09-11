@@ -9,8 +9,12 @@
       }
     }
   ],
+  "bowl": {
+    "item": "minecraft:bowl"
+  },
   "deny": [],
   "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_seafood",
   "output": "caupona:sauteed_seafood",
   "priority": 64,
   "removeNBT": false,

@@ -27,6 +27,7 @@ import java.util.function.Supplier;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.CPItems;
+import com.teammoeg.caupona.components.ItemHoldedFluidData;
 import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
 import com.teammoeg.caupona.util.FloatemStack;
@@ -37,6 +38,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -78,6 +80,7 @@ public class StewItem extends EdibleBlock{
 		if (helper.isFoodTab()) {
 			ItemStack is = new ItemStack(this);
 			is.set(CPCapability.STEW_INFO, new StewInfo(fluid.get()).toImmutable());
+			is.set(CPCapability.ITEM_FLUID, new ItemHoldedFluidData(fluid.get()));
 			super.addCreativeHints(is);
 			helper.accept(is);
 		}
@@ -103,7 +106,7 @@ public class StewItem extends EdibleBlock{
 	public FoodProperties getFoodProperties(ItemStack stack, LivingEntity entity) {
 		StewInfo info = stack.get(CPCapability.STEW_INFO);
 		if(info==null)return null;
-		return info.getFood();
+		return info.getFood(0,0).usingConvertsTo(Items.BOWL).build();
 		
 	}
 }

@@ -23,11 +23,14 @@ package com.teammoeg.caupona.item;
 
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.blocks.foods.DishBlock;
 import com.teammoeg.caupona.components.IFoodInfo;
 import com.teammoeg.caupona.components.SauteedFoodInfo;
+import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.Utils;
 
@@ -81,7 +84,9 @@ public class DishItem extends EdibleBlock {
 
 	@Override
 	public FoodProperties getFoodProperties(ItemStack stack, LivingEntity entity) {
-		return CPCapability.FOOD_INFO.getCapability(stack, null).getFood();
+		@Nullable SauteedFoodInfo info = stack.get(CPCapability.SAUTEED_INFO);
+		if(info==null)return null;
+		return info.getFood(0,0).usingConvertsTo(Items.BOWL).build();
 		
 	}
 }

@@ -26,6 +26,7 @@ import com.teammoeg.caupona.item.StewItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -92,10 +94,12 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 				}
 			} else {
 				if (player.canEat(fp.canAlwaysEat())) {
-					ItemStack iout = bowl.internal.getCraftingRemainingItem();
-					player.eat(worldIn, bowl.internal);
+					ItemStack iout = player.eat(worldIn, bowl.internal);
 					bowl.internal = iout;
-					bowl.syncData();
+					if(!bowl.internal.isEmpty()) {
+						bowl.syncData();
+					}else
+						worldIn.removeBlock(pos, false);
 				}
 			}
 			return InteractionResult.SUCCESS;
@@ -107,6 +111,7 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, LivingEntity pPlacer, ItemStack pStack) {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		if (pLevel.getBlockEntity(pPos) instanceof BowlBlockEntity bowl) {
+			bowl.setComponents(DataComponentMap.EMPTY);
 			bowl.internal = pStack.copyWithCount(1);
 		}
 	}

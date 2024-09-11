@@ -223,17 +223,31 @@ public class CPRecipeProvider extends RecipeProvider {
 
 	private void frying(BiConsumer<ResourceLocation, IDataRecipe> out) {
 		out = out.andThen((r1,r2)->recipes.add(Pair.of(r1, r2)));
-		fry("huevos_pericos").high().require().mainly().of(EGGS).and().then().finish(out);
-		fry("sauteed_beef").high().require().mainly().of(ftag("raw_beef")).and().then().finish(out);
-		fry("sauteed_greens").high().require().mainly().of(GREENS).and().then().finish(out);
-		fry("sauteed_meat").med().require().mainly().of(MEAT).and().then().finish(out);
-		fry("sauteed_mushrooms").high().require().mainly().of(MUSHROOMS).and().then().finish(out);
-		fry("sauteed_roots").high().require().mainly().of(ROOTS).and().then().finish(out);
-		fry("sauteed_seafood").med().require().mainly().of(SEAFOOD).and().then().finish(out);
-		fry("sauteed_vegetables").med().require().mainly().of(VEGETABLES).and().then().finish(out);
-		fry("seared_fillet").med().require().mainly().of(FISH).and().then().finish(out);
-		fry("seared_poultry").high().require().mainly().of(POULTRY).and().then().finish(out);
-		fry("sauteed_hodgepodge").low().finish(out);
+		Ingredient BOWL=Ingredient.of(Items.BOWL);
+		fry("huevos_pericos").high().require().mainly().of(EGGS).and().then().finish(out,BOWL);
+		fry("sauteed_beef").high().require().mainly().of(ftag("raw_beef")).and().then().finish(out,BOWL);
+		fry("sauteed_greens").high().require().mainly().of(GREENS).and().then().finish(out,BOWL);
+		fry("sauteed_meat").med().require().mainly().of(MEAT).and().then().finish(out,BOWL);
+		fry("sauteed_mushrooms").high().require().mainly().of(MUSHROOMS).and().then().finish(out,BOWL);
+		fry("sauteed_roots").high().require().mainly().of(ROOTS).and().then().finish(out,BOWL);
+		fry("sauteed_seafood").med().require().mainly().of(SEAFOOD).and().then().finish(out,BOWL);
+		fry("sauteed_vegetables").med().require().mainly().of(VEGETABLES).and().then().finish(out,BOWL);
+		fry("seared_fillet").med().require().mainly().of(FISH).and().then().finish(out,BOWL);
+		fry("seared_poultry").high().require().mainly().of(POULTRY).and().then().finish(out,BOWL);
+		fry("sauteed_hodgepodge").low().finish(out,BOWL);
+		BOWL=Ingredient.of(CPBlocks.LOAF_BOWL.get());
+		
+		fry("huevos_pericos","_loaf").high().require().mainly().of(EGGS).and().then().finish(out,BOWL);
+		fry("sauteed_beef","_loaf").high().require().mainly().of(ftag("raw_beef")).and().then().finish(out,BOWL);
+		fry("sauteed_greens","_loaf").high().require().mainly().of(GREENS).and().then().finish(out,BOWL);
+		fry("sauteed_meat","_loaf").med().require().mainly().of(MEAT).and().then().finish(out,BOWL);
+		fry("sauteed_mushrooms","_loaf").high().require().mainly().of(MUSHROOMS).and().then().finish(out,BOWL);
+		fry("sauteed_roots","_loaf").high().require().mainly().of(ROOTS).and().then().finish(out,BOWL);
+		fry("sauteed_seafood","_loaf").med().require().mainly().of(SEAFOOD).and().then().finish(out,BOWL);
+		fry("sauteed_vegetables","_loaf").med().require().mainly().of(VEGETABLES).and().then().finish(out,BOWL);
+		fry("seared_fillet","_loaf").med().require().mainly().of(FISH).and().then().finish(out,BOWL);
+		fry("seared_poultry","_loaf").high().require().mainly().of(POULTRY).and().then().finish(out,BOWL);
+		fry("sauteed_hodgepodge","_loaf").low().finish(out,BOWL);
 	}
 
 	private void stewCooking(BiConsumer<ResourceLocation, IDataRecipe> out) {
@@ -339,9 +353,12 @@ public class CPRecipeProvider extends RecipeProvider {
 		return StewRecipeBuilder.start(fluid(mrl(s)));
 	}
 	
-
 	private SauteedRecipeBuilder fry(String s) {
-		return SauteedRecipeBuilder.start(item(mrl(s)));
+		return fry(s,"");
+	}
+
+	private SauteedRecipeBuilder fry(String s, String addition) {
+		return SauteedRecipeBuilder.start(mrl("dynamic/"+s), item(mrl(s+addition)));
 	}
 
 	private Item item(ResourceLocation rl) {

@@ -1,0 +1,22 @@
+{
+  "type": "caupona:frying",
+  "allow": [
+    {
+      "type": "mainly",
+      "number": {
+        "type": "tag",
+        "tag": "caupona:seafood/fish"
+      }
+    }
+  ],
+  "bowl": {
+    "item": "caupona:loaf_bowl"
+  },
+  "deny": [],
+  "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/seared_fillet",
+  "output": "caupona:seared_fillet_loaf",
+  "priority": 64,
+  "removeNBT": false,
+  "time": 200
+}

@@ -38,6 +38,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -45,7 +46,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
-	public SauteedRecipe(List<IngredientCondition> allow, List<IngredientCondition> deny, int priority, int time, Item output, boolean removeNBT, float count) {
+
+
+	public SauteedRecipe(List<IngredientCondition> allow, List<IngredientCondition> deny, int priority, int time, Item output, boolean removeNBT, float count, Ingredient bowl, ResourceLocation model) {
 		super();
 		this.allow = allow;
 		this.deny = deny;
@@ -54,6 +57,8 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 		this.output = output;
 		this.removeNBT = removeNBT;
 		this.count = count;
+		this.bowl = bowl;
+		this.model=model;
 	}
 
 	public static Set<CookIngredients> cookables;
@@ -83,6 +88,8 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 	public Item output;
 	public boolean removeNBT=false;
 	public float count=2f;
+	public Ingredient bowl;
+	public ResourceLocation model;
 	public static final MapCodec<SauteedRecipe> CODEC=
 		RecordCodecBuilder.mapCodec(t->t.group(
 			Codec.list(Conditions.CODEC).optionalFieldOf("allow").forGetter(o->Optional.ofNullable(o.allow)),
@@ -91,7 +98,9 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 			Codec.INT.fieldOf("time").forGetter(o->o.time),
 			BuiltInRegistries.ITEM.byNameCodec().fieldOf("output").forGetter(o->o.output),
 			Codec.BOOL.fieldOf("removeNBT").forGetter(o->o.removeNBT),
-			Codec.FLOAT.fieldOf("ingredientPerDish").forGetter(o->o.count)
+			Codec.FLOAT.fieldOf("ingredientPerDish").forGetter(o->o.count),
+			Ingredient.CODEC.fieldOf("bowl").forGetter(o->o.bowl),
+			ResourceLocation.CODEC.fieldOf("model").forGetter(o->o.model)
 				).apply(t, SauteedRecipe::new));
 
 /*
@@ -105,7 +114,7 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 		count=data.readFloat();
 	}*/
 	public SauteedRecipe(Optional<List<IngredientCondition>> allow, Optional<List<IngredientCondition>> deny,
-			int priority, int time, Item output,boolean removeNBT,float count) {
+			int priority, int time, Item output,boolean removeNBT,float count,Ingredient bowl,ResourceLocation model) {
 		this.allow = allow.orElse(null);
 		this.deny = deny.orElse(null);
 		this.priority = priority;
@@ -113,6 +122,8 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 		this.output = output;
 		this.removeNBT=removeNBT;
 		this.count=count;
+		this.bowl=bowl;
+		this.model=model;
 	}
 /*
 	public void write(FriendlyByteBuf data) {

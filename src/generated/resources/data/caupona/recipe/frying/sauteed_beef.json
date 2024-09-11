@@ -9,8 +9,12 @@
       }
     }
   ],
+  "bowl": {
+    "item": "minecraft:bowl"
+  },
   "deny": [],
   "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_beef",
   "output": "caupona:sauteed_beef",
   "priority": 128,
   "removeNBT": false,

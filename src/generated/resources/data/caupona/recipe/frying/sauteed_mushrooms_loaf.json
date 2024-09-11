@@ -1,0 +1,22 @@
+{
+  "type": "caupona:frying",
+  "allow": [
+    {
+      "type": "mainly",
+      "number": {
+        "type": "tag",
+        "tag": "caupona:mushroom"
+      }
+    }
+  ],
+  "bowl": {
+    "item": "caupona:loaf_bowl"
+  },
+  "deny": [],
+  "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_mushrooms",
+  "output": "caupona:sauteed_mushrooms_loaf",
+  "priority": 128,
+  "removeNBT": false,
+  "time": 200
+}

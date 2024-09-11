@@ -1,0 +1,22 @@
+{
+  "type": "caupona:frying",
+  "allow": [
+    {
+      "type": "mainly",
+      "number": {
+        "type": "tag",
+        "tag": "caupona:vegetables/roots"
+      }
+    }
+  ],
+  "bowl": {
+    "item": "caupona:loaf_bowl"
+  },
+  "deny": [],
+  "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/sauteed_roots",
+  "output": "caupona:sauteed_roots_loaf",
+  "priority": 128,
+  "removeNBT": false,
+  "time": 200
+}

@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import com.teammoeg.caupona.CPMain;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
@@ -22,6 +23,7 @@ public class DynamicBlockModelReference implements Supplier<BakedModel>,Function
 	static {
 		RANDOM_SOURCE.setSeed(42L);
 	}
+	public static final Function<ResourceLocation,DynamicBlockModelReference> cache=Util.memoize(DynamicBlockModelReference::new);
 	public DynamicBlockModelReference(String name)
 	{
 		this.name = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/dynamic/"+name));

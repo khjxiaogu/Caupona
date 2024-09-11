@@ -3,9 +3,10 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"0": "caupona:block/kitchen_stove_hot_ash",
-		"particle": "caupona:block/kitchen_stove_hot_ash"
+		"0": "caupona:block/kitchen_stove_ash",
+		"particle": "caupona:block/kitchen_stove_ash"
 	},
+	"loader":"caupona:layered",
 	"elements": [
 		{
 			"name": "ashB",

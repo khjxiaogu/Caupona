@@ -42,7 +42,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -55,8 +54,8 @@ public class KitchenStove extends CPRegisteredEntityBlock<KitchenStoveBlockEntit
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
-	public static final BooleanProperty ASH = BooleanProperty.create("ash");
-	public static final IntegerProperty FUELED = IntegerProperty.create("fueled", 0, 3);
+	//public static final BooleanProperty ASH = BooleanProperty.create("ash");
+	//public static final IntegerProperty FUELED = IntegerProperty.create("fueled", 0, 3);
 
 	public KitchenStove(Properties blockProps, DeferredHolder<BlockEntityType<?>,BlockEntityType<KitchenStoveBlockEntity>> ste) {
 		super(blockProps, ste);
@@ -110,12 +109,12 @@ public class KitchenStove extends CPRegisteredEntityBlock<KitchenStoveBlockEntit
 	protected void createBlockStateDefinition(
 			net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(FACING).add(LIT).add(FUELED).add(ASH);
+		builder.add(FACING).add(LIT);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(LIT, false).setValue(ASH, false).setValue(FUELED, 0).setValue(FACING,
+		return this.defaultBlockState().setValue(LIT, false).setValue(FACING,
 				context.getHorizontalDirection().getOpposite());
 
 	}
