@@ -100,8 +100,10 @@ public class CPItemModelProvider extends ItemModelProvider {
 		// ResourceLocation(Main.MODID,"block/clay_cistern"));
 		for (String s : CPItems.spices)
 			simpleTexture(s, "");
-		for (String s : CPItems.dishes)
+		for (String s : CPItems.dishes) {
 			simpleTexture(s, "sauteed_dishes/");
+			//simpleTexture(s+"_loaf", "bread_bowls/");
+		}
 		texture("gravy_boat", "walnut_oil_0").override().predicate(ResourceLocation.withDefaultNamespace("damaged"), 1)
 				.predicate(ResourceLocation.withDefaultNamespace("damage"), 0.2f).model(texture("walnut_oil_1")).end().override()
 				.predicate(ResourceLocation.withDefaultNamespace("damaged"), 1).predicate(ResourceLocation.withDefaultNamespace("damage"), 0.4f)

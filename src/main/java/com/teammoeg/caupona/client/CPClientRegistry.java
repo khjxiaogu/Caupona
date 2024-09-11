@@ -38,6 +38,7 @@ import com.teammoeg.caupona.client.particle.SteamParticle;
 import com.teammoeg.caupona.client.renderer.BowlRenderer;
 import com.teammoeg.caupona.client.renderer.CPBoatRenderer;
 import com.teammoeg.caupona.client.renderer.CounterDoliumRenderer;
+import com.teammoeg.caupona.client.renderer.LoafBowlRenderer;
 import com.teammoeg.caupona.client.renderer.MosaicRenderer;
 import com.teammoeg.caupona.client.renderer.PanRenderer;
 import com.teammoeg.caupona.client.renderer.StewPotRenderer;
@@ -95,6 +96,8 @@ public class CPClientRegistry {
 		BlockEntityRenderers.register(CPBlockEntityTypes.SIGN.get(), SignRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.DOLIUM.get(), CounterDoliumRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.PAN.get(), PanRenderer::new);
+		//BlockEntityRenderers.register(CPBlockEntityTypes.BOWL.get(), LoafBowlRenderer::new);
+		
 		Sheets.addWoodType(CPBlocks.WALNUT);
 		EntityRenderers.register(CPEntityTypes.BOAT.get(), c -> new CPBoatRenderer(c, false));
 

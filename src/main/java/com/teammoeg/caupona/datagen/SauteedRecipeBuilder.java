@@ -33,6 +33,7 @@ import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class SauteedRecipeBuilder {
 
@@ -44,14 +45,16 @@ public class SauteedRecipeBuilder {
 	private ResourceLocation id;
 	private boolean removeNBT=false;
 	private float per=2;
-	public SauteedRecipeBuilder(ResourceLocation id, Item out) {
+	private ResourceLocation model;
+	public SauteedRecipeBuilder(ResourceLocation id, Item out,ResourceLocation model) {
 		output = out;
 		this.id = id;
+		this.model=model;
 	}
 
-	public static SauteedRecipeBuilder start(Item out) {
+	public static SauteedRecipeBuilder start(ResourceLocation model, Item out) {
 		return new SauteedRecipeBuilder(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "frying/" + Utils.getRegistryName(out).getPath()),
-				out);
+				out,model);
 	}
 
 	public IngredientConditionsBuilder<SauteedRecipeBuilder> require() {
@@ -98,12 +101,12 @@ public class SauteedRecipeBuilder {
 		this.per=num;
 		return this;
 	}
-	public SauteedRecipe end() {
-		return new SauteedRecipe(allow, deny, priority, time, output,removeNBT,per);
+	public SauteedRecipe end(Ingredient bowl) {
+		return new SauteedRecipe(allow, deny, priority, time, output,removeNBT,per,bowl,model);
 	}
 
-	public SauteedRecipe finish(BiConsumer<ResourceLocation, IDataRecipe> out) {
-		SauteedRecipe r = end();
+	public SauteedRecipe finish(BiConsumer<ResourceLocation, IDataRecipe> out,Ingredient bowl) {
+		SauteedRecipe r = end(bowl);
 		out.accept(id,r);
 		return r;
 	}

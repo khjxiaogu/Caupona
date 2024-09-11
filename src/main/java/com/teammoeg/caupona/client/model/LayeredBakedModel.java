@@ -1,13 +1,26 @@
-package com.teammoeg.caupona.client.util;
+package com.teammoeg.caupona.client.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
+import com.teammoeg.caupona.client.util.DisplayGroupProperty;
+
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModel;
@@ -19,31 +32,35 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.common.util.ConcatenatedListView;
 
-public class RotatedBakedModel implements BakedModel {
-	protected final Int2ObjectMap<List<BakedQuad>> faces;
+public class LayeredBakedModel implements BakedModel {
+	protected Map<String,List<BakedQuad>> faces;
+	protected Map<ImmutableSet<String>,List<BakedQuad>> modelCache=new ConcurrentHashMap<>();
+	private Function<ImmutableSet<String>,List<BakedQuad>> cacheFunction;
+	protected List<BakedQuad> unculledFaces;
 	protected final boolean hasAmbientOcclusion;
 	protected final boolean isGui3d;
 	protected final boolean usesBlockLight;
 	protected final TextureAtlasSprite particleIcon;
 	protected final ItemTransforms transforms;
 	protected final ItemOverrides overrides;
-	protected final float degree;
 	public final int cacheNo=0;
 	protected final net.neoforged.neoforge.client.ChunkRenderTypeSet blockRenderTypes;
 	protected final List<net.minecraft.client.renderer.RenderType> itemRenderTypes;
 	protected final List<net.minecraft.client.renderer.RenderType> fabulousItemRenderTypes;
-	/*public RotatedBakedModel(List<BakedQuad> pUnculledFaces, boolean pHasAmbientOcclusion, boolean pUsesBlockLight,
+	//private final Function<Map.Entry<String,int[]>,IntStream> values;
+	private final IntFunction<BakedQuad> tobaked;
+	public LayeredBakedModel(List<BakedQuad> pUnculledFaces, boolean pHasAmbientOcclusion, boolean pUsesBlockLight,
 			boolean pIsGui3d, TextureAtlasSprite pParticleIcon, ItemTransforms pTransforms, ItemOverrides pOverrides) {
-		this(pUnculledFaces,pHasAmbientOcclusion, pUsesBlockLight, pIsGui3d, pParticleIcon, pTransforms, pOverrides,
+		this(pUnculledFaces,new HashMap<>(),pHasAmbientOcclusion, pUsesBlockLight, pIsGui3d, pParticleIcon, pTransforms, pOverrides,
 				net.neoforged.neoforge.client.RenderTypeGroup.EMPTY);
-	}*/
+	}
 
-	public RotatedBakedModel(Int2ObjectMap<List<BakedQuad>> faces,float degree, boolean pHasAmbientOcclusion, boolean pUsesBlockLight,
+	public LayeredBakedModel(List<BakedQuad> pUnculledFaces,Map<String,int[]> names, boolean pHasAmbientOcclusion, boolean pUsesBlockLight,
 			boolean pIsGui3d, TextureAtlasSprite pParticleIcon, ItemTransforms pTransforms, ItemOverrides pOverrides,
 			net.neoforged.neoforge.client.RenderTypeGroup renderTypes) {
-		this.faces = faces;
-		this.degree=degree;
+		this.unculledFaces = pUnculledFaces;
 		this.hasAmbientOcclusion = pHasAmbientOcclusion;
 		this.isGui3d = pIsGui3d;
 		this.usesBlockLight = pUsesBlockLight;
@@ -51,20 +68,32 @@ public class RotatedBakedModel implements BakedModel {
 		this.transforms = pTransforms;
 		this.overrides = pOverrides;
 		//values=t->Arrays.stream(t.getValue());
+		tobaked=unculledFaces::get;
+		this.faces=names.entrySet().stream().collect(Collectors.toMap(t->t.getKey(),t->IntStream.of(t.getValue()).mapToObj(tobaked).collect(Collectors.toUnmodifiableList())));
 		this.blockRenderTypes = !renderTypes.isEmpty()
 				? net.neoforged.neoforge.client.ChunkRenderTypeSet.of(renderTypes.block())
 				: null;
 		this.itemRenderTypes = !renderTypes.isEmpty() ? List.of(renderTypes.entity()) : null;
 		this.fabulousItemRenderTypes = !renderTypes.isEmpty() ? List.of(renderTypes.entityFabulous()) : null;
+		cacheFunction=t->{
+			List<List<BakedQuad>> listview=new ArrayList<>(t.size());
+			for(String s:t) {
+				List<BakedQuad> face=faces.get(s);
+				if(face!=null)
+					listview.add(face);
+			}
+			return ConcatenatedListView.of(listview);
+		};
 
 	}
 
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData data, @Nullable RenderType renderType) {
-		@Nullable Float groups=data.get(RotationProperty.PROPERTY);
+		ImmutableSet<String> groups=data.get(DisplayGroupProperty.PROPERTY);
 		if(groups!=null) {
-			return faces.get(((int)(groups/degree))%faces.size());
+			
+			return modelCache.computeIfAbsent(groups,cacheFunction);
 		}
-		return faces.get(0);
+		return this.unculledFaces;
 	}
 
 	public boolean useAmbientOcclusion() {
@@ -118,8 +147,8 @@ public class RotatedBakedModel implements BakedModel {
 	}
 
 	public static class Builder {
-		private final Int2ObjectMap<List<BakedQuad>> faces=new Int2ObjectArrayMap<>();
-		private final float degrees;
+		private final List<BakedQuad> unculledFaces = Lists.newArrayList();
+		private final Map<String,Set<Integer>> faces=new HashMap<>();
 		private final ItemOverrides overrides;
 		private final boolean hasAmbientOcclusion;
 		private TextureAtlasSprite particleIcon;
@@ -128,13 +157,12 @@ public class RotatedBakedModel implements BakedModel {
 		private final ItemTransforms transforms;
 
 		public Builder(BlockModel pBlockModel, ItemOverrides pOverrides, boolean pIsGui3d) {
-			this(360,pBlockModel.hasAmbientOcclusion(), pBlockModel.getGuiLight().lightLikeBlock(), pIsGui3d,
+			this(pBlockModel.hasAmbientOcclusion(), pBlockModel.getGuiLight().lightLikeBlock(), pIsGui3d,
 					pBlockModel.getTransforms(), pOverrides);
 		}
 
-		public Builder(float degrees,boolean pHasAmbientOcclusion, boolean pUsesBlockLight, boolean pIsGui3d,
+		public Builder(boolean pHasAmbientOcclusion, boolean pUsesBlockLight, boolean pIsGui3d,
 				ItemTransforms pTransforms, ItemOverrides pOverrides) {
-			this.degrees=degrees;
 			this.overrides = pOverrides;
 			this.hasAmbientOcclusion = pHasAmbientOcclusion;
 			this.usesBlockLight = pUsesBlockLight;
@@ -142,22 +170,30 @@ public class RotatedBakedModel implements BakedModel {
 			this.transforms = pTransforms;
 		}
 
-		public RotatedBakedModel.Builder addUnculledFace(BakedQuad pQuad,int id) {
-			faces.computeIfAbsent(id,e->new ArrayList<>()).add(pQuad);
+		public LayeredBakedModel.Builder addUnculledFace(BakedQuad pQuad,Iterable<String> groups) {
+			int idx=this.unculledFaces.size();
+			this.unculledFaces.add(pQuad);
+			for(String group:groups)
+				faces.computeIfAbsent(group,e->new LinkedHashSet<>()).add(idx);
 			return this;
 		}
 
-		public RotatedBakedModel.Builder particle(TextureAtlasSprite pParticleIcon) {
+		public LayeredBakedModel.Builder particle(TextureAtlasSprite pParticleIcon) {
 			this.particleIcon = pParticleIcon;
 			return this;
 		}
 
-		public RotatedBakedModel.Builder item() {
+		public LayeredBakedModel.Builder item() {
 			return this;
 		}
 
 		public BakedModel build(net.neoforged.neoforge.client.RenderTypeGroup renderTypes) {
-			return new RotatedBakedModel(this.faces,degrees, this.hasAmbientOcclusion, this.usesBlockLight,
+			Map<String,int[]> rfaces=new HashMap<>();
+			ToIntFunction<Integer> identity=e->e;
+			for(Entry<String, Set<Integer>> k:faces.entrySet()) {
+				rfaces.put(k.getKey(),k.getValue().stream().mapToInt(identity).toArray());
+			}
+			return new LayeredBakedModel(this.unculledFaces,rfaces, this.hasAmbientOcclusion, this.usesBlockLight,
 					this.isGui3d, this.particleIcon, this.transforms, this.overrides, renderTypes);
 		}
 	}
@@ -165,7 +201,7 @@ public class RotatedBakedModel implements BakedModel {
 	@Override
 	public List<BakedQuad> getQuads(BlockState pState, Direction pDirection, RandomSource pRandom) {
 		if(pDirection!=null)return List.of();
-		return this.faces.get(0);
+		return this.unculledFaces;
 	}
 
 }

@@ -19,17 +19,18 @@
  * along with Caupona. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.teammoeg.caupona.client.util;
+package com.teammoeg.caupona.client;
 
 import com.teammoeg.caupona.util.INetworkContainer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class ClientUtils {
+public class CPClient {
 
-	public ClientUtils() {
+	public CPClient() {
 	}
 
 	@SuppressWarnings("resource")
@@ -39,5 +40,8 @@ public class ClientUtils {
 			container.handle(nbt);
 		}
 	}
-
+	@SuppressWarnings("resource")
+	public static void syncContainerInfo(BlockEntity be) {
+		
+	}
 }

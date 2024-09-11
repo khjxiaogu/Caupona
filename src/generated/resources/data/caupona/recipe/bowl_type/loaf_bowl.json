@@ -2,6 +2,6 @@
   "type": "caupona:bowl_type",
   "bowl": "caupona:bowl",
   "item": {
-    "item": "caupona:vegetable_soup_loaf"
+    "item": "caupona:loaf_bowl"
   }
 }

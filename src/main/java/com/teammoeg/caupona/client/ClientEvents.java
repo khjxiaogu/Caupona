@@ -2,8 +2,9 @@ package com.teammoeg.caupona.client;
 
 
 import com.teammoeg.caupona.CPMain;
-import com.teammoeg.caupona.client.util.LayeredElementsModel;
-import com.teammoeg.caupona.client.util.RotatedElementsModel;
+import com.teammoeg.caupona.client.model.FolderModelLoader;
+import com.teammoeg.caupona.client.model.LayeredElementsModel;
+import com.teammoeg.caupona.client.model.RotatedElementsModel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
@@ -27,6 +28,7 @@ public class ClientEvents {
 	{
 		ev.register(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"layered"),new LayeredElementsModel.Loader());
 		ev.register(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"rotated"),new RotatedElementsModel.Loader());
+		ev.register(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"folder"),FolderModelLoader.INSTANCE);
 	}
 	
 }

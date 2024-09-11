@@ -37,136 +37,37 @@
     },
     {
       "apply": {
-        "model": "caupona:block/kitchen_stove_cold_ash"
-      },
-      "when": {
-        "ash": "true",
-        "lit": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_hot_ash"
-      },
-      "when": {
-        "lit": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_charcoal",
+        "model": "caupona:block/kitchen_stove_fuel",
         "y": 180
       },
       "when": {
-        "facing": "north",
-        "fueled": "1"
+        "facing": "north"
       }
     },
     {
       "apply": {
-        "model": "caupona:block/kitchen_stove_charcoal"
+        "model": "caupona:block/kitchen_stove_fuel"
       },
       "when": {
-        "facing": "south",
-        "fueled": "1"
+        "facing": "south"
       }
     },
     {
       "apply": {
-        "model": "caupona:block/kitchen_stove_charcoal",
+        "model": "caupona:block/kitchen_stove_fuel",
         "y": 90
       },
       "when": {
-        "facing": "west",
-        "fueled": "1"
+        "facing": "west"
       }
     },
     {
       "apply": {
-        "model": "caupona:block/kitchen_stove_charcoal",
+        "model": "caupona:block/kitchen_stove_fuel",
         "y": 270
       },
       "when": {
-        "facing": "east",
-        "fueled": "1"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_firewoods",
-        "y": 180
-      },
-      "when": {
-        "facing": "north",
-        "fueled": "2"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_firewoods"
-      },
-      "when": {
-        "facing": "south",
-        "fueled": "2"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_firewoods",
-        "y": 90
-      },
-      "when": {
-        "facing": "west",
-        "fueled": "2"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_firewoods",
-        "y": 270
-      },
-      "when": {
-        "facing": "east",
-        "fueled": "2"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_coal",
-        "y": 180
-      },
-      "when": {
-        "facing": "north",
-        "fueled": "3"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_coal"
-      },
-      "when": {
-        "facing": "south",
-        "fueled": "3"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_coal",
-        "y": 90
-      },
-      "when": {
-        "facing": "west",
-        "fueled": "3"
-      }
-    },
-    {
-      "apply": {
-        "model": "caupona:block/kitchen_stove_coal",
-        "y": 270
-      },
-      "when": {
-        "facing": "east",
-        "fueled": "3"
+        "facing": "east"
       }
     }
   ]

@@ -9,8 +9,12 @@
       }
     }
   ],
+  "bowl": {
+    "item": "minecraft:bowl"
+  },
   "deny": [],
   "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/seared_fillet",
   "output": "caupona:seared_fillet",
   "priority": 64,
   "removeNBT": false,

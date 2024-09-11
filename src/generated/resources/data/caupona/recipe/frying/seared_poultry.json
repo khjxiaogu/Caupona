@@ -9,8 +9,12 @@
       }
     }
   ],
+  "bowl": {
+    "item": "minecraft:bowl"
+  },
   "deny": [],
   "ingredientPerDish": 2.0,
+  "model": "caupona:dynamic/seared_poultry",
   "output": "caupona:seared_poultry",
   "priority": 128,
   "removeNBT": false,

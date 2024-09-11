@@ -25,6 +25,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.blocks.stove.KitchenStoveBlockEntity;
 import com.teammoeg.caupona.blocks.stove.KitchenStoveContainer;
+import com.teammoeg.caupona.util.FuelType;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -60,16 +61,12 @@ public class KitchenStoveScreen extends AbstractContainerScreen<KitchenStoveCont
 		if (blockEntity.processMax > 0 && blockEntity.process > 0) {
 			int h = (int) (26 * (1 - blockEntity.process / (float) blockEntity.processMax));
 			matrixStack.blit(TEXTURE, leftPos + 61, topPos + h, 176, h, 54, 26 - h);
-			switch (blockEntity.last) {
-			case CHARCOAL:
+			if(blockEntity.inventory_fuel==FuelType.CHARCOAL) {
 				matrixStack.blit(TEXTURE, leftPos + 61, topPos + 13, 176, 42, 54, 16);
-				break;
-			case WOODS:
+			}else if(blockEntity.inventory_fuel==FuelType.CHARCOAL) {
 				matrixStack.blit(TEXTURE, leftPos + 61, topPos + 13, 176, 58, 54, 16);
-				break;
-			default:
+			}else {
 				matrixStack.blit(TEXTURE, leftPos + 61, topPos + 13, 176, 26, 54, 16);
-				break;
 			}
 		}
 	}

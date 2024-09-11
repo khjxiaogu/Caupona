@@ -35,6 +35,7 @@ import com.teammoeg.caupona.util.FloatemStack;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.FoodProperties.Builder;
 import net.minecraft.world.food.FoodProperties.PossibleEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -159,22 +160,6 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 	public float getSaturation() {
 		return saturation;
 	}
-	public FoodProperties getFood() {
-		
-		FoodProperties.Builder b = new FoodProperties.Builder();
-
-		if (spice != null)
-			b.effect(()->new MobEffectInstance(spice), 1);
-		for (ChancedEffect ef : foodeffect) {
-			b.effect(ef.effectSupplier(), ef.chance);
-		}
-		b.nutrition(healing);
-		if(Float.isNaN(saturation))
-			b.saturationModifier(0f);
-		else
-			b.saturationModifier(saturation);
-		return b.build();
-	}
 
 	@Override
 	public List<PossibleEffect> getEffects() {
@@ -190,6 +175,28 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 	@Override
 	public Fluid getBase() {
 		return null;
+	}
+
+	@Override
+	public Builder getFood(int extraHealing, int extraSaturation) {
+		FoodProperties.Builder b = new FoodProperties.Builder();
+
+		if (spice != null)
+			b.effect(()->new MobEffectInstance(spice), 1);
+		for (ChancedEffect ef : foodeffect) {
+			b.effect(ef.effectSupplier(), ef.chance);
+		}
+		
+		b.nutrition(healing+extraHealing);
+		float extraSat=0;
+		if(healing+extraHealing>0) {
+			extraSat=extraSaturation/(healing+extraHealing);
+		}
+		if(Float.isNaN(saturation))
+			b.saturationModifier(extraSat);
+		else
+			b.saturationModifier(saturation+extraSat);
+		return b;
 	}
 
 }

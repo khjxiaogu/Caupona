@@ -21,11 +21,14 @@
 
 package com.teammoeg.caupona.client.renderer;
 
+import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.blocks.foods.DishBlock;
 import com.teammoeg.caupona.blocks.pan.PanBlock;
 import com.teammoeg.caupona.blocks.pan.PanBlockEntity;
+import com.teammoeg.caupona.client.util.DisplayGroupProperty;
+import com.teammoeg.caupona.client.util.DynamicBlockModelReference;
 import com.teammoeg.caupona.client.util.ModelUtils;
 import com.teammoeg.caupona.item.DishItem;
 
@@ -36,6 +39,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -49,7 +53,8 @@ public class PanRenderer implements BlockEntityRenderer<PanBlockEntity> {
 	 */
 	public PanRenderer(BlockEntityRendererProvider.Context rendererDispatcherIn) {
 	}
-
+	ModelData panLayer=ModelData.builder().with(DisplayGroupProperty.PROPERTY, ImmutableSet.of("ServingsInPan")).build();
+	ModelData plateLayer=ModelData.builder().with(DisplayGroupProperty.PROPERTY, ImmutableSet.of("ServingsOnPlate")).build();
 
 	@SuppressWarnings({ "deprecation", "resource" })
 	@Override
@@ -60,30 +65,17 @@ public class PanRenderer implements BlockEntityRenderer<PanBlockEntity> {
 		BlockState state = blockEntity.getBlockState();
 		Block b = state.getBlock();
 		if(!(b instanceof PanBlock))return;
-		Item torender = null;
-		if (!blockEntity.sout.isEmpty()) {
-			torender = blockEntity.sout.getItem();
-		} else if (!blockEntity.preout.isEmpty()) {
-			torender = blockEntity.preout.getItem();
-		} else {
-			ItemStack is = blockEntity.inv.getStackInSlot(10);
-			if (!is.isEmpty())
-				torender = is.getItem();
-		}
-		if (!(torender instanceof DishItem))
-			return;
-		BlockState bs = ((DishItem) torender).bl.defaultBlockState();
-		if (b == CPBlocks.STONE_PAN.get()) {
-			bs = bs.setValue(DishBlock.PAN, 1);
-		} else
-			bs = bs.setValue(DishBlock.PAN, 2);
-		BlockRenderDispatcher rd = Minecraft.getInstance().getBlockRenderer();
-		BakedModel bm=rd.getBlockModel(bs);
-		ModelData imd = bm.getModelData(blockEntity.getLevel(), blockEntity.getBlockPos(), bs,
-				blockEntity.getLevel().getModelDataManager().getAt((blockEntity.getBlockPos())));
+		ResourceLocation torender = blockEntity.model;
+		DynamicBlockModelReference model=DynamicBlockModelReference.cache.apply(torender);
+
+
+		ModelData imd;
+		if((b == CPBlocks.STONE_PAN.get()))
+			imd=plateLayer;
+		else
+			imd=panLayer;
 		if(imd==null)return;
-		ModelUtils.tesellate(blockEntity,bs,bm, buffer.getBuffer(RenderType.cutout()), matrixStack, combinedOverlayIn,imd);
-		//rd.renderSingleBlock(bs, matrixStack, buffer, combinedLightIn, combinedOverlayIn, imd,RenderType.cutout());
+		ModelUtils.tesellate(blockEntity, model, buffer.getBuffer(RenderType.CUTOUT), matrixStack, combinedOverlayIn, imd);
 
 	}
 

@@ -68,10 +68,9 @@ import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.ExistingFileHelper.ResourceType;
 
-
 public class CPStatesProvider extends BlockStateProvider {
 	protected static final List<Vec3i> COLUMN_THREE = ImmutableList.of(BlockPos.ZERO, BlockPos.ZERO.above(),
-			BlockPos.ZERO.above(2));
+		BlockPos.ZERO.above(2));
 	protected static final ResourceType MODEL = new ResourceType(PackType.CLIENT_RESOURCES, ".json", "models");
 	protected static final Map<ResourceLocation, String> generatedParticleTextures = new HashMap<>();
 	protected final ExistingFileHelper existingFileHelper;
@@ -95,45 +94,49 @@ public class CPStatesProvider extends BlockStateProvider {
 		simpleBlock(CPBlocks.BOWL.get(), bmf("bowl_of_liquid"));
 		this.getVariantBuilder(CPBlocks.SNAIL_BAIT.get()).partialState().addModels(ConfiguredModel.allYRotations(bmf("snail_bait"), 0, false));
 		this.getVariantBuilder(CPBlocks.SNAIL.get()).partialState().with(FruitBlock.AGE, 0)
-				.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_1"), 0, false)).partialState()
-				.with(FruitBlock.AGE, 1).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_2"), 0, false))
-				.partialState().with(FruitBlock.AGE, 2)
-				.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_3"), 0, false)).partialState()
-				.with(FruitBlock.AGE, 3).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_4"), 0, false))
-				.partialState().with(FruitBlock.AGE, 4)
-				.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false)).partialState()
-				.with(FruitBlock.AGE, 5).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false))
-				.partialState().with(FruitBlock.AGE, 6)
-				.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false)).partialState()
-				.with(FruitBlock.AGE, 7).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false));
+			.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_1"), 0, false)).partialState()
+			.with(FruitBlock.AGE, 1).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_2"), 0, false))
+			.partialState().with(FruitBlock.AGE, 2)
+			.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_3"), 0, false)).partialState()
+			.with(FruitBlock.AGE, 3).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_4"), 0, false))
+			.partialState().with(FruitBlock.AGE, 4)
+			.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false)).partialState()
+			.with(FruitBlock.AGE, 5).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false))
+			.partialState().with(FruitBlock.AGE, 6)
+			.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false)).partialState()
+			.with(FruitBlock.AGE, 7).addModels(ConfiguredModel.allYRotations(bmf("snail_stage_5"), 0, false));
 		this.getVariantBuilder(CPBlocks.LOAF_DOUGH.get())
-		.partialState().with(SlabBlock.TYPE,SlabType.TOP).addModels(new ConfiguredModel(bmf("loaf_dough_top")))
-		.partialState().with(SlabBlock.TYPE,SlabType.BOTTOM).addModels(new ConfiguredModel(bmf("loaf_dough_bottom")))
-		.partialState().with(SlabBlock.TYPE,SlabType.DOUBLE).addModels(new ConfiguredModel(bmf("loaf_dough_top_bottom")));
-		blockItemModel(CPBlocks.LOAF_DOUGH,bmf("loaf_dough"));
+			.partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(bmf("loaf_dough_top")))
+			.partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bmf("loaf_dough_bottom")))
+			.partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(bmf("loaf_dough_top_bottom")));
+		blockItemModel(CPBlocks.LOAF_DOUGH, bmf("loaf_dough"));
 		this.getVariantBuilder(CPBlocks.LOAF.get())
-		.partialState().with(SlabBlock.TYPE,SlabType.TOP).addModels(new ConfiguredModel(bmf("loaf_top")))
-		.partialState().with(SlabBlock.TYPE,SlabType.BOTTOM).addModels(new ConfiguredModel(bmf("loaf_bottom")))
-		.partialState().with(SlabBlock.TYPE,SlabType.DOUBLE).addModels(new ConfiguredModel(bmf("loaf_top_bottom")));
-		blockItemModel(CPBlocks.LOAF,bmf("loaf"));
-		for(MosaicMaterial m:MosaicMaterial.values())
-			for(MosaicPattern p:MosaicPattern.values()) 
-				for(int i:new int[] {0,1})
-					super.models().withExistingParent("block/mosaic/mosaic_"+p+"_"+m.shortName+"_"+i,ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"block/template_mosaic_tile_"+i)).texture(""+i,ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"block/mosaic/components/mosaic_"+p+"_"+m.shortName+"_"+i)).texture("particle", "#"+i);
-		MultiPartBlockStateBuilder mosaic=this.getMultipartBuilder(CPBlocks.MOSAIC.get());
-		for(MosaicMaterial m:MosaicMaterial.values())
-			for(MosaicPattern p:MosaicPattern.values()) 
-				for(int i:new int[] {0,1}) {
-					this.horizontalMultipart(mosaic, bmf("mosaic/mosaic_"+p+"_"+m.shortName+"_"+i),b->b.condition(MosaicBlock.MATERIAL[i], m).condition(MosaicBlock.PATTERN, p));
-					
+			.partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(bmf("loaf_top")))
+			.partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bmf("loaf_bottom")))
+			.partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(bmf("loaf_top_bottom")));
+		blockItemModel(CPBlocks.LOAF, bmf("loaf"));
+		for (MosaicMaterial m : MosaicMaterial.values())
+			for (MosaicPattern p : MosaicPattern.values())
+				for (int i : new int[] { 0, 1 })
+					super.models().withExistingParent("block/mosaic/mosaic_" + p + "_" + m.shortName + "_" + i, ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/template_mosaic_tile_" + i))
+						.texture("" + i, ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/mosaic/components/mosaic_" + p + "_" + m.shortName + "_" + i)).texture("particle", "#" + i);
+		MultiPartBlockStateBuilder mosaic = this.getMultipartBuilder(CPBlocks.MOSAIC.get());
+		for (MosaicMaterial m : MosaicMaterial.values())
+			for (MosaicPattern p : MosaicPattern.values())
+				for (int i : new int[] { 0, 1 }) {
+					this.horizontalMultipart(mosaic, bmf("mosaic/mosaic_" + p + "_" + m.shortName + "_" + i), b -> b.condition(MosaicBlock.MATERIAL[i], m).condition(MosaicBlock.PATTERN, p));
+
 				}
-		//itemModels().getBuilder("mosaic").parent(new UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("builtin/entity")));
-		/*this.getVariantBuilder(CPBlocks.MOSAIC.get()).forAllStates(t->{
-			MosaicPattern p=t.getValue(MosaicBlock.PATTERN);
-			MosaicMaterial m1=t.getValue(MosaicBlock.MATERIAL_1);
-			MosaicMaterial m2=t.getValue(MosaicBlock.MATERIAL_2);
-			return ConfiguredModel.builder().modelFile(bmf("mosaic/mosaic_"+p+"_"+m1.shortName+"_"+m2.shortName)).build();
-			});*/
+		// itemModels().getBuilder("mosaic").parent(new
+		// UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("builtin/entity")));
+		/*
+		 * this.getVariantBuilder(CPBlocks.MOSAIC.get()).forAllStates(t->{ MosaicPattern
+		 * p=t.getValue(MosaicBlock.PATTERN); MosaicMaterial
+		 * m1=t.getValue(MosaicBlock.MATERIAL_1); MosaicMaterial
+		 * m2=t.getValue(MosaicBlock.MATERIAL_2); return
+		 * ConfiguredModel.builder().modelFile(bmf("mosaic/mosaic_"+p+"_"+m1.shortName+
+		 * "_"+m2.shortName)).build(); });
+		 */
 		// super.stairsBlock(null, modid, null, null, null);
 		for (MaterialType rtype : CPBlocks.all_materials) {
 			String stone = rtype.getName();
@@ -149,22 +152,22 @@ public class CPStatesProvider extends BlockStateProvider {
 
 			if (rtype.isPillarMaterial()) {
 				for (String type : ImmutableSet.of("_column_fluted_plinth", "_column_fluted_shaft", "_column_shaft",
-						"_column_plinth", "_ionic_column_capital", "_tuscan_column_capital",
-						"_acanthine_column_capital"))
+					"_column_plinth", "_ionic_column_capital", "_tuscan_column_capital",
+					"_acanthine_column_capital"))
 					blockItemModel(stone + type);
-				simpleBlockItem(cpblock(stone+"_lacunar_tile"),bmf(stone+"_lacunar_tile"));
-				itemModel(cpblock(stone+"_spoked_fence"),bmf(stone+"_spoked_fence_inventory"));
-				this.getMultipartBuilder(cpblock(stone+"_spoked_fence"))
-				.part().modelFile(bmf(stone+"_spoked_fence_side")).rotationY(270)
-				.addModel().condition(SpokedFenceBlock.WEST_WALL,true).end()
-				.part().modelFile(bmf(stone+"_spoked_fence_side")).rotationY(0)
-				.addModel().condition(SpokedFenceBlock.NORTH_WALL,true).end()
-				.part().modelFile(bmf(stone+"_spoked_fence_side")).rotationY(90)
-				.addModel().condition(SpokedFenceBlock.EAST_WALL,true).end()
-				.part().modelFile(bmf(stone+"_spoked_fence_side")).rotationY(180)
-				.addModel().condition(SpokedFenceBlock.SOUTH_WALL,true).end()
-				.part().modelFile(bmf(stone+"_spoked_fence_post"))
-				.addModel().end();
+				simpleBlockItem(cpblock(stone + "_lacunar_tile"), bmf(stone + "_lacunar_tile"));
+				itemModel(cpblock(stone + "_spoked_fence"), bmf(stone + "_spoked_fence_inventory"));
+				this.getMultipartBuilder(cpblock(stone + "_spoked_fence"))
+					.part().modelFile(bmf(stone + "_spoked_fence_side")).rotationY(270)
+					.addModel().condition(SpokedFenceBlock.WEST_WALL, true).end()
+					.part().modelFile(bmf(stone + "_spoked_fence_side")).rotationY(0)
+					.addModel().condition(SpokedFenceBlock.NORTH_WALL, true).end()
+					.part().modelFile(bmf(stone + "_spoked_fence_side")).rotationY(90)
+					.addModel().condition(SpokedFenceBlock.EAST_WALL, true).end()
+					.part().modelFile(bmf(stone + "_spoked_fence_side")).rotationY(180)
+					.addModel().condition(SpokedFenceBlock.SOUTH_WALL, true).end()
+					.part().modelFile(bmf(stone + "_spoked_fence_post"))
+					.addModel().end();
 			}
 			if (rtype.isHypocaustMaterial()) {
 				blockItemModel(stone + "_hypocaust_firebox");
@@ -176,7 +179,7 @@ public class CPStatesProvider extends BlockStateProvider {
 			}
 		}
 		MultiPartBlockStateBuilder boat = horizontalMultipart(this.getMultipartBuilder(CPBlocks.GRAVY_BOAT.get()),
-				bmf("gravy_boat"));
+			bmf("gravy_boat"));
 		int i = 0;
 		for (String s : ImmutableSet.of("_oil_0", "_oil_1", "_oil_2", "_oil_3", "_oil_4")) {
 			int j = i++;
@@ -185,12 +188,12 @@ public class CPStatesProvider extends BlockStateProvider {
 		for (String wood : CPBlocks.woods) {
 			for (String type : ImmutableSet.of(
 
-					"_fence_gate", "_leaves", "_log", "_planks", "_pressure_plate", "_slab", "_stairs", "_wood"))
+				"_fence_gate", "_leaves", "_log", "_planks", "_pressure_plate", "_slab", "_stairs", "_wood"))
 				blockItemModel(wood + type);
 			blockItemModel(wood + "_fence", "_inventory");
 			blockItemModel(wood + "_button", "_inventory");
 			blockItemModelBuilder(wood + "_fruits", "_stage_3").transforms().transform(ItemDisplayContext.GUI).scale(1f)
-					.rotation(0, 0.1f, 0).translation(0, 0, 0).end().end();
+				.rotation(0, 0.1f, 0).translation(0, 0, 0).end().end();
 
 			blockItemModel("stripped_" + wood + "_log");
 			blockItemModel("stripped_" + wood + "_wood");
@@ -210,38 +213,39 @@ public class CPStatesProvider extends BlockStateProvider {
 		blockItemModel("lead_block");
 		blockItemModel("snail_bait");
 		blockItemModel("snail_mucus");
-		simpleBlock(CPBlocks.SNAIL_MUCUS.get(),bmf("snail_mucus"));
-		simpleBlock(CPBlocks.LEAD_BLOCK.get(),bmf("lead_block"));
+		simpleBlock(CPBlocks.SNAIL_MUCUS.get(), bmf("snail_mucus"));
+		simpleBlock(CPBlocks.LEAD_BLOCK.get(), bmf("lead_block"));
+		simpleBlock(CPBlocks.LOAF_BOWL.get(),bmf("bread_bowl"));
 		// itemModels().getBuilder("snail_block").parent(bmf("snail_stage_5")).transforms().transform(ItemDisplayContext.GUI).scale(1.5f).rotation(0,
 		// 45, 180).translation(0, 4, 0).end().end();
 
 		for (String bush : ImmutableSet.of("wolfberry", "fig")) {
 			blockItemModel(bush + "_log");
 			blockItemModelBuilder(bush + "_fruits", "_stage_3").transforms().transform(ItemDisplayContext.GUI).scale(1f)
-					.rotation(0, 45, 0).translation(0, 1, 0).end().end();
+				.rotation(0, 45, 0).translation(0, 1, 0).end().end();
 			blockItemModel(bush + "_leaves");
 		}
 
 	}
 
 	public void roadBlock(String name) {
-		
+
 		itemModels().getBuilder(name + "_road_side").parent(bmf("roads/" + name + "_road_side"));
-		
+
 		itemModels().getBuilder(name + "_road").parent(bmf("roads/" + name + "_road"));
 		getVariantBuilder(cpblock(name + "_road_side")).forAllStates(state -> {
 			Direction facing = state.getValue(StairBlock.FACING);
 			StairsShape shape = state.getValue(StairBlock.SHAPE);
 			int yRot = (int) facing.getClockWise().toYRot(); // Stairs model is rotated 90 degrees
-																			// clockwise for some reason
-			if (shape == StairsShape.INNER_LEFT||shape == StairsShape.OUTER_LEFT) {
+																// clockwise for some reason
+			if (shape == StairsShape.INNER_LEFT || shape == StairsShape.OUTER_LEFT) {
 				yRot += 270; // Left facing stairs are rotated 90 degrees clockwise
 			}
 			yRot %= 360;
 			Builder<?> builder = null;
 			String ext = shape == StairsShape.STRAIGHT ? "_side"
-					: shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? "_outer_corner"
-							: "_inner_corner";
+				: shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT ? "_outer_corner"
+					: "_inner_corner";
 			int i = 0;
 			while (true) {
 				ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(this.modid, "block/roads/" + name + "_road" + ext + "_" + i);
@@ -284,33 +288,27 @@ public class CPStatesProvider extends BlockStateProvider {
 
 	protected void blockItemModel(String n, String p) {
 		if (this.existingFileHelper.exists(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "textures/item/" + n + p + ".png"),
-				PackType.CLIENT_RESOURCES)) {
+			PackType.CLIENT_RESOURCES)) {
 			itemModels().basicItem(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, n));
 		} else {
 			itemModels().getBuilder(n).parent(bmf(n + p));
 		}
 	}
+
 	protected void blockItemModel(Holder<Block> n, ModelFile p) {
 
 		itemModels().getBuilder(n.getRegisteredName()).parent(p);
 	}
+
 	protected ItemModelBuilder blockItemModelBuilder(String n, String p) {
 		return itemModels().getBuilder(n).parent(bmf(n + p));
 	}
 
 	public void stove(Block block) {
 		horizontalMultipart(
-				horizontalMultipart(
-						horizontalMultipart(
-								horizontalMultipart(this.getMultipartBuilder(block),
-										bmf(Utils.getRegistryName(block).getPath())).part()
-												.modelFile(bmf("kitchen_stove_cold_ash")).addModel()
-												.condition(KitchenStove.LIT, false).condition(KitchenStove.ASH, true)
-												.end().part().modelFile(bmf("kitchen_stove_hot_ash")).addModel()
-												.condition(KitchenStove.LIT, true).end(),
-								bmf("kitchen_stove_charcoal"), i -> i.condition(KitchenStove.FUELED, 1)),
-						bmf("kitchen_stove_firewoods"), i -> i.condition(KitchenStove.FUELED, 2)),
-				bmf("kitchen_stove_coal"), i -> i.condition(KitchenStove.FUELED, 3));
+			horizontalMultipart(this.getMultipartBuilder(block),
+				bmf(Utils.getRegistryName(block).getPath())),
+			bmf("kitchen_stove_fuel"), i -> i);
 		itemModel(block, bmf(Utils.getRegistryName(block).getPath()));
 
 	}
@@ -343,8 +341,8 @@ public class CPStatesProvider extends BlockStateProvider {
 
 	public void horizontalAxisBlock(Block block, ModelFile mf) {
 		getVariantBuilder(block).partialState().with(BlockStateProperties.HORIZONTAL_AXIS, Axis.Z).modelForState()
-				.modelFile(mf).addModel().partialState().with(BlockStateProperties.HORIZONTAL_AXIS, Axis.X)
-				.modelForState().modelFile(mf).rotationY(90).addModel();
+			.modelFile(mf).addModel().partialState().with(BlockStateProperties.HORIZONTAL_AXIS, Axis.X)
+			.modelForState().modelFile(mf).rotationY(90).addModel();
 	}
 
 	public MultiPartBlockStateBuilder horizontalMultipart(MultiPartBlockStateBuilder block, ModelFile mf) {
@@ -352,10 +350,10 @@ public class CPStatesProvider extends BlockStateProvider {
 	}
 
 	public MultiPartBlockStateBuilder horizontalMultipart(MultiPartBlockStateBuilder block, ModelFile mf,
-			UnaryOperator<PartBuilder> act) {
+		UnaryOperator<PartBuilder> act) {
 		for (Direction d : BlockStateProperties.HORIZONTAL_FACING.getPossibleValues())
 			block = act.apply(block.part().modelFile(mf).rotationY(((int) d.toYRot()) % 360).addModel()
-					.condition(BlockStateProperties.HORIZONTAL_FACING, d)).end();
+				.condition(BlockStateProperties.HORIZONTAL_FACING, d)).end();
 		return block;
 	}
 
