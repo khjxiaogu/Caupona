@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/cube_bottom_top",
+	"textures": {
+		"top": "caupona:block/loaf_heap_top",
+		"bottom": "caupona:block/loaf_heap_bottom",
+		"side": "caupona:block/loaf_heap_side"
+	}
+}
