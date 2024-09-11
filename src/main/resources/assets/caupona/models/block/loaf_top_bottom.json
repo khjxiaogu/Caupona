@@ -6,6 +6,7 @@
 		"0": "caupona:block/loaf",
 		"particle": "caupona:block/loaf_heap_side"
 	},
+	"render_type": "cutout",
 	"elements": [
 		{
 			"name": "bottom1",

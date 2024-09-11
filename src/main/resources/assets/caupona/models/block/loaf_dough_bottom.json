@@ -6,6 +6,7 @@
 		"0": "caupona:block/loaf_dough",
 		"particle": "caupona:block/loaf_dough"
 	},
+	"render_type": "cutout",
 	"elements": [
 		{
 			"name": "bottom1",
