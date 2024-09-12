@@ -38,7 +38,7 @@ public record FuelType (TagKey<Item> it,String modelLayer,String cold_ash,String
 	public static final FuelType WOODS=register(new FuelType("fuel/woods","FirewoodFuel","ColdAsh","HotAsh"));
 	public static final FuelType CHARCOAL=register(new FuelType("fuel/charcoals","CharcoalFuel","ColdAsh","HotAsh"));
 	public static final FuelType FOSSIL=register(new FuelType("fuel/fossil","CharcoalFuel","ColdAsh","HotAsh"));
-	public static final FuelType GEOTHERMAL=register(new FuelType("fuel/lava",null,null,null));
+	public static final FuelType LAVA=register(new FuelType("fuel/lava","LavaBucketFuel","ColdLavaFuel","LavaFuel"));
 	public static final FuelType OTHER=register(new FuelType("fuel/others",null,null,null));
 	
 

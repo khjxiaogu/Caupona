@@ -14,7 +14,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/sauteed_seafood",
+  "model": "caupona:block/dynamic/sauteed_seafood",
   "output": "caupona:sauteed_seafood_loaf",
   "priority": 64,
   "removeNBT": false,

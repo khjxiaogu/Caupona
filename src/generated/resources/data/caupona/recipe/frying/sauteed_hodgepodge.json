@@ -6,7 +6,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/sauteed_hodgepodge",
+  "model": "caupona:block/dynamic/sauteed_hodgepodge",
   "output": "caupona:sauteed_hodgepodge",
   "priority": 0,
   "removeNBT": false,

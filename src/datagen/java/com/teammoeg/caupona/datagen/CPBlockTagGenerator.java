@@ -92,7 +92,7 @@ public class CPBlockTagGenerator extends TagsProvider<Block> {
 			tag(BlockTags.WALL_SIGNS).add(cp(wood + "_wall_sign"));
 			tag(BlockTags.FENCE_GATES).add(cp(wood + "_fence_gate"));
 			tag(BlockTags.UNSTABLE_BOTTOM_CENTER).add(cp(wood + "_fence_gate"));
-			
+			tag(BlockTags.WALL_HANGING_SIGNS).add(cp(wood+"_hanging_sign"));
 			tag(CPTags.Blocks.FRUITS_GROWABLE_ON).add(cp(wood + "_leaves"));
 			tag(frl("fence_gates")).add(cp(wood + "_fence_gate"));
 			tag(frl("fence_gates/wooden")).add(cp(wood + "_fence_gate"));

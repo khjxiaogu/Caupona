@@ -26,6 +26,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableSet;
+import com.teammoeg.caupona.blocks.decoration.CPHangingSignBlockEntity;
 import com.teammoeg.caupona.blocks.decoration.CPSignBlockEntity;
 import com.teammoeg.caupona.blocks.dolium.CounterDoliumBlockEntity;
 import com.teammoeg.caupona.blocks.foods.BowlBlockEntity;
@@ -65,6 +66,8 @@ public class CPBlockEntityTypes {
 					()->List.of(CPBlocks.BOWL,CPBlocks.LOAF_BOWL)));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<CPSignBlockEntity>> SIGN = REGISTER.register("sign",makeTypes(CPSignBlockEntity::new,
 					()->CPBlocks.signs));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CPHangingSignBlockEntity>> HANGING_SIGN = REGISTER.register("hanging_sign",makeTypes(CPHangingSignBlockEntity::new,
+		()->CPBlocks.hanging_signs));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<ChimneyPotBlockEntity>> CHIMNEY_POT = REGISTER.register("chimney_pot",makeTypes(ChimneyPotBlockEntity::new,
 					()->CPBlocks.chimney));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<FumaroleVentBlockEntity>> FUMAROLE = REGISTER.register("fumarole_vent", makeType(FumaroleVentBlockEntity::new,

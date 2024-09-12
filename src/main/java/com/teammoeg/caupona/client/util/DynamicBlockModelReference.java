@@ -15,22 +15,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
-public class DynamicBlockModelReference implements Supplier<BakedModel>,Function<ModelData,List<BakedQuad>>
+public record DynamicBlockModelReference(ModelResourceLocation name) implements Supplier<BakedModel>,Function<ModelData,List<BakedQuad>>
 {
 
-	private final ModelResourceLocation name;
 	private static final RandomSource RANDOM_SOURCE=RandomSource.create();
 	static {
 		RANDOM_SOURCE.setSeed(42L);
 	}
 	public static final Function<ResourceLocation,DynamicBlockModelReference> cache=Util.memoize(DynamicBlockModelReference::new);
-	public DynamicBlockModelReference(String name)
-	{
-		this.name = ModelResourceLocation.standalone(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, "block/dynamic/"+name));
-	}
+	@Deprecated
 	public DynamicBlockModelReference(ResourceLocation rl)
 	{
-		this.name = ModelResourceLocation.standalone(rl);
+		this(ModelResourceLocation.standalone(rl));
+	}
+	public static DynamicBlockModelReference getModelCached(ResourceLocation rl)
+	{
+		if(rl==null)
+			return null;
+		return cache.apply(rl);
 	}
 	@Override
 	public BakedModel get()

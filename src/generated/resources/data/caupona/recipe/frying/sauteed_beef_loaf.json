@@ -14,7 +14,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/sauteed_beef",
+  "model": "caupona:block/dynamic/sauteed_beef",
   "output": "caupona:sauteed_beef_loaf",
   "priority": 128,
   "removeNBT": false,

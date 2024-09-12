@@ -14,7 +14,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/sauteed_vegetables",
+  "model": "caupona:block/dynamic/sauteed_vegetables",
   "output": "caupona:sauteed_vegetables",
   "priority": 64,
   "removeNBT": false,

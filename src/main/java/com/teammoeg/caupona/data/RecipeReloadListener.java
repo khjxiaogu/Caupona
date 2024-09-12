@@ -195,7 +195,7 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		SauteedRecipe.sorted = filterRecipes(recipes, SauteedRecipe.class, SauteedRecipe.TYPE).collect(Collectors.toList());
 		SauteedRecipe.sorted.sort((t2, t1) -> t1.value().getPriority() - t2.value().getPriority());
 		SauteedRecipe.cookables = SauteedRecipe.sorted.stream().map(t->t.value()).flatMap(SauteedRecipe::getAllNumbers).collect(Collectors.toSet());
-
+		SauteedRecipe.bowls =SauteedRecipe.sorted.stream().map(t->t.value().bowl).collect(Collectors.toSet());
 		DoliumRecipe.recipes = filterRecipes(recipes, DoliumRecipe.class, DoliumRecipe.TYPE)
 				.collect(Collectors.toList());
 		DoliumRecipe.recipes

@@ -56,6 +56,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Container, MenuProvider, IStove, IInfinitable {
 	private NonNullList<ItemStack> fuel = NonNullList.withSize(1, ItemStack.EMPTY);
@@ -103,7 +104,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 		refreshModel();
 	}
 	public void refreshModel() {
-		if(this.getLevel().isClientSide) {
+		if(this.getLevel()!=null&&this.getLevel().isClientSide) {
 			getLevel().getModelDataManager().requestRefresh(this);
 			getLevel().sendBlockUpdated(this.getBlockPos(), getBlockState(),getBlockState(),3);
 		}
@@ -126,6 +127,9 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 
 	@Override
 	public ModelData getModelData() {
+		if(inventory_fuel==FuelType.OTHER&&current==FuelType.OTHER) {//no data
+			return ModelData.builder().with(DisplayGroupProperty.PROPERTY, ImmutableSet.of()).build();
+		}
 		String ash=this.getBlockState().getValue(BlockStateProperties.LIT)?current.hot_ash():current.cold_ash();
 		String model=inventory_fuel.modelLayer();
 		return ModelData.builder().with(DisplayGroupProperty.PROPERTY, ash==null?(model!=null?ImmutableSet.of(model):ImmutableSet.of()):(model!=null?ImmutableSet.of(model,ash):ImmutableSet.of(ash))).build();
@@ -157,14 +161,18 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 	public ItemStack removeItem(int index, int count) {
 		ItemStack removed=ContainerHelper.removeItem(fuel, index, count);
 		inventory_fuel=FuelType.getType(fuel.get(0));
+		this.setChanged();
 		refreshModel();
+		
 		return removed;
 	}
 
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		inventory_fuel=FuelType.OTHER;
+		this.setChanged();
 		refreshModel();
+		
 		return ContainerHelper.takeItem(fuel, index);
 	}
 
@@ -175,6 +183,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 			stack.setCount(this.getMaxStackSize());
 		}
 		inventory_fuel=FuelType.getType(fuel.get(0));
+		this.setChanged();
 		refreshModel();
 	}
 
@@ -185,8 +194,7 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		ItemStack itemstack = fuel.get(0);
-		return stack.getBurnTime(RecipeType.SMELTING) > 0 && itemstack.getCraftingRemainingItem().isEmpty();
+		return stack.getBurnTime(RecipeType.SMELTING) > 0 ;
 	}
 
 	@Override
@@ -207,8 +215,13 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 			return false;
 		}
 		current = FuelType.getType(fuel.get(0));
-		
+		ItemStack remain=fuel.get(0).getCraftingRemainingItem();
 		fuel.get(0).shrink(1);
+		if(fuel.get(0).isEmpty()) {
+			fuel.set(0, remain);
+		}else {
+			Utils.dropToWorld(level, remain, getBlockPos());
+		}
 		inventory_fuel=FuelType.getType(fuel.get(0));
 		float ftime = time * fuelMod / speed;
 		float frac = Mth.frac(ftime);
