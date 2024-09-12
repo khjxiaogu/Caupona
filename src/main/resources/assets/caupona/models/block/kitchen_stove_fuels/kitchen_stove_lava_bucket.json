@@ -4,6 +4,8 @@
 		"0": "caupona:block/kitchen_stove_lava_bucket",
 		"particle": "caupona:block/kitchen_stove_lava_bucket"
 	},
+	"render_type": "cutout",
+	"loader": "caupona:layered",
 	"elements": [
 		{
 			"name": "bucket",
