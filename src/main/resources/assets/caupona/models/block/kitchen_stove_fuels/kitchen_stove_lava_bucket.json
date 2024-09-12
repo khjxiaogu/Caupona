@@ -1,9 +1,12 @@
 {
+	"parent": "minecraft:block/cube",
 	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
 	"textures": {
 		"0": "caupona:block/kitchen_stove_lava_bucket",
 		"particle": "caupona:block/kitchen_stove_lava_bucket"
 	},
+	"render_type": "cutout",
 	"elements": [
 		{
 			"name": "bucket",
