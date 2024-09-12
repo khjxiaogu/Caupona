@@ -358,7 +358,7 @@ public class CPRecipeProvider extends RecipeProvider {
 	}
 
 	private SauteedRecipeBuilder fry(String s, String addition) {
-		return SauteedRecipeBuilder.start(mrl("dynamic/"+s), item(mrl(s+addition)));
+		return SauteedRecipeBuilder.start(mrl("block/dynamic/"+s), item(mrl(s+addition)));
 	}
 
 	private Item item(ResourceLocation rl) {

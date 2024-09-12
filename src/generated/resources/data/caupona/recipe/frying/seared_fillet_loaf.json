@@ -14,7 +14,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/seared_fillet",
+  "model": "caupona:block/dynamic/seared_fillet",
   "output": "caupona:seared_fillet_loaf",
   "priority": 64,
   "removeNBT": false,

@@ -14,7 +14,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/sauteed_mushrooms",
+  "model": "caupona:block/dynamic/sauteed_mushrooms",
   "output": "caupona:sauteed_mushrooms_loaf",
   "priority": 128,
   "removeNBT": false,

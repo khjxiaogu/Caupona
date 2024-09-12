@@ -14,7 +14,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/seared_poultry",
+  "model": "caupona:block/dynamic/seared_poultry",
   "output": "caupona:seared_poultry_loaf",
   "priority": 128,
   "removeNBT": false,

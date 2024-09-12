@@ -3,9 +3,10 @@
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
-		"0": "caupona:block/kitchen_stove_cooled_lava",
-		"particle": "caupona:block/kitchen_stove_cooled_lava"
+		"0": "caupona:block/kitchen_stove_lava",
+		"particle": "caupona:block/kitchen_stove_lava"
 	},
+	"loader":"caupona:layered",
 	"elements": [
 		{
 			"from": [2, 14, 2],
@@ -38,6 +39,22 @@
 				"west": {"uv": [7, 1, 8, 6], "rotation": 90, "texture": "#0"},
 				"up": {"uv": [2, 1, 7, 6], "rotation": 180, "texture": "#0"}
 			}
+		}
+	],
+	"groups": [
+		{
+			"name": "LavaFuel",
+			"origin": [
+				8,
+				8,
+				8
+			],
+			"color": 0,
+			"children": [
+				0,
+				1,
+				2
+			]
 		}
 	]
 }

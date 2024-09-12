@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.teammoeg.caupona.CPMain;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -58,10 +59,10 @@ public class ModelUtils {
 		tesellate(be, model,renderer, transform, overlay,ModelData.builder().with(DisplayGroupProperty.PROPERTY,groups).build());
 	}
 	public static DynamicBlockModelReference getModel(String name) {
-		return new DynamicBlockModelReference(name);
+		return getModel(CPMain.MODID,name);
 	}
 	public static DynamicBlockModelReference getModel(String modid,String name) {
-		return new DynamicBlockModelReference(ResourceLocation.fromNamespaceAndPath(modid, "block/dynamic/"+name));
+		return DynamicBlockModelReference.getModelCached(ResourceLocation.fromNamespaceAndPath(modid, "block/dynamic/"+name));
 	}
 	public static void renderModelGroups(DynamicBlockModelReference model, VertexConsumer renderer,ImmutableSet<String> groups,PoseStack transform,
 			int color, int light, int overlay) {

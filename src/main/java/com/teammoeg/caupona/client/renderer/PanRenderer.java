@@ -24,24 +24,16 @@ package com.teammoeg.caupona.client.renderer;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.teammoeg.caupona.CPBlocks;
-import com.teammoeg.caupona.blocks.foods.DishBlock;
 import com.teammoeg.caupona.blocks.pan.PanBlock;
 import com.teammoeg.caupona.blocks.pan.PanBlockEntity;
 import com.teammoeg.caupona.client.util.DisplayGroupProperty;
 import com.teammoeg.caupona.client.util.DynamicBlockModelReference;
 import com.teammoeg.caupona.client.util.ModelUtils;
-import com.teammoeg.caupona.item.DishItem;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -66,7 +58,9 @@ public class PanRenderer implements BlockEntityRenderer<PanBlockEntity> {
 		Block b = state.getBlock();
 		if(!(b instanceof PanBlock))return;
 		ResourceLocation torender = blockEntity.model;
-		DynamicBlockModelReference model=DynamicBlockModelReference.cache.apply(torender);
+		if(torender==null)
+			return;
+		DynamicBlockModelReference model=DynamicBlockModelReference.getModelCached(torender);
 
 
 		ModelData imd;

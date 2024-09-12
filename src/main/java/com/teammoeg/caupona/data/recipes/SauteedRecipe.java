@@ -62,6 +62,7 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 	}
 
 	public static Set<CookIngredients> cookables;
+	public static Set<Ingredient> bowls;
 	public static List<RecipeHolder<SauteedRecipe>> sorted;
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
@@ -70,7 +71,13 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 		return stack.is(Items.COOKABLE) || cookables.stream().anyMatch(e -> e.fits(s));
 		// return true;
 	}
-
+	public static boolean isBowl(ItemStack stack) {
+		for(Ingredient igd:bowls) {
+			if(igd.test(stack))
+				return true;
+		}
+		return false;
+	}
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return SERIALIZER.get();

@@ -85,7 +85,7 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 			if (slot < 9)
 				return SauteedRecipe.isCookable(stack);
 			if (slot == 9) {
-				return stack.is(Items.BOWL);
+				return SauteedRecipe.isBowl(stack);
 			}
 			if (slot == 11)
 				return SpiceRecipe.isValid(stack);

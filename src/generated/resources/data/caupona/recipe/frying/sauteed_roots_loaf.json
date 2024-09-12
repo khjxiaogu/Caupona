@@ -14,7 +14,7 @@
   },
   "deny": [],
   "ingredientPerDish": 2.0,
-  "model": "caupona:dynamic/sauteed_roots",
+  "model": "caupona:block/dynamic/sauteed_roots",
   "output": "caupona:sauteed_roots_loaf",
   "priority": 128,
   "removeNBT": false,
