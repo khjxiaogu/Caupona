@@ -120,7 +120,7 @@ public class CPCommonBootStrap {
 		compositables.add(Pair.of(obj, val));
 		return obj;
 	}
-	public static <R extends Block,T extends R> DeferredHolder<R,T> asFlamable(DeferredHolder<R,T> obj,int v1,int v2) {
+	public static <T extends Block> DeferredHolder<Block,T> asFlamable(DeferredHolder<Block,T> obj,int v1,int v2) {
 		flamables.add(Pair.of(obj, Pair.of(v1, v2)));
 		return obj;
 	}

@@ -49,6 +49,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -197,8 +199,9 @@ public class CPStatesProvider extends BlockStateProvider {
 
 			blockItemModel("stripped_" + wood + "_log");
 			blockItemModel("stripped_" + wood + "_wood");
-
-			// blockItemModel(wood+"_trapdoor","_top");
+	        super.models().sign(wood+"_hanging_sign",modLoc("block/"+wood+"_planks"));
+	        super.models().sign(wood+"_wall_hanging_sign",modLoc("block/"+wood+"_planks"));
+			// blockItemModel(wood+"_trapdoor","_top")
 
 		}
 		blockItemModel(Utils.getRegistryName(CPBlocks.STONE_PAN).getPath());

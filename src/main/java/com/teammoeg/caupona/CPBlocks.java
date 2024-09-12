@@ -32,12 +32,14 @@ import java.util.function.Supplier;
 import com.teammoeg.caupona.blocks.CPHorizontalBlock;
 import com.teammoeg.caupona.blocks.decoration.BaseColumnBlock;
 import com.teammoeg.caupona.blocks.decoration.CPButtonBlock;
+import com.teammoeg.caupona.blocks.decoration.CPCeilingHangingSignBlock;
 import com.teammoeg.caupona.blocks.decoration.CPDoorBlock;
 import com.teammoeg.caupona.blocks.decoration.CPPressurePlateBlock;
 import com.teammoeg.caupona.blocks.decoration.CPRoadBlock;
 import com.teammoeg.caupona.blocks.decoration.CPRoadSideBlock;
 import com.teammoeg.caupona.blocks.decoration.CPStandingSignBlock;
 import com.teammoeg.caupona.blocks.decoration.CPTrapDoorBlock;
+import com.teammoeg.caupona.blocks.decoration.CPWallHangingSignBlock;
 import com.teammoeg.caupona.blocks.decoration.CPWallSignBlock;
 import com.teammoeg.caupona.blocks.decoration.ChimneyFluteBlock;
 import com.teammoeg.caupona.blocks.decoration.ColumnCapitalBlock;
@@ -72,6 +74,7 @@ import com.teammoeg.caupona.blocks.stove.ChimneyPotBlock;
 import com.teammoeg.caupona.blocks.stove.KitchenStove;
 import com.teammoeg.caupona.blocks.stove.KitchenStoveBlockEntity;
 import com.teammoeg.caupona.item.CPBlockItem;
+import com.teammoeg.caupona.item.CPHangingSignItem;
 import com.teammoeg.caupona.item.CPSignItem;
 import com.teammoeg.caupona.item.DishItem;
 import com.teammoeg.caupona.item.LoafDishItem;
@@ -85,6 +88,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -94,6 +98,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -101,6 +106,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -131,6 +137,7 @@ public class CPBlocks {
 	// Block Lists for use in other registries
 	public static final List<DeferredHolder<Block,KitchenStove>> stoves = new ArrayList<>();
 	public static final List<Block> signs = new ArrayList<>();
+	public static final List<Block> hanging_signs = new ArrayList<>();
 	public static final Map<String, DeferredHolder<Block,Block>> stoneBlocks = new HashMap<>();
 	public static final List<Block> chimney = new ArrayList<>();
 	public static final List<Block> dolium = new ArrayList<>();
@@ -215,6 +222,7 @@ public class CPBlocks {
 	public static final DeferredHolder<Block,SlabBlock> LOAF=foodblock("loaf",()->new LoafBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).sound(SoundType.WOOL).instabreak().noOcclusion()
 		.isRedstoneConductor(CPBlocks::isntSolid).isSuffocating(CPBlocks::isntSolid)
 		.isViewBlocking(CPBlocks::isntSolid)));
+
 	// Bulk register blocks
 	static {
 
@@ -324,24 +332,53 @@ public class CPBlocks {
 				() -> new CPPressurePlateBlock(BlockBehaviour.Properties.of()
 								.mapColor(MapColor.WOOD).noCollission().strength(0.5F).sound(SoundType.WOOD).ignitedByLava(),
 						WALNUT_TYPE));
-		CPCommonBootStrap.asCompositable(
+		CPCommonBootStrap.asCompositable(CPCommonBootStrap.asFlamable(
 				maindecoblock(wood + "_sapling", () -> new SaplingBlock(growth.get(), BlockBehaviour.Properties.of()
-						.mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).ignitedByLava())),
+						.mapColor(MapColor.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.GRASS).ignitedByLava())),5,5),
 				0.3F);
 		DeferredHolder<Block,Block> s = BLOCKS.register(wood + "_sign",
 				() -> new CPStandingSignBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).noCollission()
 						.strength(1.0F).sound(SoundType.WOOD).ignitedByLava(), wt));
+		
 		DeferredHolder<Block,Block> ws = BLOCKS.register(wood + "_wall_sign",
 				() -> new CPWallSignBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).noCollission()
 						.strength(1.0F).sound(SoundType.WOOD).ignitedByLava(), wt));
+		 
+		DeferredHolder<Block,Block> hs = CPCommonBootStrap.asFlamable(BLOCKS.register(wood + "_hanging_sign",
+			() -> new CPCeilingHangingSignBlock(
+	            wt,
+	            BlockBehaviour.Properties.of()
+	                .mapColor(MapColor.WOOD)
+	                .forceSolidOn()
+	                .instrument(NoteBlockInstrument.BASS)
+	                .noCollission()
+	                .strength(1.0F)
+	                .ignitedByLava()
+	        )),5,5);
+		DeferredHolder<Block,Block> whs = CPCommonBootStrap.asFlamable(BLOCKS.register(wood + "_wall_hanging_sign",
+			() -> new CPWallHangingSignBlock(
+	            wt,
+	            BlockBehaviour.Properties.of()
+	                .mapColor(MapColor.WOOD)
+	                .forceSolidOn()
+	                .instrument(NoteBlockInstrument.BASS)
+	                .noCollission()
+	                .strength(1.0F)
+	                .ignitedByLava()
+	        )),5,5);
+		
+
 		CPItems.ITEMS.register(wood + "_sign",
 				() -> new CPSignItem((new Item.Properties()).stacksTo(16), s.get(), ws.get(), TabType.DECORATION));
+		CPItems.ITEMS.register(wood + "_hanging_sign",
+			() -> new CPHangingSignItem(hs.get(), whs.get(),(new Item.Properties()).stacksTo(16), TabType.DECORATION));
+		
 		CPCommonBootStrap.asFlamable(decoblock(wood + "_slab", () -> new SlabBlock(
 				BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD).ignitedByLava())),5,20);
 		CPCommonBootStrap.asFlamable(decoblock(wood + "_stairs", () -> new StairBlock(planks.get().defaultBlockState(),
 				BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F, 3.0F).sound(SoundType.WOOD))),5,20);
-		decoblock(wood + "_trapdoor", () -> new CPTrapDoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
-				.strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn(CPBlocks::never).ignitedByLava(), WALNUT_TYPE));
+		CPCommonBootStrap.asFlamable(decoblock(wood + "_trapdoor", () -> new CPTrapDoorBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD)
+				.strength(3.0F).sound(SoundType.WOOD).noOcclusion().isValidSpawn(CPBlocks::never).ignitedByLava(), WALNUT_TYPE)),5,5);
 		DeferredHolder<Block,Block> sw = CPCommonBootStrap.asFlamable(decoblock("stripped_" + wood + "_wood", () -> new RotatedPillarBlock(
 				BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD).ignitedByLava())),5,5);
 		CPCommonBootStrap.asFlamable(decoblock(wood + "_wood", () -> new CPStripPillerBlock(sw,

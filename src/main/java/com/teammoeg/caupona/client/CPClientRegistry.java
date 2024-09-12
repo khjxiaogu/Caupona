@@ -51,6 +51,7 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
@@ -94,6 +95,7 @@ public class CPClientRegistry {
 		BlockEntityRenderers.register(CPBlockEntityTypes.STEW_POT.get(), StewPotRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.BOWL.get(), BowlRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.SIGN.get(), SignRenderer::new);
+		BlockEntityRenderers.register(CPBlockEntityTypes.HANGING_SIGN.get(), HangingSignRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.DOLIUM.get(), CounterDoliumRenderer::new);
 		BlockEntityRenderers.register(CPBlockEntityTypes.PAN.get(), PanRenderer::new);
 		//BlockEntityRenderers.register(CPBlockEntityTypes.BOWL.get(), LoafBowlRenderer::new);
