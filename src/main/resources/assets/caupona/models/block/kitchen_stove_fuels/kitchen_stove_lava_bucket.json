@@ -4,7 +4,6 @@
 		"0": "caupona:block/kitchen_stove_lava_bucket",
 		"particle": "caupona:block/kitchen_stove_lava_bucket"
 	},
-	"loader":"caupona:layered",
 	"elements": [
 		{
 			"name": "bucket",
@@ -69,20 +68,9 @@
 	"groups": [
 		{
 			"name": "LavaBucketFuel",
-			"origin": [
-				8,
-				8,
-				8
-			],
+			"origin": [8, 6, 12],
 			"color": 0,
-			"children": [
-				0,
-				1,
-				2,
-				3,
-				4,
-				5
-			]
+			"children": [0, 1, 2, 3, 4, 5]
 		}
-	]	
+	]
 }
