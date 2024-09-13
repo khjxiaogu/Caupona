@@ -31,6 +31,7 @@ import java.util.function.UnaryOperator;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.teammoeg.caupona.CPBlocks;
+import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.blocks.decoration.SpokedFenceBlock;
 import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicBlock;
@@ -94,6 +95,8 @@ public class CPStatesProvider extends BlockStateProvider {
 		itemModels().basicItem(CPBlocks.STEW_POT.get().asItem());
 		itemModels().basicItem(CPBlocks.STEW_POT_LEAD.get().asItem());
 		simpleBlock(CPBlocks.BOWL.get(), bmf("bowl_of_liquid"));
+		this.horizontalBlock(CPBlocks.KITCHEN_RAIL.get(), bmf("kitchen_rail"));
+		blockItemModel("kitchen_rail");
 		this.getVariantBuilder(CPBlocks.SNAIL_BAIT.get()).partialState().addModels(ConfiguredModel.allYRotations(bmf("snail_bait"), 0, false));
 		this.getVariantBuilder(CPBlocks.SNAIL.get()).partialState().with(FruitBlock.AGE, 0)
 			.addModels(ConfiguredModel.allYRotations(bmf("snail_stage_1"), 0, false)).partialState()
@@ -129,6 +132,14 @@ public class CPStatesProvider extends BlockStateProvider {
 					this.horizontalMultipart(mosaic, bmf("mosaic/mosaic_" + p + "_" + m.shortName + "_" + i), b -> b.condition(MosaicBlock.MATERIAL[i], m).condition(MosaicBlock.PATTERN, p));
 
 				}
+		for(String s:CPItems.dishes) {
+			this.getMultipartBuilder(cpblock(s))
+			.part().modelFile(bmf("dish")).addModel().end()
+			.part().modelFile(bmf("plate_dishes/"+s)).addModel().end();
+			this.getMultipartBuilder(cpblock(s+"_loaf"))
+			.part().modelFile(bmf("bread_bowl")).addModel().end()
+			.part().modelFile(bmf("bread_bowl_dishes/"+s)).addModel().end();
+		}
 		// itemModels().getBuilder("mosaic").parent(new
 		// UncheckedModelFile(ResourceLocation.fromNamespaceAndPath("builtin/entity")));
 		/*
@@ -330,6 +341,7 @@ public class CPStatesProvider extends BlockStateProvider {
 			}
 
 		}
+		CPMain.logger.warn("Model file "+orl+" not exists, using unchecked");
 		return new ModelFile.UncheckedModelFile(orl);
 	}
 

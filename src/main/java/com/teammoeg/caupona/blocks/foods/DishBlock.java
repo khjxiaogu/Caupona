@@ -49,11 +49,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
-	public static final IntegerProperty PAN = IntegerProperty.create("pan", 0, 2);
 
 	public DishBlock(Properties blockProps) {
 		super(blockProps, CPBlockEntityTypes.DISH);
-		this.registerDefaultState(this.defaultBlockState().setValue(PAN, 0));
 		CPBlocks.dishes.add(this);
 	}
 
@@ -61,13 +59,8 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 	protected void createBlockStateDefinition(
 			net.minecraft.world.level.block.state.StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(PAN);
 	}
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(PAN, 0);
-	}
 
 	static final VoxelShape shape = Block.box(0, 0, 0, 16, 3, 16);
 

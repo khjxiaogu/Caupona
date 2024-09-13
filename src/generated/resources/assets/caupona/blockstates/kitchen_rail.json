@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "caupona:block/kitchen_rail",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "caupona:block/kitchen_rail"
+    },
+    "facing=south": {
+      "model": "caupona:block/kitchen_rail",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "caupona:block/kitchen_rail",
+      "y": 270
+    }
+  }
+}

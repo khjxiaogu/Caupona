@@ -1,0 +1,14 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "caupona:block/dish"
+      }
+    },
+    {
+      "apply": {
+        "model": "caupona:block/plate_dishes/sauteed_meat"
+      }
+    }
+  ]
+}

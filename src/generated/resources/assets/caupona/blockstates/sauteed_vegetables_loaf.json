@@ -1,0 +1,14 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "caupona:block/bread_bowl"
+      }
+    },
+    {
+      "apply": {
+        "model": "caupona:block/bread_bowl_dishes/sauteed_vegetables"
+      }
+    }
+  ]
+}

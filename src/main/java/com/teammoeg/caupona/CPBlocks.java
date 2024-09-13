@@ -43,6 +43,7 @@ import com.teammoeg.caupona.blocks.decoration.CPWallHangingSignBlock;
 import com.teammoeg.caupona.blocks.decoration.CPWallSignBlock;
 import com.teammoeg.caupona.blocks.decoration.ChimneyFluteBlock;
 import com.teammoeg.caupona.blocks.decoration.ColumnCapitalBlock;
+import com.teammoeg.caupona.blocks.decoration.KitchenRailBlock;
 import com.teammoeg.caupona.blocks.decoration.LacunarBlock;
 import com.teammoeg.caupona.blocks.decoration.SpokedFenceBlock;
 import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicBlock;
@@ -164,6 +165,8 @@ public class CPBlocks {
 	public static final DeferredHolder<Block,WolfStatueBlock> WOLF = maindecoblock("wolf_statue",
 			() -> new WolfStatueBlock(Block.Properties.of().mapColor(MapColor.METAL).sound(SoundType.COPPER)
 					.requiresCorrectToolForDrops().strength(3.5f, 10).noOcclusion()));
+	public static final DeferredHolder<Block,KitchenRailBlock> KITCHEN_RAIL = maindecoblock("kitchen_rail",
+		() -> new KitchenRailBlock(Block.Properties.of().sound(SoundType.WOOD).strength(2f, 3f).noOcclusion()));
 	public static final DeferredHolder<Block,PanBlock> STONE_PAN = mainblock("stone_griddle", () -> new PanBlock(
 			Block.Properties.of().mapColor(MapColor.STONE).sound(SoundType.STONE).strength(3.5f, 10).noOcclusion()));
 	public static final DeferredHolder<Block,TessellationWorkBenchBlock> T_BENCH= mainblock("tessellation_workbench",()->new TessellationWorkBenchBlock
