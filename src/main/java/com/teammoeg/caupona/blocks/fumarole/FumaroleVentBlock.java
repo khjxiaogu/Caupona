@@ -136,7 +136,7 @@ public class FumaroleVentBlock extends CPRegisteredEntityBlock<FumaroleVentBlock
 		if(state.is(CPBlocks.FUMAROLE_VENT)&&stack.is(CPItems.SAPA_SPICE_JAR.get())&&stack.getDamageValue()==0) {
 			if(!player.getAbilities().instabuild)
 				stack.shrink(1);
-			level.setBlock(pos, CPBlocks.LITHARGE_BLOOM.get().defaultBlockState(), UPDATE_ALL);
+			level.setBlock(pos, CPBlocks.LITHARGE_FUMAROLE_VENT.get().defaultBlockState(), UPDATE_ALL);
 			
 		}
 		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
