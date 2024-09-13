@@ -69,7 +69,6 @@ import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -106,7 +105,7 @@ public class JEICompat implements IModPlugin {
 		registration.addRecipes(PotRestingCategory.TYPE,
 				DoliumRecipe.recipes.stream().filter(e -> e.value().items.size() == 0).collect(Collectors.toList())
 				);
-		registration.addItemStackInfo(new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"leaden_walnut"))),Utils.translate("gui.jei.caupona.info.leaden_walnut"));
+		registration.addItemStackInfo(new ItemStack(CPItems.LEADEN_WALNUT.get()),Utils.translate("gui.jei.caupona.info.leaden_walnut"));
 	}
 
 	@Override

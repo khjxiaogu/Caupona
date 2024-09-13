@@ -3,6 +3,8 @@
   "fluid": {
     "fluid": "caupona:stracciatella"
   },
-  "inType": "caupona:loaf",
+  "inType": {
+    "item": "caupona:loaf_bowl"
+  },
   "item": "caupona:stracciatella"
 }

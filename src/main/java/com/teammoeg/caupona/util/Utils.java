@@ -21,7 +21,7 @@
 
 package com.teammoeg.caupona.util;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -34,6 +34,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.teammoeg.caupona.CPCapability;
+import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.api.events.ContanerContainFoodEvent;
 import com.teammoeg.caupona.api.events.EventResult;
 import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
@@ -62,6 +63,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities.FluidHandler;
 import net.neoforged.neoforge.common.MutableDataComponentHolder;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -202,8 +204,11 @@ public class Utils {
 	public static ResourceLocation getRegistryName(MobEffect effect) {
 		return BuiltInRegistries.MOB_EFFECT.getKey(effect);
 	}
-	
-	public static void addPotionTooltip(List<MobEffectInstance> list, Consumer<Component> lores, float durationFactor,Level pLevel) {
+	public static Lazy<Item> itemSupplier(String name){
+		return Lazy.of(()->BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,name)));
+		
+	}
+	public static void addPotionTooltip(Collection<MobEffectInstance> list, Consumer<Component> lores, float durationFactor,Level pLevel) {
 		if(list.isEmpty())
 			PotionContents.addPotionTooltip(list, lores, durationFactor, pLevel == null ? 20.0F : pLevel.tickRateManager().tickrate());
 	}

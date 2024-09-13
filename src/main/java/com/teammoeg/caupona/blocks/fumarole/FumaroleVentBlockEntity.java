@@ -26,6 +26,7 @@ import java.util.Iterator;
 import com.teammoeg.caupona.CPBlockEntityTypes;
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPConfig;
+import com.teammoeg.caupona.CPTags;
 import com.teammoeg.caupona.CPTags.Blocks;
 import com.teammoeg.caupona.CPTags.Fluids;
 import com.teammoeg.caupona.blocks.stove.IStove;
@@ -37,6 +38,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -64,9 +66,10 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 			}
 			return true;
 		});
+		Block bloomBlock=pBlockState.is(CPBlocks.LITHARGE_FUMAROLE_VENT)?CPBlocks.LITHARGE_BLOOM.get():CPBlocks.PUMICE_BLOOM.get();
 		update = new LazyTickWorker(CPConfig.SERVER.fumaroleSpeed.get(),()->{
 			if (!this.getBlockState().getValue(FumaroleVentBlock.WATERLOGGED))
-				placeFumarole(this.getLevel(), this.getBlockPos());
+				placeFumarole(this.getLevel(), this.getBlockPos(),bloomBlock);
 			return true;
 		});
 	}
@@ -101,7 +104,7 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 		
 	}
 
-	public static void placeFumarole(Level pLevel, BlockPos pPos) {
+	public static void placeFumarole(Level pLevel, BlockPos pPos,Block bloomBlock) {
 		RandomSource pRandom = pLevel.getRandom();
 		int dx = (pRandom.nextBoolean() ? 1 : -1) * (pRandom.nextInt(6));
 		int dz = (pRandom.nextBoolean() ? 1 : -1) * (pRandom.nextInt(6));
@@ -115,7 +118,7 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 			if (b0.isAir()) {
 				if (b1.getFluidState().is(Fluids.PUMICE_ON)) {
 					if (shouldPlacePumice(pLevel, pendPos))
-						pLevel.setBlockAndUpdate(pendPos, CPBlocks.PUMICE_BLOOM.get().defaultBlockState());
+						pLevel.setBlockAndUpdate(pendPos, bloomBlock.defaultBlockState());
 					return;
 				}
 			}
@@ -130,7 +133,7 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 		AABB aabb = AABB.ofSize(pPos.getCenter(), 2, 0, 2);
 		Iterator<BlockState> it = pLevel.getBlockStates(aabb).iterator();
 		while (it.hasNext()) {
-			if (it.next().getBlock() == CPBlocks.PUMICE_BLOOM.get())
+			if (it.next().is(CPTags.Blocks.FUMAROLE_BLOOM))
 				cnt++;
 			if (cnt >= 2)
 				return false;

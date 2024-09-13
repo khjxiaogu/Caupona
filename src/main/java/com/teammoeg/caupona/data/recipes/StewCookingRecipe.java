@@ -37,6 +37,7 @@ import com.teammoeg.caupona.data.recipes.baseconditions.BaseConditions;
 import com.teammoeg.caupona.data.recipes.conditions.Conditions;
 import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.util.FloatemTagStack;
+
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

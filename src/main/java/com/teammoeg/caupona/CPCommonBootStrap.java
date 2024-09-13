@@ -36,7 +36,6 @@ import com.teammoeg.caupona.blocks.foods.IFoodContainer;
 import com.teammoeg.caupona.blocks.pan.GravyBoatBlock;
 import com.teammoeg.caupona.blocks.pan.PanBlockEntity;
 import com.teammoeg.caupona.blocks.pot.StewPotBlockEntity;
-import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
 import com.teammoeg.caupona.entity.CPBoat;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.CreativeTabItemHelper;
@@ -149,7 +148,7 @@ public class CPCommonBootStrap {
 				if (blockEntity != null) {
 					IFluidHandler ip=bp.level().getCapability(Capabilities.FluidHandler.BLOCK,front, d.getOpposite());
 					if (ip!=null) {
-						ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.WOODEN_BOWL,ip).orElse(null);
+						ItemStack ret = CauponaApi.fillBowl(is,ip).orElse(null);
 						if (ret != null) {
 							if (is.getCount() == 1)
 								return ret;
@@ -168,7 +167,7 @@ public class CPCommonBootStrap {
 
 					return is;
 				} else if (!fs.isEmpty()) {
-					ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.WOODEN_BOWL,new FluidStack(fs.getType(), 250)).orElse(null);
+					ItemStack ret = CauponaApi.fillBowl(is,new FluidStack(fs.getType(), 250)).orElse(null);
 					if (ret != null) {
 						if (is.getCount() == 1)
 							return ret;
@@ -196,7 +195,7 @@ public class CPCommonBootStrap {
 				if (blockEntity != null) {
 					IFluidHandler ip=bp.level().getCapability(Capabilities.FluidHandler.BLOCK,front, d.getOpposite());
 					if (ip!=null) {
-						ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.BREAD_BOWL,ip).orElse(null);
+						ItemStack ret = CauponaApi.fillBowl(is,ip).orElse(null);
 						if (ret != null) {
 							if (is.getCount() == 1)
 								return ret;
@@ -215,7 +214,7 @@ public class CPCommonBootStrap {
 
 					return is;
 				} else if (!fs.isEmpty()) {
-					ItemStack ret = CauponaApi.fillBowl(BowlContainingRecipe.BREAD_BOWL,new FluidStack(fs.getType(), 250)).orElse(null);
+					ItemStack ret = CauponaApi.fillBowl(is,new FluidStack(fs.getType(), 250)).orElse(null);
 					if (ret != null) {
 						if (is.getCount() == 1)
 							return ret;

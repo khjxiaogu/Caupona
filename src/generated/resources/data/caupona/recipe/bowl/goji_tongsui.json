@@ -3,6 +3,8 @@
   "fluid": {
     "fluid": "caupona:goji_tongsui"
   },
-  "inType": "caupona:bowl",
+  "inType": {
+    "item": "minecraft:bowl"
+  },
   "item": "caupona:goji_tongsui"
 }

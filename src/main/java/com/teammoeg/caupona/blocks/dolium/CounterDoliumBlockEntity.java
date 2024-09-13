@@ -22,12 +22,10 @@
 package com.teammoeg.caupona.blocks.dolium;
 
 import com.teammoeg.caupona.CPBlockEntityTypes;
-import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
-import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.data.recipes.SpiceRecipe;
 import com.teammoeg.caupona.fluid.SoupFluid;
@@ -47,7 +45,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -221,15 +218,11 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		ItemStack is = inv.getStackInSlot(4);
 		if (!is.isEmpty() && inv.getStackInSlot(5).isEmpty()) {
 			if (tank.getFluidAmount() >= 250) {
-				for(RecipeHolder<BowlTypeRecipe> type:BowlTypeRecipe.recipes) {
-					if(type.value().test(is)) {
-						RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(type.value().bowl).stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
-						if (recipe != null) {
-							is.shrink(1);
-							inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
-							return true;
-						}
-					}
+				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(is).stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
+				if (recipe != null) {
+					is.shrink(1);
+					inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
+					return true;
 				}
 			}
 			FluidStack out=Utils.extractFluid(is);

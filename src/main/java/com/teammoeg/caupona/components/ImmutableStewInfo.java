@@ -14,7 +14,7 @@ import net.minecraft.world.level.material.Fluid;
 
 public class ImmutableStewInfo extends StewInfo {
 
-	public ImmutableStewInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName, List<FloatemStack> stacks, List<MobEffectInstance> effects,
+	public ImmutableStewInfo(Optional<MobEffectInstance> spice, Boolean hasSpice, Optional<ResourceLocation> spiceName, List<FloatemStack> stacks, List<ChancedEffect> effects,
 		List<ChancedEffect> foodeffect, int healing, float saturation, Fluid base) {
 		super(spice, hasSpice, spiceName, stacks, effects, foodeffect, healing, saturation, base);
 	}

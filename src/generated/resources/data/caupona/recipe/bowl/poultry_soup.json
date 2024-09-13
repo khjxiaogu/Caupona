@@ -3,6 +3,8 @@
   "fluid": {
     "fluid": "caupona:poultry_soup"
   },
-  "inType": "caupona:bowl",
+  "inType": {
+    "item": "minecraft:bowl"
+  },
   "item": "caupona:poultry_soup"
 }

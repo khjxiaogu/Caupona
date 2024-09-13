@@ -3,6 +3,8 @@
   "fluid": {
     "fluid": "caupona:egg_drop_soup"
   },
-  "inType": "caupona:bowl",
+  "inType": {
+    "item": "minecraft:bowl"
+  },
   "item": "caupona:egg_drop_soup"
 }

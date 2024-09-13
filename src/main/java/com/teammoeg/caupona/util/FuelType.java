@@ -24,7 +24,6 @@ package com.teammoeg.caupona.util;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import com.teammoeg.caupona.CPMain;
 
 import net.minecraft.resources.ResourceLocation;

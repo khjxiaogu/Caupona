@@ -36,6 +36,7 @@ import com.teammoeg.caupona.item.SkimmerItem;
 import com.teammoeg.caupona.item.StewItem;
 import com.teammoeg.caupona.util.FoodMaterialInfo;
 import com.teammoeg.caupona.util.TabType;
+import com.teammoeg.caupona.util.Utils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -104,6 +105,9 @@ public class CPItems {
 
 	public static DeferredHolder<Item,SkimmerItem> b_skimmer = ITEMS.register("bamboo_skimmer",()->new SkimmerItem( createProps().durability(20)));
 	public static DeferredHolder<Item,SkimmerItem> i_skimmer = ITEMS.register("iron_skimmer",()->new SkimmerItem( createProps().durability(200)));
+	public final static Supplier<Item> SAPA_SPICE_JAR=Utils.itemSupplier("sapa_spice_jar");
+	public final static Supplier<Item> LEADEN_WALNUT=Utils.itemSupplier("leaden_walnut");
+	
 	static{
 		for (String s : soups) {
 			stew(s,Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))),CPBlocks.BOWL, createSoupProps());
@@ -160,6 +164,7 @@ public class CPItems {
 		return new Item.Properties();
 	}
 	public static ItemStack getSapa() {
-		return new ItemStack(BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,"sapa_spice_jar")),1);
+		return new ItemStack(SAPA_SPICE_JAR.get(),1);
 	}
+
 }

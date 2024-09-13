@@ -3,6 +3,8 @@
   "fluid": {
     "fluid": "caupona:ukha"
   },
-  "inType": "caupona:bowl",
+  "inType": {
+    "item": "minecraft:bowl"
+  },
   "item": "caupona:ukha"
 }

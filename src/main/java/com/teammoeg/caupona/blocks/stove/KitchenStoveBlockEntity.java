@@ -28,7 +28,6 @@ import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.CPTags.Blocks;
 import com.teammoeg.caupona.client.CPParticles;
-import com.teammoeg.caupona.client.ClientProxy;
 import com.teammoeg.caupona.client.util.DisplayGroupProperty;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.ChimneyHelper;
@@ -56,7 +55,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Container, MenuProvider, IStove, IInfinitable {
 	private NonNullList<ItemStack> fuel = NonNullList.withSize(1, ItemStack.EMPTY);

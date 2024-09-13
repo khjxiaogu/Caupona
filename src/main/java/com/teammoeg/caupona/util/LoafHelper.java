@@ -32,7 +32,7 @@ public class LoafHelper {
 			}
 		return directions;
 	}
-	private static final Vec3i[][] bound_table=generateBounds(1);
+	//private static final Vec3i[][] bound_table=generateBounds(1);
 	public static int encodeXY(int radius,int x,int y) {
 		return(x+radius)+(y+radius)*3;
 	}

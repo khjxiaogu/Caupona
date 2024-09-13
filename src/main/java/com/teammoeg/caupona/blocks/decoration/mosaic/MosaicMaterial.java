@@ -3,28 +3,26 @@ package com.teammoeg.caupona.blocks.decoration.mosaic;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
-import com.teammoeg.caupona.CPMain;
+import com.teammoeg.caupona.util.Utils;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.util.Lazy;
 
 public enum MosaicMaterial implements StringRepresentable{
 	brick("t"),
 	basalt("b"),
 	pumice("p");
 	public final String shortName;
+	private final Lazy<Item> tell;
 	private MosaicMaterial(String shortName) {
 		this.shortName = shortName;
+		this.tell=Utils.itemSupplier(name()+"_tesserae");
 	}
-	private Item tell;
+
 	private Item getTesserae() {
-		if(tell==null) {
-			tell=BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID,name()+"_tesserae"));
-		}
-		return tell;
+		return tell.get();
 	}
 	private static Map<Item,MosaicMaterial> materials;
 	public static MosaicMaterial fromItem(ItemStack is) {

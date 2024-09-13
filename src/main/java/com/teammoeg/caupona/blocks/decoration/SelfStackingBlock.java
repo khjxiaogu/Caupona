@@ -114,6 +114,7 @@ public class SelfStackingBlock extends SlabBlock {
 		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		return (level.getBlockState(pos.below()).isSolid()&&state.getValue(TYPE)!=SlabType.TOP)||(level.getBlockState(pos.above()).isSolid()&&state.getValue(TYPE)!=SlabType.BOTTOM);

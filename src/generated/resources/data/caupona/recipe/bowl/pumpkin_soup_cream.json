@@ -3,6 +3,8 @@
   "fluid": {
     "fluid": "caupona:pumpkin_soup_cream"
   },
-  "inType": "caupona:bowl",
+  "inType": {
+    "item": "minecraft:bowl"
+  },
   "item": "caupona:pumpkin_soup_cream"
 }

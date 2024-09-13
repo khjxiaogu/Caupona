@@ -39,7 +39,6 @@ import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicMaterial;
 import com.teammoeg.caupona.blocks.decoration.mosaic.MosaicPattern;
 import com.teammoeg.caupona.blocks.pan.GravyBoatBlock;
 import com.teammoeg.caupona.blocks.plants.FruitBlock;
-import com.teammoeg.caupona.blocks.stove.KitchenStove;
 import com.teammoeg.caupona.util.MaterialType;
 import com.teammoeg.caupona.util.Utils;
 
@@ -50,8 +49,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -222,6 +219,9 @@ public class CPStatesProvider extends BlockStateProvider {
 		blockItemModel("wolf_statue", "_1");
 		blockItemModel("fumarole_boulder");
 		blockItemModel("fumarole_vent");
+		simpleBlockItem("litharge_fumarole_boulder");
+		simpleBlockItem("litharge_fumarole_vent");
+		simpleBlockItem("litharge_bloom");
 		blockItemModel("pumice");
 		blockItemModel("pumice_bloom");
 		blockItemModel("lead_block");
@@ -344,7 +344,9 @@ public class CPStatesProvider extends BlockStateProvider {
 		CPMain.logger.warn("Model file "+orl+" not exists, using unchecked");
 		return new ModelFile.UncheckedModelFile(orl);
 	}
-
+	public void simpleBlockItem(String name) {
+		simpleBlockItem(cpblock(name), bmf(name));
+	}
 	public void simpleBlockItem(Block b, ModelFile model) {
 		simpleBlockItem(b, new ConfiguredModel(model));
 	}

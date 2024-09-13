@@ -21,6 +21,7 @@
 
 package com.teammoeg.caupona;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -70,8 +71,8 @@ public class CPBlockEntityTypes {
 		()->CPBlocks.hanging_signs));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<ChimneyPotBlockEntity>> CHIMNEY_POT = REGISTER.register("chimney_pot",makeTypes(ChimneyPotBlockEntity::new,
 					()->CPBlocks.chimney));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<FumaroleVentBlockEntity>> FUMAROLE = REGISTER.register("fumarole_vent", makeType(FumaroleVentBlockEntity::new,
-					()->CPBlocks.FUMAROLE_VENT));
+	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<FumaroleVentBlockEntity>> FUMAROLE = REGISTER.register("fumarole_vent", makeTypes2(FumaroleVentBlockEntity::new,
+					()->Arrays.asList(CPBlocks.FUMAROLE_VENT,CPBlocks.LITHARGE_FUMAROLE_VENT)));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<PanBlockEntity>> PAN = REGISTER.register("pan", makeTypes2(PanBlockEntity::new,
 					()->List.of(CPBlocks.STONE_PAN, CPBlocks.COPPER_PAN, CPBlocks.IRON_PAN, CPBlocks.LEAD_PAN )));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<CounterDoliumBlockEntity>> DOLIUM = REGISTER.register("dolium",makeTypes(CounterDoliumBlockEntity::new,

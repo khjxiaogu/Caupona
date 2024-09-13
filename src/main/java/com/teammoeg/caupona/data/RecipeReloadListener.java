@@ -44,7 +44,6 @@ import com.teammoeg.caupona.CPMain;
 import com.teammoeg.caupona.data.recipes.AspicMeltingRecipe;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
-import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.data.recipes.CountingTags;
 import com.teammoeg.caupona.data.recipes.DissolveRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
@@ -180,7 +179,6 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		Stream.concat(Arrays.stream(t.value().before.getStacks()).map(fs->fs.getFluid()),Stream.of(t.value().after))).collect(Collectors.toSet());
 		FluidFoodValueRecipe.recipes = filterRecipes(recipes, FluidFoodValueRecipe.class, FluidFoodValueRecipe.TYPE)
 				.collect(Collectors.toMap(e -> e.value().f, UnaryOperator.identity()));
-		BowlTypeRecipe.recipes=filterRecipes(recipes, BowlTypeRecipe.class, BowlTypeRecipe.TYPE).collect(Collectors.toList());
 		StewCookingRecipe.sorted = filterRecipes(recipes, StewCookingRecipe.class, StewCookingRecipe.TYPE).collect(Collectors.toList());
 		StewCookingRecipe.sorted.sort((t2, t1) -> t1.value().getPriority() - t2.value().getPriority());
 		StewCookingRecipe.cookables = StewCookingRecipe.sorted.stream().map(t->t.value()).flatMap(StewCookingRecipe::getAllNumbers).collect(Collectors.toSet());

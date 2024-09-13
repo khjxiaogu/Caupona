@@ -38,7 +38,6 @@ import com.teammoeg.caupona.client.particle.SteamParticle;
 import com.teammoeg.caupona.client.renderer.BowlRenderer;
 import com.teammoeg.caupona.client.renderer.CPBoatRenderer;
 import com.teammoeg.caupona.client.renderer.CounterDoliumRenderer;
-import com.teammoeg.caupona.client.renderer.LoafBowlRenderer;
 import com.teammoeg.caupona.client.renderer.MosaicRenderer;
 import com.teammoeg.caupona.client.renderer.PanRenderer;
 import com.teammoeg.caupona.client.renderer.StewPotRenderer;

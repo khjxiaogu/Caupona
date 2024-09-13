@@ -22,6 +22,7 @@
 package com.teammoeg.caupona.compat.jei.category;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.teammoeg.caupona.CPMain;
@@ -83,8 +84,9 @@ public class BowlEmptyCategory implements IRecipeCategory<RecipeHolder<BowlConta
 	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<BowlContainingRecipe> recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 30, 17).addIngredient(VanillaTypes.ITEM_STACK,
 				new ItemStack(recipe.value().bowl));
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 37).addIngredient(VanillaTypes.ITEM_STACK,
-				new ItemStack(Items.BOWL));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 37).addIngredients(VanillaTypes.ITEM_STACK,
+				Arrays.asList(recipe.value().inBowl.getItems()));
+		
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 83, 9)
 				.addIngredients(NeoForgeTypes.FLUID_STACK, unpack(recipe.value().fluid, 250))
 				.setFluidRenderer(250, true, 16, 46);

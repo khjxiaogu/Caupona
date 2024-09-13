@@ -42,7 +42,6 @@ import com.teammoeg.caupona.data.IDataRecipe;
 import com.teammoeg.caupona.data.recipes.AspicMeltingRecipe;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
-import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
 import com.teammoeg.caupona.data.recipes.FluidFoodValueRecipe;
 import com.teammoeg.caupona.data.recipes.FoodValueRecipe;
@@ -92,23 +91,23 @@ public class CPRecipeProvider extends RecipeProvider {
 		};
 		for (String s : CPFluids.getSoupfluids()) {
 			ResourceLocation fs = mrl(s);
-			out.accept(rl("bowl/" + s),new BowlContainingRecipe( item(fs), fluid(fs),BowlContainingRecipe.WOODEN_BOWL));
+			out.accept(rl("bowl/" + s),new BowlContainingRecipe( item(fs), fluid(fs),Ingredient.of(Items.BOWL)));
 			
 		}
 		for (String s : CPItems.bread_bowls) {
 			ResourceLocation fs = mrl(s);
-			out.accept(rl("bowl/" + s+"_loaf"),new BowlContainingRecipe( item(fs), fluid(fs),BowlContainingRecipe.BREAD_BOWL));
+			out.accept(rl("bowl/" + s+"_loaf"),new BowlContainingRecipe( item(fs), fluid(fs),Ingredient.of(CPBlocks.LOAF_BOWL.get())));
 			
 		}
 		
 		// out.accept(dissolve(RankineItems.CORN_EAR.get()));
-		out.accept(rl("bowl_type/bowl"), new BowlTypeRecipe(BowlContainingRecipe.WOODEN_BOWL,Ingredient.of(Items.BOWL)));
-		out.accept(rl("bowl_type/loaf_bowl"), new BowlTypeRecipe(BowlContainingRecipe.WOODEN_BOWL,Ingredient.of(CPBlocks.LOAF_BOWL.get().asItem())));
+		//out.accept(rl("bowl_type/bowl"), new BowlTypeRecipe(Ingredient.of(Items.BOWL),Ingredient.of(Items.BOWL)));
+		//out.accept(rl("bowl_type/loaf_bowl"), new BowlTypeRecipe(Ingredient.of(Items.BOWL),Ingredient.of(CPBlocks.LOAF_BOWL.get().asItem())));
 		
-		out.accept(rl("bowl/water"),new BowlContainingRecipe( cpitem("water"), Fluids.WATER,BowlContainingRecipe.WOODEN_BOWL));
-		out.accept(rl("bowl/milk"),new BowlContainingRecipe( cpitem("milk"), NeoForgeMod.MILK.get(),BowlContainingRecipe.WOODEN_BOWL));
-		out.accept(rl("bowl/water"),new BowlContainingRecipe( cpitem("water"), Fluids.WATER,BowlContainingRecipe.BREAD_BOWL));
-		out.accept(rl("bowl/milk"),new BowlContainingRecipe( cpitem("milk"), NeoForgeMod.MILK.get(),BowlContainingRecipe.BREAD_BOWL));
+		out.accept(rl("bowl/water"),new BowlContainingRecipe( cpitem("water"), Fluids.WATER,Ingredient.of(Items.BOWL)));
+		out.accept(rl("bowl/milk"),new BowlContainingRecipe( cpitem("milk"), NeoForgeMod.MILK.get(),Ingredient.of(Items.BOWL)));
+		out.accept(rl("bowl/water"),new BowlContainingRecipe( cpitem("water"), Fluids.WATER,Ingredient.of(CPBlocks.LOAF_BOWL.get())));
+		out.accept(rl("bowl/milk"),new BowlContainingRecipe( cpitem("milk"), NeoForgeMod.MILK.get(),Ingredient.of(CPBlocks.LOAF_BOWL.get())));
 		out.accept(rl("boil/water"),new BoilingRecipe( fluid(mcrl("water")), fluid(mrl("nail_soup")), 200));
 		out.accept(rl("boil/milk"),new BoilingRecipe( fluid(mcrl("milk")), fluid(mrl("scalded_milk")), 200));
 		out.accept(rl("food/mushroom"),new FoodValueRecipe( 3, 0.6f, new ItemStack(Items.RED_MUSHROOM),

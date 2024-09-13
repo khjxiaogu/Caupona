@@ -22,6 +22,8 @@
 package com.teammoeg.caupona.blocks.fumarole;
 
 import com.teammoeg.caupona.CPBlockEntityTypes;
+import com.teammoeg.caupona.CPBlocks;
+import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.blocks.CPRegisteredEntityBlock;
 
 import net.minecraft.core.BlockPos;
@@ -30,8 +32,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -46,6 +52,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -122,5 +129,16 @@ public class FumaroleVentBlock extends CPRegisteredEntityBlock<FumaroleVentBlock
 		if (pEntity instanceof LivingEntity && pState.getValue(HEAT) != 0)
 			pEntity.setRemainingFireTicks(100);
 		super.stepOn(pLevel, pPos, pState, pEntity);
+	}
+
+	@Override
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if(state.is(CPBlocks.FUMAROLE_VENT)&&stack.is(CPItems.SAPA_SPICE_JAR.get())&&stack.getDamageValue()==0) {
+			if(!player.getAbilities().instabuild)
+				stack.shrink(1);
+			level.setBlock(pos, CPBlocks.LITHARGE_BLOOM.get().defaultBlockState(), UPDATE_ALL);
+			
+		}
+		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 }

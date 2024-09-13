@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.teammoeg.caupona.CPMain;
-
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;

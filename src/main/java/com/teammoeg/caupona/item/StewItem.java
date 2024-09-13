@@ -24,7 +24,6 @@ package com.teammoeg.caupona.item;
 import java.util.List;
 import java.util.function.Supplier;
 
-import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPCapability;
 import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.components.ItemHoldedFluidData;

@@ -30,7 +30,6 @@ import com.teammoeg.caupona.CPItems;
 import com.teammoeg.caupona.blocks.foods.DishBlock;
 import com.teammoeg.caupona.components.IFoodInfo;
 import com.teammoeg.caupona.components.SauteedFoodInfo;
-import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.util.FloatemStack;
 import com.teammoeg.caupona.util.Utils;
 

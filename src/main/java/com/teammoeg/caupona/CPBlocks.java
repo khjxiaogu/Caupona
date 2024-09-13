@@ -89,7 +89,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -99,7 +98,6 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -157,6 +155,16 @@ public class CPBlocks {
 	public static final DeferredHolder<Block,Block> PUMICE = block("pumice", getStoneProps(),TabType.DECORATION);
 	public static final DeferredHolder<Block,PumiceBloomBlock> PUMICE_BLOOM = maindecoblock("pumice_bloom",
 			() -> new PumiceBloomBlock(getStoneProps().noOcclusion()));
+	
+	public static final DeferredHolder<Block,FumaroleBoulderBlock> LITHARGE_FUMAROLE_BOULDER = decoblock("litharge_fumarole_boulder",
+		() -> new FumaroleBoulderBlock(getStoneProps().isViewBlocking(CPBlocks::isntSolid).noOcclusion()
+				.isSuffocating(CPBlocks::isntSolid)));
+	public static final DeferredHolder<Block,FumaroleVentBlock> LITHARGE_FUMAROLE_VENT = maindecoblock("litharge_fumarole_vent",
+		() -> new FumaroleVentBlock(getStoneProps().strength(4.5f, 10).isViewBlocking(CPBlocks::isntSolid)
+				.noOcclusion().isSuffocating(CPBlocks::isntSolid)));
+	public static final DeferredHolder<Block,PumiceBloomBlock> LITHARGE_BLOOM = maindecoblock("litharge_bloom",
+		() -> new PumiceBloomBlock(getStoneProps().noOcclusion()));
+	
 	public static final DeferredHolder<Block,GravyBoatBlock> GRAVY_BOAT = BLOCKS.register("gravy_boat",
 			() -> new GravyBoatBlock(Block.Properties.of().sound(SoundType.GLASS).instabreak().noOcclusion()
 					.isSuffocating(CPBlocks::isntSolid).isViewBlocking(CPBlocks::isntSolid)));

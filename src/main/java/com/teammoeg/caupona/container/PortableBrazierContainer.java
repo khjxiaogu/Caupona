@@ -41,6 +41,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.neoforged.neoforge.common.Tags.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
@@ -211,8 +212,9 @@ public class PortableBrazierContainer extends AbstractContainerMenu implements I
 				if (recipe != null) {
 					FluidStack simulated=new FluidStack(recipe.fluid,250);
 					List<RecipeHolder<BowlContainingRecipe>> recipeList=null;
-					if(items.getStackInSlot(CONTAINER).is(CPItems.water_bowl))
-						recipeList=BowlContainingRecipe.getRecipes(BowlContainingRecipe.WOODEN_BOWL);
+					FluidStack fluid=Utils.extractFluid(items.getStackInSlot(CONTAINER));
+					if(fluid.getAmount()==250&&fluid.is(Fluids.WATER))
+						recipeList=BowlContainingRecipe.getRecipes(items.getStackInSlot(CONTAINER).getCraftingRemainingItem());
 					if(recipeList!=null) {
 						RecipeHolder<BowlContainingRecipe> recipe2 = recipeList.stream().filter(t->t.value().matches(simulated)).findFirst().orElse(null);
 						if (recipe2 != null) {

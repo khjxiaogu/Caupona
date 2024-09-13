@@ -25,7 +25,6 @@ import com.teammoeg.caupona.data.CPRecipeSerializer;
 import com.teammoeg.caupona.data.recipes.AspicMeltingRecipe;
 import com.teammoeg.caupona.data.recipes.BoilingRecipe;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
-import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.data.recipes.CountingTags;
 import com.teammoeg.caupona.data.recipes.DissolveRecipe;
 import com.teammoeg.caupona.data.recipes.DoliumRecipe;
@@ -36,7 +35,6 @@ import com.teammoeg.caupona.data.recipes.SpiceRecipe;
 import com.teammoeg.caupona.data.recipes.StewCookingRecipe;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -58,7 +56,6 @@ public class CPRecipes {
 		FluidFoodValueRecipe.SERIALIZER = RECIPE_SERIALIZERS.register("fluid_food",() -> new CPRecipeSerializer<FluidFoodValueRecipe>(FluidFoodValueRecipe.CODEC));
 		AspicMeltingRecipe.SERIALIZER = RECIPE_SERIALIZERS.register("aspic_melt",() -> new CPRecipeSerializer<AspicMeltingRecipe>(AspicMeltingRecipe.CODEC));
 		SpiceRecipe.SERIALIZER = RECIPE_SERIALIZERS.register("spice",() -> new CPRecipeSerializer<SpiceRecipe>(SpiceRecipe.CODEC));
-		BowlTypeRecipe.SERIALIZER= RECIPE_SERIALIZERS.register("bowl_type",() -> new CPRecipeSerializer<BowlTypeRecipe>(BowlTypeRecipe.CODEC));
 	}
 
 	static {
@@ -73,6 +70,5 @@ public class CPRecipes {
 		DoliumRecipe.TYPE = RECIPE_TYPES.register("dolium",RecipeType::simple);
 		AspicMeltingRecipe.TYPE = RECIPE_TYPES.register("aspic_melt",RecipeType::simple);
 		SpiceRecipe.TYPE = RECIPE_TYPES.register("spice",RecipeType::simple);
-		BowlTypeRecipe.TYPE = RECIPE_TYPES.register("bowl_type",RecipeType::simple);
 	}
 }

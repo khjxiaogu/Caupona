@@ -23,6 +23,7 @@ package com.teammoeg.caupona.api;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.teammoeg.caupona.CPCapability;

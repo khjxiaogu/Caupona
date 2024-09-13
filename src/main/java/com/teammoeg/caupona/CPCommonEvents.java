@@ -32,7 +32,6 @@ import com.teammoeg.caupona.api.events.FoodExchangeItemEvent;
 import com.teammoeg.caupona.components.StewInfo;
 import com.teammoeg.caupona.data.RecipeReloadListener;
 import com.teammoeg.caupona.data.recipes.BowlContainingRecipe;
-import com.teammoeg.caupona.data.recipes.BowlTypeRecipe;
 import com.teammoeg.caupona.util.ITickableContainer;
 
 import net.minecraft.core.BlockPos;
@@ -43,7 +42,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ClipContext.Fluid;
 import net.minecraft.world.level.Level;
@@ -63,7 +61,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -76,12 +73,12 @@ public class CPCommonEvents {
 
 	@SubscribeEvent
 	public static void isExtractAllowed(FoodExchangeItemEvent.Pre event) {
-		if(!BowlTypeRecipe.recipes.stream().anyMatch(t->t.value().test(event.getOrigin())))
+		if(!BowlContainingRecipe.isBowl(event.getOrigin()))
 			event.setResult(EventResult.ALLOW);
 	}
 	@SubscribeEvent
 	public static void isExchangeAllowed(FoodExchangeItemEvent.Post event) {
-		if((!BowlTypeRecipe.recipes.stream().anyMatch(t->t.value().test(event.getOrigin())))&&BowlTypeRecipe.recipes.stream().anyMatch(t->t.value().test(event.getTarget())))
+		if(!BowlContainingRecipe.isBowl(event.getOrigin())&&BowlContainingRecipe.isBowl(event.getTarget()))
 			event.setResult(EventResult.ALLOW);
 	}
 	@SubscribeEvent
@@ -91,17 +88,11 @@ public class CPCommonEvents {
 	}
 	@SubscribeEvent
 	public static void bowlContainerFood(ContanerContainFoodEvent ev) {
-			for(RecipeHolder<BowlTypeRecipe> type:BowlTypeRecipe.recipes) {
-				if(type.value().test(ev.origin)) {
-					RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(type.value().bowl).stream().filter(t->t.value().matches(ev.fs)).findFirst().orElse(null);
-					if (recipe != null) {
-						ev.out=recipe.value().handle(ev.fs);
-						ev.setResult(EventResult.ALLOW);
-					}
-
-				}
+			RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(ev.origin).stream().filter(t->t.value().matches(ev.fs)).findFirst().orElse(null);
+			if (recipe != null) {
+				ev.out=recipe.value().handle(ev.fs);
+				ev.setResult(EventResult.ALLOW);
 			}
-
 	}
 	@SubscribeEvent
 	public static void addManualToPlayer(PlayerEvent.PlayerLoggedInEvent event) {

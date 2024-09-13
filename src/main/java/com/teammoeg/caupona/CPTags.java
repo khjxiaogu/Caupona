@@ -14,6 +14,7 @@ public class CPTags {
 
 		public static final TagKey<Block> FUMAROLE_HOT_BLOCK = create("fumarole_hot");
 		public static final TagKey<Block> FUMAROLE_VERY_HOT_BLOCK = create("fumarole_very_hot");
+		public static final TagKey<Block> FUMAROLE_BLOOM = create("fumarole_bloom");
 		public static final TagKey<Block> HYPOCAUST_HEAT_CONDUCTOR = create("heat_conductor");
 		public static final TagKey<Block> FRUITS_GROWABLE_ON = create("fruits_growable");
 		public static final TagKey<Block> CHINMEY_BLOCK = create("chimney");
