@@ -11,7 +11,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class KitchenRailBlock extends Block {
-	protected static final VoxelShape OCTET_N = Block.box(0.0D , 0.0D, 0.0D , 16.0D, 0.0D, 8.0D );
+	protected static final VoxelShape OCTET_N = Block.box(0.0D , 0.0D, 0.0D , 16.0D, 16.0D, 8.0D );
 	protected static final VoxelShape OCTET_W = Block.box(0.0D , 0.0D, 0.0D , 8.0D , 16.0D, 16.0D);
 	protected static final VoxelShape OCTET_E = Block.box(8.0D, 0.0D, 0.0D , 16.0D, 16.0D, 16.0D);
 	protected static final VoxelShape OCTET_S = Block.box(0.0D , 0.0D, 8.0D, 16.0D, 16.0D, 16.0D);
