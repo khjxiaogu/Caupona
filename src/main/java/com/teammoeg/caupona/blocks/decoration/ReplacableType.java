@@ -1,4 +1,4 @@
-package com.teammoeg.caupona.blocks.loaf;
+package com.teammoeg.caupona.blocks.decoration;
 
 public enum ReplacableType {
 	EMPTY,
