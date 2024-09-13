@@ -95,12 +95,14 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 	@SuppressWarnings("resource")
 	@Override
 	public void tick() {
-		BlockState bs = this.getBlockState();
-		if (bs.getValue(FumaroleVentBlock.HEAT) == 2) {
-			update.tick();
-			this.setChanged();
+		if(getLevel().isClientSide) {
+			BlockState bs = this.getBlockState();
+			if (bs.getValue(FumaroleVentBlock.HEAT) == 2) {
+				update.tick();
+				this.setChanged();
+			}
+			check.tick();
 		}
-		check.tick();
 		
 	}
 
