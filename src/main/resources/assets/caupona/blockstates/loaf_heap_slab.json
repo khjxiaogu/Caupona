@@ -1,0 +1,13 @@
+{
+	"variants": {
+		"type=bottom": {
+			"model": "caupona:block/loaf_heap_slab"
+		},
+		"type=double": {
+			"model": "caupona:block/loaf_heap"
+		},
+		"type=top": {
+			"model": "caupona:block/loaf_heap_slab_top"
+		}
+	}
+}

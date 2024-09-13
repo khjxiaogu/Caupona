@@ -1,0 +1,9 @@
+{
+	"variants": {
+		"": [
+			{"model": "caupona:block/litharge_bloom", "y": 90},
+			{"model": "caupona:block/litharge_bloom", "y": 180},
+			{"model": "caupona:block/litharge_bloom", "y": 270}
+		]
+	}
+}
