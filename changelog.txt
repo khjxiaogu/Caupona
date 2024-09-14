@@ -1,4 +1,23 @@
 Port to neoforge 1.21.1
-Remake recipe serialization
-Resting recipe now have different recipe time, deleted config
-Added jei compat for tanks in containers.
+
+Addition:
+Loaf dough, loaf and corresponding oven structure.
+bread bowls, useful for containing soup or dishes, can stack up to 64.
+Loaf-related decoration blocks.
+Kitchen rail(decoration only).
+Walnut hanging sign.
+Litharge fumarole vent and related decorations, useful for easier access to lead.
+Optimization: 
+Jei recipe query can be apply to fluid in caupona fluid tanks.
+Optimize rendering.
+Optimize recipe handling.
+Bucket of lava is now allowed in stoves.
+Instant potion is not allowed in stew pots.
+DataPack changes:
+Bowl containing recipe is now able to set container item.
+Frying recipe is now able to set container item.
+Frying pan no longer render its recipe by output item but by model location in recipe.
+Using fluid ingredient and fluid stack in recipe instead of fluid registry id and amount.
+Ingredient and count in recipe would be join together to ingredient with size.
+Resting recipe is now able to set different time, removed config.
+

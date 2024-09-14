@@ -114,7 +114,7 @@ public class CPItems {
 			
 		}
 		for(String s:bread_bowls) {
-			stew(s+"_loaf",Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))),CPBlocks.LOAF_BOWL, createSoupProps());
+			stew(s+"_loaf",Lazy.of(()->BuiltInRegistries.FLUID.get(ResourceLocation.fromNamespaceAndPath(CPMain.MODID, s))),CPBlocks.LOAF_BOWL, createLoafSoupProps());
 		}
 		
 		
@@ -158,7 +158,7 @@ public class CPItems {
 		return ()->new Item.Properties().craftRemainder(Items.BOWL).stacksTo(1);
 	}
 	static Supplier<Properties> createLoafSoupProps() {
-		return ()->new Item.Properties().craftRemainder(CPBlocks.LOAF_BOWL.get().asItem()).stacksTo(1);
+		return ()->new Item.Properties().craftRemainder(CPBlocks.LOAF_BOWL.get().asItem());
 	}
 	static Properties createProps() {
 		return new Item.Properties();
