@@ -61,9 +61,9 @@ public class KitchenStoveScreen extends AbstractContainerScreen<KitchenStoveCont
 		if (blockEntity.processMax > 0 && blockEntity.process > 0) {
 			int h = (int) (26 * (1 - blockEntity.process / (float) blockEntity.processMax));
 			matrixStack.blit(TEXTURE, leftPos + 61, topPos + h, 176, h, 54, 26 - h);
-			if(blockEntity.inventory_fuel==FuelType.CHARCOAL) {
+			if(blockEntity.current==FuelType.CHARCOAL) {
 				matrixStack.blit(TEXTURE, leftPos + 61, topPos + 13, 176, 42, 54, 16);
-			}else if(blockEntity.inventory_fuel==FuelType.CHARCOAL) {
+			}else if(blockEntity.current==FuelType.CHARCOAL) {
 				matrixStack.blit(TEXTURE, leftPos + 61, topPos + 13, 176, 58, 54, 16);
 			}else {
 				matrixStack.blit(TEXTURE, leftPos + 61, topPos + 13, 176, 26, 54, 16);
