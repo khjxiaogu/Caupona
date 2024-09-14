@@ -270,7 +270,7 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 				RecipeHolder<BowlContainingRecipe> recipe = BowlContainingRecipe.getRecipes(inv.getStackInSlot(9)).stream().filter(t->t.value().matches(this.tank.getFluid())).findFirst().orElse(null);
 				if (recipe != null) {
 					is.shrink(1);
-					inv.setStackInSlot(5, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
+					inv.setStackInSlot(10, recipe.value().handle(tryAddSpice(tank.drain(250, FluidAction.EXECUTE))));
 					return true;
 				}
 			}

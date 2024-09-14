@@ -77,6 +77,7 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 		if (blockEntity.canAddFluid()) {
 			if (held.isEmpty() && player.isShiftKeyDown()) {
 				blockEntity.getTank().setFluid(FluidStack.EMPTY);
+				blockEntity.syncData();
 				return ItemInteractionResult.SUCCESS;
 			}
 			FluidStack out=Utils.extractFluid(held);
