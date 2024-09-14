@@ -1,4 +1,4 @@
-Copyright (c) 2023 TeamMoeg
+Copyright (c) 2024 TeamMoeg
 
 This file is part of Caupona.
 

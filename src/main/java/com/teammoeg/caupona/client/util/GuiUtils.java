@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 TeamMoeg
+ * Copyright (c) 2024 TeamMoeg
  *
  * This file is part of Caupona.
  *
@@ -23,7 +23,6 @@ package com.teammoeg.caupona.client.util;
 
 import java.util.function.Function;
 
-import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -57,7 +56,7 @@ public class GuiUtils {
 
 	private GuiUtils() {
 	}
-	public static Quaternionf rotate90=new Quaternionf(new AxisAngle4f((float) (Math.PI/2),1,0,0));
+	public static Quaternionf rotate90=new Quaternionf().rotateX((float) (Math.PI/2));
 	public static void handleGuiTank(GuiGraphics transform, IFluidTank tank, int x, int y, int w, int h) {
 		FluidStack fluid = tank.getFluid();
 		
