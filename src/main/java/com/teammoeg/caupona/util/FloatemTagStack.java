@@ -87,4 +87,9 @@ public class FloatemTagStack {
 	public Item getItem() {
 		return stack.getItem();
 	}
+
+	@Override
+	public String toString() {
+		return "FloatemTagStack [tags=" + tags + ", stack=" + stack + ", count=" + count + "]";
+	}
 }

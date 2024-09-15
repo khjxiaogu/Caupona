@@ -39,6 +39,7 @@ public class Mainly extends NumberedStewCondition {
 	public boolean test(IPendingContext t, float n) {
 		if (n < t.getTotalItems() / 3)
 			return false;
+		
 		return FloatemTagStack.calculateTypes(t.getItems().stream().filter(e -> !number.fits(e))).values().stream()
 				.allMatch(e -> e < n);
 	}

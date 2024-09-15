@@ -45,12 +45,16 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
+import com.teammoeg.caupona.CPConfig;
 import com.teammoeg.caupona.CPMain;
+import com.teammoeg.caupona.util.RegistryAccessor.CloseableRegistryAccessor;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.DecoderException;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -174,14 +178,36 @@ public class SerializeUtil {
         return map;
     }
     public static <T> void writeCodec(RegistryFriendlyByteBuf pb, Codec<T> codec, T obj) {
-    	DataResult<Object> ob=codec.encodeStart(DataOps.COMPRESSED.toRegistryAccessable(pb), obj);
-    	Optional<Object> ret=ob.resultOrPartial(CPMain.logger::error);
-    	ObjectWriter.writeObject(pb,ret.get());
+    	try (CloseableRegistryAccessor i=RegistryAccessor.automated(pb)){
+	    	if(!CPConfig.COMMON.compressCodecs.get()) {
+	    		DataResult<Tag> out=codec.encodeStart(NbtOps.INSTANCE, obj);
+	    		Optional<Tag> ret=out.resultOrPartial(CPMain.logger::error);
+	    		pb.writeNbt(ret.get());
+	    		return;
+	    	}
+    		DataResult<Object> ob=codec.encodeStart(DataOps.COMPRESSED, obj);
+        	Optional<Object> ret=ob.resultOrPartial(CPMain.logger::error);
+	    	if(ret.isEmpty()) {
+	    		throw new DecoderException("Can not write Object "+obj+" with Codec "+codec);
+	    	}
+        	ObjectWriter.writeObject(pb,ret.get());
+    	}
     }
     public static <T> T readCodec(RegistryFriendlyByteBuf pb, Codec<T> codec) {
-    	DataResult<Pair<T, Object>> ob=codec.decode(DataOps.COMPRESSED.toRegistryAccessable(pb), ObjectWriter.readObject(pb));
-    	Optional<Pair<T, Object>> ret=ob.resultOrPartial(CPMain.logger::error);
-    	return ret.get().getFirst();
+    	try (CloseableRegistryAccessor i=RegistryAccessor.automated(pb)){
+	    	if(!CPConfig.COMMON.compressCodecs.get()) {
+	    		DataResult<Pair<T, Tag>> ob=codec.decode(NbtOps.INSTANCE,pb.readNbt());
+	    		Optional<Pair<T, Tag>> ret=ob.resultOrPartial(CPMain.logger::error);
+	    		return ret.get().getFirst();
+	    	}
+			Object res=ObjectWriter.readObject(pb);
+	    	DataResult<Pair<T, Object>> ob=codec.decode(DataOps.COMPRESSED,res);
+	    	Optional<Pair<T, Object>> ret=ob.resultOrPartial(CPMain.logger::error);
+	    	if(ret.isEmpty()) {
+	    		throw new DecoderException("Can not read Object "+res+" with Codec "+codec);
+	    	}
+	    	return ret.get().getFirst();
+    	}
     }
 
 	public static <K, V> Map<K, V> readEntry(FriendlyByteBuf buffer, Map<K, V> map, BiConsumer<FriendlyByteBuf, BiConsumer<K, V>> reader) {
@@ -233,9 +259,9 @@ public class SerializeUtil {
 
 			@Override
 			public <O> DataResult<O> encode(T input, DynamicOps<O> ops, O prefix) {
-				if(ops.compressMaps()&&ops instanceof IRegistryAccessable ra) {
+				if(ops.compressMaps()&&RegistryAccessor.haveAccess()) {
 					ByteBuf data=Unpooled.buffer(512);
-					codec.mapStream(ra.decorator()).encode(data, input);
+					codec.mapStream(RegistryAccessor.getDecorator()).encode(data, input);
 					
 					return DataResult.success(ops.createByteList(data.nioBuffer()));
 				}
@@ -244,9 +270,9 @@ public class SerializeUtil {
 
 			@Override
 			public <O> DataResult<Pair<T, O>> decode(DynamicOps<O> ops, O input) {
-				if(ops.compressMaps()&&ops instanceof IRegistryAccessable ra) {
+				if(ops.compressMaps()&&RegistryAccessor.haveAccess()) {
 				
-					return ops.getByteBuffer(input).map(Unpooled::wrappedBuffer).map(o->Pair.of(codec.mapStream(ra.decorator()).decode(o), input));
+					return ops.getByteBuffer(input).map(Unpooled::wrappedBuffer).map(o->Pair.of(codec.mapStream(RegistryAccessor.getDecorator()).decode(o), input));
 					
 				}
 					

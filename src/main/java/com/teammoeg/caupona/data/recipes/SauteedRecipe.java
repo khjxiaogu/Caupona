@@ -144,10 +144,11 @@ public class SauteedRecipe extends IDataRecipe implements IConditionalRecipe {
 	}
 */
 	public boolean matches(PanPendingContext ctx) {
-		if (allow != null)
+		
+		if (allow != null||!allow.isEmpty())
 			if (!allow.stream().allMatch(ctx::compute))
 				return false;
-		if (deny != null)
+		if (deny != null||!deny.isEmpty())
 			if (deny.stream().anyMatch(ctx::compute))
 				return false;
 		return true;

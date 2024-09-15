@@ -52,6 +52,7 @@ public class CPConfig {
 		public ConfigValue<Double> roadSpeedAddtion;
 		public ConfigValue<Integer> loafCooking;
 		public ConfigValue<Integer> loafStacking;
+		public ConfigValue<Boolean> compressCodecs;
 		/**
 		 * @param builder
 		 */
@@ -67,6 +68,13 @@ public class CPConfig {
 			builder.pop();
 			builder.push("road");
 			roadSpeedAddtion = builder.comment("Additional speed added per tick for roads").defineInRange("roadSpeedAddtion",2D,0D,10D);
+			builder.pop();
+			builder.push("misc");
+			compressCodecs = builder.comment("Compress output from codecs when sending by network to improve performance.")
+			.comment("May cause problems if some client install mods that may modify vanilla codecs but such mods are not present on server such as Sinytra.")
+			.comment("Installing such mods on both client and server is fine.")
+			.comment("If you meet network exception with some client-only mods, try turning off this")
+			.define("compressCodecOutput", true);
 			builder.pop();
 		}
 	}
