@@ -1,5 +1,6 @@
 package com.teammoeg.caupona.util;
 
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 import io.netty.buffer.ByteBuf;
@@ -26,7 +27,8 @@ public class RegistryAccessor {
 		return accessor;
 	}
 	public static Function<ByteBuf, RegistryFriendlyByteBuf> getDecorator() {
-
+		if(!haveAccess())
+			throw new NoSuchElementException("no registry access found");
 		return RegistryFriendlyByteBuf.decorator(accessor, connectionType);
 	}
 	

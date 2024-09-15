@@ -57,19 +57,20 @@ public class TessellationWorkBenchBlock extends CPHorizontalBlock {
 	private static final Component CONTAINER_TITLE = Component
 			.translatable("container." + CPMain.MODID + ".tessellation_workbench.title");
 
-	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-			BlockHitResult pHit) {
-		if (pLevel.isClientSide) {
-			return InteractionResult.SUCCESS;
-		}
-		pPlayer.openMenu(this.getMenuProvider(pState, pLevel, pPos),pPos);
-		return InteractionResult.CONSUME;
-	}
-
 	@Nullable
 	public MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
 		return new SimpleMenuProvider((p_57074_, p_57075_, p_57076_) -> {
 			return new TBenchMenu(p_57074_, p_57075_, ContainerLevelAccess.create(pLevel, pPos));
 		}, CONTAINER_TITLE);
+	}
+
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+			BlockHitResult hitResult) {
+		if (level.isClientSide) {
+			return InteractionResult.SUCCESS;
+		}
+		player.openMenu(this.getMenuProvider(state, level, pos),pos);
+		return InteractionResult.CONSUME;
 	}
 }

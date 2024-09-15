@@ -178,7 +178,8 @@ public class SerializeUtil {
         return map;
     }
     public static <T> void writeCodec(RegistryFriendlyByteBuf pb, Codec<T> codec, T obj) {
-    	try (CloseableRegistryAccessor i=RegistryAccessor.automated(pb)){
+    	try {
+    		RegistryAccessor.provideRegistryAccess(pb);
 	    	if(!CPConfig.COMMON.compressCodecs.get()) {
 	    		DataResult<Tag> out=codec.encodeStart(NbtOps.INSTANCE, obj);
 	    		Optional<Tag> ret=out.resultOrPartial(CPMain.logger::error);
@@ -191,10 +192,13 @@ public class SerializeUtil {
 	    		throw new DecoderException("Can not write Object "+obj+" with Codec "+codec);
 	    	}
         	ObjectWriter.writeObject(pb,ret.get());
+    	}finally {
+    		RegistryAccessor.close();
     	}
     }
     public static <T> T readCodec(RegistryFriendlyByteBuf pb, Codec<T> codec) {
-    	try (CloseableRegistryAccessor i=RegistryAccessor.automated(pb)){
+    	try {
+    		RegistryAccessor.provideRegistryAccess(pb);
 	    	if(!CPConfig.COMMON.compressCodecs.get()) {
 	    		DataResult<Pair<T, Tag>> ob=codec.decode(NbtOps.INSTANCE,pb.readNbt());
 	    		Optional<Pair<T, Tag>> ret=ob.resultOrPartial(CPMain.logger::error);
@@ -207,6 +211,8 @@ public class SerializeUtil {
 	    		throw new DecoderException("Can not read Object "+res+" with Codec "+codec);
 	    	}
 	    	return ret.get().getFirst();
+    	}finally {
+    		RegistryAccessor.close();
     	}
     }
 
