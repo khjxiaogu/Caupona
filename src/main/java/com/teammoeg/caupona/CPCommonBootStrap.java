@@ -256,11 +256,12 @@ public class CPCommonBootStrap {
 								ItemStack its=cont.getInternal(i);
 								IFluidHandlerItem ifhi=FluidHandler.ITEM.getCapability(its, null);
 								if(ifhi!=null) {
-									FluidStack fs=ifhi.getFluidInTank(0);
+									FluidStack fs=ifhi.drain(1000, FluidAction.SIMULATE);
 									if(!fs.isEmpty()) {
 										if(iptar.fill(fs, FluidAction.SIMULATE)==fs.getAmount()) {
+											fs=ifhi.drain(1000, FluidAction.EXECUTE);
 											iptar.fill(fs, FluidAction.EXECUTE);
-											cont.setInternal(i,its.getCraftingRemainingItem());
+											cont.setInternal(i,ifhi.getContainer());
 											break;
 										}
 									}
