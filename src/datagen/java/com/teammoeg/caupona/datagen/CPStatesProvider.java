@@ -219,9 +219,7 @@ public class CPStatesProvider extends BlockStateProvider {
 		blockItemModel("wolf_statue", "_1");
 		blockItemModel("fumarole_boulder");
 		blockItemModel("fumarole_vent");
-		simpleBlockItem("litharge_fumarole_boulder");
-		simpleBlockItem("litharge_fumarole_vent");
-		simpleBlockItem("litharge_bloom");
+		
 		blockItemModel("pumice");
 		blockItemModel("pumice_bloom");
 		blockItemModel("lead_block");
