@@ -199,4 +199,5 @@ public class SauteedFoodInfo extends SpicedFoodInfo implements IFoodInfo{
 		return b;
 	}
 
+
 }

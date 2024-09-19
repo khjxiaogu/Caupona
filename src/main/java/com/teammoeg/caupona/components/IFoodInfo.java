@@ -39,7 +39,7 @@ public interface IFoodInfo {
 		return getFood(0,0).usingConvertsTo(Items.BOWL).build();
 	}
 	Fluid getBase();
-	public List<PossibleEffect> getEffects();
+	List<PossibleEffect> getEffects();
 	default float getDensity() {
 		return getStacks().stream().map(FloatemStack::getCount).reduce(0f, Float::sum);
 	}
