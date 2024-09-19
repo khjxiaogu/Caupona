@@ -187,7 +187,9 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 				RecipeHolder<DoliumRecipe> recipe=DoliumRecipe.testDolium(tank.getFluid(), inv);
 				if (recipe!= null&&!recipe.id().equals(lastRecipe)) {
 					process=processMax=recipe.value().time;
+					lastRecipe=recipe.id();
 				}
+				
 				recipeTested=true;
 			}
 			if (process > 0) {
@@ -199,6 +201,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 					}else {
 						process=processMax=0;
 					}
+					lastRecipe=null;
 					recipeTested=false;
 				}
 				updateNeeded=true;
