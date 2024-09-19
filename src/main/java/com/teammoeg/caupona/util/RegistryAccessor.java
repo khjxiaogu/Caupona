@@ -7,41 +7,68 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.neoforged.neoforge.network.connection.ConnectionType;
-import oshi.driver.windows.wmi.Win32BaseBoard.BaseBoardProperty;
 
 public class RegistryAccessor {
 	public static class CloseableRegistryAccessor implements AutoCloseable{
+		ThreadRegistryAccess access;
+		public CloseableRegistryAccessor(ThreadRegistryAccess access) {
+			super();
+			this.access = access;
+		}
 		@Override
 		public void close() {
-			RegistryAccessor.close();
+			access.close();
 		}
 	}
-	private static RegistryAccess accessor;
-	private static ConnectionType connectionType;
-	private static CloseableRegistryAccessor closer=new CloseableRegistryAccessor();
+	public static class ThreadRegistryAccess {
+		private transient RegistryAccess accessor;
+		private transient ConnectionType connectionType;
+		private transient CloseableRegistryAccessor closer=new CloseableRegistryAccessor(this);
+		public ThreadRegistryAccess() {
+			super();
+		}
+		public void provideRegistryAccess(RegistryFriendlyByteBuf pb) {
+			accessor=pb.registryAccess();
+			connectionType=pb.getConnectionType();
+		}
+		public void close() {
+			accessor=null;
+			connectionType=null;
+		}
+		public Function<ByteBuf, RegistryFriendlyByteBuf> getDecorator() {
+			if(!haveAccess())
+				throw new NoSuchElementException("no registry access found");
+			return RegistryFriendlyByteBuf.decorator(accessor, connectionType);
+		}
+		public boolean haveAccess() {
+			return accessor!=null;
+		}
+		public RegistryAccess getRegistryAccess() {
+			return accessor;
+		}
+		public CloseableRegistryAccessor automated(RegistryFriendlyByteBuf pb) {
+			provideRegistryAccess(pb);
+			return closer;
+		}
+	}
+	public static ThreadLocal<ThreadRegistryAccess> access=ThreadLocal.withInitial(ThreadRegistryAccess::new);
 	public static boolean haveAccess() {
-		return accessor!=null;
+		return access.get().haveAccess();
 	}
 	public static RegistryAccess getRegistryAccess() {
-
-		return accessor;
+		return access.get().getRegistryAccess();
 	}
 	public static Function<ByteBuf, RegistryFriendlyByteBuf> getDecorator() {
-		if(!haveAccess())
-			throw new NoSuchElementException("no registry access found");
-		return RegistryFriendlyByteBuf.decorator(accessor, connectionType);
+		return access.get().getDecorator();
 	}
 	
 	public static void provideRegistryAccess(RegistryFriendlyByteBuf pb) {
-		accessor=pb.registryAccess();
-		connectionType=pb.getConnectionType();
+		access.get().provideRegistryAccess(pb);
 	}
 	public static void close() {
-		accessor=null;
-		connectionType=null;
+		access.get().close();
 	}
 	public static CloseableRegistryAccessor automated(RegistryFriendlyByteBuf pb) {
-		provideRegistryAccess(pb);
-		return closer;
+		return access.get().automated(pb);
 	}
 }

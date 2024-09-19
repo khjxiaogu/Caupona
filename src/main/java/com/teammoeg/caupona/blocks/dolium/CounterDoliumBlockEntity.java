@@ -40,6 +40,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -119,7 +120,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 	boolean isInfinite = false;
 	ItemStack inner = ItemStack.EMPTY;
 	boolean recipeTested=false;
-
+	ResourceLocation lastRecipe;
 	public CounterDoliumBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(CPBlockEntityTypes.DOLIUM.get(), pWorldPosition, pBlockState);
 		contain = new LazyTickWorker(CPConfig.SERVER.containerTick.get(),()->{
@@ -148,7 +149,10 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		if (!isClient) {
 			inner = ItemStack.parseOptional(ra,nbt.getCompound("inner"));
 			inv.deserializeNBT(ra,nbt.getCompound("inventory"));
-			
+			if(nbt.contains("lastRecipe"))
+				lastRecipe=ResourceLocation.parse(nbt.getString("lastRecipe"));
+			else
+				lastRecipe=null;
 		}
 
 	}
@@ -162,7 +166,8 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		if (!isClient) {
 			nbt.put("inventory", inv.serializeNBT(ra));
 			nbt.put("inner", inner.saveOptional(ra));
-			
+			if(lastRecipe!=null)
+				nbt.putString("lastRecipe", lastRecipe.toString());
 		}
 
 	}
@@ -179,17 +184,21 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 				return;
 			}
 			if(!recipeTested) {
-				DoliumRecipe recipe=DoliumRecipe.testDolium(tank.getFluid(), inv);
-				if (recipe!= null) {
-					process=processMax=recipe.time;
+				RecipeHolder<DoliumRecipe> recipe=DoliumRecipe.testDolium(tank.getFluid(), inv);
+				if (recipe!= null&&!recipe.id().equals(lastRecipe)) {
+					process=processMax=recipe.value().time;
 				}
 				recipeTested=true;
 			}
 			if (process > 0) {
 				process--;
 				if(process<=0) {
-					DoliumRecipe recipe = DoliumRecipe.testDolium(tank.getFluid(), inv);
-					inner=recipe.handleDolium(tank.getFluid(), inv);
+					RecipeHolder<DoliumRecipe> recipe = DoliumRecipe.testDolium(tank.getFluid(), inv);
+					if(recipe!=null) {
+						inner=recipe.value().handleDolium(tank.getFluid(), inv);
+					}else {
+						process=processMax=0;
+					}
 					recipeTested=false;
 				}
 				updateNeeded=true;

@@ -133,12 +133,12 @@ public class DoliumRecipe extends IDataRecipe {
 		return recipes.stream().map(t->t.value()).map(t -> t.extra).filter(Objects::nonNull).anyMatch(t -> t.test(stack));
 	}
 
-	public static DoliumRecipe testDolium(FluidStack f, ItemStackHandler inv) {
+	public static RecipeHolder<DoliumRecipe> testDolium(FluidStack f, ItemStackHandler inv) {
 		ItemStack is0 = inv.getStackInSlot(0);
 		ItemStack is1 = inv.getStackInSlot(1);
 		ItemStack is2 = inv.getStackInSlot(2);
 		ItemStack cont = inv.getStackInSlot(4);
-		return recipes.stream().map(t->t.value()).filter(t -> t.test(f, cont, is0, is1, is2)).findFirst().orElse(null);
+		return recipes.stream().filter(t -> t.value().test(f, cont, is0, is1, is2)).findFirst().orElse(null);
 	}
 
 	public boolean test(FluidStack f, ItemStack container, ItemStack... ss) {
