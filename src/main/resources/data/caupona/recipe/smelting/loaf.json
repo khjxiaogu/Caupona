@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "caupona:loaf_dough"
+  },
+  "result": {
+    "id": "caupona:loaf",
+    "count": 1
+  }
+}

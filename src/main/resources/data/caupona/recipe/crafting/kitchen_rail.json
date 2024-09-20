@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"SIS",
+		"S S",
+		"P P"
+	],
+	"key": {
+		"S": {
+			"item": "minecraft:stick"
+		},
+		"I": {
+			"item": "minecraft:iron_bars"
+		},
+		"P": {
+			"tag": "minecraft:planks"
+		}
+	},
+	"result": {
+		"id": "caupona:kitchen_rail",
+		"count": 1
+	}
+}

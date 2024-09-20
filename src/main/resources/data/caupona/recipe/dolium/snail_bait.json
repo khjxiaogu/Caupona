@@ -31,5 +31,6 @@
 	"output": {
 		"id": "caupona:snail_bait",
 		"count": 1
-	}
+	},
+	"time": 200
 }

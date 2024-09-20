@@ -10,6 +10,7 @@
 		}
 	},
 	"result": {
-		"id": "minecraft:raw_copper"
+		"id": "minecraft:raw_copper",
+		"count": 3
 	}
 }

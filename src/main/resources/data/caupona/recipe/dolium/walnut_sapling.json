@@ -19,5 +19,6 @@
 	"output": {
 		"id": "caupona:walnut_sapling",
 		"count": 1
-	}
+	},
+	"time": 12000
 }

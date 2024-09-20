@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"LL",
+		"LL"
+	],
+	"key": {
+		"L": {
+			"item": "caupona:loaf"
+		}
+	},
+	"result": {
+		"id": "caupona:loaf_heap",
+		"count": 1
+	}
+}

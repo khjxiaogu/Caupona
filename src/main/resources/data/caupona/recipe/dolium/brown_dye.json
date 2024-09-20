@@ -15,5 +15,6 @@
 	"output": {
 		"id": "minecraft:brown_dye",
 		"count": 4
-	}
+	},
+	"time": 1200
 }

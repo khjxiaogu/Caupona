@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"B  ",
+		"BB ",
+		"BBB"
+	],
+	"key": {
+		"B": {
+			"item": "caupona:loaf_heap"
+		}
+	},
+	"result": {
+		"id": "caupona:loaf_heap_stairs",
+		"count": 4
+	}
+}

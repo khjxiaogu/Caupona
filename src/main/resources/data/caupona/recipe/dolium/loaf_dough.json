@@ -2,19 +2,19 @@
 	"type": "caupona:dolium",
 	"items": [
 		{
-			"item": "caupona:soot",
+			"item": "minecraft:wheat",
 			"count": 3
 		}
 	],
 	"fluid": {
     	"amount": 1000,
-    	"fluid": "caupona:bone_gelatin"
+    	"fluid": "minecraft:water"
     },
-	"density": 0.75,
+	"density": 0.0,
 	"keepInfo": false,
 	"output": {
-		"id": "minecraft:orange_dye",
-		"count": 6
+		"id": "caupona:loaf_dough",
+		"count": 1
 	},
-	"time": 1200
+	"time": 200
 }
