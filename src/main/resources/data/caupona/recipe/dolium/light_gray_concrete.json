@@ -39,5 +39,6 @@
 	"output": {
 		"id": "minecraft:light_gray_concrete",
 		"count": 16
-	}
+	},
+	"time": 1200
 }

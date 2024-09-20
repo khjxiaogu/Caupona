@@ -15,5 +15,6 @@
 	"output": {
 		"id": "minecraft:orange_dye",
 		"count": 6
-	}
+	},
+	"time": 1200
 }

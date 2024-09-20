@@ -1,0 +1,10 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:loaf_heap"
+	},
+	"result": {
+		"id": "caupona:loaf"
+	},
+	"count": 4
+}

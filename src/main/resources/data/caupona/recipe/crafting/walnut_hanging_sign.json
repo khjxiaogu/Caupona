@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"C C",
+		"LLL",
+		"LLL"
+	],
+	"key": {
+		"C": {
+			"item": "minecraft:chain"
+		},
+		"L": {
+			"item": "caupona:stripped_walnut_log"
+		}
+	},
+	"result": {
+		"id": "caupona:walnut_hanging_sign",
+		"count": 6
+	}
+}

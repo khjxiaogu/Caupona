@@ -2,12 +2,8 @@
 	"type": "caupona:dolium",
 	"items": [
 		{
-			"item": "caupona:fig",
-			"count": 1
-		},
-		{
-			"item": "minecraft:dirt",
-			"count": 2
+			"item": "minecraft:wheat",
+			"count": 5
 		}
 	],
 	"fluid": {
@@ -17,8 +13,8 @@
 	"density": 0.0,
 	"keepInfo": false,
 	"output": {
-		"id": "caupona:fig_sapling",
+		"id": "caupona:loaf_dough",
 		"count": 1
 	},
-	"time": 12000
+	"time": 200
 }

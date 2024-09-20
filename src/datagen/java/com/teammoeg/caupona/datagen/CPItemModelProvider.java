@@ -60,6 +60,8 @@ public class CPItemModelProvider extends ItemModelProvider {
 		simpleTexture("water", "soups/");
 		simpleTexture("milk", "soups/");
 		texture("loaf_bowl", "bread_bowl");
+		texture("loaf", "cob_loaf");
+		texture("loaf_dough");
 		for (String s : CPItems.aspics)
 			simpleTexture(s, "aspics/");
 		simpleTexture("milk_based", "bases/");
