@@ -11,7 +11,9 @@
 	],
 	"result": {
 		"id": "patchouli:guide_book",
-		"nbt": "{\"patchouli:book\":\"caupona:book\"}"
+		"nbt": {
+    		"patchouli:book": "caupona:book"
+		}
 	},
   "neoforge:conditions": [
     {
