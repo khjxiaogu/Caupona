@@ -795,5 +795,8 @@ public class StewPotBlockEntity extends CPBaseBlockEntity implements MenuProvide
 	public boolean setInfinity() {
 		return isInfinite = !isInfinite;
 	}
-
+	@Override
+	public boolean isInfinite() {
+		return isInfinite;
+	}
 }

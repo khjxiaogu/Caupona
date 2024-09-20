@@ -34,7 +34,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class BowlBlockEntity extends CPBaseBlockEntity implements IInfinitable,IFoodContainer {
-	public ItemStack internal=ItemStack.EMPTY;
+	private ItemStack internal=ItemStack.EMPTY;
+	public ItemStack getInternal() {
+		return internal;
+	}
+
 	boolean isInfinite = false;
 
 	public BowlBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -89,4 +93,12 @@ public class BowlBlockEntity extends CPBaseBlockEntity implements IInfinitable,I
 		return is.getItem() instanceof StewItem||is.is(Items.BOWL);
 	}
 
+	public void setInternal(ItemStack internal) {
+		this.internal = internal;
+		this.syncData();
+	}
+	@Override
+	public boolean isInfinite() {
+		return isInfinite;
+	}
 }

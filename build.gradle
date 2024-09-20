@@ -119,9 +119,8 @@ repositories {
     mavenLocal()
     mavenCentral()
     //    maven { url "https://maven.shedaniel.me" }
-   maven {
-        url "https://www.khjxiaogu.com/maven"
-    }
+    //khjxiaogu public maven
+   maven { url "https://www.khjxiaogu.com/maven" }
     exclusiveContent {
         forRepository {
             maven {
@@ -135,10 +134,9 @@ repositories {
 
     //for patchouli books and jei
     maven { url 'https://maven.blamejared.com' }
-    maven {
-        url "https://maven.architectury.dev/"
-    }
-    
+    maven { url "https://maven.architectury.dev/" }
+    //for top
+    maven { url "https://maven.k-4u.nl" }
     maven {
         url "https://maven.saps.dev/minecraft"
         content {
@@ -153,6 +151,7 @@ configurations {
 dependencies {
     //minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	implementation "net.neoforged:neoforge:${neo_version}"
+	implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
     //implementation fg.deobf("curse.maven:diet-443570:3758891")
 
 	//compileOnly fg.deobf("mezz.jei:jei-1.19.2-common-api:11.2.0.247")

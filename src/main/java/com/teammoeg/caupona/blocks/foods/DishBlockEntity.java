@@ -35,7 +35,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DishBlockEntity extends CPBaseBlockEntity implements IInfinitable,IFoodContainer {
-	public ItemStack internal = ItemStack.EMPTY;
+	private ItemStack internal = ItemStack.EMPTY;
 	boolean isInfinite = false;
 
 	public DishBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
@@ -94,4 +94,16 @@ public class DishBlockEntity extends CPBaseBlockEntity implements IInfinitable,I
 		return is.getItem() instanceof DishItem||is.is(Items.BOWL);
 	}
 
+	public ItemStack getInternal() {
+		return internal;
+	}
+
+	public void setInternal(ItemStack internal) {
+		this.internal = internal;
+		this.syncData();
+	}
+	@Override
+	public boolean isInfinite() {
+		return isInfinite;
+	}
 }

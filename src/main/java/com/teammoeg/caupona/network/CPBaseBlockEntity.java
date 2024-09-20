@@ -45,7 +45,9 @@ public abstract class CPBaseBlockEntity extends BlockEntity {
 	}
 
 	public void syncData() {
-		this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+		if(this.level!=null) {
+			this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+		}
 		this.setChanged();
 	}
 

@@ -51,7 +51,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
-public class DoliumRecipe extends IDataRecipe {
+public class DoliumRecipe extends IDataRecipe implements TimedRecipe{
 	public static List<RecipeHolder<DoliumRecipe>> recipes;
 	public static DeferredHolder<RecipeType<?>,RecipeType<Recipe<?>>> TYPE;
 	public static DeferredHolder<RecipeSerializer<?>,RecipeSerializer<?>> SERIALIZER;
@@ -262,5 +262,10 @@ public class DoliumRecipe extends IDataRecipe {
 		SerializeUtil.writeOptional(data, extra, Ingredient::toNetwork);
 	}
 */
+
+	@Override
+	public int getTime() {
+		return time;
+	}
 
 }

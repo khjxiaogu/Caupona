@@ -32,6 +32,7 @@ import com.teammoeg.caupona.fluid.SoupFluid;
 import com.teammoeg.caupona.network.CPBaseBlockEntity;
 import com.teammoeg.caupona.util.IInfinitable;
 import com.teammoeg.caupona.util.LazyTickWorker;
+import com.teammoeg.caupona.util.RecipeHandler;
 import com.teammoeg.caupona.util.SyncedFluidHandler;
 import com.teammoeg.caupona.util.Utils;
 
@@ -77,7 +78,8 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		@Override
 		protected void onContentsChanged(int slot) {
 			if(slot<5&&slot!=3)
-				recipeTested=false;
+				recipeHandler.onContainerChanged();
+			setChanged();
 			super.onContentsChanged(slot);
 		}
 		
@@ -87,8 +89,9 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		@Override
 		protected void onContentsChanged() {
 			super.onContentsChanged();
-			recipeTested=false;
-			process = -1;
+			recipeHandler.onContainerChanged();
+			recipeHandler.resetProgress();
+			syncData();
 		}
 
 	};
@@ -114,12 +117,15 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		return fs;
 
 	}
-	public int process;
-	public int processMax;
 	public LazyTickWorker contain;
 	boolean isInfinite = false;
 	ItemStack inner = ItemStack.EMPTY;
-	boolean recipeTested=false;
+	public final RecipeHandler<DoliumRecipe> recipeHandler=new RecipeHandler<>(()->{
+		RecipeHolder<DoliumRecipe> recipe = DoliumRecipe.testDolium(tank.getFluid(), inv);
+		if(recipe!=null) {
+			inner=recipe.value().handleDolium(tank.getFluid(), inv);
+		}
+	});
 	ResourceLocation lastRecipe;
 	public CounterDoliumBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(CPBlockEntityTypes.DOLIUM.get(), pWorldPosition, pBlockState);
@@ -142,8 +148,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 	@Override
 	public void readCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
-		process=nbt.getInt("process");
-		processMax=nbt.getInt("processMax");
+		recipeHandler.readCustomNBT(nbt, isClient);
 		tank.readFromNBT(ra,nbt.getCompound("tank"));
 		isInfinite = nbt.getBoolean("inf");
 		if (!isClient) {
@@ -159,8 +164,7 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 	@Override
 	public void writeCustomNBT(CompoundTag nbt, boolean isClient,HolderLookup.Provider ra) {
-		nbt.putInt("process",process);
-		nbt.putInt("processMax",processMax);
+		recipeHandler.writeCustomNBT(nbt, isClient);
 		nbt.put("tank", tank.writeToNBT(ra,new CompoundTag()));
 		nbt.putBoolean("inf", isInfinite);
 		if (!isClient) {
@@ -183,32 +187,12 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 				this.setChanged();
 				return;
 			}
-			if(!recipeTested) {
+			if(recipeHandler.shouldTestRecipe()){
 				RecipeHolder<DoliumRecipe> recipe=DoliumRecipe.testDolium(tank.getFluid(), inv);
-				if (recipe!= null) {
-					if(!recipe.id().equals(lastRecipe)) {
-						process=processMax=recipe.value().time;
-						lastRecipe=recipe.id();
-					}
-				}else {
-					process=processMax=0;
-					lastRecipe=null;
-				}
+				recipeHandler.setRecipe(recipe);
 				
-				recipeTested=true;
 			}
-			if (process > 0) {
-				process--;
-				if(process<=0) {
-					RecipeHolder<DoliumRecipe> recipe = DoliumRecipe.testDolium(tank.getFluid(), inv);
-					if(recipe!=null) {
-						inner=recipe.value().handleDolium(tank.getFluid(), inv);
-					}else {
-						process=processMax=0;
-					}
-					lastRecipe=null;
-					recipeTested=false;
-				}
+			if (recipeHandler.tickProcess(1)) {
 				updateNeeded=true;
 			}
 		}
@@ -379,6 +363,11 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 		if (cap == Capabilities.FluidHandler.BLOCK)
 			return handler;
 		return null;
+	}
+
+	@Override
+	public boolean isInfinite() {
+		return isInfinite;
 	}
 
 }

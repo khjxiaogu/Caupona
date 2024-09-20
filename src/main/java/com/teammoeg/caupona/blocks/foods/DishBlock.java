@@ -37,6 +37,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -88,7 +89,7 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 		if (!(newState.getBlock() instanceof DishBlock)) {
 			if (worldIn.getBlockEntity(pos) instanceof DishBlockEntity dish) {
 
-				super.popResource(worldIn, pos, dish.internal);
+				super.popResource(worldIn, pos, dish.getInternal());
 			}
 			worldIn.removeBlockEntity(pos);
 		}
@@ -101,19 +102,19 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
 		if (p.consumesAction())
 			return p;
-		if (worldIn.getBlockEntity(pos) instanceof DishBlockEntity dish &&dish.internal != null && dish.internal.getItem() instanceof DishItem
-				&& dish.internal.getFoodProperties(null)!=null) {
-			FoodProperties fp = dish.internal.getFoodProperties(player);
+		if (worldIn.getBlockEntity(pos) instanceof DishBlockEntity dish &&dish.getInternal() != null && dish.getInternal().getItem() instanceof DishItem
+				&& dish.getInternal().getFoodProperties(null)!=null) {
+			FoodProperties fp = dish.getInternal().getFoodProperties(player);
 			if (dish.isInfinite) {
 				if (player.canEat(fp.canAlwaysEat())) {
-					player.eat(worldIn, dish.internal.copy());
+					player.eat(worldIn, dish.getInternal().copy());
 					dish.syncData();
 				}
 			} else {
 				if (player.canEat(fp.canAlwaysEat())) {
-					ItemStack iout = player.eat(worldIn, dish.internal);
-					dish.internal = iout;
-					if (dish.internal.is(Items.BOWL)) {
+					ItemStack iout = player.eat(worldIn, dish.getInternal());
+					dish.setInternal(iout);
+					if (dish.getInternal().is(Items.BOWL)) {
 						worldIn.setBlockAndUpdate(pos, CPBlocks.DISH.get().defaultBlockState());
 					} else {
 						worldIn.removeBlock(pos, false);
@@ -131,18 +132,18 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		if (pLevel.getBlockEntity(pPos) instanceof DishBlockEntity dish) {
 			dish.setComponents(DataComponentMap.EMPTY);
-			dish.internal = pStack.copyWithCount(1);
+			dish.setInternal(pStack.copyWithCount(1));
 		}
 	}
-
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos,
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos,
 			Player player) {
 		if (level.getBlockEntity(pos) instanceof DishBlockEntity dish) {
-			if (dish.internal == null)
+			if (dish.getInternal() == null)
 				return ItemStack.EMPTY;
-			return dish.internal.copy();
+			return dish.getInternal().copy();
 		}
-		return this.getCloneItemStack(state, target, level, pos, player);
+		return super.getCloneItemStack(state, target, level, pos, player);
 	}
 
 	@Override
@@ -153,7 +154,7 @@ public class DishBlock extends CPRegisteredEntityBlock<DishBlockEntity> {
 	@Override
 	public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
 		if (pLevel.getBlockEntity(pPos) instanceof DishBlockEntity dish)
-			if (dish.internal != null && !dish.internal.isEmpty() && dish.internal.getFoodProperties(null)!=null) 
+			if (dish.getInternal() != null && !dish.getInternal().isEmpty() && dish.getInternal().getFoodProperties(null)!=null) 
 				return 15;
 		
 		return 0;

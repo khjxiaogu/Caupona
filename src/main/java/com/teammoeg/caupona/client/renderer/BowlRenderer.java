@@ -64,9 +64,9 @@ public class BowlRenderer implements BlockEntityRenderer<BowlBlockEntity> {
 		}else
 			return;
 		
-		if (blockEntity.internal == null || !(blockEntity.internal.getItem() instanceof StewItem))
+		if (blockEntity.getInternal() == null || !(blockEntity.getInternal().getItem() instanceof StewItem))
 			return;
-		FluidStack fs = Utils.extractFluid(blockEntity.internal);
+		FluidStack fs = Utils.extractFluid(blockEntity.getInternal());
 		matrixStack.pushPose();
 		if (fs != null && !fs.isEmpty() && fs.getFluid() != null) {
 			float y=type==2?.3125f:.28125f;

@@ -456,5 +456,8 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		}
 		return null;
 	}
-
+	@Override
+	public boolean isInfinite() {
+		return isInfinite;
+	}
 }

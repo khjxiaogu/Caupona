@@ -336,5 +336,8 @@ public class KitchenStoveBlockEntity extends CPBaseBlockEntity implements Contai
 	public boolean setInfinity() {
 		return isInfinite = !isInfinite;
 	}
-
+	@Override
+	public boolean isInfinite() {
+		return isInfinite;
+	}
 }

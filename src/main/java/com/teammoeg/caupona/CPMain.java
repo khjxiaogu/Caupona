@@ -21,20 +21,27 @@
 
 package com.teammoeg.caupona;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.teammoeg.caupona.client.CPParticles;
+import com.teammoeg.caupona.compat.top.TOPRegister;
 import com.teammoeg.caupona.network.PacketHandler;
 import com.teammoeg.caupona.util.FuelType;
 import com.teammoeg.caupona.util.Utils;
 
+import mcjty.theoneprobe.api.ITheOneProbe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.InterModComms;
+import net.neoforged.fml.InterModComms.IMCMessage;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -84,6 +91,7 @@ public class CPMain {
 
 	@SuppressWarnings("unused")
 	public void enqueueIMC(InterModEnqueueEvent event) {
+		InterModComms.sendTo("theoneprobe", "getTheOneProbe", ()->(Function<ITheOneProbe, ?>)TOPRegister::register);
 	   // InterModComms.sendTo("treechop", "getTreeChopAPI", () -> (Consumer)TreechopCompat::new);
 	}
 }

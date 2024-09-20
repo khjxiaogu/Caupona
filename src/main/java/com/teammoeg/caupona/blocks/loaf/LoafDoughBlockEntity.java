@@ -36,7 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class LoafDoughBlockEntity extends CPBaseBlockEntity {
 	int heatValue;
-	int process;
+	public int process;
 	LazyTickWorker ltw=new LazyTickWorker(20,()->{
 		if(!level.getBlockState(getBlockPos().below()).is(CPBlocks.LOAF_DOUGH)) {
 			heatValue=(int) LoafHelper.getFireStrengh(level, getBlockPos());

@@ -103,4 +103,8 @@ public class WolfStatueBlockEntity extends CPBaseBlockEntity {
 		check.tick();
 	}
 
+	public boolean isVeryHot() {
+		return isVeryHot;
+	}
+
 }

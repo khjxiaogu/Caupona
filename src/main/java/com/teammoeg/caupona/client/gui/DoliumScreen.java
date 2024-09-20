@@ -75,9 +75,8 @@ public class DoliumScreen extends AbstractContainerScreen<DoliumContainer> {
 	protected void renderBg(GuiGraphics transform, float partial, int x, int y) {
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		transform.blit(TEXTURE,leftPos, topPos, 0, 0, imageWidth, imageHeight);
-		if (blockEntity.process > 0) {
-			int w = Mth.ceil(12 * (1-blockEntity.process / (float) blockEntity.processMax));
-
+		if (blockEntity.recipeHandler.getProcess() > 0) {
+			int w = Mth.ceil(12 * (1-blockEntity.recipeHandler.getProcess() / (float) blockEntity.recipeHandler.getProcessMax()));
 			transform.blit(TEXTURE, leftPos + 117, topPos + 32, 176, 0, w, 25);
 		}
 	}

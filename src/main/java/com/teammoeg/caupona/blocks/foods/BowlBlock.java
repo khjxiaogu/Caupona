@@ -34,6 +34,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,7 +73,7 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock() && worldIn.getBlockEntity(pos) instanceof BowlBlockEntity bowl) {
-			super.popResource(worldIn, pos, bowl.internal);
+			super.popResource(worldIn, pos, bowl.getInternal());
 		}
 		super.onRemove(state, worldIn, pos, newState, isMoving);
 	}
@@ -83,19 +84,19 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 		InteractionResult p = super.useWithoutItem(state, worldIn, pos, player, hit);
 		if (p.consumesAction())
 			return p;
-		if (worldIn.getBlockEntity(pos) instanceof BowlBlockEntity bowl&&bowl.internal != null && bowl.internal.getItem() instanceof StewItem
-				&& bowl.internal.getFoodProperties(player)!=null) {
-			FoodProperties fp = bowl.internal.getFoodProperties(player);
+		if (worldIn.getBlockEntity(pos) instanceof BowlBlockEntity bowl&&bowl.getInternal() != null && bowl.getInternal().getItem() instanceof StewItem
+				&& bowl.getInternal().getFoodProperties(player)!=null) {
+			FoodProperties fp = bowl.getInternal().getFoodProperties(player);
 			if (bowl.isInfinite) {
 				if (player.canEat(fp.canAlwaysEat())) {
-					player.eat(worldIn, bowl.internal.copy());
+					player.eat(worldIn, bowl.getInternal().copy());
 					bowl.syncData();
 				}
 			} else {
 				if (player.canEat(fp.canAlwaysEat())) {
-					ItemStack iout = player.eat(worldIn, bowl.internal);
-					bowl.internal = iout;
-					if(!bowl.internal.isEmpty()) {
+					ItemStack iout = player.eat(worldIn, bowl.getInternal());
+					bowl.setInternal(iout);
+					if(!bowl.getInternal().isEmpty()) {
 						bowl.syncData();
 					}else
 						worldIn.removeBlock(pos, false);
@@ -111,16 +112,16 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 		if (pLevel.getBlockEntity(pPos) instanceof BowlBlockEntity bowl) {
 			bowl.setComponents(DataComponentMap.EMPTY);
-			bowl.internal = pStack.copyWithCount(1);
+			bowl.setInternal(pStack.copyWithCount(1));
 		}
 	}
-
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos,
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos,
 			Player player) {
 		if (level.getBlockEntity(pos) instanceof BowlBlockEntity bowl) {
-			if (bowl.internal == null)
+			if (bowl.getInternal() == null)
 				return ItemStack.EMPTY;
-			return bowl.internal.copy();
+			return bowl.getInternal().copy();
 		}
 		return this.getCloneItemStack(state, target, level, pos, player);
 	}
@@ -132,7 +133,7 @@ public class BowlBlock extends CPRegisteredEntityBlock<BowlBlockEntity> {
 
 	@Override
 	public int getAnalogOutputSignal(BlockState pState, Level pLevel, BlockPos pPos) {
-		if (pLevel.getBlockEntity(pPos) instanceof BowlBlockEntity bowl&&bowl.internal != null && !bowl.internal.isEmpty() && bowl.internal.getFoodProperties(null)!=null) {
+		if (pLevel.getBlockEntity(pPos) instanceof BowlBlockEntity bowl&&bowl.getInternal() != null && !bowl.getInternal().isEmpty() && bowl.getInternal().getFoodProperties(null)!=null) {
 			return 15;
 		}
 		return 0;

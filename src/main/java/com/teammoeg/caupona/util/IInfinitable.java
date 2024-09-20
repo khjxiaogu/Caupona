@@ -23,4 +23,9 @@ package com.teammoeg.caupona.util;
 
 public interface IInfinitable {
 	boolean setInfinity();
+	default boolean isInfinite() {
+		setInfinity();
+		return setInfinity();
+		
+	};
 }
