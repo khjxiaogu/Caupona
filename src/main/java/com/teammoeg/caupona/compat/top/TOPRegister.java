@@ -39,6 +39,7 @@ public class TOPRegister {
 		top.registerProvider(new GravyBoatProvider());
 		top.registerProvider(new LoafProvider());
 		top.registerProvider(new PotProvider());
+		top.registerProvider(new PanProvider());
 		top.registerProvider(new StoveProvider());
 		top.registerProvider(new WolfProvider());
 		top.registerProvider(new InfProvider());
