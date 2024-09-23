@@ -30,15 +30,19 @@ import com.teammoeg.caupona.util.ICreativeModeTabItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -62,6 +66,33 @@ public class GravyBoatBlock extends CPHorizontalBlock implements ICreativeModeTa
 			return shapeNS;
 		return shapeEW;
 
+	}
+
+	@Override
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if(stack.is(CPItems.gravy_boat.get())) { 
+			int sdmg=stack.getDamageValue();
+			int ddmg=state.getValue(LEVEL);
+			int tdmg=sdmg+ddmg;
+			boolean isToItem=false;
+			if(ddmg==0||sdmg==5) {
+				isToItem=true;
+			}
+			int remain=10-tdmg;
+			int dstrem=Math.min(5, remain);
+			int srcrem=remain-dstrem;
+			srcrem=5-srcrem;
+			dstrem=5-dstrem;
+			if(isToItem) {
+				stack.setDamageValue(dstrem);
+				level.setBlock(pos, state.setValue(LEVEL, srcrem), UPDATE_ALL);
+			}else {
+				stack.setDamageValue(srcrem);
+				level.setBlock(pos, state.setValue(LEVEL, dstrem), UPDATE_ALL);
+			}
+			return ItemInteractionResult.sidedSuccess(level.isClientSide());
+		}
+		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 	}
 
 	public static int getOil(BlockState pState) {
@@ -128,8 +159,8 @@ public class GravyBoatBlock extends CPHorizontalBlock implements ICreativeModeTa
 		return sep;
 
 	}
-
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos,
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos,
 			Player player) {
 		ItemStack is = new ItemStack(CPItems.gravy_boat.get());
 		is.setDamageValue(state.getValue(LEVEL));

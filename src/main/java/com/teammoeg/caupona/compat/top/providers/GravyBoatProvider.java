@@ -21,7 +21,7 @@ public class GravyBoatProvider implements IProbeInfoProvider {
 	public void addProbeInfo(ProbeMode mode, IProbeInfo info, Player player, Level level, BlockState state, IProbeHitData hitResult) {
 		if(state.hasProperty(GravyBoatBlock.LEVEL)) {
 			int damage=state.getValue(GravyBoatBlock.LEVEL);
-			info.progress(5-damage, 5, info.defaultProgressStyle().filledColor(0xfff9ff00).alternateFilledColor(0xfff9ff00));
+			info.progress(5-damage, 5, info.defaultProgressStyle().filledColor(0xffe9d892).alternateFilledColor(0xffe9d892));
 		}
 	}
 
