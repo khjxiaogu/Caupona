@@ -53,7 +53,7 @@ public class CPFluidTagGenerator extends TagsProvider<Fluid> {
 	@Override
 	protected void addTags(Provider p) {
 		TagAppender<Fluid> stews=tag(CPTags.Fluids.STEWS);
-		TagAppender<Fluid> boilable=tag(CPTags.Fluids.BOILABLE).add(BuiltInRegistries.FLUID.getResourceKey(Fluids.WATER).get()).add(NeoForgeMod.MILK.getKey())
+		tag(CPTags.Fluids.BOILABLE).add(BuiltInRegistries.FLUID.getResourceKey(Fluids.WATER).get()).add(NeoForgeMod.MILK.getKey())
 				.addTag(CPTags.Fluids.STEWS);
 		CPFluids.getAllKeys().forEach(stews::add);
 		tag(CPTags.Fluids.ANY_WATER).add(ResourceKey.create(Registries.FLUID,mrl("stock"))).add(ResourceKey.create(Registries.FLUID,mrl("nail_soup")));

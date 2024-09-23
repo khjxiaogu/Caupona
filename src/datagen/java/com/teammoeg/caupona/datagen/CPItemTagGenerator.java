@@ -179,6 +179,7 @@ public class CPItemTagGenerator extends TagsProvider<Item> {
 //        Items.CYAN_CONCRETE,Items.LIGHT_BLUE_CONCRETE,Items.BLUE_CONCRETE,Items.PURPLE_CONCRETE,Items.MAGENTA_CONCRETE,
 //        Items.PINK_CONCRETE);
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@SafeVarargs
 	private void adds(TagAppender<Item> ta,Item... keys) {
 		

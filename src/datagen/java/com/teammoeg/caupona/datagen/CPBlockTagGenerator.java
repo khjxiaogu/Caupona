@@ -162,6 +162,7 @@ public class CPBlockTagGenerator extends TagsProvider<Block> {
 		adds(tag(CPTags.Blocks.SNAIL_FOOD).addTag(CPTags.Blocks.FRUITS_GROWABLE_ON).addTag(BlockTags.LEAVES).addTag(CPTags.Blocks.SNAIL_PLUMP_FOOD),CPBlocks.SNAIL_BAIT.getKey());
 
 	}
+	@SuppressWarnings("unchecked")
 	@SafeVarargs
 	private void adds(TagAppender<Block> ta,ResourceKey<? extends Block>... keys) {
 		for(ResourceKey<? extends Block> blk:keys)

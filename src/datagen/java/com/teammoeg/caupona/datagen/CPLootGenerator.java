@@ -203,6 +203,7 @@ public class CPLootGenerator extends LootTableProvider {
 			added.add(pBlock);
 			super.add(pBlock, pLootTableBuilder);
 		}
+		@SuppressWarnings("rawtypes")
 		protected LootTable.Builder doublePlantDrop(Block pBlock,LootItem.Builder pItemBuilder){
 			return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(pItemBuilder)
 			.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(pBlock)
