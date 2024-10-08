@@ -1,0 +1,10 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:felsic_tuff_road_side"
+	},
+	"result": {
+		"id": "caupona:felsic_tuff_road"
+	},
+	"count": 1
+}

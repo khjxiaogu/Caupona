@@ -1,0 +1,10 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:sandstone_road_side"
+	},
+	"result": {
+		"id": "caupona:sandstone_road"
+	},
+	"count": 1
+}

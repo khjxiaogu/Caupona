@@ -1,0 +1,10 @@
+{
+	"type": "stonecutting",
+	"ingredient": {
+		"item": "caupona:stone_road_side"
+	},
+	"result": {
+		"id": "caupona:stone_road"
+	},
+	"count": 1
+}
