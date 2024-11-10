@@ -1,7 +1,7 @@
 {
   "category": "caupona:cook_recipes",
   "icon": "caupona:cream_of_mushroom_soup",
-  "name": "Cream Of Mushroom Soup",
+  "name": "Cream of Mushroom Soup",
   "pages": [
     {
       "type": "caupona:cookrecipe",

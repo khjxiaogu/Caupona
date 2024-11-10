@@ -96,7 +96,8 @@ public class CPRecipeProvider extends RecipeProvider {
 		}
 		for (String s : CPItems.bread_bowls) {
 			ResourceLocation fs = mrl(s);
-			out.accept(rl("bowl/" + s+"_loaf"),new BowlContainingRecipe( item(fs), fluid(fs),Ingredient.of(CPBlocks.LOAF_BOWL.get())));
+			ResourceLocation is = mrl(s+"_loaf");
+			out.accept(rl("bowl/" + s+"_loaf"),new BowlContainingRecipe( item(is), fluid(fs),Ingredient.of(CPBlocks.LOAF_BOWL.get())));
 			
 		}
 		
