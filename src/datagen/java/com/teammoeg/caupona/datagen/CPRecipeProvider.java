@@ -107,8 +107,8 @@ public class CPRecipeProvider extends RecipeProvider {
 		
 		out.accept(rl("bowl/water"),new BowlContainingRecipe( cpitem("water"), Fluids.WATER,Ingredient.of(Items.BOWL)));
 		out.accept(rl("bowl/milk"),new BowlContainingRecipe( cpitem("milk"), NeoForgeMod.MILK.get(),Ingredient.of(Items.BOWL)));
-		out.accept(rl("bowl/water"),new BowlContainingRecipe( cpitem("water"), Fluids.WATER,Ingredient.of(CPBlocks.LOAF_BOWL.get())));
-		out.accept(rl("bowl/milk"),new BowlContainingRecipe( cpitem("milk"), NeoForgeMod.MILK.get(),Ingredient.of(CPBlocks.LOAF_BOWL.get())));
+		//out.accept(rl("bowl/water"),new BowlContainingRecipe( cpitem("water"), Fluids.WATER,Ingredient.of(CPBlocks.LOAF_BOWL.get())));
+		//out.accept(rl("bowl/milk"),new BowlContainingRecipe( cpitem("milk"), NeoForgeMod.MILK.get(),Ingredient.of(CPBlocks.LOAF_BOWL.get())));
 		out.accept(rl("boil/water"),new BoilingRecipe( fluid(mcrl("water")), fluid(mrl("nail_soup")), 200));
 		out.accept(rl("boil/milk"),new BoilingRecipe( fluid(mcrl("milk")), fluid(mrl("scalded_milk")), 200));
 		out.accept(rl("food/mushroom"),new FoodValueRecipe( 3, 0.6f, new ItemStack(Items.RED_MUSHROOM),
