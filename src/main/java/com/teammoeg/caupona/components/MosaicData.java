@@ -57,6 +57,9 @@ public record MosaicData(MosaicPattern pattern,MosaicMaterial material1,MosaicMa
 		return material2;
 	}
 	public BlockState createBlock() {
-		return CPBlocks.MOSAIC.get().defaultBlockState().setValue(MosaicBlock.MATERIAL_1, material1).setValue(MosaicBlock.MATERIAL_2, material2).setValue(MosaicBlock.PATTERN,pattern );
+		return createBlock(CPBlocks.MOSAIC.get().defaultBlockState());
+	}
+	public BlockState createBlock(BlockState bs) {
+		return bs.setValue(MosaicBlock.MATERIAL_1, material1).setValue(MosaicBlock.MATERIAL_2, material2).setValue(MosaicBlock.PATTERN,pattern );
 	}
 }
