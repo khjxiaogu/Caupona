@@ -11,7 +11,7 @@
 	],
 	"result": {
 		"id": "patchouli:guide_book",
-		"nbt": {
+		"components": {
     		"patchouli:book": "caupona:book"
 		}
 	},

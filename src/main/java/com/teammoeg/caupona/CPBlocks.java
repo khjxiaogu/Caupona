@@ -245,7 +245,10 @@ public class CPBlocks {
 				type.setBase(()->base.get().defaultBlockState());
 				decoblock(name + "_slab", () -> new SlabBlock(getStoneProps()));
 				decoblock(name + "_stairs", () -> new StairBlock(type.getBase().get(), getStoneProps()));
-				decoblock(name + "_wall", () -> new WallBlock(getStoneProps()));
+				if(name.equals("loaf_heap"))
+					hiddenblock(name + "_wall", () -> new WallBlock(getStoneProps()));
+				else
+					decoblock(name + "_wall", () -> new WallBlock(getStoneProps()));
 			}
 			if (type.isCounterMaterial()) {
 				stove(name + "_kitchen_stove", getStoveProps(),
@@ -421,6 +424,11 @@ public class CPBlocks {
 	static <T extends Block> DeferredHolder<Block,T> decoblock(String name, Supplier<T> bl) {
 		DeferredHolder<Block,T> blx = BLOCKS.register(name, bl);
 		CPItems.ITEMS.register(name, () -> new CPBlockItem(blx.get(), CPItems.createProps(), TabType.DECORATION));
+		return blx;
+	}
+	static <T extends Block> DeferredHolder<Block,T> hiddenblock(String name, Supplier<T> bl) {
+		DeferredHolder<Block,T> blx = BLOCKS.register(name, bl);
+		CPItems.ITEMS.register(name, () -> new CPBlockItem(blx.get(), CPItems.createProps(), TabType.HIDDEN));
 		return blx;
 	}
 	static <T extends Block> DeferredHolder<Block,T> maindecoblock(String name, Supplier<T> bl) {

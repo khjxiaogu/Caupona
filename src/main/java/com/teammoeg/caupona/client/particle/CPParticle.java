@@ -47,7 +47,9 @@ public class CPParticle extends TextureSheetParticle {
 	}
 	public void setSpriteSet(SpriteSet ss) {
 		this.spriteSet=ss;
+		this.setSpriteFromAge(this.spriteSet);
 	}
+	
 	@Override
 	public void render(VertexConsumer worldRendererIn, Camera entityIn, float pt) {
 		float age = (this.age + pt) / lifetime * 32.0F;
@@ -55,9 +57,15 @@ public class CPParticle extends TextureSheetParticle {
 		age = Mth.clamp(age, 0.0F, 1.0F);
 
 		this.quadSize = originalScale * age;
+		super.render(worldRendererIn, entityIn, pt);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
 		if(this.spriteSet!=null)
 			this.setSpriteFromAge(this.spriteSet);
-		super.render(worldRendererIn, entityIn, pt);
 	}
 
 
