@@ -52,28 +52,34 @@ public class DietApiImplMixin extends DietApi {
 	private static void CP$getResult(Player player,ItemStack input, CallbackInfoReturnable<IDietResult> result) {
 		Optional<IFoodInfo> oiso = CauponaHooks.getInfo(input);
 		if(!oiso.isPresent())return;
+		
 		IFoodInfo ois=oiso.get();
 		List<FloatemStack> is=ois.getStacks();
 		Map<IDietGroup, Float> groups = new HashMap<>();
 		float b=(float)(double)CPConfig.SERVER.benefitialMod.get();
 		float h=(float)(double)CPConfig.SERVER.harmfulMod.get();
-		for (FloatemStack sx : is) {
-			FoodValueRecipe fvr = FoodValueRecipe.recipes.get(sx.getItem());
-			ItemStack stack;
-			if (fvr == null || fvr.getRepersent() == null)
-				stack = sx.getStack();
-			else
-				stack = fvr.getRepersent();
-			IDietResult dr = DietApiImpl.getInstance().get(player, stack);
-			if (dr != DietResult.EMPTY)
-				for (Entry<IDietGroup, Float> me : dr.get().entrySet())
-					if(me.getKey().isBeneficial()) {
-						groups.merge(me.getKey(), me.getValue()*sx.getCount()*b, Float::sum);
-					}else
-						groups.merge(me.getKey(), me.getValue()*sx.getCount()*h, Float::sum);
-		}
+		
+			for (FloatemStack sx : is) {
+				FoodValueRecipe fvr =null;
+				if(FoodValueRecipe.recipes!=null)
+					fvr=FoodValueRecipe.recipes.get(sx.getItem());
+				ItemStack stack;
+				if (fvr == null || fvr.getRepersent() == null)
+					stack = sx.getStack();
+				else
+					stack = fvr.getRepersent();
+				IDietResult dr = DietApiImpl.getInstance().get(player, stack);
+				if (dr != DietResult.EMPTY)
+					for (Entry<IDietGroup, Float> me : dr.get().entrySet())
+						if(me.getKey().isBeneficial()) {
+							groups.merge(me.getKey(), me.getValue()*sx.getCount()*b, Float::sum);
+						}else
+							groups.merge(me.getKey(), me.getValue()*sx.getCount()*h, Float::sum);
+			}
 		if(ois instanceof StewInfo si) {
-			FluidFoodValueRecipe ffvr=FluidFoodValueRecipe.recipes.get(si.base);
+			FluidFoodValueRecipe ffvr=null;
+			if(FluidFoodValueRecipe.recipes!=null)
+				ffvr=FluidFoodValueRecipe.recipes.get(si.base);
 			if(ffvr!=null&&ffvr.getRepersent()!=null) {
 				IDietResult dr = DietApiImpl.getInstance().get(player,ffvr.getRepersent());
 				if (dr != DietResult.EMPTY)

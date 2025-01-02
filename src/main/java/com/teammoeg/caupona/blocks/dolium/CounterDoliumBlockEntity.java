@@ -319,7 +319,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 		@Override
 		public int fill(FluidStack resource, FluidAction action) {
-			process = -1;
 			if (!isInfinite)
 				return tank.fill(resource, action);
 			return 0;
@@ -327,7 +326,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 		@Override
 		public FluidStack drain(FluidStack resource, FluidAction action) {
-			process = -1;
 			if (isInfinite)
 				return action.simulate() ? resource : tryAddSpice(resource);
 			return action.simulate() ? tank.drain(resource, action) : tryAddSpice(tank.drain(resource, action));
@@ -336,7 +334,6 @@ public class CounterDoliumBlockEntity extends CPBaseBlockEntity implements MenuP
 
 		@Override
 		public FluidStack drain(int maxDrain, FluidAction action) {
-			process = -1;
 			if (isInfinite)
 				return action.simulate() ? new FluidStack(tank.getFluid(), maxDrain)
 						: tryAddSpice(new FluidStack(tank.getFluid(), maxDrain));

@@ -92,7 +92,7 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 	@Override
 	public void tick() {
 		BlockState bs = this.getBlockState();
-		if (bs.getValue(FumaroleVentBlock.HEAT) == 2) {
+		if (bs.getValue(FumaroleVentBlock.HEAT) == 2&&!level.isClientSide) {
 			update.tick();
 			this.setChanged();
 		}
@@ -101,6 +101,7 @@ public class FumaroleVentBlockEntity extends CPBaseBlockEntity implements IStove
 	}
 
 	public static void placeFumarole(Level pLevel, BlockPos pPos) {
+		
 		RandomSource pRandom = pLevel.getRandom();
 		int dx = (pRandom.nextBoolean() ? 1 : -1) * (pRandom.nextInt(6));
 		int dz = (pRandom.nextBoolean() ? 1 : -1) * (pRandom.nextInt(6));

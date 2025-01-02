@@ -180,16 +180,19 @@ public class RecipeReloadListener implements ResourceManagerReloadListener {
 		StewCookingRecipe.sorted.sort((t2, t1) -> t1.getPriority() - t2.getPriority());
 		StewCookingRecipe.cookables = StewCookingRecipe.sorted.stream().flatMap(StewCookingRecipe::getAllNumbers).collect(Collectors.toSet());
 		
-
-		CountingTags.tags = Stream
-				.concat(filterRecipes(recipes, CountingTags.class, CountingTags.TYPE).flatMap(r -> r.tag.stream()),
-						StewCookingRecipe.sorted.stream().flatMap(StewCookingRecipe::getTags))
-				.collect(Collectors.toSet());
-		// CountingTags.tags.forEach(System.out::println);
-
 		SauteedRecipe.sorted = filterRecipes(recipes, SauteedRecipe.class, SauteedRecipe.TYPE).collect(Collectors.toList());
 		SauteedRecipe.sorted.sort((t2, t1) -> t1.getPriority() - t2.getPriority());
 		SauteedRecipe.cookables = SauteedRecipe.sorted.stream().flatMap(SauteedRecipe::getAllNumbers).collect(Collectors.toSet());
+
+		CountingTags.tags = Stream
+			.concat(Stream
+				.concat(filterRecipes(recipes, CountingTags.class, CountingTags.TYPE).flatMap(r -> r.tag.stream()),
+						StewCookingRecipe.sorted.stream().flatMap(StewCookingRecipe::getTags)),SauteedRecipe.sorted.stream().flatMap(SauteedRecipe::getTags)
+				)
+				.collect(Collectors.toSet());
+		// CountingTags.tags.forEach(System.out::println);
+
+
 
 		DoliumRecipe.recipes = filterRecipes(recipes, DoliumRecipe.class, DoliumRecipe.TYPE)
 				.collect(Collectors.toList());

@@ -394,6 +394,8 @@ public class PanBlockEntity extends CPBaseBlockEntity implements MenuProvider,II
 		this.processMax = process = 0;
 		tpt = Math.max(CPConfig.SERVER.fryTimeBase.get(), tpt);
 		current.setParts(cook);
+		current.completeAll();
+		current.recalculateHAS();
 		this.current=current;
 		this.preout=preout;
 		this.processMax=processMax;

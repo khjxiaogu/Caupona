@@ -49,6 +49,7 @@ vinegar_spice_jar.png
 vivid_charcoal.png
 walnut.png
 walnut_boat.png
+walnut_chest_boat.png
 walnut_door.png
 walnut_hanging_sign.png
 walnut_oil_0.png

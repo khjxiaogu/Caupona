@@ -1,3 +1,6 @@
-Stew can now put into containers of other mods
-Remake diet api
-Reduced spice jar durability but improve buff
+Repair multiple issues:
+Dolium resets process when opening interface.
+Cooked Dishes restores too much hunger.
+Some crashes.
+Sauteed greens and some specific frying recipe can not be made.
+Synchronization issues
