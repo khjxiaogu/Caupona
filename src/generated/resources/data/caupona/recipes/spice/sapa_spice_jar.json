@@ -3,7 +3,7 @@
   "effect": {
     "effect": "caupona:hyperactive",
     "level": 0,
-    "time": 600
+    "time": 200
   },
   "reacts_lead": false,
   "spice": {

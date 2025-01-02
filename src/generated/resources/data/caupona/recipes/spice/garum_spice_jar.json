@@ -2,8 +2,8 @@
   "type": "caupona:spice",
   "effect": {
     "effect": "minecraft:jump_boost",
-    "level": 1,
-    "time": 600
+    "level": 0,
+    "time": 200
   },
   "reacts_lead": false,
   "spice": {
