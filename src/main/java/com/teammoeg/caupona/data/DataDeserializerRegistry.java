@@ -38,10 +38,10 @@ public class DataDeserializerRegistry<T> {
 	private HashMap<String, Deserializer<? extends T>> deserializers = new HashMap<>();
 	private List<Deserializer<? extends T>> byIdx=new ArrayList<>();
 	private HashMap<Class<?>,String> nameOfClass=new HashMap<>();
-	public <R extends T> void register(String name, Deserializer<R> des) {
+	public synchronized <R extends T> void register(String name, Deserializer<R> des) {
 		deserializers.put(name, des);
 	}
-	public <R extends T> void register(String name,Class<R> cls, MapCodec<R> rjson,
+	public synchronized <R extends T> void register(String name,Class<R> cls, MapCodec<R> rjson,
 			StreamCodec<RegistryFriendlyByteBuf, R> streamCodec) {
 		Deserializer<R> des=new Deserializer<>(rjson,streamCodec,byIdx.size());
 		register(name, des);
