@@ -21,10 +21,13 @@
 
 package com.teammoeg.caupona.blocks.fumarole;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -38,6 +41,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -96,6 +100,11 @@ public class FumaroleBoulderBlock extends Block implements SimpleWaterloggedBloc
 		if (pEntity instanceof LivingEntity)
 			pEntity.hurt(pLevel.damageSources().sweetBerryBush(), 1.0f);
 		super.stepOn(pLevel, pPos, pState, pEntity);
+	}
+
+	@Override
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+		return PathType.DAMAGE_OTHER;
 	}
 
 }

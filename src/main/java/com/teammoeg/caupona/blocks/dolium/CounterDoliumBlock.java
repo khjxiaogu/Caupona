@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -147,5 +148,8 @@ public class CounterDoliumBlock extends CPHorizontalEntityBlock<CounterDoliumBlo
 		}
 		super.onRemove(state, worldIn, pos, newState, isMoving);
 	}
-
+	@Override
+	public boolean isPathfindable(BlockState pState, PathComputationType pType) {
+	      return false;
+	}
 }

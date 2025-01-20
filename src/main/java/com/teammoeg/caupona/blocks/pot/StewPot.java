@@ -46,6 +46,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -189,6 +190,11 @@ public class StewPot extends CPRegisteredEntityBlock<StewPotBlockEntity> impleme
 			((ServerPlayer) player).openMenu( blockEntity, blockEntity.getBlockPos());
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
+	}
+
+	@Override
+	protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+		return false;
 	}
 
 

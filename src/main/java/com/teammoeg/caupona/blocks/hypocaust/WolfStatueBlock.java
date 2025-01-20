@@ -21,6 +21,8 @@
 
 package com.teammoeg.caupona.blocks.hypocaust;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.teammoeg.caupona.CPBlockEntityTypes;
 import com.teammoeg.caupona.blocks.CPHorizontalEntityBlock;
 
@@ -28,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -41,6 +44,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -131,5 +135,9 @@ public class WolfStatueBlock extends CPHorizontalEntityBlock<WolfStatueBlockEnti
 				ret+=9;
 		}
 		return ret;
+	}
+	@Override
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+		return PathType.DAMAGE_FIRE;
 	}
 }

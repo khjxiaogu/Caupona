@@ -21,18 +21,23 @@
 
 package com.teammoeg.caupona.blocks.plants;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.teammoeg.caupona.CPTags.Blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.CommonHooks;
@@ -98,5 +103,15 @@ public class FruitBlock extends CropBlock {
 	public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
 		return 5;
 	}
+	@Override
+	public boolean isPathfindable(BlockState pState, PathComputationType pType) {
+	      return false;
+	}
 
+	@Override
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+		return PathType.COCOA;
+	}
+	
+	
 }

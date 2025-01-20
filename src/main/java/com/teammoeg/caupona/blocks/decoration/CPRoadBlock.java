@@ -21,15 +21,21 @@
 
 package com.teammoeg.caupona.blocks.decoration;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.teammoeg.caupona.CPConfig;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -59,6 +65,11 @@ public class CPRoadBlock extends Block {
 				entity.addDeltaMovement(new Vec3(-Mth.sin(f) * road, 0.0D, Mth.cos(f) * road));
 			}
 		}
+	}
+
+	@Override
+	protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
+		return false;
 	}
 
 

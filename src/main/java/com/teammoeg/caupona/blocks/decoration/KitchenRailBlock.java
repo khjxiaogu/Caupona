@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -60,5 +61,8 @@ public class KitchenRailBlock extends Block {
 		default:return super.getShape(state, level, pos, context);
 		}
 	}
-
+	@Override
+	public boolean isPathfindable(BlockState pState,PathComputationType pType) {
+	      return false;
+	}
 }

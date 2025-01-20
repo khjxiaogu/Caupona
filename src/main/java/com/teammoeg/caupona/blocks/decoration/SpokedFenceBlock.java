@@ -254,4 +254,8 @@ public class SpokedFenceBlock extends Block implements SimpleWaterloggedBlock {
 			return super.mirror(pState, pMirror);
 		}
 	}
+	@Override
+	public boolean isPathfindable(BlockState pState, PathComputationType pType) {
+	      return false;
+	}
 }

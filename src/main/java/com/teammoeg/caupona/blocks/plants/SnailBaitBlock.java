@@ -21,14 +21,20 @@
 
 package com.teammoeg.caupona.blocks.plants;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPTags.Blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.neoforged.neoforge.common.CommonHooks;
 
 public class SnailBaitBlock extends FruitBlock {
@@ -71,5 +77,14 @@ public class SnailBaitBlock extends FruitBlock {
 	@Override
 	public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
 		return false;
+	}
+	@Override
+	public boolean isPathfindable(BlockState pState, PathComputationType pType) {
+	      return false;
+	}
+
+	@Override
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+		return PathType.COCOA;
 	}
 }

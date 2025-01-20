@@ -146,4 +146,5 @@ public class SelfStackingBlock extends SlabBlock {
             ? super.updateShape(state, facing, facingState, level, currentPos, facingPos)
             : Blocks.AIR.defaultBlockState();
     }
+    
 }

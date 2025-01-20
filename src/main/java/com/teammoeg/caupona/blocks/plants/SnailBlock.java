@@ -21,12 +21,16 @@
 
 package com.teammoeg.caupona.blocks.plants;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.teammoeg.caupona.CPBlocks;
 import com.teammoeg.caupona.CPTags;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -34,6 +38,8 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.neoforged.neoforge.common.CommonHooks;
 
 public class SnailBlock extends FruitBlock {
@@ -181,6 +187,15 @@ public class SnailBlock extends FruitBlock {
 	}
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
 		pBuilder.add(AGE, EATEN_FRUIT);
+	}
+	@Override
+	public boolean isPathfindable(BlockState pState, PathComputationType pType) {
+	      return false;
+	}
+
+	@Override
+	public @Nullable PathType getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
+		return PathType.COCOA;
 	}
 
 }
